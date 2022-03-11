@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Configure clang-format
+src_files=$(git diff --cached --name-status | grep -E '[MA]' | cut -d$'\t' -f 2 | grep -E ".+((\.c)|(\.cpp)|(\.h)|(\.hpp))")
+if [ ! -z "${src_files}" ]; then
+  echo "Formating of the following files :"
+  printf "%s\n" "${src_files}"
+
+  for FILE in $src_files
+  do
+    clang-format -i $FILE
+  done
+
+  git add $src_files
+fi
