@@ -4,7 +4,7 @@ CC=gcc
 
 CFLAGS=-Wall -g -I../header/
 
-OBJ=bin/y.tab.o bin/lex.yy.o bin/symbolTable.o bin/instr.o #main.o
+OBJ=../bin/config.o ../bin/failures.o ../bin/.o ../bin/osc.o ../bin/port_config.o ../bin/synchronization.o ../bin/system_configuration.o ../bin/timer.o ../bin/uart.o #main.o
 
 all: $(BIN)
 
