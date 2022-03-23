@@ -1,5 +1,5 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
 
 function App() {
   return (
@@ -22,4 +22,16 @@ function App() {
   );
 }
 
+function Lol() {
+  return (
+    <div>
+      <body>
+        <h1>Ça marche?</h1>
+        <a href="http://floppachat.ml/">Cliquez sur ce site svp</a>
+      </body>
+    </div>
+  );
+}
+
+//export default App;
 export default App;
