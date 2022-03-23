@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React from "react";
 import ReactDOM from "react-dom";
 import Background from "./Background";
@@ -10,6 +11,19 @@ import MainPage from "./MainPage";
 ReactDOM.render(
   <React.StrictMode>
     <MainPage />
+=======
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import App from './App';
+import ScreenSelect from './ScreenSelect'
+import reportWebVitals from './reportWebVitals';
+
+ReactDOM.render(
+  <React.StrictMode>
+    <App />
+    {/* <ScreenSelect/> */}
+>>>>>>> 510f1e5 (Commit with nothing important)
   </React.StrictMode>,
   document.getElementById("root")
 );
