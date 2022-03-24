@@ -71,7 +71,7 @@ clean:
 	$(RM) *.o *~ $(MAIN) $(OBJS)
 
 build:
-	make all
+	- make all
 	$(RM) *.o *~ $(OBJS)
 
 depend: $(SRCS)
