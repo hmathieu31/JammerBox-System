@@ -38,10 +38,13 @@ SRCS = $(patsubst %,$(SRC_DIR)/%,$(_SRCS))
 # Below we are replacing the suffix .c of all words in the macro SRCS
 # with the .o suffix
 #
-OBJS = $(SRCS:.c=.o)
+OBJ_DIR=../bin
+_OBJS = $(SRCS:.c=.o)
+OBJS = $(subst $(SRC_DIR), $(OBJ_DIR), $(_OBJS))
+
 
 # define the executable file 
-MAIN = main.exe
+MAIN = ../bin/main.exe
 
 #
 # The following part of the makefile is generic; it can be used to 
@@ -55,7 +58,6 @@ all: $(MAIN)
 	@echo Simple compiler named mycc has been compiled
 
 $(MAIN): $(OBJS) 
-	@echo $(SRCS)
 	$(CC) $(CFLAGS) $(INCLUDES) -o $(MAIN) $(OBJS) $(LFLAGS) $(LIBS)
 
 # this is a suffix replacement rule for building .o's from .c's
@@ -66,7 +68,11 @@ $(OBJS): $(SRCS)
 	$(CC) $(CFLAGS) $(INCLUDES) -c $<  -o $@
 
 clean:
-	$(RM) *.o *~ $(MAIN)
+	$(RM) *.o *~ $(MAIN) $(OBJS)
+
+build:
+	make all
+	$(RM) *.o *~ $(OBJS)
 
 depend: $(SRCS)
 	makedepend $(INCLUDES) $^
