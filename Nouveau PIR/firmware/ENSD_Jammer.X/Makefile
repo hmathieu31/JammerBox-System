@@ -1,113 +1,80 @@
 #
-#  There exist several targets which are by default empty and which can be 
-#  used for execution of your targets. These targets are usually executed 
-#  before and after some main targets. They are: 
+# 'make depend' uses makedepend to automatically generate dependencies 
+#               (dependencies are added to end of Makefile)
+# 'make'        build executable file 'mycc'
+# 'make clean'  removes all .o and executable files
 #
-#     .build-pre:              called before 'build' target
-#     .build-post:             called after 'build' target
-#     .clean-pre:              called before 'clean' target
-#     .clean-post:             called after 'clean' target
-#     .clobber-pre:            called before 'clobber' target
-#     .clobber-post:           called after 'clobber' target
-#     .all-pre:                called before 'all' target
-#     .all-post:               called after 'all' target
-#     .help-pre:               called before 'help' target
-#     .help-post:              called after 'help' target
+
+# define the C compiler to use
+CC = gcc
+
+# define any compile-time flags
+CFLAGS = -Wall -g
+
+# define any directories containing header files other than /usr/include
 #
-#  Targets beginning with '.' are not intended to be called on their own.
+INCLUDES = -I../header
+
+# define library paths in addition to /usr/lib
+#   if I wanted to include libraries not in /usr/lib I'd specify
+#   their path using -Lpath, something like:
+# LFLAGS = -L/home/newhall/lib  -L../lib
+
+# define any libraries to link into executable:
+#   if I want to link in libraries (libx.so or libx.a) I use the -llibname 
+#   option, something like (this will link in libmylib.so and libm.so:
+# LIBS = -lmylib -lm
+
+# define the C source files
+SRC_DIR=../source
+_SRCS = failures.c ic.c osc.c synchronization.c system_configuration.c timer.c uart.c
+SRCS = $(patsubst %,$(SRC_DIR)/%,$(_SRCS))
+
+# define the C object files 
 #
-#  Main targets can be executed directly, and they are:
-#  
-#     build                    build a specific configuration
-#     clean                    remove built files from a configuration
-#     clobber                  remove all built files
-#     all                      build all configurations
-#     help                     print help mesage
-#  
-#  Targets .build-impl, .clean-impl, .clobber-impl, .all-impl, and
-#  .help-impl are implemented in nbproject/makefile-impl.mk.
+# This uses Suffix Replacement within a macro:
+#   $(name:string1=string2)
+#         For each word in 'name' replace 'string1' with 'string2'
+# Below we are replacing the suffix .c of all words in the macro SRCS
+# with the .o suffix
 #
-#  Available make variables:
+OBJ_DIR=../bin
+_OBJS = $(SRCS:.c=.o)
+OBJS = $(subst $(SRC_DIR), $(OBJ_DIR), $(_OBJS))
+
+
+# define the executable file 
+MAIN = ../bin/main.exe
+
 #
-#     CND_BASEDIR                base directory for relative paths
-#     CND_DISTDIR                default top distribution directory (build artifacts)
-#     CND_BUILDDIR               default top build directory (object files, ...)
-#     CONF                       name of current configuration
-#     CND_ARTIFACT_DIR_${CONF}   directory of build artifact (current configuration)
-#     CND_ARTIFACT_NAME_${CONF}  name of build artifact (current configuration)
-#     CND_ARTIFACT_PATH_${CONF}  path to build artifact (current configuration)
-#     CND_PACKAGE_DIR_${CONF}    directory of package (current configuration)
-#     CND_PACKAGE_NAME_${CONF}   name of package (current configuration)
-#     CND_PACKAGE_PATH_${CONF}   path to package (current configuration)
+# The following part of the makefile is generic; it can be used to 
+# build any executable just by changing the definitions above and by
+# deleting dependencies appended to the file from 'make depend'
 #
-# NOCDDL
 
+.PHONY: depend clean
 
-# Environment 
-MKDIR=mkdir
-CP=cp
-CCADMIN=CCadmin
-RANLIB=ranlib
+all: $(MAIN)
+	@echo Simple compiler named mycc has been compiled
 
+$(MAIN): $(OBJS) 
+	$(CC) $(CFLAGS) $(INCLUDES) -o $(MAIN) $(OBJS) $(LFLAGS) $(LIBS)
 
-# build
-build: .build-post
+# this is a suffix replacement rule for building .o's from .c's
+# it uses automatic variables $<: the name of the prerequisite of
+# the rule(a .c file) and $@: the name of the target of the rule (a .o file) 
+# (see the gnu make manual section about automatic variables)
+$(OBJS): $(SRCS)
+	$(CC) $(CFLAGS) $(INCLUDES) -c $<  -o $@
 
-.build-pre:
-# Add your pre 'build' code here...
+clean:
+	$(RM) *.o *~ $(MAIN) $(OBJS)
 
-.build-post: .build-impl
-# Add your post 'build' code here...
+build:
+	- make all
+	$(RM) *.o *~ $(OBJS)
 
+depend: $(SRCS)
+	makedepend $(INCLUDES) $^
 
-# clean
-clean: .clean-post
-
-.clean-pre:
-# Add your pre 'clean' code here...
-# WARNING: the IDE does not call this target since it takes a long time to
-# simply run make. Instead, the IDE removes the configuration directories
-# under build and dist directly without calling make.
-# This target is left here so people can do a clean when running a clean
-# outside the IDE.
-
-.clean-post: .clean-impl
-# Add your post 'clean' code here...
-
-
-# clobber
-clobber: .clobber-post
-
-.clobber-pre:
-# Add your pre 'clobber' code here...
-
-.clobber-post: .clobber-impl
-# Add your post 'clobber' code here...
-
-
-# all
-all: .all-post
-
-.all-pre:
-# Add your pre 'all' code here...
-
-.all-post: .all-impl
-# Add your post 'all' code here...
-
-
-# help
-help: .help-post
-
-.help-pre:
-# Add your pre 'help' code here...
-
-.help-post: .help-impl
-# Add your post 'help' code here...
-
-
-
-# include project implementation makefile
-include nbproject/Makefile-impl.mk
-
-# include project make variables
-include nbproject/Makefile-variables.mk
+# DO NOT DELETE THIS LINE -- make depend needs it
