@@ -9,10 +9,8 @@
 #ifndef _PORT_CONFIG_H_
 #define _PORT_CONFIG_H_
 
-	//Port D configuration
-	
-	void Port_G_config(void);
-	
+
+void GPIOs_config(void);
 
 #endif
 /*****************************************************************************/
