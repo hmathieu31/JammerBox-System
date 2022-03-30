@@ -29,17 +29,19 @@ void Output_CRK_no_failure(void)
     else
     {
         digitalWrite(6, LOW);
-        printf("CRK signal is ON\n");
+        printf("CRK signal is OFF\n");
     }
 }
 
 void test_Output_CRK_no_failure()
 {
     GPIOs_config();
-    Output_CRK_no_failure();
-    delay(1000);
     CRK_signal = true;
     Output_CRK_no_failure();
+    delay(2000);
+    CRK_signal = false;
+    Output_CRK_no_failure();
+    delay(2000);
 }
 
 int main(void)
@@ -47,6 +49,10 @@ int main(void)
     wiringPiSetup();
 
     printf("Testing Output_CRK_no_failure\n");
-    test_Output_CRK_no_failure();
+    while (1)
+    {
+        test_Output_CRK_no_failure();
+    }
+    
     return 0;
 }
