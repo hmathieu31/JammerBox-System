@@ -1,21 +1,52 @@
-#include "wiringPi.h"
-#include "port_config.h"
-#include "failures.h"
 #include "stdbool.h"
+#include <wiringPi.h>
+#include <stdio.h>
 
+bool CRK_signal = false;
 
-void test_Output_CRK_no_failure() {
-    bool CRK_signal = false;
-    Output_CRK_no_failure();
-    for (int i = 0; i < 100000000000; i++)
+// *****************************************************************************
+// ************ Configuration and testing of Output_CRK_no_failure *************
+// *****************************************************************************
+
+void GPIOs_config(void)
+{
+    pinMode(6, OUTPUT);
+}
+
+//## Output_CRK no Failure Function
+/**
+ * @brief This function outputs the CRK signal in its normal state (no failure).
+ * This simply consists in reproducing the CRK signal as is.
+ *
+ */
+void Output_CRK_no_failure(void)
+{
+    if (CRK_signal == true)
     {
-        // Wait for a while
+        digitalWrite(6, HIGH);
+        printf("CRK signal is ON\n");
     }
+    else
+    {
+        digitalWrite(6, LOW);
+        printf("CRK signal is ON\n");
+    }
+}
+
+void test_Output_CRK_no_failure()
+{
+    GPIOs_config();
+    Output_CRK_no_failure();
+    delay(1000);
     CRK_signal = true;
     Output_CRK_no_failure();
 }
 
-void main(void)
+int main(void)
 {
+    wiringPiSetup();
+
+    printf("Testing Output_CRK_no_failure\n");
     test_Output_CRK_no_failure();
+    return 0;
 }
