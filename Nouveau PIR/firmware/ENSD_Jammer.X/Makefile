@@ -18,12 +18,12 @@ INCLUDES = -I../header
 # define library paths in addition to /usr/lib
 #   if I wanted to include libraries not in /usr/lib I'd specify
 #   their path using -Lpath, something like:
-# LFLAGS = -L/home/newhall/lib  -L../lib
+LFLAGS = -L/usr/local/lib
 
 # define any libraries to link into executable:
 #   if I want to link in libraries (libx.so or libx.a) I use the -llibname 
 #   option, something like (this will link in libmylib.so and libm.so:
-# LIBS = -lmylib -lm
+LIBS = -lwiringPi -lwiringPiDev -lpthread -lm -lcrypt -lrt
 
 # define the C source files
 SRC_DIR=../source
@@ -42,9 +42,19 @@ OBJ_DIR=../bin
 _OBJS = $(SRCS:.c=.o)
 OBJS = $(subst $(SRC_DIR), $(OBJ_DIR), $(_OBJS))
 
+# define C source test files
+TEST_DIR=../test
+_TESTS = test_GPIO.c
+TESTS = $(patsubst %,$(TEST_DIR)/%,$(_TESTS))
+
+# define object files associated with test source (stored in bin aswell)
+_OBJS_TEST = $(TESTS:.c=.o)
+OBJS_TEST = $(subst $(TEST_DIR), $(OBJ_DIR), $(_OBJS_TEST))
+
 
 # define the executable file 
 MAIN = ../bin/main.exe
+TEST_GPIO = ../bin/test_GPIO
 
 #
 # The following part of the makefile is generic; it can be used to 
@@ -57,6 +67,13 @@ MAIN = ../bin/main.exe
 all: $(MAIN)
 	@echo Simple compiler named mycc has been compiled
 
+test_GPIO: $(TEST_GPIO)
+	@echo $@ was compiled
+	
+$(TEST_GPIO): $(OBJS_TEST)
+	$(CC) $(CFLAGS) $(INCLUDES) -o $(TEST_GPIO) $(OBJS_TEST) $(LFLAGS) $(LIBS)
+
+
 $(MAIN): $(OBJS) 
 	$(CC) $(CFLAGS) $(INCLUDES) -o $(MAIN) $(OBJS) $(LFLAGS) $(LIBS)
 
@@ -67,8 +84,15 @@ $(MAIN): $(OBJS)
 $(OBJS): $(SRCS)
 	$(CC) $(CFLAGS) $(INCLUDES) -c $<  -o $@
 
+$(OBJS_TEST): $(TESTS)
+	$(CC) $(CFLAGS) $(INCLUDES) -c $<  -o $@
+
+.c.o:
+	$Q echo [CC] $<
+	$Q $(CC) -c $(CFLAGS) $< -o $@
+
 clean:
-	$(RM) *.o *~ $(MAIN) $(OBJS)
+	$(RM) ../bin/*
 
 build:
 	- make all
