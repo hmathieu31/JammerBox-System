@@ -7,14 +7,15 @@
 /*****************************************************************************/
 
 // ### Basic includes ###
-	#include "p33FJ256GP710A.h"
-	#include "port_config.h"	
+	// #include "p33FJ256GP710A.h"
+	#include "port_config.h"
+	#include "wiringPi.h"	
 
 // ### Functions ###
 
-	void Port_G_config(void)
+	void GPIOs_config(void)
 	{	
-		TRISG = 0xF20F;
+		pinMode(6, OUTPUT);
 	}
 	
 	
