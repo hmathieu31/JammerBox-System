@@ -99,6 +99,8 @@ build:
 	$(RM) *.o *~ $(OBJS)
 
 depend: $(SRCS)
-	makedepend $(INCLUDES) $^
+	install-depend.sh
+	
+#makedepend $(INCLUDES) $^
 
 # DO NOT DELETE THIS LINE -- make depend needs it
