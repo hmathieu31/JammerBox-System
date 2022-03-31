@@ -13,7 +13,7 @@
 #include "stdbool.h"
 #include "stdlib.h"
 #include "string.h"
-#include "wiringPi.h"
+#include <wiringPi.h>
 
 
 // ### Programm includes ###
@@ -329,7 +329,7 @@ int main(void) {
 
     IC6Init();
 
-    Port_G_config();
+    GPIOs_config();
 
     Uart2Init();
 
