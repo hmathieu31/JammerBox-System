@@ -641,8 +641,8 @@ void __attribute__((__interrupt__, no_auto_psv)) _T7Interrupt(void) {
     }
     else if (failure_identify == '6')  // CRK_TOOTH_PER
     {
-        LATGbits.LATG6 = !LATGbits.LATG6;
-        T7CONbits.TON = 0;
+        LATGbits.LATG6 = !LATGbits.LATG6;//? Inverse pin LATG6 value
+        T7CONbits.TON = 0;//?Stop timer 7
     }
     else if (failure_identify == 'j') // SEG_ADP_ER_LIM
     {
@@ -651,39 +651,39 @@ void __attribute__((__interrupt__, no_auto_psv)) _T7Interrupt(void) {
         {
             case 1:
             { // failure for the falling edge
-                LATGbits.LATG6 = 0;
+                LATGbits.LATG6 = 0; //? Write 0 on pin LATG6
                 if(failure_waiting == true)
                 { // if the rising edge has already happen
                     if(sensortype_CRK == 'c') //sensor is cpdd
                     {
-                        PR8 = 0x001D;   // 29 * 1.73us = 50.1us
+                        PR8 = 0x001D;   // 29 * 1.73us = 50.1us //? Period register 8 value set to 50.1 us
                     }
                     else if(sensortype_CRK == 'h'){ // all the others 
-                        PR8 = T_TOOTH_RAW /2; 
+                        PR8 = T_TOOTH_RAW /2;  //? When the sensor is not CPDD, pulse size should be half the previous one (calculated in synchronization)
                     }
                     else
                     {
                         PR8 = 0x0001; //if sensor typ not set, shouldn't happen 
                     } 
-                    T8CONbits.TON = 1;
+                    T8CONbits.TON = 1;//? Start timer 8
                 }
                 failure_passed = true;
                 break;
             }
             case 2:
             { // failure for the rising edge
-                SEG_ADP_ER_LIM_reset();
+                SEG_ADP_ER_LIM_reset();//?SEG_... failure_inactive, passed and waiting =false, init timer 7 & 8, SEG_...error counter reset 
                 break;
             } 
         }
-        T7CONbits.TON = 0;
+        T7CONbits.TON = 0; //?Stop timer 7
     }
     else if (failure_identify == 'k') // CrkPlsOrng
     {
-        LATGbits.LATG6 = 1; 
-        T7CONbits.TON = 0;
+        LATGbits.LATG6 = 1; //? Write 1 on pin LATG6
+        T7CONbits.TON = 0;//? Stop timer 7
     }
-    else {T7CONbits.TON = 0;}
+    else {T7CONbits.TON = 0;}//? Stop timer 7
     
     IFS3bits.T7IF = 0; // Clear Timer7 Interrupt Flag
 
