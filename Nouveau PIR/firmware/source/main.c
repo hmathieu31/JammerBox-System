@@ -290,6 +290,12 @@ char message[14] = {'1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'z', 
 
 int main(void) {
 
+    //***************** Initialization ********************
+
+    wiringPiSetup();
+
+    
+
     // ## Initialisierung ##
 
     OSCInit();
@@ -324,7 +330,7 @@ int main(void) {
 
     IC6Init();
 
-    Port_G_config();
+    GPIOs_config();
 
     Uart2Init();
 
