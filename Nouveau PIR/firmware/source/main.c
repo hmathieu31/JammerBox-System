@@ -310,7 +310,7 @@ int main(void)
 
     IC6Init();
 
-    Port_G_config();
+    GPIOs_config();
 
     Uart2Init();
 

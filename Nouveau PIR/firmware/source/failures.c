@@ -363,7 +363,12 @@
         }
 	}
 
-//## Output_CRK no Failure Function
+    //## Output_CRK no Failure Function
+    /**
+     * @brief This function outputs the CRK signal in its normal state (no failure).
+     * This simply consists in reproducing the CRK signal as is.
+     *
+     */
 	void Output_CRK_no_failure(void)
 	{		
 		if(CRK_signal == true)
