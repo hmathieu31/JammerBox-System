@@ -99,7 +99,7 @@ build:
 	$(RM) *.o *~ $(OBJS)
 
 depend: $(SRCS)
-	install-depend.sh
+	./install-depend.sh
 	
 #makedepend $(INCLUDES) $^
 
