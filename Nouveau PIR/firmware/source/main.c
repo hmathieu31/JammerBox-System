@@ -547,6 +547,9 @@ void __attribute__((__interrupt__, no_auto_psv)) _T1Interrupt(void) {
     IFS0bits.T1IF = 0; // Clear Timer1 Interrupt Flag
 }
 
+// ********************** Personal part ****************************************************************************************
+//? Comments preceded by "//?" will be used to indicate code understanding comments and will be removed when the code is released.
+// *****************************************************************************************************************************
 
 //## Timer 2 Interrupt CRK tooth time
 
@@ -745,6 +748,8 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM7_IRQHandler(void) {
 
 
 }
+/*****************************************************************************/
+/*****************************************************************************/
 
 
 //## Timer 8 Interrupt
