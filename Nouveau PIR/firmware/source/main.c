@@ -3,7 +3,7 @@
 /* Programm        :  Main		                                             */
 /* Controller      :  dsPIC33F                                               */
 /* Latest change   :  31.08.2020                                             */
-/* Author          :  Grégoire Chabin/Christian Ringlstetter/Thomas Pichler  */
+/* Author          :  Grï¿½goire Chabin/Christian Ringlstetter/Thomas Pichler  */
 /*****************************************************************************/
 
 
@@ -208,9 +208,9 @@ bool interrupt_check_CAM_delay[2];
 
 //** CAM_REF_CRK **
 unsigned int delay_counter_CAM_REF_CRK;
-long double angle_time_to_start_failure_CAM_REF_CRK; // Value Delay (ms or °CRK)
+long double angle_time_to_start_failure_CAM_REF_CRK; // Value Delay (ms or ï¿½CRK)
 double difference_to_edge_failure_start_CAM_REF_CRK;
-char delay_type_CAM_REF_CRK; // t: time / c: °CRK
+char delay_type_CAM_REF_CRK; // t: time / c: ï¿½CRK
 
 //** CRK_TOOTH_OFF **
 unsigned int number_tooth_off = 0;
@@ -545,6 +545,9 @@ void __attribute__((__interrupt__, no_auto_psv)) _T1Interrupt(void) {
     IFS0bits.T1IF = 0; // Clear Timer1 Interrupt Flag
 }
 
+// ********************** Personal part ****************************************************************************************
+//? Comments preceded by "//?" will be used to indicate code understanding comments and will be removed when the code is released.
+// *****************************************************************************************************************************
 
 //## Timer 2 Interrupt CRK tooth time
 
@@ -575,7 +578,7 @@ void __attribute__((__interrupt__, no_auto_psv)) _T4Interrupt(void) {
     // all overflows between the events
     timer_overflow_CRK_failure++;
 
-    TMR4 = 0;
+    TMR4 = 0;//? Reset timer (TMR4 contains least significant word of the count for the register pair TMR5:TMR4)
 
     IFS1bits.T4IF = 0; // Clear Timer4 Interrupt Flag
 
@@ -588,7 +591,7 @@ void __attribute__((__interrupt__, no_auto_psv)) _T5Interrupt(void) {
     // all overflows between the events
     timer_overflow_CAM_failure++;
 
-    TMR5 = 0;
+    TMR5 = 0;//? Reset timer (TMR5 contains most significant word of the count for the register pair TMR5:TMR4)
 
     IFS1bits.T5IF = 0; // Clear Timer5 Interrupt Flag
 
@@ -599,23 +602,23 @@ void __attribute__((__interrupt__, no_auto_psv)) _T5Interrupt(void) {
 void __attribute__((__interrupt__, no_auto_psv)) _T6Interrupt(void) {
     //T7CONbits.TON = 1;
 
-    if (failure_identify == '5') { //CAM_PER
-        LATGbits.LATG7 = !LATGbits.LATG7;
-        counter_CAM_PER[0]  ++; 
+    if (failure_identify == '5') { //CAM_PER //?CAM_PER is the error identified by '5'
+        LATGbits.LATG7 = !LATGbits.LATG7; //? Inverse pin LATG7 value
+        counter_CAM_PER[0]  ++; //? Number of times we lost CAM with timer 6 ?
         if(counter_CAM_PER[0] == 2 ){
-            T6CONbits.TON = 0;
-            counter_CAM_PER[0] = 0;
+            T6CONbits.TON = 0; //? Stop Timer 6
+            counter_CAM_PER[0] = 0; //? Reset timer 6 CAM lost counter
         }
         TMR6 = 0;  // reset the timers counter 
         
     } else if (failure_identify == '6') { //CRK_TOOTH_PER
         PR7 = 0x005C;	    // Load the period value 20us  here     
-        T7CONbits.TON = 1;
-        LATGbits.LATG6 = !LATGbits.LATG6;
-        T6CONbits.TON = 0;
+        T7CONbits.TON = 1;//? Activate Timer 7 
+        LATGbits.LATG6 = !LATGbits.LATG6;//? Inverse pin LATG6 value
+        T6CONbits.TON = 0; //? Stop Timer 6
     } else if (failure_identify == 'b') { //CRK_SHO_LEVEL
-        LATGbits.LATG6 = 1; // set back the CRK level after period
-        T6CONbits.TON = 0;
+        LATGbits.LATG6 = 1; // set back the CRK level after period //? Write 1 on pin LATG6
+        T6CONbits.TON = 0;//?Stop timer 6
     }
 
     IFS2bits.T6IF = 0; // Clear Timer6 Interrupt Flag
@@ -628,11 +631,11 @@ void __attribute__((__interrupt__, no_auto_psv)) _T7Interrupt(void) {
 
     if (failure_identify == '5') // CAM_PER --> Cam_Spk
     {
-        LATGbits.LATG8 = !LATGbits.LATG8;
-        counter_CAM_PER[1] ++;
+        LATGbits.LATG8 = !LATGbits.LATG8;//? Inverse pin LATG8 value
+        counter_CAM_PER[1] ++;//? Number of times we lost CAM with timer 7 ?
         if(counter_CAM_PER[1] == 2 ){
-            T7CONbits.TON = 0;
-            counter_CAM_PER[1] = 0;
+            T7CONbits.TON = 0; //?Stop timer 7
+            counter_CAM_PER[1] = 0;//?Reset timer 7 CAM counter
         }
         TMR7 = 0;  // reset the timers counter
     }
@@ -685,6 +688,8 @@ void __attribute__((__interrupt__, no_auto_psv)) _T7Interrupt(void) {
     IFS3bits.T7IF = 0; // Clear Timer7 Interrupt Flag
 
 }
+/*****************************************************************************/
+/*****************************************************************************/
 
 //## Timer 8 Interrupt
 
