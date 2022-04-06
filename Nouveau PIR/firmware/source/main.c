@@ -549,6 +549,7 @@ void __attribute__((__interrupt__, no_auto_psv)) _T1Interrupt(void) {
 
 // ********************** Personal part ****************************************************************************************
 //? Comments preceded by "//?" will be used to indicate code understanding comments and will be removed when the code is released.
+//? Replaced old code will be commented with //§
 // *****************************************************************************************************************************
 
 //## Timer 2 Interrupt CRK tooth time
