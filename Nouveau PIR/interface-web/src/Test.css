@@ -4,10 +4,6 @@ p {
   margin: 0;
 }
 
-.clip-contents {
-  overflow: hidden;
-}
-
 .flex-col-hstart-vstart {
   display: flex;
   flex-direction: column;

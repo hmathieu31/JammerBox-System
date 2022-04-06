@@ -1,14 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import App from "./App";
+import Background from "./Background";
 import "./index.css";
-//import App from "./App";
-//import Test from "./Test";
 import reportWebVitals from "./reportWebVitals";
-import Test from "./Test";
+import Test2 from "./Test2";
 
 ReactDOM.render(
   <React.StrictMode>
-    <Test />
+    <Test2 />
   </React.StrictMode>,
   document.getElementById("root")
 );
