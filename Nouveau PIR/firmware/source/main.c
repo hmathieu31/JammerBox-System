@@ -8,11 +8,14 @@
 
 
 // ### Basic includes ###
-#include "p33FJ256GP710A.h"
+//#include "p33FJ256GP710A.h"
 #include "config.h"
 #include "stdbool.h"
 #include "stdlib.h"
 #include "string.h"
+#include "stm32f10x.h"
+#include "stm32f10x_gpio.h"
+#include "stm32f10x_tim.h"
 
 
 // ### Programm includes ###
@@ -547,6 +550,7 @@ void __attribute__((__interrupt__, no_auto_psv)) _T1Interrupt(void) {
 
 // ********************** Personal part ****************************************************************************************
 //? Comments preceded by "//?" will be used to indicate code understanding comments and will be removed when the code is released.
+//? Replaced old code will be commented with //§
 // *****************************************************************************************************************************
 
 //## Timer 2 Interrupt CRK tooth time
@@ -556,7 +560,8 @@ void __attribute__((__interrupt__, no_auto_psv)) _T2Interrupt(void) {
     // all overflows between the events
     timer_overflow_CRK++;
 
-    IFS0bits.T2IF = 0; // Clear Timer2 Interrupt Flag
+    //§ IFS0bits.T2IF = 0; // Clear Timer2 Interrupt Flag
+    TIM2->SR &= ~TIM_SR_UIF //? 0x10 bit 0
 
 }
 
@@ -568,7 +573,8 @@ void __attribute__((__interrupt__, no_auto_psv)) _T3Interrupt(void) {
     //test
     timer_overflow_CAM++;
 
-    IFS0bits.T3IF = 0; // Clear Timer3 Interrupt Flag
+    //§ IFS0bits.T3IF = 0; // Clear Timer3 Interrupt Flag
+    TIM3->SR &= ~TIM_SR_UIF //? 0x10 bit 0
 
 }
 
@@ -580,7 +586,8 @@ void __attribute__((__interrupt__, no_auto_psv)) _T4Interrupt(void) {
 
     TMR4 = 0;//? Reset timer (TMR4 contains least significant word of the count for the register pair TMR5:TMR4)
 
-    IFS1bits.T4IF = 0; // Clear Timer4 Interrupt Flag
+    //§ IFS1bits.T4IF = 0; // Clear Timer4 Interrupt Flag
+    TIM4->SR &= ~TIM_SR_UIF //? 0x10 bit 0
 
 }
 
@@ -593,7 +600,8 @@ void __attribute__((__interrupt__, no_auto_psv)) _T5Interrupt(void) {
 
     TMR5 = 0;//? Reset timer (TMR5 contains most significant word of the count for the register pair TMR5:TMR4)
 
-    IFS1bits.T5IF = 0; // Clear Timer5 Interrupt Flag
+    //§ IFS1bits.T5IF = 0; // Clear Timer5 Interrupt Flag
+    TIM5->SR &= ~TIM_SR_UIF //? 0x10 bit 0
 
 }
 
@@ -603,10 +611,12 @@ void __attribute__((__interrupt__, no_auto_psv)) _T6Interrupt(void) {
     //T7CONbits.TON = 1;
 
     if (failure_identify == '5') { //CAM_PER //?CAM_PER is the error identified by '5'
-        LATGbits.LATG7 = !LATGbits.LATG7; //? Inverse pin LATG7 value
+        LATGbits.LATG7 = !LATGbits.LATG7; //? Inverse pin RG7 value
+
         counter_CAM_PER[0]  ++; //? Number of times we lost CAM with timer 6 ?
         if(counter_CAM_PER[0] == 2 ){
-            T6CONbits.TON = 0; //? Stop Timer 6
+            //§ T6CONbits.TON = 0; //? Stop Timer 6
+            TIM6->CR1 &= ~TIM_CR1_CEN
             counter_CAM_PER[0] = 0; //? Reset timer 6 CAM lost counter
         }
         TMR6 = 0;  // reset the timers counter 
@@ -631,7 +641,7 @@ void __attribute__((__interrupt__, no_auto_psv)) _T7Interrupt(void) {
 
     if (failure_identify == '5') // CAM_PER --> Cam_Spk
     {
-        LATGbits.LATG8 = !LATGbits.LATG8;//? Inverse pin LATG8 value
+        LATGbits.LATG8 = !LATGbits.LATG8;//? Inverse pin RG8 value
         counter_CAM_PER[1] ++;//? Number of times we lost CAM with timer 7 ?
         if(counter_CAM_PER[1] == 2 ){
             T7CONbits.TON = 0; //?Stop timer 7
@@ -641,7 +651,7 @@ void __attribute__((__interrupt__, no_auto_psv)) _T7Interrupt(void) {
     }
     else if (failure_identify == '6')  // CRK_TOOTH_PER
     {
-        LATGbits.LATG6 = !LATGbits.LATG6;//? Inverse pin LATG6 value
+        LATGbits.LATG6 = !LATGbits.LATG6;//? Inverse pin RG6 value
         T7CONbits.TON = 0;//?Stop timer 7
     }
     else if (failure_identify == 'j') // SEG_ADP_ER_LIM
@@ -651,7 +661,7 @@ void __attribute__((__interrupt__, no_auto_psv)) _T7Interrupt(void) {
         {
             case 1:
             { // failure for the falling edge
-                LATGbits.LATG6 = 0; //? Write 0 on pin LATG6
+                LATGbits.LATG6 = 0; //? Write 0 on pin RG6
                 if(failure_waiting == true)
                 { // if the rising edge has already happen
                     if(sensortype_CRK == 'c') //sensor is cpdd
@@ -680,7 +690,7 @@ void __attribute__((__interrupt__, no_auto_psv)) _T7Interrupt(void) {
     }
     else if (failure_identify == 'k') // CrkPlsOrng
     {
-        LATGbits.LATG6 = 1; //? Write 1 on pin LATG6
+        LATGbits.LATG6 = 1; //? Write 1 on pin RG6
         T7CONbits.TON = 0;//? Stop timer 7
     }
     else {T7CONbits.TON = 0;}//? Stop timer 7
