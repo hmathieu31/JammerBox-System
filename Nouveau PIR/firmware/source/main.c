@@ -561,7 +561,7 @@ void __attribute__((__interrupt__, no_auto_psv)) _T2Interrupt(void) {
     timer_overflow_CRK++;
 
     //§ IFS0bits.T2IF = 0; // Clear Timer2 Interrupt Flag
-    TIM2->SR &= ~TIM_SR_UIF //? 0x10 bit 0
+    TIM_ClearFlag(TIM2,TIM_FLAG_Update);
 
 }
 
@@ -574,7 +574,7 @@ void __attribute__((__interrupt__, no_auto_psv)) _T3Interrupt(void) {
     timer_overflow_CAM++;
 
     //§ IFS0bits.T3IF = 0; // Clear Timer3 Interrupt Flag
-    TIM3->SR &= ~TIM_SR_UIF //? 0x10 bit 0
+    TIM_ClearFlag(TIM3,TIM_FLAG_Update);
 
 }
 
@@ -584,10 +584,10 @@ void __attribute__((__interrupt__, no_auto_psv)) _T4Interrupt(void) {
     // all overflows between the events
     timer_overflow_CRK_failure++;
 
-    TMR4 = 0;//? Reset timer (TMR4 contains least significant word of the count for the register pair TMR5:TMR4)
-
+    //§ TMR4 = 0;//? Reset timer (TMR4 contains least significant word of the count for the register pair TMR5:TMR4)
+    TIM_SetCounter(TIM4,0);
     //§ IFS1bits.T4IF = 0; // Clear Timer4 Interrupt Flag
-    TIM4->SR &= ~TIM_SR_UIF //? 0x10 bit 0
+    TIM_ClearFlag(TIM4,TIM_FLAG_Update);
 
 }
 
@@ -598,11 +598,10 @@ void __attribute__((__interrupt__, no_auto_psv)) _T5Interrupt(void) {
     // all overflows between the events
     timer_overflow_CAM_failure++;
 
-    TMR5 = 0;//? Reset timer (TMR5 contains most significant word of the count for the register pair TMR5:TMR4)
-
+    //§ TMR5 = 0;//? Reset timer (TMR5 contains most significant word of the count for the register pair TMR5:TMR4)
+    TIM_SetCounter(TIM5,0);
     //§ IFS1bits.T5IF = 0; // Clear Timer5 Interrupt Flag
-    TIM5->SR &= ~TIM_SR_UIF //? 0x10 bit 0
-
+    TIM_ClearFlag(TIM5,TIM_FLAG_Update);
 }
 
 //## Timer 6 Interrupt: CAM_PER - start value
@@ -611,28 +610,64 @@ void __attribute__((__interrupt__, no_auto_psv)) _T6Interrupt(void) {
     //T7CONbits.TON = 1;
 
     if (failure_identify == '5') { //CAM_PER //?CAM_PER is the error identified by '5'
-        LATGbits.LATG7 = !LATGbits.LATG7; //? Inverse pin RG7 value
+
+        //§ LATGbits.LATG7 = !LATGbits.LATG7; //? Inverse pin RG7 value
+        if (GPIO_ReadInputDataBit(GPIOG,7)==1)
+        {
+            GPIO_SetBits(GPIOG,7);
+        }
+        else if (GPIO_ReadInputDataBit(GPIOG,7)==0)
+        {
+            GPIO_ResetBits(GPIOG,7);    
+        };
 
         counter_CAM_PER[0]  ++; //? Number of times we lost CAM with timer 6 ?
         if(counter_CAM_PER[0] == 2 ){
             //§ T6CONbits.TON = 0; //? Stop Timer 6
-            TIM6->CR1 &= ~TIM_CR1_CEN
+            TIM_Cmd(TIM6,DISABLE);
             counter_CAM_PER[0] = 0; //? Reset timer 6 CAM lost counter
         }
-        TMR6 = 0;  // reset the timers counter 
-        
+
+        //§ TMR6 = 0;  // reset the timers counter 
+        TIM_SetCounter(TIM6,0);
+
     } else if (failure_identify == '6') { //CRK_TOOTH_PER
-        PR7 = 0x005C;	    // Load the period value 20us  here     
-        T7CONbits.TON = 1;//? Activate Timer 7 
-        LATGbits.LATG6 = !LATGbits.LATG6;//? Inverse pin LATG6 value
-        T6CONbits.TON = 0; //? Stop Timer 6
+
+        //§ PR7 = 0x005C;	    // Load the period value 20us  here
+        //? Période du timer = Période_Horloge * (PSC+1) * (ARR+1)
+        //? Le mieux est d'avoir PSC le plus petit possible
+        //? Mais ARR doit pas dépasser (2^16)-1 = 65535
+        //? 72Mhz*PSC+1*ARR+1
+        TIM_PrescalerConfig(TIM7,0,TIM_PSCReloadMode_Immediate); //? Define PSC value
+        TIM_SetAutoreload(TIM7,1439); //? Define ARR value
+
+        //§T7CONbits.TON = 1;//? Activate Timer 7
+        TIM_Cmd(TIM7,ENABLE);
+
+        //§ LATGbits.LATG6 = !LATGbits.LATG6;//? Inverse pin LATG6 value
+        if (GPIO_ReadInputDataBit(GPIOG,6)==1)
+        {
+            GPIO_SetBits(GPIOG,6);
+        }
+        else if (GPIO_ReadInputDataBit(GPIOG,6)==0)
+        {
+            GPIO_ResetBits(GPIOG,6);    
+        };
+        
+        //§ T6CONbits.TON = 0; //? Stop Timer 6
+        TIM_Cmd(TIM6,DISABLE);
+
     } else if (failure_identify == 'b') { //CRK_SHO_LEVEL
-        LATGbits.LATG6 = 1; // set back the CRK level after period //? Write 1 on pin LATG6
-        T6CONbits.TON = 0;//?Stop timer 6
+
+        //§ LATGbits.LATG6 = 1; // set back the CRK level after period //? Write 1 on pin LATG6
+        GPIO_SetBits(GPIOG,6);
+
+        //§ T6CONbits.TON = 0;//?Stop timer 6
+        TIM_Cmd(TIM6,DISABLE);
     }
 
-    IFS2bits.T6IF = 0; // Clear Timer6 Interrupt Flag
-
+    //§ IFS2bits.T6IF = 0; // Clear Timer6 Interrupt Flag
+     TIM_ClearFlag(TIM6,TIM_FLAG_Update);
 }
 
 //## Timer 7 Interrupt: CAM_PER - pulse duration
@@ -641,18 +676,42 @@ void __attribute__((__interrupt__, no_auto_psv)) _T7Interrupt(void) {
 
     if (failure_identify == '5') // CAM_PER --> Cam_Spk
     {
-        LATGbits.LATG8 = !LATGbits.LATG8;//? Inverse pin RG8 value
+        //§ LATGbits.LATG8 = !LATGbits.LATG8;//? Inverse pin RG8 value
+        if (GPIO_ReadInputDataBit(GPIOG,8)==1)
+        {
+            GPIO_SetBits(GPIOG,8);
+        }
+        else if (GPIO_ReadInputDataBit(GPIOG,8)==0)
+        {
+            GPIO_ResetBits(GPIOG,8);    
+        };
+
         counter_CAM_PER[1] ++;//? Number of times we lost CAM with timer 7 ?
         if(counter_CAM_PER[1] == 2 ){
-            T7CONbits.TON = 0; //?Stop timer 7
+
+            //§ T7CONbits.TON = 0; //?Stop timer 7
+            TIM_Cmd(TIM7,DISABLE);
+
             counter_CAM_PER[1] = 0;//?Reset timer 7 CAM counter
         }
-        TMR7 = 0;  // reset the timers counter
+        //§ TMR7 = 0;  // reset the timers counter
+        TIM_SetCounter(TIM7,0);
     }
     else if (failure_identify == '6')  // CRK_TOOTH_PER
     {
-        LATGbits.LATG6 = !LATGbits.LATG6;//? Inverse pin RG6 value
-        T7CONbits.TON = 0;//?Stop timer 7
+        //§ LATGbits.LATG6 = !LATGbits.LATG6;//? Inverse pin RG6 value
+        if (GPIO_ReadInputDataBit(GPIOG,6)==1)
+        {
+            GPIO_SetBits(GPIOG,6);
+        }
+        else if (GPIO_ReadInputDataBit(GPIOG,6)==0)
+        {
+            GPIO_ResetBits(GPIOG,6);    
+        };
+
+        //§ T7CONbits.TON = 0;//?Stop timer 7
+        TIM_Cmd(TIM7,DISABLE);
+
     }
     else if (failure_identify == 'j') // SEG_ADP_ER_LIM
     {
@@ -661,41 +720,64 @@ void __attribute__((__interrupt__, no_auto_psv)) _T7Interrupt(void) {
         {
             case 1:
             { // failure for the falling edge
-                LATGbits.LATG6 = 0; //? Write 0 on pin RG6
+
+                //§ LATGbits.LATG6 = 0; //? Write 0 on pin RG6
+                GPIO_ResetBits(GPIOG,6);
+
                 if(failure_waiting == true)
                 { // if the rising edge has already happen
                     if(sensortype_CRK == 'c') //sensor is cpdd
                     {
-                        PR8 = 0x001D;   // 29 * 1.73us = 50.1us //? Period register 8 value set to 50.1 us
+                        //§ PR8 = 0x001D;   // 29 * 1.73us = 50.1us //? Period register 8 value set to 50.1 us
+                        TIM_PrescalerConfig(TIM8,0,TIM_PSCReloadMode_Immediate);
+                        TIM_SetAutoreload(TIM8,3599);
                     }
                     else if(sensortype_CRK == 'h'){ // all the others 
-                        PR8 = T_TOOTH_RAW /2;  //? When the sensor is not CPDD, pulse size should be half the previous one (calculated in synchronization)
+                        //§ PR8 = T_TOOTH_RAW /2;  //? When the sensor is not CPDD, pulse size should be half the previous one (calculated in synchronization)
+                        TIM_PrescalerConfig(TIM8,0,TIM_PSCReloadMode_Immediate);
+                        TIM_SetAutoreload(TIM8,(T_TOOTH_RAW /2)-1); //? If setted period is more than 910 us PSC should be set higher
                     }
                     else
                     {
-                        PR8 = 0x0001; //if sensor typ not set, shouldn't happen 
+                        //§ PR8 = 0x0001; //if sensor typ not set, shouldn't happen
+                        TIM_PrescalerConfig(TIM8,0,TIM_PSCReloadMode_Immediate);
+                        TIM_SetAutoreload(TIM8,1); 
                     } 
-                    T8CONbits.TON = 1;//? Start timer 8
+
+                    //§ T8CONbits.TON = 1;//? Start timer 8
+                    TIM_Cmd(TIM8,ENABLE);
+
                 }
                 failure_passed = true;
                 break;
             }
             case 2:
             { // failure for the rising edge
+                //? TODO: #23 Implement SEG_ADP_ER_LIM_reset
                 SEG_ADP_ER_LIM_reset();//?SEG_... failure_inactive, passed and waiting =false, init timer 7 & 8, SEG_...error counter reset 
                 break;
             } 
         }
-        T7CONbits.TON = 0; //?Stop timer 7
+        //§ T7CONbits.TON = 0; //?Stop timer 7
+        TIM_Cmd(TIM7,DISABLE);
+
     }
     else if (failure_identify == 'k') // CrkPlsOrng
     {
-        LATGbits.LATG6 = 1; //? Write 1 on pin RG6
-        T7CONbits.TON = 0;//? Stop timer 7
+        //§ LATGbits.LATG6 = 1; //? Write 1 on pin RG6
+        GPIO_SetBits(GPIOG,6);
+
+        //§ T7CONbits.TON = 0;//? Stop timer 7
+        TIM_Cmd(TIM7,DISABLE);
     }
-    else {T7CONbits.TON = 0;}//? Stop timer 7
+    else {
+        //§ T7CONbits.TON = 0;
+        TIM_Cmd(TIM7,DISABLE);
+    }//? Stop timer 7
     
-    IFS3bits.T7IF = 0; // Clear Timer7 Interrupt Flag
+    //§ IFS3bits.T7IF = 0; // Clear Timer7 Interrupt Flag
+    TIM_ClearFlag(TIM7,TIM_FLAG_Update);
+
 
 }
 /*****************************************************************************/
