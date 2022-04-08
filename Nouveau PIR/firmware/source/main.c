@@ -8,7 +8,7 @@
 
 
 // ### Basic includes ###
-//#include "p33FJ256GP710A.h"
+//#include "p33FJ256GP710A.h
 #include "config.h"
 #include "stdbool.h"
 #include "stdlib.h"
@@ -16,7 +16,7 @@
 #include "stm32f10x.h"
 #include "stm32f10x_gpio.h"
 #include "stm32f10x_tim.h"
-
+#include "stm32f10x_usart.h"
 
 // ### Programm includes ###
 #include "osc.h"
@@ -836,8 +836,8 @@ void __attribute__((__interrupt__, no_auto_psv)) _T8Interrupt(void) {
     }
     else if (failure_identify == 'j') // SEG_ADP_ER_LIM
     {
-        Output_CRK_no_failure();
-        SEG_ADP_ER_LIM_reset();
+        Output_CRK_no_failure();allo
+        SEG_ADP_ER_LIM_reset();çaaussi
     }  
     //§ TMR8 = 0x00;
     TIM_SetCounter(TIM8,0);
@@ -860,14 +860,20 @@ void __attribute__((__interrupt__, no_auto_psv)) _T9Interrupt(void) {
 
 void __attribute__((__interrupt__, no_auto_psv)) _U2RXInterrupt(void) {
 
-    in = U2RXREG;
+    //§ in = U2RXREG;//? UART Receive
+    in =  USART_ReceiveData(USART1);
 
-    if (U2STAbits.PERR == 1 || U2STAbits.FERR == 1) {
-        UART_COM_error();
-    } else if (U2STAbits.OERR == 1) {
-        UART_COM_error();
+    //§ if (U2STAbits.PERR == 1 || U2STAbits.FERR == 1) {//? PERR : parity error status bit 1 if error detected 0 i no error detected
+    if (USART_GetFlagStatus(USART1,USART_FLAG_PE)==SET || USART_GetFlagStatus(USART1,USART_FLAG_FE==SET)){
+        UART_COM_error();ici                         //? FERR : Framing Error Status bit 1 if error detected 0 i no error detected
+    //§ } else if (U2STAbits.OERR == 1) {                //? OERR : Receive Buffer Overrun Error Status bit  1 = Receive buffer has overflowed 
+    } else if (USART_GetFlagStatus(USART1,USART_FLAG_ORE)==SET){  
+        UART_COM_error();la                         //? 0 = Receive buffer has not overflowed. Clearing a previously set OERR bit (1 → 0 transition) will reset
+        //§ U2STAbits.OERR = 0;                         //? the receiver buffer and the UxRSR to the empty state
+        USART_ReceiveData(USART1);
+       
 
-        U2STAbits.OERR = 0;
+        
     } else {
         char_counter++;
 
@@ -880,11 +886,11 @@ void __attribute__((__interrupt__, no_auto_psv)) _U2RXInterrupt(void) {
             receiving = false; //reset label that indicates receiving status
             message_received = true; //set label that indicates succesfully received message
         } else if (in == start_char && char_counter == 1) {
-            UART_send(message[13]); //send communication receive status
+            UART_send(message[13]);lui //send communication receive status
             receiving = true; //set label that indicates receiving status
             com_error = false; //reset COM error, due to received start char
         } else {
-            UART_COM_error(); //send failure message
+            UART_COM_error();luiaussi //send failure message
         }
     }
 
