@@ -836,8 +836,22 @@ void __attribute__((__interrupt__, no_auto_psv)) _T8Interrupt(void) {
     }
     else if (failure_identify == 'j') // SEG_ADP_ER_LIM
     {
-        Output_CRK_no_failure();allo
-        SEG_ADP_ER_LIM_reset();çaaussi
+        //§ Output_CRK_no_failure()allo;
+        if(CRK_signal == true)
+		{
+			GPIO_SetBits(GPIOG,6);
+		}
+		else
+		{
+			GPIO_ResetBits(GPIOG,6);
+		}
+        //§ SEG_ADP_ER_LIM_reset()çaaussi;
+        failure_active = false;
+        failure_passed = false;
+        failure_waiting = false;
+        Timer7Init();
+        Timer8Init();
+        timer_Counter_SEG_ADP_ER_LIM = 0;
     }  
     //§ TMR8 = 0x00;
     TIM_SetCounter(TIM8,0);
@@ -865,10 +879,30 @@ void __attribute__((__interrupt__, no_auto_psv)) _U2RXInterrupt(void) {
 
     //§ if (U2STAbits.PERR == 1 || U2STAbits.FERR == 1) {//? PERR : parity error status bit 1 if error detected 0 i no error detected
     if (USART_GetFlagStatus(USART1,USART_FLAG_PE)==SET || USART_GetFlagStatus(USART1,USART_FLAG_FE==SET)){
-        UART_COM_error();ici                         //? FERR : Framing Error Status bit 1 if error detected 0 i no error detected
+        //§ UART_COM_error();                           //? FERR : Framing Error Status bit 1 if error detected 0 i no error detected
+        if (com_error == false) {
+        com_error = true;
+        input_chars[0] = '\0';
+        char_counter = 0;
+        receiving = false;
+        message_received = false;
+        //communication error treatment
+        USART_SendData(USART1,message[0]);
+        };   
+
     //§ } else if (U2STAbits.OERR == 1) {                //? OERR : Receive Buffer Overrun Error Status bit  1 = Receive buffer has overflowed 
     } else if (USART_GetFlagStatus(USART1,USART_FLAG_ORE)==SET){  
-        UART_COM_error();la                         //? 0 = Receive buffer has not overflowed. Clearing a previously set OERR bit (1 → 0 transition) will reset
+        //§ UART_COM_error();                         //? 0 = Receive buffer has not overflowed. Clearing a previously set OERR bit (1 → 0 transition) will reset
+        if (com_error == false) {
+        com_error = true;
+        input_chars[0] = '\0';
+        char_counter = 0;
+        receiving = false;
+        message_received = false;
+        //communication error treatment
+        USART_SendData(USART1,message[0]);
+        };
+
         //§ U2STAbits.OERR = 0;                         //? the receiver buffer and the UxRSR to the empty state
         USART_ReceiveData(USART1);
        
@@ -886,25 +920,37 @@ void __attribute__((__interrupt__, no_auto_psv)) _U2RXInterrupt(void) {
             receiving = false; //reset label that indicates receiving status
             message_received = true; //set label that indicates succesfully received message
         } else if (in == start_char && char_counter == 1) {
-            UART_send(message[13]);lui //send communication receive status
+
+            //§ UART_send(message[13]); //send communication receive status
+             USART_SendData(USART1,message[13]);
             receiving = true; //set label that indicates receiving status
             com_error = false; //reset COM error, due to received start char
         } else {
-            UART_COM_error();luiaussi //send failure message
+            //§ UART_COM_error(); //send failure message
+            if (com_error == false) {
+                com_error = true;
+                input_chars[0] = '\0';
+                char_counter = 0;
+                receiving = false;
+                message_received = false;
+                //communication error treatment
+                USART_SendData(USART1,message[0]);
+            };
         }
     }
 
-    IFS1bits.U2RXIF = 0; //Clear U2RX Interrupt flag
+    //§ IFS1bits.U2RXIF = 0; //Clear U2RX Interrupt flag
+    USART_ReceiveData(USART1);
 
 }
 
 
 //## UART Transmit Interrupt
-
+/* Probablement pas nécessaire de hadle ça manuellement car surement gérer par la stm32
 void __attribute__((__interrupt__, no_auto_psv)) _U2TXInterrupt(void) {
     IFS1bits.U2TXIF = 0;
 }
-
+*/
 
 //## Default Interrupt
 
