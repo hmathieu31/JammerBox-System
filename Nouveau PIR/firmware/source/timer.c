@@ -3,13 +3,15 @@
 /* Programm        :  Timer                                                  */
 /* Controller      :  dsPIC33F                                               */
 /* Latest change   :  31.08.2020                                             */
-/* Author          :  Grégoire Chabin/Christian Ringlstetter/Thomas Pichler  */
+/* Author          :  Grï¿½goire Chabin/Christian Ringlstetter/Thomas Pichler  */
 /*****************************************************************************/
 
 // ### Basic includes ###
-
-	#include "p33FJ256GP710A.h"
+	#include "stm32f10x.h"
+	#include "stm32f10x_tim.h"
 	#include "timer.h"
+
+	#define TIM1_UP_IRQn 25
 
 
 // ### Variables ###
@@ -22,34 +24,36 @@
 
 // ### Functions ###
 
-// ## Timer1 Init **Prescaler: 256; Communication validation** 
+// ## Timer1 Init **Communication validation** 
 	void Timer1Init(void){
 		
 		// Aim: high timer duration
 		// FCPU with PLL = 73,7 MHz
 		// Fcy: 36,85 MHz
-		// 36,85 Mhz/ 64 = 575,78 kHz = 1,737 µs
+		// 36,85 Mhz/ 64 = 575,78 kHz = 1,737 Âµs
 
-		T1CONbits.TON = 0; 			// Disable Timer
-		T1CONbits.TSIDL = 0;		// Continue timer operation in idle mode
-		T1CONbits.TGATE = 0; 		// Disable Gated Timer mode
-		T1CONbits.TCS = 0; 			// Select internal instruction cycle clock
-		T1CONbits.TCKPS = 0b11; 	// Select 1:256 Prescaler
-		TMR1 = 0x00; 				// Clear timer register
-		PR1 = 0xFD07;				// Load the period value(timer period: 450ms)
-		
-		IPC0bits.T1IP = 0x02; 		// Set Timer1 Interrupt Priority Level
-		IFS0bits.T1IF = 0; 			// Clear Timer1 Interrupt Flag
-		IEC0bits.T1IE = 1; 			// Enable Timer1 interrupt
+		RCC->APB2ENR |= RCC_APB2ENR_TIM1EN; // Enable APB clock for the Timer1
+		TIM_Cmd(TIM1, DISABLE); // Disable Timer1
+		//No idle mode handling necessary on STM32
+		TIM_ITConfig(TIM1, TIM_IT_Trigger, DISABLE); // Disable Trigger Interrupt (called Gated Timer mode on Microchip)
+		TIM_InternalClockConfig(TIM1); // Tell the STM32 to use the internal clock (ticking at 72MHz)
+		//TIM_period = (1/72MHz) * (PSC+1) *(ARR+1)
+		// (1/72MHz) * (499+1) * (64799+1) = 450ms
+		TIM_PrescalerConfig(TIM1, 499,TIM_PSCReloadMode_Immediate);
+		TIM_SetAutoreload(TIM1, 64799);
+
+		NIVC_SetPriority(TIM1_UP_IRQn, 2); // Set Timer1 TIM1_UP_IRQn Interrupt Priority Level
+		TIM_ClearFlag(TIM1, TIM_FLAG_Update); // Clear Timer1 Interrupt Flag
+		TIM_ITConfig(TIM1, TIM_IT_Update, ENABLE); // Enable Timer1 interrupt
 	}
 
 	// ## Timer2 Init **Prescaler: 64; CRK Synchronization; tooth time** 
 	void Timer2Init(void){
 
-		// Aim: resolution of < 2 µs;
+		// Aim: resolution of < 2 ï¿½s;
 		// FCPU with PLL = 73,7 MHz
 		// Fcy: 36,85 MHz
-		// 36,85 Mhz/ 64 = 575,78 kHz = 1,7367744624683038660599534544444µs
+		// 36,85 Mhz/ 64 = 575,78 kHz = 1,7367744624683038660599534544444ï¿½s
 		
 		T2CONbits.TON = 0; 			// Disable Timer
 		T2CONbits.TSIDL = 0;		// Continue timer operation in idle mode
@@ -74,7 +78,7 @@
 		// Aim: high timer duration
 		// FCPU with PLL = 73,7 MHz
 		// Fcy: 36,85 MHz
-		// 36,85 Mhz/ 256 = 143,95 kHz = 6.946 µs
+		// 36,85 Mhz/ 256 = 143,95 kHz = 6.946 ï¿½s
 
 		T3CONbits.TON = 0; 			// Disable Timer
 		T3CONbits.TSIDL = 0;		// Continue timer operation in idle mode
@@ -94,10 +98,10 @@
 	// ## Timer4 Init **Prescaler: 64; CRK_NO_SIG/CAM_delay**  
 	void Timer4Init(void)
 	{
-		// Aim: resolution of < 2 µs;
+		// Aim: resolution of < 2 ï¿½s;
 		// FCPU with PLL = 73,7 MHz
 		// Fcy: 36,85 MHz
-		// 36,85 Mhz/ 64 = 575,78 kHz = 1,737 µs
+		// 36,85 Mhz/ 64 = 575,78 kHz = 1,737 ï¿½s
 
 		T4CONbits.TON = 0; 			// Disable Timer
 		T4CONbits.TSIDL = 0;		// Continue timer operation in idle mode
@@ -118,7 +122,7 @@
 		// Aim: high timer duration
 		// FCPU with PLL = 73,7 MHz
 		// Fcy: 36,85 MHz
-		// 36,85 Mhz/ 256 = 143,95 kHz = 6.946 µs
+		// 36,85 Mhz/ 256 = 143,95 kHz = 6.946 ï¿½s
 
 		T5CONbits.TON = 0; 			// Disable Timer
 		T5CONbits.TSIDL = 0;		// Continue timer operation in idle mode
@@ -136,10 +140,10 @@
 	// ## Timer6 Init **Prescaler: 8; CAM_PER/CRK_TOOTH_PER(start-value)//CRK_SHO_LEVEL pulse duration**
 	void Timer6Init(void)
 	{
-		// Aim: Timer ticks < 1 µs
+		// Aim: Timer ticks < 1 ï¿½s
 		// FCPU with PLL = 73,7 MHz
 		// Fcy: 36,85 MHz
-		// 36,85 Mhz/ 8 = 4606 kHz = 0.217 µs
+		// 36,85 Mhz/ 8 = 4606 kHz = 0.217 ï¿½s
 
 		T6CONbits.TON = 0; 			// Disable Timer
 		T6CONbits.TSIDL = 0;		// Continue timer operation in idle mode
@@ -157,10 +161,10 @@
 	// ## Timer7 Init **Prescaler: 8; CAM_PER/CRK_TOOTH_PER(pulse duration)**
 	void Timer7Init(void)
 	{
-		// Aim: Timer ticks < 1 µs
+		// Aim: Timer ticks < 1 ï¿½s
 		// FCPU with PLL = 73,7 MHz
 		// Fcy: 36,85 MHz
-		// 36,85 Mhz/ 8 = 4606 kHz = 0.217 µs
+		// 36,85 Mhz/ 8 = 4606 kHz = 0.217 ï¿½s
 
 		T7CONbits.TON = 0; 			// Disable Timer
 		T7CONbits.TSIDL = 0;		// Continue timer operation in idle mode
@@ -180,7 +184,7 @@
 	{
 		// FCPU with PLL = 73,7 MHz
 		// Fcy: 36,85 MHz
-		// 36,85 Mhz/ 64 = 575,78 kHz = 1.73 µs
+		// 36,85 Mhz/ 64 = 575,78 kHz = 1.73 ï¿½s
 		T8CONbits.TON = 0; 			// Disable Timer
 		T8CONbits.TSIDL = 0;		// Continue timer operation in idle mode
 		T8CONbits.TGATE = 0; 		// Disable Gated Timer mode
@@ -200,7 +204,7 @@
 		// Aim: high timer duration
 		// FCPU with PLL = 73,7 MHz
 		// Fcy: 36,85 MHz
-		// 36,85 Mhz/ 64 = 575,78 kHz = 1.73 µs
+		// 36,85 Mhz/ 64 = 575,78 kHz = 1.73 ï¿½s
 
 		T9CONbits.TON = 0; 			// Disable Timer
 		T9CONbits.TSIDL = 0;		// Continue timer operation in idle mode
