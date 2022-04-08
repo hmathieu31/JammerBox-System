@@ -3,12 +3,14 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import Background from "./Background";
 import "./index.css";
+import "./Background.css";
 import reportWebVitals from "./reportWebVitals";
 import Test2 from "./Test2";
+import Test3 from "./Test3.js";
 
 ReactDOM.render(
   <React.StrictMode>
-    <Test2 />
+    <Test3 />
   </React.StrictMode>,
   document.getElementById("root")
 );
