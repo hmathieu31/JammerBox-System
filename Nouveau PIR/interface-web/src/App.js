@@ -1,5 +1,7 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
+import MainPage from "./MainPage";
+import Test2 from "./Test2";
 
 function App() {
   return (
@@ -17,9 +19,22 @@ function App() {
         >
           Learn React
         </a>
+        <Test2 />
       </header>
     </div>
   );
 }
 
+function Lol() {
+  return (
+    <div>
+      <body>
+        <h1>Ça marche?</h1>
+        <a href="http://floppachat.ml/">Cliquez sur ce site svp</a>
+      </body>
+    </div>
+  );
+}
+
+//export default App;
 export default App;
