@@ -639,7 +639,7 @@ void __attribute__((__interrupt__, no_auto_psv)) _T6Interrupt(void) {
         //? Mais ARR doit pas dépasser (2^16)-1 = 65535
         //? 72Mhz*PSC+1*ARR+1
         TIM_PrescalerConfig(TIM7,0,TIM_PSCReloadMode_Immediate); //? Define PSC value
-        TIM_SetAutoreload(TIM7,1439); //? Define ARR value
+        TIM_SetAutoreload(TIM7,1439); //? Define ARR value 20us*72Mhz = 1440
 
         //§T7CONbits.TON = 1;//? Activate Timer 7
         TIM_Cmd(TIM7,ENABLE);
@@ -730,7 +730,7 @@ void __attribute__((__interrupt__, no_auto_psv)) _T7Interrupt(void) {
                     {
                         //§ PR8 = 0x001D;   // 29 * 1.73us = 50.1us //? Period register 8 value set to 50.1 us
                         TIM_PrescalerConfig(TIM8,0,TIM_PSCReloadMode_Immediate);
-                        TIM_SetAutoreload(TIM8,3599);
+                        TIM_SetAutoreload(TIM8,3599);//? 72*50=3600
                     }
                     else if(sensortype_CRK == 'h'){ // all the others 
                         //§ PR8 = T_TOOTH_RAW /2;  //? When the sensor is not CPDD, pulse size should be half the previous one (calculated in synchronization)
@@ -780,8 +780,7 @@ void __attribute__((__interrupt__, no_auto_psv)) _T7Interrupt(void) {
 
 
 }
-/*****************************************************************************/
-/*****************************************************************************/
+
 
 //## Timer 8 Interrupt
 
@@ -791,30 +790,44 @@ void __attribute__((__interrupt__, no_auto_psv)) _T8Interrupt(void) {
         timer_Counter_CRK_GAP_NOT_DET++;
         switch(timer_Counter_CRK_GAP_NOT_DET){
             case 1:{   
-                LATGbits.LATG6 = 0; 
+                //§ LATGbits.LATG6 = 0;
+                GPIO_ResetBits(GPIOG,6); 
              
                 if(sensortype_CRK == 'c'){
-                   PR8 = 0x001D;   // 29 * 1.73us = 50.1us
+                   //§ PR8 = 0x001D;   // 29 * 1.73us = 50.1us
+                   TIM_PrescalerConfig(TIM8,0,TIM_PSCReloadMode_Immediate); //? Define PSC value
+                    TIM_SetAutoreload(TIM8,3599);
                 }
                 else if(sensortype_CRK == 'h'){
-                   PR8 = T_TOOTH_RAW /2; 
+                   //§ PR8 = T_TOOTH_RAW /2;
+                   TIM_PrescalerConfig(TIM8,0,TIM_PSCReloadMode_Immediate);
+                   TIM_SetAutoreload(TIM8,(T_TOOTH_RAW /2)-1); //? If setted period is more than 910us PSC should be set higher 
                 }
                 else
                 {
-                   PR8 = 0x0001; //if sensor typ not set, shouldn't happen 
+                   //§ PR8 = 0x0001; //if sensor typ not set, shouldn't happen
+                   TIM_PrescalerConfig(TIM8,0,TIM_PSCReloadMode_Immediate);
+                   TIM_SetAutoreload(TIM8,1); 
                 }
                 break;
             }
             case 2:{
-                LATGbits.LATG6 = 1;
-                T8CONbits.TON = 0;
+                //§ LATGbits.LATG6 = 1;
+                GPIO_SetBits(GPIOG,6);
+
+                //§ T8CONbits.TON = 0;
+                TIM_Cmd(TIM8,DISABLE);
+
                 timer_Counter_CRK_GAP_NOT_DET = 0;
                 failure_active = false;                    
                 break;
             }
             default:{
-                LATGbits.LATG6 = 1;
-                T8CONbits.TON = 0;
+                //§ LATGbits.LATG6 = 1;
+                GPIO_SetBits(GPIOG,6);
+
+                //§ T8CONbits.TON = 0;
+                TIM_Cmd(TIM8,DISABLE);
                 timer_Counter_CRK_GAP_NOT_DET = 0;
                 failure_active = false;                    
                 break;
@@ -826,8 +839,11 @@ void __attribute__((__interrupt__, no_auto_psv)) _T8Interrupt(void) {
         Output_CRK_no_failure();
         SEG_ADP_ER_LIM_reset();
     }  
-    TMR8 = 0x00;
-    IFS3bits.T8IF = 0; // Clear Timer8 Interrupt Flag
+    //§ TMR8 = 0x00;
+    TIM_SetCounter(TIM8,0);
+
+    //§ IFS3bits.T8IF = 0; // Clear Timer8 Interrupt Flag
+    TIM_ClearFlag(TIM8,TIM_FLAG_Update);
 }
 
 //## Timer 9 Interrupt: CAM_PER - pulse duration
@@ -835,7 +851,8 @@ void __attribute__((__interrupt__, no_auto_psv)) _T8Interrupt(void) {
 void __attribute__((__interrupt__, no_auto_psv)) _T9Interrupt(void) {
     timer_overflow_CAM_REF_CRK++;
 
-    IFS3bits.T9IF = 0; // Clear Timer9 Interrupt Flag
+    //§ IFS3bits.T9IF = 0; // Clear Timer9 Interrupt Flag
+    TIM_ClearFlag(TIM9,TIM_FLAG_Update);
 }
 
 
