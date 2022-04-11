@@ -547,10 +547,6 @@ void __attribute__((__interrupt__, no_auto_psv)) _T1Interrupt(void) {
     IFS0bits.T1IF = 0; // Clear Timer1 Interrupt Flag
 }
 
-// ********************** Personal part ****************************************************************************************
-//? Comments preceded by "//?" will be used to indicate code understanding comments and will be removed when the code is released.
-//? Replaced old code will be commented with //§
-// *****************************************************************************************************************************
 
 //## Timer 2 Interrupt CRK tooth time
 
@@ -559,8 +555,7 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM2_IRQHandler(void) {
     // all overflows between the events
     timer_overflow_CRK++;
 
-    //§ IFS0bits.T2IF = 0; // Clear Timer2 Interrupt Flag
-    TIM_ClearFlag(TIM2,TIM_FLAG_Update);
+    TIM_ClearFlag(TIM2, TIM_FLAG_Update);
 
 }
 
@@ -602,15 +597,13 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM5_IRQHandler(void) {
 
 void __attribute__((__interrupt__, no_auto_psv)) TIM6_IRQHandler(void) {
 
-    if (failure_identify == '5') { //CAM_PER //?CAM_PER is the error identified by '5'
 
         if (GPIO_ReadInputDataBit(GPIOG,7)==1)
         {
             GPIO_SetBits(GPIOG,7);
         }
-        else if (GPIO_ReadInputDataBit(GPIOG,7)==0)
-        {
-            GPIO_ResetBits(GPIOG,7);    
+        else {
+            GPIO_SetBits(GPIOG, 7);
         };
 
         counter_CAM_PER[0]  ++; //? Number of times we lost CAM with timer 6 ?
@@ -636,9 +629,8 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM6_IRQHandler(void) {
         {
             GPIO_SetBits(GPIOG,6);
         }
-        else if (GPIO_ReadInputDataBit(GPIOG,6)==0)
-        {
-            GPIO_ResetBits(GPIOG,6);    
+        else {
+            GPIO_SetBits(GPIOG, 6);
         };
         
         TIM_Cmd(TIM6,DISABLE);
@@ -662,17 +654,16 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM7_IRQHandler(void) {
         {
             GPIO_SetBits(GPIOG,8);
         }
-        else if (GPIO_ReadInputDataBit(GPIOG,8)==0)
-        {
-            GPIO_ResetBits(GPIOG,8);    
+        else {
+            GPIO_SetBits(GPIOG, 8);
         };
 
-        counter_CAM_PER[1] ++;//? Number of times we lost CAM with timer 7 ?
-        if(counter_CAM_PER[1] == 2 ){
+        counter_CAM_PER[1] ++; // Number of times we lost CAM with timer 7
+        if(counter_CAM_PER[1] == 2 ) {
 
             TIM_Cmd(TIM7,DISABLE);
 
-            counter_CAM_PER[1] = 0;//?Reset timer 7 CAM counter
+            counter_CAM_PER[1] = 0; // Reset timer 7 CAM counter
         }
         TIM_SetCounter(TIM7,0);
     }
@@ -682,21 +673,19 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM7_IRQHandler(void) {
         {
             GPIO_SetBits(GPIOG,6);
         }
-        else if (GPIO_ReadInputDataBit(GPIOG,6)==0)
-        {
-            GPIO_ResetBits(GPIOG,6);    
+        else {
+            GPIO_SetBits(GPIOG, 6);
         };
 
         TIM_Cmd(TIM7,DISABLE);
 
     }
-    else if (failure_identify == 'j') // SEG_ADP_ER_LIM
-    {
+    else if (failure_identify == 'j') { // SEG_ADP_ER_LIM
+
         timer_Counter_SEG_ADP_ER_LIM ++;
-        switch(timer_Counter_SEG_ADP_ER_LIM)
-        {
-            case 1:
-            { // failure for the falling edge
+        switch(timer_Counter_SEG_ADP_ER_LIM) {
+            case 1: { // failure for the falling edge
+                GPIO_ResetBits(GPIOG, 6);
 
                 GPIO_ResetBits(GPIOG,6);
 
@@ -711,22 +700,20 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM7_IRQHandler(void) {
                         TIM_PrescalerConfig(TIM8,0,TIM_PSCReloadMode_Immediate);
                         TIM_SetAutoreload(TIM8,(T_TOOTH_RAW /2)-1); //? If setted period is more than 910 us PSC should be set higher
                     }
-                    else
-                    {
-                        //§ PR8 = 0x0001; //if sensor typ not set, shouldn't happen
-                        TIM_PrescalerConfig(TIM8,0,TIM_PSCReloadMode_Immediate);
-                        TIM_SetAutoreload(TIM8,1); 
+                    else {
+                        //if sensor type not set, shouldn't happen
+                        TIM_PrescalerConfig(TIM8, 0, TIM_PSCReloadMode_Immediate);
+                        TIM_SetAutoreload(TIM8, 1); 
                     } 
 
-                    //§ T8CONbits.TON = 1;//? Start timer 8
-                    TIM_Cmd(TIM8,ENABLE);
+                    // Start timer 8
+                    TIM_Cmd(TIM8, ENABLE);
 
                 }
                 failure_passed = true;
                 break;
             }
-            case 2:
-            { // failure for the rising edge
+            case 2: { // failure for the rising edge
                 //? TODO: #23 Implement SEG_ADP_ER_LIM_reset
                 SEG_ADP_ER_LIM_reset();//?SEG_... failure_inactive, passed and waiting =false, init timer 7 & 8, SEG_...error counter reset 
                 break;
