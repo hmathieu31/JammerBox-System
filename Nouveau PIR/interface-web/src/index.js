@@ -1,16 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import App from "./App";
 import Background from "./Background";
 import "./index.css";
 import "./Background.css";
 import reportWebVitals from "./reportWebVitals";
-import Test2 from "./Test2";
-import Test3 from "./Test3.js";
+import Test2 from "./ButtonList";
+import MainPage from "./MainPage";
 
 ReactDOM.render(
   <React.StrictMode>
-    <Test3 />
+    <MainPage />
   </React.StrictMode>,
   document.getElementById("root")
 );

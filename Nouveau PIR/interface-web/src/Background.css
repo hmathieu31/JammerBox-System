@@ -16,9 +16,10 @@ p {
 }
 
 .frame-1 {
-  background: url(../public/BackgroundImage.png),
+  background-image: url(../public/BackgroundImage.png),
     linear-gradient(0deg, rgba(255, 255, 255, 1), rgba(255, 255, 255, 1));
   background-size: 100% 100%;
+  background-attachment: fixed;
   width: 1440px;
-  height: 1020px;
+  height: 100%;
 }
