@@ -1,27 +1,19 @@
 import React from "react"
-import "./returnButton.css"
+import "../CSS/ReturnButton.css"
+import { useNavigate } from "react-router-dom";
 
-class returnButton extends React.Component {
-    constructor(props) {
-      super(props);
-      this.state = {
-        showComponent: false,
-      };
-      this._onButtonClick = this._onButtonClick.bind(this);
-    }
-    testdiv() {
-      return (
-        <div className="arrow-circle-up flex-col-hstart-vstart clip-contents">
-            <button  key={"Return"}> </button>
-        </div>
-      );
-    }
-
-_onButtonClick() {
-    this.setState({
-      showComponent: true,
-    });
+function ReturnButton() {
+  let navigate = useNavigate();
+  const HomePage = () => {
+      navigate("/");
   }
+
+  return(
+    <div className="flex-col-hstart-vstart topleft">
+      <input class="arrow-circle-up" type="submit" value="" onClick={HomePage} />
+    </div>
+  );
 }
 
-export default returnButton
+
+export default ReturnButton

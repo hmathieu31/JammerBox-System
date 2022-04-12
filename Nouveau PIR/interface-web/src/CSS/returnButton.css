@@ -15,12 +15,19 @@ p {
   align-items: flex-start;
 }
 
+.topleft{
+  position: absolute;
+  top: 25px;
+  left: 25px;
+}
+
 .arrow-circle-up {
-  background: url(../public/returnArrow.png);
+  background: url(../../public/returnArrow.png) no-repeat;
   background-size: 100% 100%;
-  transform: rotate(-90deg);
-  width: 1000px;
-  height: 1000px;
+  cursor: pointer;
+  border: none;
+  width: 96px;
+  height: 96px;
 }
 
 .group {
