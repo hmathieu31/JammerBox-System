@@ -1,0 +1,4 @@
+../JammerBox_Source/source/system_configuration.c:75:6:CRK_configuration	24	static
+../JammerBox_Source/source/system_configuration.c:118:6:CAM_configuration	32	static
+../JammerBox_Source/source/system_configuration.c:166:6:CAM_CRK_configuration	24	static
+../JammerBox_Source/source/system_configuration.c:196:6:Input_signal_observe	24	static

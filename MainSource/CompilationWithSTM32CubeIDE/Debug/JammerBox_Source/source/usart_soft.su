@@ -1,0 +1,4 @@
+../JammerBox_Source/source/usart_soft.c:157:6:USART_ProcessMessage	24	static
+../JammerBox_Source/source/usart_soft.c:859:6:USART_COM_error	16	static
+../JammerBox_Source/source/usart_soft.c:881:6:USART_send_failure_configuration_status	24	static
+../JammerBox_Source/source/usart_soft.c:916:6:Reset_temp_arrays	4	static

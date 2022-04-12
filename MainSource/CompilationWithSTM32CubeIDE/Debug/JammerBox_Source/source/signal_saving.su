@@ -1,0 +1,12 @@
+../JammerBox_Source/source/signal_saving.c:16:10:digit_array_to_timestamp	16	static
+../JammerBox_Source/source/signal_saving.c:20:6:print_signal	24	static
+../JammerBox_Source/source/signal_saving.c:28:6:print_signals	8	static
+../JammerBox_Source/source/signal_saving.c:35:6:timestamp_to_digit_array	16	static
+../JammerBox_Source/source/signal_saving.c:42:9:CRK_save	16	static
+../JammerBox_Source/source/signal_saving.c:60:9:CAM_save	16	static
+../JammerBox_Source/source/signal_saving.c:78:6:CRK_wipe	8	static
+../JammerBox_Source/source/signal_saving.c:84:6:CAM_wipe	8	static
+../JammerBox_Source/source/signal_saving.c:90:5:CRK_get_size	4	static
+../JammerBox_Source/source/signal_saving.c:94:5:CAM_get_size	4	static
+../JammerBox_Source/source/signal_saving.c:98:10:CRK_get_array	4	static
+../JammerBox_Source/source/signal_saving.c:102:10:CAM_get_array	4	static

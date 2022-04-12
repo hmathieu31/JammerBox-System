@@ -1,0 +1,12 @@
+../JammerBox_Source/source/synchronization.c:122:6:sync_CRK	16	static
+../JammerBox_Source/source/synchronization.c:325:6:sync_CAM_CRK	120	static
+../JammerBox_Source/source/synchronization.c:598:6:Stalling_detection	16	static
+../JammerBox_Source/source/synchronization.c:678:6:Stalling_detection_CRK	16	static
+../JammerBox_Source/source/synchronization.c:721:6:Stalling_detection_CAM	24	static
+../JammerBox_Source/source/synchronization.c:759:6:sync_CRK_preparation	4	static
+../JammerBox_Source/source/synchronization.c:791:6:sync_CAM_CRK_preparation	8	static
+../JammerBox_Source/source/synchronization.c:802:6:gap_to_edge_calculation	16	static
+../JammerBox_Source/source/synchronization.c:811:6:CAM_CRK_synch_reset	16	static
+../JammerBox_Source/source/synchronization.c:822:6:CAM_CRK_synch_ahead_reset	16	static
+../JammerBox_Source/source/synchronization.c:833:6:CAM_CRK_synch_set	24	static
+../JammerBox_Source/source/synchronization.c:846:6:IC_overflow_check	4	static

@@ -1,0 +1,12 @@
+../Drivers/CMSIS/Include/core_cm3.h:1639:22:__NVIC_SetPriority	16	static
+../Drivers/CMSIS/Include/core_cm3.h:1834:26:SysTick_Config	16	static
+../Core/Src/main.c:353:6:HAL_GPIO_EXTI_Callback	24	static
+../Core/Src/main.c:507:6:HAL_TIM_PeriodElapsedCallback	16	static
+../Core/Src/main.c:529:6:TIM1_PeriodElapsedCallback	4	static
+../Core/Src/main.c:538:6:TIM2_PeriodElapsedCallback	4	static
+../Core/Src/main.c:546:6:TIM3_PeriodElapsedCallback	8	static
+../Core/Src/main.c:604:6:TIM4_PeriodElapsedCallback	8	static
+../Core/Src/main.c:694:6:HAL_UART_RxCpltCallback	24	static
+../Core/Src/main.c:751:5:main	8	static
+../Core/Src/main.c:863:6:SystemClock_Config	72	static
+../Core/Src/main.c:905:6:Error_Handler	8	static,ignoring_inline_asm

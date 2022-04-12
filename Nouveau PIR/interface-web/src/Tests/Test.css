@@ -1,0 +1,124 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@700&display=swap");
+
+p {
+  margin: 0;
+}
+
+.flex-col-hstart-vstart {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-col-hcenter-vstart {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.flex-hcenter {
+  justify-content: center;
+}
+
+.desktop-1 {
+  padding: 58px 452px 185px 521px;
+  box-sizing: border-box;
+  background-color: rgba(58, 48, 217, 1);
+  width: 1440px;
+  height: 1024px;
+}
+
+.group-374 {
+  height: 100%;
+}
+
+.frame-5 {
+  padding: 5px 11px;
+  margin-bottom: 80px;
+  box-sizing: border-box;
+  border-radius: 17px;
+  background-color: rgba(255, 255, 255, 1);
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.12);
+  width: 442px;
+  height: 116px;
+}
+
+.txt-941 {
+  font-size: 96px;
+  font-family: Inter, sans-serif;
+  font-weight: 700;
+  color: rgba(58, 48, 217, 1);
+  word-wrap: break-word;
+}
+
+.group-587 {
+  padding: 28px 38px 27px 40px;
+  margin-bottom: 80px;
+  box-sizing: border-box;
+  border-radius: 22px;
+  background-color: rgba(196, 196, 196, 1);
+  mix-blend-mode: overlay;
+  height: 141px;
+  width: 100%;
+}
+
+.txt-831 {
+  font-size: 64px;
+  font-family: Inter, sans-serif;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 1);
+  text-align: center;
+  width: 385px;
+  height: 84px;
+  word-wrap: break-word;
+}
+
+.group-471 {
+  padding: 43px 44px 12px 34px;
+  margin-bottom: 80px;
+  box-sizing: border-box;
+  border-radius: 22px;
+  background-color: rgba(196, 196, 196, 1);
+  mix-blend-mode: overlay;
+  height: 141px;
+  width: 100%;
+}
+
+.txt-831 {
+  font-size: 64px;
+  font-family: Inter, sans-serif;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 1);
+  text-align: center;
+  width: 385px;
+  height: 84px;
+  word-wrap: break-word;
+}
+
+.group-10810 {
+  padding: 30px 44px 25px 34px;
+  box-sizing: border-box;
+  border-radius: 22px;
+  background-color: rgba(196, 196, 196, 1);
+  mix-blend-mode: overlay;
+  height: 141px;
+  width: 100%;
+}
+
+.txt-831 {
+  font-size: 64px;
+  font-family: Inter, sans-serif;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 1);
+  text-align: center;
+  width: 385px;
+  height: 84px;
+  word-wrap: break-word;
+}
