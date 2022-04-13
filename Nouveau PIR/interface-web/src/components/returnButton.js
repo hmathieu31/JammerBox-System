@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 function ReturnButton() {
   let navigate = useNavigate();
   const HomePage = () => {
-      navigate("/");
+      navigate(-1);
   }
 
   return(

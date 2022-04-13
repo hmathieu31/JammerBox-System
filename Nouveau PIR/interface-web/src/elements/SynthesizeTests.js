@@ -1,5 +1,4 @@
 import "../CSS/MainPage.css";
-import "../CSS/Background.css";
 
 import "../components/ReturnButton.js"
 import ReturnButton from "../components/ReturnButton.js";

@@ -10,6 +10,7 @@ import "./index.css";
 import reportWebVitals from "./components/reportWebVitals";
 import MainPage from "./elements/MainPage.js";
 import SynthesizeTests from "./elements/SynthesizeTests.js";
+import UnderConstruction from "./elements/TestsHistorics";
 
 const rootElement = document.getElementById("root");
 
@@ -19,6 +20,7 @@ ReactDOM.render(
         <Routes>
             <Route exact path="/" element={<MainPage/>} />   
             <Route exact path="/synthesize_tests" element={<SynthesizeTests />} />
+            <Route exact path="/tests_historics" element={<UnderConstruction />} />
         </Routes>
       </BrowserRouter>
     </div>,

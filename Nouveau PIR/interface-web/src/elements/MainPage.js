@@ -9,6 +9,10 @@ function MainPage() {
     navigate("/synthesize_tests")
   }
 
+  let History_selection = () => {
+    navigate("/tests_historics")
+  }
+
   return (
     <>
     <div className="frame-1">
@@ -20,7 +24,7 @@ function MainPage() {
               Synthesize tests
             </p>
           </button>
-          <button className="group-6">
+          <button className="group-6" onClick={History_selection}>
             <p className="txt-733 flex-hcenter">Test historics</p>
           </button>
         </div>
