@@ -38,7 +38,7 @@
 		TIM_SetCounter(TIM1, 0); // Clear Timer1 counter
 		//TIM_period = (1/72MHz) * (PSC+1) *(ARR+1)
 		// (1/72MHz) * (499+1) * (64799+1) = 450ms
-		TIM_PrescalerConfig(TIM1, 499,TIM_PSCReloadMode_Immediate);
+		TIM_PrescalerConfig(TIM1, 499, TIM_PSCReloadMode_Immediate);
 		TIM_SetAutoreload(TIM1, 64799);
 
 		NIVC_SetPriority(TIM1_UP_IRQn, 2); // Set Timer1 TIM1_UP_IRQn Interrupt Priority Level
@@ -62,7 +62,7 @@
 		TIM_SetCounter(TIM2, 0); // Clear Timer2 counter
 		// TIM_period = (1/72MHz) * (PSC+1) *(ARR+1)
 		// (1/72MHz) * (119+1) * (62999+1) = 105ms
-		TIM_PrescalerConfig(TIM2, 119,TIM_PSCReloadMode_Immediate);
+		TIM_PrescalerConfig(TIM2, 119, TIM_PSCReloadMode_Immediate);
 		TIM_SetAutoreload(TIM2, 62999);
 
 		NIVC_SetPriority(TIM2_IRQn, 2); // Set Timer2 TIM2_IRQn Interrupt Priority Level
@@ -88,7 +88,7 @@
 		TIM_SetCounter(TIM3, 0); // Clear Timer3 counter
 		// TIM_period = (1/72MHz) * (PSC+1) *(ARR+1)
 		// (1/72MHz) * (479+1) * (62999+1) = 420ms
-		TIM_PrescalerConfig(TIM3, 479,TIM_PSCReloadMode_Immediate);
+		TIM_PrescalerConfig(TIM3, 479, TIM_PSCReloadMode_Immediate);
 		TIM_SetAutoreload(TIM3, 62999);
 
 		NIVC_SetPriority(TIM3_IRQn, 2); // Set Timer3 TIM3_IRQn Interrupt Priority Level
@@ -113,7 +113,7 @@
 		TIM_SetCounter(TIM4, 0); // Clear Timer4 counter
 		// TIM_period = (1/72MHz) * (PSC+1) *(ARR+1)
 		// (1/72MHz) * (119+1) * (62999+1) = 105ms
-		TIM_PrescalerConfig(TIM4, 119,TIM_PSCReloadMode_Immediate);
+		TIM_PrescalerConfig(TIM4, 119, TIM_PSCReloadMode_Immediate);
 		TIM_SetAutoreload(TIM4, 62999);
 
 		NIVC_SetPriority(TIM4_IRQn, 2); // Set Timer4 TIM4_IRQn Interrupt Priority Level
@@ -137,7 +137,7 @@
 		TIM_SetCounter(TIM5, 0); // Clear Timer5 counter
 		// TIM_period = (1/72MHz) * (PSC+1) *(ARR+1)
 		// (1/72MHz) * (479+1) * (62999+1) = 420ms
-		TIM_PrescalerConfig(TIM5, 479,TIM_PSCReloadMode_Immediate);
+		TIM_PrescalerConfig(TIM5, 479, TIM_PSCReloadMode_Immediate);
 		TIM_SetAutoreload(TIM5, 62999);
 
 		NIVC_SetPriority(TIM5_IRQn, 2); // Set Timer5 TIM5_IRQn Interrupt Priority Level
@@ -145,7 +145,7 @@
 		TIM_ITConfig(TIM5, TIM_IT_Update, ENABLE); // Enable Timer5 interrupt
 	}
 	
-	// ## Timer6 Init **Prescaler: 8; CAM_PER/CRK_TOOTH_PER(start-value)//CRK_SHO_LEVEL pulse duration**
+	// ## Timer6 Init **CAM_PER/CRK_TOOTH_PER(start-value)//CRK_SHO_LEVEL pulse duration**
 	void Timer6Init(void)
 	{
 		// Aim: Timer ticks < 1 �s
@@ -153,17 +153,20 @@
 		// Fcy: 36,85 MHz
 		// 36,85 Mhz/ 8 = 4606 kHz = 0.217 �s
 
-		T6CONbits.TON = 0; 			// Disable Timer
-		T6CONbits.TSIDL = 0;		// Continue timer operation in idle mode
-		T6CONbits.TGATE = 0; 		// Disable Gated Timer mode
-		T6CONbits.TCS = 0; 			// Select internal instruction cycle clock
-		T6CONbits.TCKPS = 0b01; 	// Select 1:8 Prescaler
-		TMR6 = 0x00; 				// Clear timer register
-		PR6 = 0xFFFF;				// Load the period value
-		
-		IPC11bits.T6IP = 0x04; 		// Set Timer6 Interrupt Priority Level
-		IFS2bits.T6IF = 0; 			// Clear Timer6 Interrupt Flag
-		IEC2bits.T6IE = 1; 			// Enable Timer6 interrupt
+		RCC->APB1ENR |= RCC_APB1ENR_TIM6EN; // Enable APB clock for the Timer6
+		TIM_Cmd(TIM6, DISABLE); // Disable Timer6
+		//No idle mode handling necessary on STM32
+		TIM_ITConfig(TIM6, TIM_IT_Trigger, DISABLE); // Disable Trigger Interrupt (called Gated Timer mode on Microchip)
+		TIM_InternalClockConfig(TIM6); // Tell the STM32 to use the internal clock (ticking at 72MHz)
+		TIM_SetCounter(TIM6, 0); // Clear Timer6 counter
+		// TIM_period = (1/72MHz) * (PSC+1) *(ARR+1)
+		// (1/72MHz) * (15+1) * (62999+1) = 14ms
+		TIM_PrescalerConfig(TIM6, 15, TIM_PSCReloadMode_Immediate);
+		TIM_SetAutoreload(TIM6, 62999);
+
+		NIVC_SetPriority(TIM6_IRQn, 2); // Set Timer6 TIM6_IRQn Interrupt Priority Level
+		TIM_ClearFlag(TIM6, TIM_FLAG_Update); // Clear Timer6 Interrupt Flag
+		TIM_ITConfig(TIM6, TIM_IT_Update, ENABLE); // Enable Timer6 interrupt
 	}
 
 	// ## Timer7 Init **Prescaler: 8; CAM_PER/CRK_TOOTH_PER(pulse duration)**
