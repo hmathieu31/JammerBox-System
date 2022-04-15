@@ -1,6 +1,5 @@
-import "./Background.css";
-import ButtonFault from "../ButtonFault";
-import "./MainPage.css";
+import "../CSS/Background.css";
+import "../CSS/MainPage.css";
 import Popup from "reactjs-popup";
 
 export default function ButtonList() {
