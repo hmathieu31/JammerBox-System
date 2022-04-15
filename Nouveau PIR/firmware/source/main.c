@@ -8,7 +8,6 @@
 
 
 // ### Basic includes ###
-//#include "p33FJ256GP710A.h
 #include "config.h"
 #include "stdbool.h"
 #include "stdlib.h"
@@ -548,14 +547,10 @@ void __attribute__((__interrupt__, no_auto_psv)) _T1Interrupt(void) {
     IFS0bits.T1IF = 0; // Clear Timer1 Interrupt Flag
 }
 
-// ********************** Personal part ****************************************************************************************
-//? Comments preceded by "//?" will be used to indicate code understanding comments and will be removed when the code is released.
-//? Replaced old code will be commented with //§
-// *****************************************************************************************************************************
 
 //## Timer 2 Interrupt CRK tooth time
 
-void __attribute__((__interrupt__, no_auto_psv)) _T2Interrupt(void) {
+void __attribute__((__interrupt__, no_auto_psv)) TIM2_IRQHandler(void) {
 
     // all overflows between the events
     timer_overflow_CRK++;
@@ -567,26 +562,23 @@ void __attribute__((__interrupt__, no_auto_psv)) _T2Interrupt(void) {
 
 //## Timer 3 Interrupt CAM tooth time
 
-void __attribute__((__interrupt__, no_auto_psv)) _T3Interrupt(void) {
+void __attribute__((__interrupt__, no_auto_psv)) TIM3_IRQHandler(void) {
 
     // all overflows between the events
     //test
     timer_overflow_CAM++;
 
-    //§ IFS0bits.T3IF = 0; // Clear Timer3 Interrupt Flag
     TIM_ClearFlag(TIM3,TIM_FLAG_Update);
 
 }
 
 //## Timer 4 Interrupt: CRK failure circuit-entering
 
-void __attribute__((__interrupt__, no_auto_psv)) _T4Interrupt(void) {
+void __attribute__((__interrupt__, no_auto_psv)) TIM4_IRQHandler(void) {
     // all overflows between the events
     timer_overflow_CRK_failure++;
 
-    //§ TMR4 = 0;//? Reset timer (TMR4 contains least significant word of the count for the register pair TMR5:TMR4)
     TIM_SetCounter(TIM4,0);
-    //§ IFS1bits.T4IF = 0; // Clear Timer4 Interrupt Flag
     TIM_ClearFlag(TIM4,TIM_FLAG_Update);
 
 }
@@ -598,20 +590,16 @@ void __attribute__((__interrupt__, no_auto_psv)) _T5Interrupt(void) {
     // all overflows between the events
     timer_overflow_CAM_failure++;
 
-    //§ TMR5 = 0;//? Reset timer (TMR5 contains most significant word of the count for the register pair TMR5:TMR4)
     TIM_SetCounter(TIM5,0);
-    //§ IFS1bits.T5IF = 0; // Clear Timer5 Interrupt Flag
     TIM_ClearFlag(TIM5,TIM_FLAG_Update);
 }
 
 //## Timer 6 Interrupt: CAM_PER - start value
 
 void __attribute__((__interrupt__, no_auto_psv)) _T6Interrupt(void) {
-    //T7CONbits.TON = 1;
 
     if (failure_identify == '5') { //CAM_PER //?CAM_PER is the error identified by '5'
 
-        //§ LATGbits.LATG7 = !LATGbits.LATG7; //? Inverse pin RG7 value
         if (GPIO_ReadInputDataBit(GPIOG,7)==1)
         {
             GPIO_SetBits(GPIOG,7);
@@ -623,17 +611,14 @@ void __attribute__((__interrupt__, no_auto_psv)) _T6Interrupt(void) {
 
         counter_CAM_PER[0]  ++; //? Number of times we lost CAM with timer 6 ?
         if(counter_CAM_PER[0] == 2 ){
-            //§ T6CONbits.TON = 0; //? Stop Timer 6
             TIM_Cmd(TIM6,DISABLE);
             counter_CAM_PER[0] = 0; //? Reset timer 6 CAM lost counter
         }
-
-        //§ TMR6 = 0;  // reset the timers counter 
-        TIM_SetCounter(TIM6,0);
+        TIM_SetCounter(TIM6, 0); // reset the timers counter 
 
     } else if (failure_identify == '6') { //CRK_TOOTH_PER
 
-        //§ PR7 = 0x005C;	    // Load the period value 20us  here
+        // Load the period value 20us  here
         //? Période du timer = Période_Horloge * (PSC+1) * (ARR+1)
         //? Le mieux est d'avoir PSC le plus petit possible
         //? Mais ARR doit pas dépasser (2^16)-1 = 65535
@@ -641,10 +626,8 @@ void __attribute__((__interrupt__, no_auto_psv)) _T6Interrupt(void) {
         TIM_PrescalerConfig(TIM7,0,TIM_PSCReloadMode_Immediate); //? Define PSC value
         TIM_SetAutoreload(TIM7,1439); //? Define ARR value 20us*72Mhz = 1440
 
-        //§T7CONbits.TON = 1;//? Activate Timer 7
         TIM_Cmd(TIM7,ENABLE);
 
-        //§ LATGbits.LATG6 = !LATGbits.LATG6;//? Inverse pin LATG6 value
         if (GPIO_ReadInputDataBit(GPIOG,6)==1)
         {
             GPIO_SetBits(GPIOG,6);
@@ -654,20 +637,15 @@ void __attribute__((__interrupt__, no_auto_psv)) _T6Interrupt(void) {
             GPIO_ResetBits(GPIOG,6);    
         };
         
-        //§ T6CONbits.TON = 0; //? Stop Timer 6
         TIM_Cmd(TIM6,DISABLE);
 
     } else if (failure_identify == 'b') { //CRK_SHO_LEVEL
 
-        //§ LATGbits.LATG6 = 1; // set back the CRK level after period //? Write 1 on pin LATG6
         GPIO_SetBits(GPIOG,6);
 
-        //§ T6CONbits.TON = 0;//?Stop timer 6
         TIM_Cmd(TIM6,DISABLE);
     }
-
-    //§ IFS2bits.T6IF = 0; // Clear Timer6 Interrupt Flag
-     TIM_ClearFlag(TIM6,TIM_FLAG_Update);
+     TIM_ClearFlag(TIM6,TIM_FLAG_Update); // Clear Timer6 Interrupt Flag
 }
 
 //## Timer 7 Interrupt: CAM_PER - pulse duration
@@ -676,7 +654,6 @@ void __attribute__((__interrupt__, no_auto_psv)) _T7Interrupt(void) {
 
     if (failure_identify == '5') // CAM_PER --> Cam_Spk
     {
-        //§ LATGbits.LATG8 = !LATGbits.LATG8;//? Inverse pin RG8 value
         if (GPIO_ReadInputDataBit(GPIOG,8)==1)
         {
             GPIO_SetBits(GPIOG,8);
@@ -689,17 +666,14 @@ void __attribute__((__interrupt__, no_auto_psv)) _T7Interrupt(void) {
         counter_CAM_PER[1] ++;//? Number of times we lost CAM with timer 7 ?
         if(counter_CAM_PER[1] == 2 ){
 
-            //§ T7CONbits.TON = 0; //?Stop timer 7
             TIM_Cmd(TIM7,DISABLE);
 
             counter_CAM_PER[1] = 0;//?Reset timer 7 CAM counter
         }
-        //§ TMR7 = 0;  // reset the timers counter
         TIM_SetCounter(TIM7,0);
     }
     else if (failure_identify == '6')  // CRK_TOOTH_PER
     {
-        //§ LATGbits.LATG6 = !LATGbits.LATG6;//? Inverse pin RG6 value
         if (GPIO_ReadInputDataBit(GPIOG,6)==1)
         {
             GPIO_SetBits(GPIOG,6);
@@ -709,7 +683,6 @@ void __attribute__((__interrupt__, no_auto_psv)) _T7Interrupt(void) {
             GPIO_ResetBits(GPIOG,6);    
         };
 
-        //§ T7CONbits.TON = 0;//?Stop timer 7
         TIM_Cmd(TIM7,DISABLE);
 
     }
@@ -721,19 +694,16 @@ void __attribute__((__interrupt__, no_auto_psv)) _T7Interrupt(void) {
             case 1:
             { // failure for the falling edge
 
-                //§ LATGbits.LATG6 = 0; //? Write 0 on pin RG6
                 GPIO_ResetBits(GPIOG,6);
 
                 if(failure_waiting == true)
                 { // if the rising edge has already happen
                     if(sensortype_CRK == 'c') //sensor is cpdd
                     {
-                        //§ PR8 = 0x001D;   // 29 * 1.73us = 50.1us //? Period register 8 value set to 50.1 us
                         TIM_PrescalerConfig(TIM8,0,TIM_PSCReloadMode_Immediate);
                         TIM_SetAutoreload(TIM8,3599);//? 72*50=3600
                     }
                     else if(sensortype_CRK == 'h'){ // all the others 
-                        //§ PR8 = T_TOOTH_RAW /2;  //? When the sensor is not CPDD, pulse size should be half the previous one (calculated in synchronization)
                         TIM_PrescalerConfig(TIM8,0,TIM_PSCReloadMode_Immediate);
                         TIM_SetAutoreload(TIM8,(T_TOOTH_RAW /2)-1); //? If setted period is more than 910 us PSC should be set higher
                     }
@@ -758,24 +728,19 @@ void __attribute__((__interrupt__, no_auto_psv)) _T7Interrupt(void) {
                 break;
             } 
         }
-        //§ T7CONbits.TON = 0; //?Stop timer 7
         TIM_Cmd(TIM7,DISABLE);
 
     }
     else if (failure_identify == 'k') // CrkPlsOrng
     {
-        //§ LATGbits.LATG6 = 1; //? Write 1 on pin RG6
         GPIO_SetBits(GPIOG,6);
 
-        //§ T7CONbits.TON = 0;//? Stop timer 7
         TIM_Cmd(TIM7,DISABLE);
     }
     else {
-        //§ T7CONbits.TON = 0;
         TIM_Cmd(TIM7,DISABLE);
     }//? Stop timer 7
     
-    //§ IFS3bits.T7IF = 0; // Clear Timer7 Interrupt Flag
     TIM_ClearFlag(TIM7,TIM_FLAG_Update);
 
 
@@ -790,7 +755,6 @@ void __attribute__((__interrupt__, no_auto_psv)) _T8Interrupt(void) {
         timer_Counter_CRK_GAP_NOT_DET++;
         switch(timer_Counter_CRK_GAP_NOT_DET){
             case 1:{   
-                //§ LATGbits.LATG6 = 0;
                 GPIO_ResetBits(GPIOG,6); 
              
                 if(sensortype_CRK == 'c'){
@@ -799,23 +763,19 @@ void __attribute__((__interrupt__, no_auto_psv)) _T8Interrupt(void) {
                     TIM_SetAutoreload(TIM8,3599);
                 }
                 else if(sensortype_CRK == 'h'){
-                   //§ PR8 = T_TOOTH_RAW /2;
                    TIM_PrescalerConfig(TIM8,0,TIM_PSCReloadMode_Immediate);
                    TIM_SetAutoreload(TIM8,(T_TOOTH_RAW /2)-1); //? If setted period is more than 910us PSC should be set higher 
                 }
                 else
                 {
-                   //§ PR8 = 0x0001; //if sensor typ not set, shouldn't happen
                    TIM_PrescalerConfig(TIM8,0,TIM_PSCReloadMode_Immediate);
                    TIM_SetAutoreload(TIM8,1); 
                 }
                 break;
             }
             case 2:{
-                //§ LATGbits.LATG6 = 1;
                 GPIO_SetBits(GPIOG,6);
 
-                //§ T8CONbits.TON = 0;
                 TIM_Cmd(TIM8,DISABLE);
 
                 timer_Counter_CRK_GAP_NOT_DET = 0;
@@ -823,10 +783,8 @@ void __attribute__((__interrupt__, no_auto_psv)) _T8Interrupt(void) {
                 break;
             }
             default:{
-                //§ LATGbits.LATG6 = 1;
                 GPIO_SetBits(GPIOG,6);
 
-                //§ T8CONbits.TON = 0;
                 TIM_Cmd(TIM8,DISABLE);
                 timer_Counter_CRK_GAP_NOT_DET = 0;
                 failure_active = false;                    
@@ -853,10 +811,8 @@ void __attribute__((__interrupt__, no_auto_psv)) _T8Interrupt(void) {
         Timer8Init();
         timer_Counter_SEG_ADP_ER_LIM = 0;
     }  
-    //§ TMR8 = 0x00;
     TIM_SetCounter(TIM8,0);
 
-    //§ IFS3bits.T8IF = 0; // Clear Timer8 Interrupt Flag
     TIM_ClearFlag(TIM8,TIM_FLAG_Update);
 }
 
@@ -865,7 +821,6 @@ void __attribute__((__interrupt__, no_auto_psv)) _T8Interrupt(void) {
 void __attribute__((__interrupt__, no_auto_psv)) _T9Interrupt(void) {
     timer_overflow_CAM_REF_CRK++;
 
-    //§ IFS3bits.T9IF = 0; // Clear Timer9 Interrupt Flag
     TIM_ClearFlag(TIM9,TIM_FLAG_Update);
 }
 
