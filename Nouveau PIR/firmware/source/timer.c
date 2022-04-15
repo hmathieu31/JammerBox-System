@@ -62,8 +62,8 @@
 		TIM_SetCounter(TIM2, 0); // Clear Timer2 counter
 		// TIM_period = (1/72MHz) * (PSC+1) *(ARR+1)
 		// (1/72MHz) * (119+1) * (62999+1) = 105ms
-		TIM_PrescalerConfig(TIM1, 499,TIM_PSCReloadMode_Immediate);
-		TIM_SetAutoreload(TIM1, 64799);
+		TIM_PrescalerConfig(TIM2, 499,TIM_PSCReloadMode_Immediate);
+		TIM_SetAutoreload(TIM2, 64799);
 
 		NIVC_SetPriority(TIM2_IRQn, 2); // Set Timer2 TIM2_IRQn Interrupt Priority Level
 		TIM_ClearFlag(TIM2, TIM_FLAG_Update); // Clear Timer2 Interrupt Flag
@@ -80,19 +80,21 @@
 		// Fcy: 36,85 MHz
 		// 36,85 Mhz/ 256 = 143,95 kHz = 6.946 �s
 
-		T3CONbits.TON = 0; 			// Disable Timer
-		T3CONbits.TSIDL = 0;		// Continue timer operation in idle mode
-		T3CONbits.TGATE = 0; 		// Disable Gated Timer mode
-		T3CONbits.TCS = 0; 			// Select internal instruction cycle clock
-		T3CONbits.TCKPS = 0b11; 	// Select 1:256 Prescaler
-		TMR3 = 0x00; 				// Clear timer register
-		PR3 = 0xFFFF;				// Load the period value
-		
-		IPC2bits.T3IP = 0x02; 		// Set Timer3 Interrupt Priority Level
-		IFS0bits.T3IF = 0; 			// Clear Timer3 Interrupt Flag
-		IEC0bits.T3IE = 1; 			// Enable Timer3 interrupt
-		T3CONbits.TON = 1; 			// Start Timer
+		RCC->APB2ENR |= RCC_APB1ENR_TIM3EN; // Enable APB clock for the Timer3
+		TIM_Cmd(TIM3, DISABLE); // Disable Timer3
+		//No idle mode handling necessary on STM32
+		TIM_ITConfig(TIM3, TIM_IT_Trigger, DISABLE); // Disable Trigger Interrupt (called Gated Timer mode on Microchip)
+		TIM_InternalClockConfig(TIM3); // Tell the STM32 to use the internal clock (ticking at 72MHz)
+		TIM_SetCounter(TIM3, 0); // Clear Timer3 counter
+		// TIM_period = (1/72MHz) * (PSC+1) *(ARR+1)
+		// (1/72MHz) * (479+1) * (62999+1) = 420ms
+		TIM_PrescalerConfig(TIM3, 479,TIM_PSCReloadMode_Immediate);
+		TIM_SetAutoreload(TIM3, 62999);
 
+		NIVC_SetPriority(TIM3_IRQn, 2); // Set Timer3 TIM3_IRQn Interrupt Priority Level
+		TIM_ClearFlag(TIM3, TIM_FLAG_Update); // Clear Timer3 Interrupt Flag
+		TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE); // Enable Timer3 interrupt
+		TIM_Cmd(TIM3, ENABLE); // Start Timer
 	}
 
 	// ## Timer4 Init **Prescaler: 64; CRK_NO_SIG/CAM_delay**  
