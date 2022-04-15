@@ -29,15 +29,15 @@ p {
 }
 
 .frame-1 {
-  padding: 20% 10rem;
+  padding: 271px 402px;
   box-sizing: border-box;
   background-attachment: fixed;
-  background: url(../public/BackgroundImage.png),
+  background: url(../../public/BackgroundImage.png),
     linear-gradient(0deg, rgba(255, 255, 255, 1), rgba(255, 255, 255, 1));
   background-size: 100% 100%;
   width: 100%;
   min-width: 20em;
-  height: 100%;
+  height: undefined;
 }
 
 .group-19 {
@@ -47,7 +47,7 @@ p {
 }
 
 .txt-271 {
-  font-size: 7vw;
+  font-size: 96px;
   font-family: Maven Pro, sans-serif;
   font-weight: 700;
   color: rgba(95, 94, 94, 1);
@@ -65,7 +65,7 @@ p {
   background: linear-gradient(
     to bottom,
     rgba(228, 30, 19, 1),
-    rgba(278, 80, 69, 0.85)
+    rgba(278, 80, 69, 0.75)
   );
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   height: 100px;
@@ -77,11 +77,12 @@ p {
 }
 
 .txt-733 {
-  font-size: 5vw;
+  font-size: 40px;
   font-family: IBM Plex Sans, sans-serif;
   font-weight: 600;
   color: rgba(255, 255, 255, 1);
   text-align: center;
+  word-wrap: break-word;
 }
 
 .txt-145 {

@@ -1,5 +1,5 @@
 import "./Background.css";
-import ButtonFault from "./ButtonFault";
+import ButtonFault from "../ButtonFault";
 import "./MainPage.css";
 import Popup from "reactjs-popup";
 
