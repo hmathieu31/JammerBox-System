@@ -54,7 +54,7 @@
 		// Fcy: 36,85 MHz
 		// 36,85 Mhz/ 64 = 575,78 kHz = 1,7367744624683038660599534544444�s
 
-		RCC->APB2ENR |= RCC_APB1ENR_TIM2EN; // Enable APB clock for the Timer2
+		RCC->APB1ENR |= RCC_APB1ENR_TIM2EN; // Enable APB clock for the Timer2
 		TIM_Cmd(TIM2, DISABLE); // Disable Timer2
 		//No idle mode handling necessary on STM32
 		TIM_ITConfig(TIM2, TIM_IT_Trigger, DISABLE); // Disable Trigger Interrupt (called Gated Timer mode on Microchip)
@@ -80,7 +80,7 @@
 		// Fcy: 36,85 MHz
 		// 36,85 Mhz/ 256 = 143,95 kHz = 6.946 �s
 
-		RCC->APB2ENR |= RCC_APB1ENR_TIM3EN; // Enable APB clock for the Timer3
+		RCC->APB1ENR |= RCC_APB1ENR_TIM3EN; // Enable APB clock for the Timer3
 		TIM_Cmd(TIM3, DISABLE); // Disable Timer3
 		//No idle mode handling necessary on STM32
 		TIM_ITConfig(TIM3, TIM_IT_Trigger, DISABLE); // Disable Trigger Interrupt (called Gated Timer mode on Microchip)
@@ -105,7 +105,7 @@
 		// Fcy: 36,85 MHz
 		// 36,85 Mhz/ 64 = 575,78 kHz = 1,737 �s
 
-		RCC->APB2ENR |= RCC_APB1ENR_TIM4EN; // Enable APB clock for the Timer4
+		RCC->APB1ENR |= RCC_APB1ENR_TIM4EN; // Enable APB clock for the Timer4
 		TIM_Cmd(TIM4, DISABLE); // Disable Timer4
 		//No idle mode handling necessary on STM32
 		TIM_ITConfig(TIM4, TIM_IT_Trigger, DISABLE); // Disable Trigger Interrupt (called Gated Timer mode on Microchip)
@@ -121,7 +121,7 @@
 		TIM_ITConfig(TIM4, TIM_IT_Update, ENABLE); // Enable Timer4 interrupt
 	}
 
-	// ## Timer5 Init **CAM Prescaler: 256; CAM_NO_SIG**
+	// ## Timer5 Init **CAM_NO_SIG**
 	void Timer5Init(void)
 	{
 		// Aim: high timer duration
@@ -129,17 +129,20 @@
 		// Fcy: 36,85 MHz
 		// 36,85 Mhz/ 256 = 143,95 kHz = 6.946 �s
 
-		T5CONbits.TON = 0; 			// Disable Timer
-		T5CONbits.TSIDL = 0;		// Continue timer operation in idle mode
-		T5CONbits.TGATE = 0; 		// Disable Gated Timer mode
-		T5CONbits.TCS = 0; 			// Select internal instruction cycle clock
-		T5CONbits.TCKPS = 0b11; 	// Select 1:256 Prescaler
-		TMR5 = 0x00; 				// Clear timer register
-		PR5 = 0xFFFF;				// Load the period value
-		
-		IPC7bits.T5IP = 0x02; 		// Set Timer5 Interrupt Priority Level
-		IFS1bits.T5IF = 0; 			// Clear Timer5 Interrupt Flag
-		IEC1bits.T5IE = 1; 			// Enable Timer5 interrupt
+		RCC->APB1ENR |= RCC_APB1ENR_TIM5EN; // Enable APB clock for the Timer5
+		TIM_Cmd(TIM5, DISABLE); // Disable Timer5
+		//No idle mode handling necessary on STM32
+		TIM_ITConfig(TIM5, TIM_IT_Trigger, DISABLE); // Disable Trigger Interrupt (called Gated Timer mode on Microchip)
+		TIM_InternalClockConfig(TIM5); // Tell the STM32 to use the internal clock (ticking at 72MHz)
+		TIM_SetCounter(TIM5, 0); // Clear Timer5 counter
+		// TIM_period = (1/72MHz) * (PSC+1) *(ARR+1)
+		// (1/72MHz) * (479+1) * (62999+1) = 420ms
+		TIM_PrescalerConfig(TIM5, 479,TIM_PSCReloadMode_Immediate);
+		TIM_SetAutoreload(TIM5, 62999);
+
+		NIVC_SetPriority(TIM5_IRQn, 2); // Set Timer5 TIM5_IRQn Interrupt Priority Level
+		TIM_ClearFlag(TIM5, TIM_FLAG_Update); // Clear Timer5 Interrupt Flag
+		TIM_ITConfig(TIM5, TIM_IT_Update, ENABLE); // Enable Timer5 interrupt
 	}
 	
 	// ## Timer6 Init **Prescaler: 8; CAM_PER/CRK_TOOTH_PER(start-value)//CRK_SHO_LEVEL pulse duration**
