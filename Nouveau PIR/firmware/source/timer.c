@@ -46,7 +46,7 @@
 		TIM_ITConfig(TIM1, TIM_IT_Update, ENABLE); // Enable Timer1 interrupt
 	}
 
-	// ## Timer2 Init **Prescaler: 64; CRK Synchronization; tooth time** 
+	// ## Timer2 Init **CRK Synchronization; tooth time** 
 	void Timer2Init(void){
 
 		// Aim: resolution of < 2 �s;
@@ -62,8 +62,8 @@
 		TIM_SetCounter(TIM2, 0); // Clear Timer2 counter
 		// TIM_period = (1/72MHz) * (PSC+1) *(ARR+1)
 		// (1/72MHz) * (119+1) * (62999+1) = 105ms
-		TIM_PrescalerConfig(TIM2, 499,TIM_PSCReloadMode_Immediate);
-		TIM_SetAutoreload(TIM2, 64799);
+		TIM_PrescalerConfig(TIM2, 119,TIM_PSCReloadMode_Immediate);
+		TIM_SetAutoreload(TIM2, 62999);
 
 		NIVC_SetPriority(TIM2_IRQn, 2); // Set Timer2 TIM2_IRQn Interrupt Priority Level
 		TIM_ClearFlag(TIM2, TIM_FLAG_Update); // Clear Timer2 Interrupt Flag
@@ -72,7 +72,7 @@
 	}
 
 
-	// ## Timer3 Init **Prescaler: 256; CAM Synchronization; segment time** 
+	// ## Timer3 Init **CAM Synchronization; segment time** 
 	void Timer3Init(void){
 		
 		// Aim: high timer duration
@@ -97,7 +97,7 @@
 		TIM_Cmd(TIM3, ENABLE); // Start Timer
 	}
 
-	// ## Timer4 Init **Prescaler: 64; CRK_NO_SIG/CAM_delay**  
+	// ## Timer4 Init **CRK_NO_SIG/CAM_delay**  
 	void Timer4Init(void)
 	{
 		// Aim: resolution of < 2 �s;
@@ -105,17 +105,20 @@
 		// Fcy: 36,85 MHz
 		// 36,85 Mhz/ 64 = 575,78 kHz = 1,737 �s
 
-		T4CONbits.TON = 0; 			// Disable Timer
-		T4CONbits.TSIDL = 0;		// Continue timer operation in idle mode
-		T4CONbits.TGATE = 0; 		// Disable Gated Timer mode
-		T4CONbits.TCS = 0; 			// Select internal instruction cycle clock
-		T4CONbits.TCKPS = 0b10; 	// Select 1:64 Prescaler
-		TMR4 = 0x00; 				// Clear timer register
-		PR4 = 0xFFFF;				// Load the period value
-		
-		IPC6bits.T4IP = 0x02; 		// Set Timer4 Interrupt Priority Level
-		IFS1bits.T4IF = 0; 			// Clear Timer4 Interrupt Flag
-		IEC1bits.T4IE = 1; 			// Enable Timer4 interrupt
+		RCC->APB2ENR |= RCC_APB1ENR_TIM4EN; // Enable APB clock for the Timer4
+		TIM_Cmd(TIM4, DISABLE); // Disable Timer4
+		//No idle mode handling necessary on STM32
+		TIM_ITConfig(TIM4, TIM_IT_Trigger, DISABLE); // Disable Trigger Interrupt (called Gated Timer mode on Microchip)
+		TIM_InternalClockConfig(TIM4); // Tell the STM32 to use the internal clock (ticking at 72MHz)
+		TIM_SetCounter(TIM4, 0); // Clear Timer4 counter
+		// TIM_period = (1/72MHz) * (PSC+1) *(ARR+1)
+		// (1/72MHz) * (119+1) * (62999+1) = 105ms
+		TIM_PrescalerConfig(TIM4, 119,TIM_PSCReloadMode_Immediate);
+		TIM_SetAutoreload(TIM4, 62999);
+
+		NIVC_SetPriority(TIM4_IRQn, 2); // Set Timer4 TIM4_IRQn Interrupt Priority Level
+		TIM_ClearFlag(TIM4, TIM_FLAG_Update); // Clear Timer4 Interrupt Flag
+		TIM_ITConfig(TIM4, TIM_IT_Update, ENABLE); // Enable Timer4 interrupt
 	}
 
 	// ## Timer5 Init **CAM Prescaler: 256; CAM_NO_SIG**
