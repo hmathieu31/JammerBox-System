@@ -1,6 +1,7 @@
 import React from "react";
 import "./Test3.css";
 import Test2 from "./Test2";
+import returnButton from "./returnButton";
 import { render } from "@testing-library/react";
 
 class Test3 extends React.Component {
@@ -38,7 +39,14 @@ class Test3 extends React.Component {
   render() {
     return (
       <div className="frame-1">
-        {this.state.showComponent ? <Test2 /> : this.testdiv()}
+        {this.state.showComponent ?  
+          <>
+            <Test2 />
+            <returnButton />
+          </>
+        :
+        this.testdiv()
+        }
       </div>
     );
   }

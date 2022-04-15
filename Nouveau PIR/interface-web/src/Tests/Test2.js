@@ -1,4 +1,4 @@
-import "./MainPage.css";
+import "./CSS/MainPage.css";
 import "./Background.css";
 
 export default function Test2() {
@@ -15,5 +15,8 @@ export default function Test2() {
       </button>
     );
   }
-  return <div>{Buttons.map(makeButton, this)}</div>;
+  return (
+      <div>
+        {Buttons.map(makeButton, this)}
+      </div> );
 }

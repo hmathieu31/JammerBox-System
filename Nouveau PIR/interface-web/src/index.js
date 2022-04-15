@@ -1,18 +1,30 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import App from "./App";
-import Background from "./Background";
+import {
+  Routes,
+  Route,
+  Link,
+  BrowserRouter
+} from "react-router-dom";
 import "./index.css";
-import "./Background.css";
-import reportWebVitals from "./reportWebVitals";
-import Test2 from "./Test2";
-import Test3 from "./Test3.js";
+import reportWebVitals from "./components/reportWebVitals";
+import MainPage from "./elements/MainPage.js";
+import SynthesizeTests from "./elements/SynthesizeTests.js";
+import UnderConstruction from "./elements/TestsHistorics";
+
+const rootElement = document.getElementById("root");
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Test3 />
-  </React.StrictMode>,
-  document.getElementById("root")
+    <div>
+      <BrowserRouter>
+        <Routes>
+            <Route exact path="/" element={<MainPage/>} />   
+            <Route exact path="/synthesize_tests" element={<SynthesizeTests />} />
+            <Route exact path="/tests_historics" element={<UnderConstruction />} />
+        </Routes>
+      </BrowserRouter>
+    </div>,
+    rootElement 
 );
 
 // If you want to start measuring performance in your app, pass a function
