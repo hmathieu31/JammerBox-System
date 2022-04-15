@@ -15,7 +15,7 @@ p {
   align-items: flex-start;
 }
 
-.topleft{
+.topleft {
   position: absolute;
   top: 25px;
   left: 25px;
@@ -26,8 +26,8 @@ p {
   background-size: 100% 100%;
   cursor: pointer;
   border: none;
-  width: 96px;
-  height: 96px;
+  width: 80px;
+  height: 80px;
 }
 
 .group {
