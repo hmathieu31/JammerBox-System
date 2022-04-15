@@ -11,8 +11,6 @@
 	#include "stm32f10x_tim.h"
 	#include "timer.h"
 
-	#define TIM1_UP_IRQn 25
-
 
 // ### Variables ###
 
@@ -55,21 +53,22 @@
 		// FCPU with PLL = 73,7 MHz
 		// Fcy: 36,85 MHz
 		// 36,85 Mhz/ 64 = 575,78 kHz = 1,7367744624683038660599534544444�s
-		
-		T2CONbits.TON = 0; 			// Disable Timer
-		T2CONbits.TSIDL = 0;		// Continue timer operation in idle mode
-		T2CONbits.TGATE = 0; 		// Disable Gated Timer mode
-		T2CONbits.TCS = 0; 			// Select internal instruction cycle clock
-		T2CONbits.TCKPS = 0b10; 	// Select 1:64 Prescaler
-		T2CONbits.T32 = 0;			// Separate timers
-		TMR2 = 0x00; 				// Clear timer register
-		PR2 = 0xFFFF;				// Load the period value
-		
-		IPC1bits.T2IP = 0x02; 		// Set Timer2 Interrupt Priority Level
-		IFS0bits.T2IF = 0; 			// Clear Timer2 Interrupt Flag
-		IEC0bits.T2IE = 1; 			// Enable Timer2 interrupt
-		T2CONbits.TON = 1; 			// Start Timer
-		
+
+		RCC->APB2ENR |= RCC_APB1ENR_TIM2EN; // Enable APB clock for the Timer2
+		TIM_Cmd(TIM2, DISABLE); // Disable Timer2
+		//No idle mode handling necessary on STM32
+		TIM_ITConfig(TIM2, TIM_IT_Trigger, DISABLE); // Disable Trigger Interrupt (called Gated Timer mode on Microchip)
+		TIM_InternalClockConfig(TIM2); // Tell the STM32 to use the internal clock (ticking at 72MHz)
+		TIM_SetCounter(TIM2, 0); // Clear Timer2 counter
+		// TIM_period = (1/72MHz) * (PSC+1) *(ARR+1)
+		// (1/72MHz) * (119+1) * (62999+1) = 105ms
+		TIM_PrescalerConfig(TIM1, 499,TIM_PSCReloadMode_Immediate);
+		TIM_SetAutoreload(TIM1, 64799);
+
+		NIVC_SetPriority(TIM2_IRQn, 2); // Set Timer2 TIM2_IRQn Interrupt Priority Level
+		TIM_ClearFlag(TIM2, TIM_FLAG_Update); // Clear Timer2 Interrupt Flag
+		TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE); // Enable Timer2 interrupt
+		TIM_Cmd(TIM2, ENABLE); // Start Timer
 	}
 
 
