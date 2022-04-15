@@ -37,9 +37,10 @@
 		//No idle mode handling necessary on STM32
 		TIM_ITConfig(TIM1, TIM_IT_Trigger, DISABLE); // Disable Trigger Interrupt (called Gated Timer mode on Microchip)
 		TIM_InternalClockConfig(TIM1); // Tell the STM32 to use the internal clock (ticking at 72MHz)
+		TIM_SetCounter(TIM1, 0); // Clear Timer1 counter
 		//TIM_period = (1/72MHz) * (PSC+1) *(ARR+1)
 		// (1/72MHz) * (499+1) * (64799+1) = 450ms
-		TIM_PrescalerConfig(TIM1, 499,TIM_PSCReloadMode_Immediate); //TODO: #28 clear the counter
+		TIM_PrescalerConfig(TIM1, 499,TIM_PSCReloadMode_Immediate);
 		TIM_SetAutoreload(TIM1, 64799);
 
 		NIVC_SetPriority(TIM1_UP_IRQn, 2); // Set Timer1 TIM1_UP_IRQn Interrupt Priority Level
