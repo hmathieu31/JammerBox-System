@@ -3,6 +3,8 @@ import "../CSS/MainPage.css";
 import Popup from "reactjs-popup";
 
 export default function ButtonList() {
+  const [open, setOpen] = useState(false);
+  const closeModal = () => setOpen(false);
   var Buttons = [
     "CRK SHORT CIRCUIT",
     "CAM SHORT CIRCUIT",
@@ -19,7 +21,7 @@ export default function ButtonList() {
   ];
 
   function truc() {
-    console.log("Lol");
+    setOpen((o) => !o);
   }
 
   function makeButton(data) {
@@ -29,8 +31,8 @@ export default function ButtonList() {
         onClick={truc}
         className="group-6 txt-733"
       >
-        <Popup trigger={<button>Lol</button>}>
-          <div>Lol</div>
+        <Popup open={open} closeOnDocumentClick onClose={closeModal}>
+          <ParameterPopup />
         </Popup>
         {data}
       </button>
