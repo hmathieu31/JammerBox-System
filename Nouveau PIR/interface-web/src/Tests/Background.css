@@ -16,7 +16,11 @@ p {
 }
 
 .frame-1 {
+<<<<<<< HEAD:Nouveau PIR/interface-web/src/Background.css
   background-image: url(../public/BackgroundImage.png),
+=======
+  background: url(../../public/BackgroundImage.png),
+>>>>>>> origin/InterfaceWeb:Nouveau PIR/interface-web/src/Tests/Background.css
     linear-gradient(0deg, rgba(255, 255, 255, 1), rgba(255, 255, 255, 1));
   background-size: 100% 100%;
   background-attachment: fixed;

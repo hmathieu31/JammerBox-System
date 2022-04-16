@@ -1,6 +1,5 @@
-import "./Background.css";
-import ButtonFault from "./ButtonFault";
-import "./MainPage.css";
+import "../CSS/Background.css";
+import "../CSS/MainPage.css";
 import Popup from "reactjs-popup";
 import ParameterPopup from "./ParameterPopup";
 import { useState } from "react";

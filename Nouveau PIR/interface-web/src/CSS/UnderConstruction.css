@@ -1,0 +1,28 @@
+/* Frame1 */
+
+p {
+  margin: 0;
+}
+
+.clip-contents {
+  overflow: hidden;
+}
+
+.flex-col-hstart-vstart {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.frame-2 {
+  padding: 271px 402px;
+  box-sizing: border-box;
+  background-attachment: fixed;
+  background: url(../../public/floppa.jpg) no-repeat center fixed,
+    linear-gradient(0deg, rgba(255, 255, 255, 1), rgba(255, 255, 255, 1));
+  background-size: 100% 100%; 
+  width: 100%;
+  min-width: 20em;
+  height: undefined;
+}
