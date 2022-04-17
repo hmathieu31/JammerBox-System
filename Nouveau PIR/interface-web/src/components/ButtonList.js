@@ -1,3 +1,4 @@
+import React from "react";
 import "../CSS/Background.css";
 import "../CSS/MainPage.css";
 import Popup from "reactjs-popup";

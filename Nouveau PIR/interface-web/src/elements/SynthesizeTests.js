@@ -1,6 +1,7 @@
+import React from 'react'
 import "../CSS/MainPage.css";
-import "../components/ReturnButton.js";
-import ReturnButton from "../components/ReturnButton.js";
+import "../components/returnButton.js";
+import ReturnButton from "../components/returnButton.js";
 import ButtonList from "../components/ButtonList";
 
 function SynthesizeTests() {

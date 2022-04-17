@@ -22,7 +22,7 @@ p {
 }
 
 .arrow-circle-up {
-  background: url(../../public/returnArrow.png) no-repeat;
+  background: url(../images/returnArrow.png) no-repeat;
   background-size: 100% 100%;
   cursor: pointer;
   border: none;
