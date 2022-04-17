@@ -1,8 +1,8 @@
 import React from "react";
 import "../CSS/TestResult.css";
-import "../CSS/loadingSymbol.css";
 import { Navigate, useNavigate } from "react-router-dom";
 import ReturnButton from "../components/returnButton";
+import LoadingSymbol from "../components/loadingSymbol";
 
 function TestResult(props) {
   return (
@@ -13,7 +13,7 @@ function TestResult(props) {
         <p className="txt-271 flex-hcenter">Test result</p>
         <div className="flex-col">
           <h1>{props.name}</h1>
-          <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+          {LoadingSymbol() } 
         </div>
       </div>
     </div>
