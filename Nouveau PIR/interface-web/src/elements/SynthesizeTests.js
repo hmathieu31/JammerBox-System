@@ -21,7 +21,9 @@ function SynthesizeTests() {
     <>
         <p className="txt-271 flex-hcenter">Synthesize Tests</p>
         {ReturnButton()}
-        <div>{ButtonList()}</div>
+        <div>
+          <ButtonList />
+        </div>
       </div>
     </>
   );
