@@ -24,20 +24,21 @@ export default function ButtonList() {
 
   function truc() {
     setOpen((o) => !o);
+    console.log("Hoh");
   }
 
   function makeButton(data) {
     return (
+      <div>
       <button
         key={Buttons.indexOf(data)}
         onClick={truc}
         className="group-6 txt-733"
       >
-        <Popup open={open} closeOnDocumentClick onClose={closeModal}>
-          <ParameterPopup />
-        </Popup>
         {data}
       </button>
+      {ParameterPopup(truc)}
+      </div>
     );
   }
   return <div>{Buttons.map(makeButton, this)}</div>;
