@@ -29,7 +29,7 @@ p {
 }
 
 .frame-1 {
-  padding: 182px 402px;
+  padding: 20% 10rem;
   box-sizing: border-box;
   background-attachment: fixed;
   background: url(../../public/BackgroundImage.png),
@@ -37,7 +37,7 @@ p {
   background-size: 100% 100%;
   width: 100%;
   min-width: 20em;
-  height: undefined;
+  height: 100%;
 }
 
 .group-19 {
@@ -70,6 +70,7 @@ p {
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   height: 100px;
   width: 100%;
+  cursor: pointer;
 }
 
 .group-6:hover {
