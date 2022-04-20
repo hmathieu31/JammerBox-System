@@ -7,7 +7,6 @@
 /*****************************************************************************/
 
 // ### Basic includes ###
-	#include "p33FJ256GP710A.h"
 	#include "stdbool.h"
 	#include "system_configuration.h"
 

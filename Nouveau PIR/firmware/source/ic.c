@@ -3,11 +3,10 @@
 /* Programm        :  Input capture                                          */
 /* Controller      :  dsPIC33F                                               */
 /* Latest change   :  31.08.2020                                             */
-/* Author          :  Grégoire Chabin/Christian Ringlstetter/Thomas Pichler  */
+/* Author          :  Grï¿½goire Chabin/Christian Ringlstetter/Thomas Pichler  */
 /*****************************************************************************/
 
 // ### Basic includes ###
-	#include "p33FJ256GP710A.h"
 	#include "ic.h"
 
 // ### Functions ###
