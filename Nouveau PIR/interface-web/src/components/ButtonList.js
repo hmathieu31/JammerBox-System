@@ -4,7 +4,6 @@ import "../CSS/MainPage.css";
 import Popup from "reactjs-popup";
 import "../CSS/ParameterPopup.css";
 import { useState } from "react";
-import React from "react";
 import Modal from "react-modal";
 
 class ParameterPopup extends React.Component {
@@ -13,7 +12,8 @@ class ParameterPopup extends React.Component {
     return (
       <div className="test-configuration flex-col-hstart-vstart clip-contents">
         <div className="group-917 flex-col-hcenter">
-          <p className="txt-120 flex-hcenter">Nom du test</p>
+          {/* <p className="txt-120 flex-hcenter">Nom du test</p> */}
+          <p className="txt-120 flex-hcenter"> {this.props.testName} </p>
           <div className="group-213 flex-col-hend">
             <div className="group-21">
               <p className="txt-649 flex-hcenter">Parametre :</p>
@@ -76,7 +76,7 @@ export default class ButtonList extends React.Component {
           {data}
         </button>
         <Modal isOpen={this.state.showModal}>
-          <ParameterPopup handleOpenClose={this.handleOpenClose} />
+          <ParameterPopup handleOpenClose={this.handleOpenClose} testName={data} />
         </Modal>
       </div>
     );

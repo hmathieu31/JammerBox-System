@@ -1,7 +1,7 @@
 import React from "react";
+import Modal from "react-modal";
 import "../CSS/ParameterPopup.css";
 import "../CSS/MainPage.css";
-import Modal from "react-modal";
 
 export default function ParameterPopup(truc) {
   const [modalIsOpen, setIsOpen] = React.useState(false);

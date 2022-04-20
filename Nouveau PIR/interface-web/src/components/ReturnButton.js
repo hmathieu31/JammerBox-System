@@ -1,9 +1,5 @@
-<<<<<<< HEAD:Nouveau PIR/interface-web/src/components/returnButton.js
 import React from "react";
 import "../CSS/returnButton.css";
-=======
-import "../CSS/ReturnButton.css";
->>>>>>> origin/InterfaceWeb:Nouveau PIR/interface-web/src/components/ReturnButton.js
 import { useNavigate } from "react-router-dom";
 
 function ReturnButton() {
