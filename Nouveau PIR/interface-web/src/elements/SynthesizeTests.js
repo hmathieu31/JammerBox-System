@@ -10,7 +10,9 @@ function SynthesizeTests() {
       <div className="frame-1">
         <p className="txt-271 flex-hcenter">Synthesize Tests</p>
         {ReturnButton()}
-        <div>{ButtonList()}</div>
+        <div>
+          <ButtonList />
+        </div>
       </div>
     </>
   );
