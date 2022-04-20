@@ -7,6 +7,7 @@ import MainPage from "./elements/MainPage_copy.js";
 import SynthesizeTests from "./elements/SynthesizeTests.js";
 import UnderConstruction from "./elements/TestsHistorics";
 import TestResult from "./elements/TestResult";
+import PopupTest from "./elements/popup_test";
 
 const rootElement = document.getElementById("root");
 
@@ -14,7 +15,8 @@ ReactDOM.render(
   <div>
     <BrowserRouter>
       <Routes>
-        <Route exact path="/" element={<MainPage />} />
+        {/* <Route exact path="/" element={<MainPage />} /> */}
+        <Route exact path="/" element={<PopupTest />} />
         <Route exact path="/synthesize_tests" element={<SynthesizeTests />} />
         <Route exact path="/tests_historics" element={<UnderConstruction />} />
         {/* Testing test result */}

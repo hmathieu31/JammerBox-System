@@ -1,6 +1,5 @@
 import React from "react";
 import "../CSS/TestResult.css";
-import { Navigate, useNavigate } from "react-router-dom";
 import ReturnButton from "../components/returnButton";
 import LoadingSymbol from "../components/loadingSymbol";
 
