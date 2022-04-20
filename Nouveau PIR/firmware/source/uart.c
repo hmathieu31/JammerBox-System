@@ -3,7 +3,7 @@
 /* Programm        :  UART		                                             */
 /* Controller      :  dsPIC33F                                               */
 /* Latest change   :  31.08.2020                                             */
-/* Author          :  Grégoire Chabin/Christian Ringlstetter/Thomas Pichler  */
+/* Author          :  Grï¿½goire Chabin/Christian Ringlstetter/Thomas Pichler  */
 /*****************************************************************************/
 
 // ### Basic includes ###
@@ -12,6 +12,8 @@
 #include "string.h"
 #include "stdlib.h"
 #include "uart.h"
+#include "stm32f10x.h"
+#include "stm32f10x_usart.h"
 
 // ### Programm includes ###
 #include "system_configuration.h"
@@ -104,8 +106,8 @@ extern double calculation_factor_CRK_TOOTH_PER;
 extern double delay_angle_CAM_delay;
 extern double delay_factor_CAM_delay;
 
-//** CAM_REF_CRK **											// t: time / c: °CRK	
-extern long double angle_time_to_start_failure_CAM_REF_CRK; // Value Delay (ms or °CRK)			
+//** CAM_REF_CRK **											// t: time / c: ï¿½CRK	
+extern long double angle_time_to_start_failure_CAM_REF_CRK; // Value Delay (ms or ï¿½CRK)			
 extern char delay_type_CAM_REF_CRK;
 
 //** CRK_TOOTH_OFF **
@@ -819,7 +821,7 @@ void UART_COM_error(void) {
         message_received = false;
 
         //communication error treatment
-        UART_send(message[0]);
+        USART_SendData(USART1,message[0]);
     }
 }
 

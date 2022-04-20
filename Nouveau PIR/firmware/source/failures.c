@@ -3,7 +3,7 @@
 /* Programm        :  Failures			                                     */
 /* Controller      :  dsPIC33F                                               */
 /* Latest change   :  31.08.2020                                             */
-/* Author          :  Grégoire Chabin/Christian Ringlstetter/Thomas Pichler  */
+/* Author          :  Grï¿½goire Chabin/Christian Ringlstetter/Thomas Pichler  */
 /*****************************************************************************/
 
 // ### Basic includes ###
@@ -11,7 +11,9 @@
 	#include "p33FJ256GP710A.h"
 	#include "stdbool.h"
 	#include "failures.h"
-
+    #include "stm32f10x.h"
+    #include "stm32f10x_gpio.h"
+    #include "stm32f10x_tim.h"
 // ### Programm includes ###
 	#include "timer.h"
     #include "synchronization.h"
@@ -110,9 +112,9 @@
 
 	//** CAM_REF_CRK **
 	extern unsigned int delay_counter_CAM_REF_CRK;								
-	extern long double angle_time_to_start_failure_CAM_REF_CRK;			// Value Delay (ms or °CRK)	
+	extern long double angle_time_to_start_failure_CAM_REF_CRK;			// Value Delay (ms or ï¿½CRK)	
 	extern double difference_to_edge_failure_start_CAM_REF_CRK;			
-	extern char delay_type_CAM_REF_CRK;									// t: time / c: °CRK
+	extern char delay_type_CAM_REF_CRK;									// t: time / c: ï¿½CRK
    
    
     //** CRK_TOOTH_OFF **
@@ -363,11 +365,11 @@
 	{		
 		if(CRK_signal == true)
 		{
-			LATGbits.LATG6 = 1;
+			GPIO_SetBits(GPIOG,6);
 		}
 		else
 		{
-			LATGbits.LATG6 = 0;
+			GPIO_ResetBits(GPIOG,6);
 		}
 	}
 
