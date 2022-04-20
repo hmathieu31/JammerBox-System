@@ -714,7 +714,6 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM7_IRQHandler(void) {
                 break;
             }
             case 2: { // failure for the rising edge
-                //? TODO: #23 Implement SEG_ADP_ER_LIM_reset
                 SEG_ADP_ER_LIM_reset();//?SEG_... failure_inactive, passed and waiting =false, init timer 7 & 8, SEG_...error counter reset 
                 break;
             } 
