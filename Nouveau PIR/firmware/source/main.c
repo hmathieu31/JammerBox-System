@@ -585,7 +585,7 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM4_IRQHandler(void) {
 
 //## Timer 5 Interrupt: CAM failure circuit-entering
 
-void __attribute__((__interrupt__, no_auto_psv)) _T5Interrupt(void) {
+void __attribute__((__interrupt__, no_auto_psv)) TIM5_IRQHandler(void) {
 
     // all overflows between the events
     timer_overflow_CAM_failure++;
@@ -596,7 +596,7 @@ void __attribute__((__interrupt__, no_auto_psv)) _T5Interrupt(void) {
 
 //## Timer 6 Interrupt: CAM_PER - start value
 
-void __attribute__((__interrupt__, no_auto_psv)) _T6Interrupt(void) {
+void __attribute__((__interrupt__, no_auto_psv)) TIM6_IRQHandler(void) {
 
     if (failure_identify == '5') { //CAM_PER //?CAM_PER is the error identified by '5'
 
@@ -650,7 +650,7 @@ void __attribute__((__interrupt__, no_auto_psv)) _T6Interrupt(void) {
 
 //## Timer 7 Interrupt: CAM_PER - pulse duration
 
-void __attribute__((__interrupt__, no_auto_psv)) _T7Interrupt(void) {
+void __attribute__((__interrupt__, no_auto_psv)) TIM7_IRQHandler(void) {
 
     if (failure_identify == '5') // CAM_PER --> Cam_Spk
     {
@@ -749,7 +749,7 @@ void __attribute__((__interrupt__, no_auto_psv)) _T7Interrupt(void) {
 
 //## Timer 8 Interrupt
 
-void __attribute__((__interrupt__, no_auto_psv)) _T8Interrupt(void) {
+void __attribute__((__interrupt__, no_auto_psv)) TIM8_IRQHandler(void) {
     
     if(failure_identify == 'i') { // CRK_GAP_NOT_DET
         timer_Counter_CRK_GAP_NOT_DET++;
