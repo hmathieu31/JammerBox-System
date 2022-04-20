@@ -1,8 +1,6 @@
 import "../CSS/Background.css";
 import "../CSS/MainPage.css";
-import Popup from "reactjs-popup";
 import "../CSS/ParameterPopup.css";
-import { useState } from "react";
 import React from "react";
 import Modal from "react-modal";
 
@@ -12,7 +10,7 @@ class ParameterPopup extends React.Component {
     return (
       <div className="test-configuration flex-col-hstart-vstart clip-contents">
         <div className="group-917 flex-col-hcenter">
-          <p className="txt-120 flex-hcenter">Nom du test</p>
+          <p className="txt-120 flex-hcenter">{this.props.lol}</p>
           <div className="group-213 flex-col-hend">
             <div className="group-21">
               <p className="txt-649 flex-hcenter">Parametre :</p>
@@ -33,6 +31,14 @@ class ParameterPopup extends React.Component {
   }
 }
 
+class ButtonAttributes {
+  constructor(name, hasparam, paramsTab) {
+    const hasParam = hasparam;
+    const testName = name;
+    const params = paramsTab;
+  }
+}
+
 export default class ButtonList extends React.Component {
   constructor() {
     super();
@@ -40,18 +46,18 @@ export default class ButtonList extends React.Component {
       showModal: false,
     };
     this.Buttons = [
-      "CRK SHORT CIRCUIT",
-      "CAM SHORT CIRCUIT",
-      "CRK SPK",
-      "CRK RUN OUT",
-      "CRK TOOTH OFF",
-      "CRK GAP NOT DET",
-      "CRK SEG ADP ERR LIM",
-      "CRK PULSE DURATION",
-      "CRK POSN ENG STST",
-      "CAM DELAY",
-      "CAM SPK",
-      "CAM PAT ERR",
+      new ButtonAttributes("CRK SHORT CIRCUIT", false, null),
+      new ButtonAttributes("CAM SHORT CIRCUIT", false, null),
+      new ButtonAttributes("CRK SPK", false, null),
+      new ButtonAttributes("CRK RUN OUT", true, "Angle"),
+      new ButtonAttributes("CRK TOOTH OFF", true, "Teeth off"),
+      new ButtonAttributes("CRK GAP NOT DET", false, null),
+      new ButtonAttributes("CRK SEG ADP ERR LIM", false, null),
+      new ButtonAttributes("CRK PULSE DURATION", false, null),
+      new ButtonAttributes("CRK POSN ENG STST", false, null),
+      new ButtonAttributes("CAM DELAY", false, null),
+      new ButtonAttributes("CAM SPK", false, null),
+      new ButtonAttributes("CAM PAT ERR", false, null),
     ];
   }
 
@@ -75,7 +81,7 @@ export default class ButtonList extends React.Component {
           {data}
         </button>
         <Modal isOpen={this.state.showModal}>
-          <ParameterPopup handleOpenClose={this.handleOpenClose} />
+          <ParameterPopup handleOpenClose={this.handleOpenClose} lol={data} />
         </Modal>
       </div>
     );
