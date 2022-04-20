@@ -612,7 +612,7 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM6_IRQHandler(void)
 
         if (GPIO_ReadInputDataBit(GPIOG, 7) == 1)
         {
-            GPIO_SetBits(GPIOG, 7);
+            GPIO_ResetBits(GPIOG, 7);
         }
         else
         {
@@ -642,7 +642,7 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM6_IRQHandler(void)
 
         if (GPIO_ReadInputDataBit(GPIOG, 6) == 1)
         {
-            GPIO_SetBits(GPIOG, 6);
+            GPIO_ResetBits(GPIOG, 6);
         }
         else
         {
@@ -670,7 +670,7 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM7_IRQHandler(void)
     {
         if (GPIO_ReadInputDataBit(GPIOG, 8) == 1)
         {
-            GPIO_SetBits(GPIOG, 8);
+            GPIO_ResetBits(GPIOG, 8);
         }
         else
         {
@@ -691,7 +691,7 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM7_IRQHandler(void)
     {
         if (GPIO_ReadInputDataBit(GPIOG, 6) == 1)
         {
-            GPIO_SetBits(GPIOG, 6);
+            GPIO_ResetBits(GPIOG, 6);
         }
         else
         {
