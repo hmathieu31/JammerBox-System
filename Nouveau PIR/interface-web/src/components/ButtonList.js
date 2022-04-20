@@ -12,8 +12,7 @@ class ParameterPopup extends React.Component {
     return (
       <div className="test-configuration flex-col-hstart-vstart clip-contents">
         <div className="group-917 flex-col-hcenter">
-          {/* <p className="txt-120 flex-hcenter">Nom du test</p> */}
-          <p className="txt-120 flex-hcenter"> {this.props.testName} </p>
+          <p className="txt-120 flex-hcenter">{this.props.testName}</p>
           <div className="group-213 flex-col-hend">
             <div className="group-21">
               <p className="txt-649 flex-hcenter">Parametre :</p>
@@ -39,6 +38,7 @@ export default class ButtonList extends React.Component {
     super();
     this.state = {
       showModal: false,
+      testName: "POLO",
     };
     this.Buttons = [
       "CRK SHORT CIRCUIT",
@@ -56,10 +56,14 @@ export default class ButtonList extends React.Component {
     ];
   }
 
-  handleOpenClose = () => {
-    console.log("lol");
-    this.setState((prev) => ({ showModal: !prev.showModal }));
-  };
+  handleOpenClose(data) {
+    return () => {
+      this.setState((prev) => ({
+        testName: data,
+        showModal: !prev.showModal,
+      }));
+    };
+  }
 
   truc() {
     console.log("Hoh");
@@ -70,13 +74,16 @@ export default class ButtonList extends React.Component {
       <div>
         <button
           key={this.Buttons.indexOf(data)}
-          onClick={this.handleOpenClose}
+          onClick={this.handleOpenClose(data)}
           className="group-6 txt-733"
         >
           {data}
         </button>
         <Modal isOpen={this.state.showModal}>
-          <ParameterPopup handleOpenClose={this.handleOpenClose} testName={data} />
+          <ParameterPopup
+            handleOpenClose={this.handleOpenClose(data)}
+            testName={this.state.testName}
+          />
         </Modal>
       </div>
     );
