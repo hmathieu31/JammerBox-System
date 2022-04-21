@@ -1,0 +1,2025 @@
+\hypertarget{main_8c}{}\doxysection{Nouveau PIR/firmware/source/main.c File Reference}
+\label{main_8c}\index{Nouveau PIR/firmware/source/main.c@{Nouveau PIR/firmware/source/main.c}}
+{\ttfamily \#include \char`\"{}config.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}stdbool.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}stdlib.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}stm32f10x.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}stm32f10x\+\_\+gpio.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}stm32f10x\+\_\+tim.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}stm32f10x\+\_\+usart.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}string.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}failures.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}ic.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}osc.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}port\+\_\+config.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}synchronization.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}system\+\_\+configuration.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}timer.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}uart.\+h\char`\"{}}\newline
+Include dependency graph for main.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{main_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{main_8c_a8a8f99f059be11a4eb89c4fbf6d673d6}{edges\+\_\+beetween\+\_\+shift\+\_\+\+CAM\+\_\+delay\+\_\+definition}}~6
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{main_8c_a840291bc02cba5474a4cb46a9b9566fe}{main}} (void)
+\item 
+void \mbox{\hyperlink{main_8c_a64653c452ab199760e9cdd6bdbbeeb76}{\+\_\+\+\_\+attribute\+\_\+\+\_\+}} ((\+\_\+\+\_\+interrupt\+\_\+\+\_\+, no\+\_\+auto\+\_\+psv))
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{main_8c_afe64a7b02b07021acd3f4e7d30195fe2}{number\+\_\+teeth\+\_\+\+CRK}} = 0
+\item 
+int \mbox{\hyperlink{main_8c_ac953f0c0d545347b98a28a5f7e1ea15c}{number\+\_\+miss\+\_\+teeth}} = 0
+\item 
+int \mbox{\hyperlink{main_8c_af9b6adca0c1aa5a6ba1da07c6f4e1588}{number\+\_\+gap}} = 0
+\item 
+double \mbox{\hyperlink{main_8c_a2522b63ff5828da052d1c8b3ee9c157c}{tdc\+\_\+to\+\_\+gap}} = 0
+\item 
+double \mbox{\hyperlink{main_8c_a30aee154f6067d411dbf4839fdc3cc93}{first\+\_\+seg\+\_\+angle}} = 0
+\item 
+int \mbox{\hyperlink{main_8c_ac5798e2b7f5cad74f09b07e527613982}{number\+\_\+cylinder}} = 0
+\item 
+unsigned int \mbox{\hyperlink{main_8c_a912fe456cc42c18b47eae6de3e35c4f8}{first\+\_\+seg\+\_\+start\+\_\+tooth}} = 0
+\item 
+double \mbox{\hyperlink{main_8c_a85515a5ec371da776aeb2590d88bd83c}{gap\+\_\+ratio\+\_\+\+CRK\+\_\+\+DET}} = 0
+\item 
+double \mbox{\hyperlink{main_8c_a61002eb84b7c4ab04392f09c08cb267c}{gap\+\_\+ratio\+\_\+\+CRK\+\_\+\+VLD}} = 0
+\item 
+char \mbox{\hyperlink{main_8c_a12faccd7c42eaf3bc1d085640a5b0286}{sensortype\+\_\+\+CRK}}
+\item 
+unsigned long \mbox{\hyperlink{main_8c_afd691aae0f70e937a4dd458841dde240}{T\+\_\+\+TOOTH\+\_\+\+RAW\+\_\+2}} = 0
+\item 
+unsigned long \mbox{\hyperlink{main_8c_a9f76f4b71c284d9db477aac802286bcc}{T\+\_\+\+TOOTH\+\_\+\+RAW\+\_\+1}} = 0
+\item 
+unsigned long \mbox{\hyperlink{main_8c_a8bc6e99e5b5b1814027ef2f4c2524e8f}{T\+\_\+\+TOOTH\+\_\+\+RAW}} = 0
+\item 
+unsigned long \mbox{\hyperlink{main_8c_a118723accaf1b99cbcfbd76126114cf9}{T\+\_\+\+TOOTH\+\_\+\+RAW\+\_\+2\+\_\+old}} = 0
+\item 
+unsigned long \mbox{\hyperlink{main_8c_a2cd636564c8794f7d2aeae0cd22c1ffa}{T\+\_\+\+TOOTH\+\_\+\+RAW\+\_\+1\+\_\+old}} = 0
+\item 
+unsigned long \mbox{\hyperlink{main_8c_a568c3e1a82c83ec6dcc955066df8c932}{T\+\_\+\+TOOTH\+\_\+\+RAW\+\_\+old}} = 0
+\item 
+unsigned long \mbox{\hyperlink{main_8c_a1ff4d3545237dd73fc8c3022922e48c2}{low\+\_\+time\+\_\+\+CRK}} = 0
+\item 
+unsigned long \mbox{\hyperlink{main_8c_aa697468758fbf1b546cd67c827d8dd84}{timer\+\_\+overflow\+\_\+\+CRK}} = 0
+\item 
+unsigned int \mbox{\hyperlink{main_8c_ab187efc17c279156d2fbe40791bd1182}{teeth\+\_\+count\+\_\+\+CRK}} = 0
+\item 
+unsigned int \mbox{\hyperlink{main_8c_ac15826e516583ca9efd204606ba7083c}{teeth\+\_\+count\+\_\+\+CAM\+\_\+\+CRK\+\_\+synch}} = 0
+\item 
+unsigned int \mbox{\hyperlink{main_8c_a4bbd4ffdc69f028b74e8af0c54dd9ee0}{teeth\+\_\+count\+\_\+\+CAM\+\_\+\+CRK\+\_\+synch\+\_\+ahead}} = 0
+\item 
+unsigned int \mbox{\hyperlink{main_8c_ab040cae3d9ae46728a9af9db655c014e}{number\+\_\+real\+\_\+teeth}} = 0
+\item 
+unsigned int \mbox{\hyperlink{main_8c_a05e75142d685997ef05acf36e45a356a}{number\+\_\+teeth\+\_\+between\+\_\+gaps}} = 0
+\item 
+unsigned int \mbox{\hyperlink{main_8c_a26d6e169e9653b1993e992cff06397fb}{delay\+\_\+counter\+\_\+\+CRK}} = 0
+\item 
+unsigned int \mbox{\hyperlink{main_8c_a8ce3b19a6074670b7a7b7f732c87a3a1}{segment\+\_\+counter\+\_\+\+CRK}} = 0
+\item 
+unsigned int \mbox{\hyperlink{main_8c_a896b3f467a176975dc687f95f1a1367e}{number\+\_\+segments\+\_\+\+CRK}} = 0
+\item 
+unsigned int \mbox{\hyperlink{main_8c_ace219fbc9fdee5cfbd6a2cff4784e4bc}{shift\+\_\+counter\+\_\+\+CRK}} = 0
+\item 
+unsigned int \mbox{\hyperlink{main_8c_a26d8a4c954e505bb7d333d55f001e3cd}{start\+\_\+delay}} = 100
+\item 
+unsigned int \mbox{\hyperlink{main_8c_ae97ec3b5829cdcf6527423f2a9cd4dcc}{engine\+\_\+start\+\_\+counter}} = 0
+\item 
+unsigned int \mbox{\hyperlink{main_8c_aacb88e3d6fd3944b240b4439e81c96ae}{engine\+\_\+start\+\_\+counter\+\_\+limit}} = 2
+\item 
+double \mbox{\hyperlink{main_8c_af3c32be62d5f2307cc01a316c01ba3dc}{revolution\+\_\+\+CRK}} = 0
+\item 
+bool \mbox{\hyperlink{main_8c_a7727b0a0a81b3a64c19a0e84fd498c5b}{CRK\+\_\+synch}} = false
+\item 
+bool \mbox{\hyperlink{main_8c_a00fe94a04e331cc5cdc95a8073c1ecb3}{CRK\+\_\+synch\+\_\+temp}} = false
+\item 
+bool \mbox{\hyperlink{main_8c_afb93846f1625d0d5cf6d531524e9fbb3}{delay\+\_\+off}} = false
+\item 
+bool \mbox{\hyperlink{main_8c_a66d1dc17c3815ec543259ff6cd358896}{CRK\+\_\+signal}} = false
+\item 
+bool \mbox{\hyperlink{main_8c_acd78757977e1e4a37661d2abf4d0e274}{CRK\+\_\+config}} = false
+\item 
+bool \mbox{\hyperlink{main_8c_a7aeb1a0c2ff915edcc0973978f0dc21c}{engine\+\_\+start}} = false
+\item 
+bool \mbox{\hyperlink{main_8c_a668b8400da7191cbf0928fdf21a9ae94}{synch\+\_\+times\+\_\+valid}} = false
+\item 
+unsigned int \mbox{\hyperlink{main_8c_a3d1c16f7b67a7b889ff09efcf7651345}{number\+\_\+active\+\_\+edges\+\_\+\+CAM}} \mbox{[}2\mbox{]}
+\item 
+int \mbox{\hyperlink{main_8c_a9cf1c6135c61ae4be9df725537b3d7e3}{number\+\_\+teeth\+\_\+\+CAM}} \mbox{[}2\mbox{]} = \{0, 0\}
+\item 
+double \mbox{\hyperlink{main_8c_ae78fc7b1baf9c329b60166be6b88b85c}{filter\+\_\+time\+\_\+\+CAM}} \mbox{[}2\mbox{]}
+\item 
+double \mbox{\hyperlink{main_8c_a77550eb84997c4bf1f3f258b305cb07b}{CAM\+\_\+edges}} \mbox{[}2\mbox{]}\mbox{[}24\mbox{]}
+\item 
+double \mbox{\hyperlink{main_8c_a5f76355a7410c0f9ba6f2685976f7789}{distance\+\_\+gap\+\_\+to\+\_\+\+CAM\+\_\+edge}} \mbox{[}2\mbox{]}\mbox{[}24\mbox{]}
+\item 
+double \mbox{\hyperlink{main_8c_a4acf9cde9660862148d0a73f10984ced}{first\+\_\+edge\+\_\+to\+\_\+tdc0}} \mbox{[}2\mbox{]} = \{0, 0\}
+\item 
+char \mbox{\hyperlink{main_8c_a1ab47ef12d9fd5a0a0c37354af662f7d}{active\+\_\+\+CAM\+\_\+edges}} \mbox{[}2\mbox{]}
+\item 
+char \mbox{\hyperlink{main_8c_a9c555c5cacf96afd9cc8ec7d39cecf38}{sensortype\+\_\+\+CAM}} \mbox{[}2\mbox{]}
+\item 
+int \mbox{\hyperlink{main_8c_a8b96e45eeb664a177dede0e498910a1b}{number\+\_\+of\+\_\+\+CAM}} = 1
+\item 
+int \mbox{\hyperlink{main_8c_a02b199f14e7143121536a08abae33788}{cam\+\_\+setup\+\_\+counter}} = 0
+\item 
+bool \mbox{\hyperlink{main_8c_af2b1f70badf370b8c61316f5dcefaf26}{configuration\+\_\+complete}} = false
+\item 
+bool \mbox{\hyperlink{main_8c_a26f49697b8275c1863e0716a3c236480}{output\+\_\+level\+\_\+setting}} = false
+\item 
+unsigned long \mbox{\hyperlink{main_8c_af63272d2518e2577d29c0d278b3fa48e}{timer\+\_\+overflow\+\_\+\+CAM}} = 0
+\item 
+unsigned long \mbox{\hyperlink{main_8c_a3bebca3239ddb07b8d20d917bf0974a0}{segment\+\_\+time\+\_\+\+CAM}} = 0
+\item 
+unsigned int \mbox{\hyperlink{main_8c_ad34a843c27ea985d626a403d5dfd10ad}{edge\+\_\+count\+\_\+\+CAM}} \mbox{[}2\mbox{]} = \{0, 0\}
+\item 
+unsigned int \mbox{\hyperlink{main_8c_ab0618b4a58fae08ae9d00346c60ec496}{edge\+\_\+validation\+\_\+counter\+\_\+\+CAM}} \mbox{[}2\mbox{]} = \{0, 0\}
+\item 
+unsigned int \mbox{\hyperlink{main_8c_afd23d6c84f8e20fca289ed0ee8715187}{edge\+\_\+position\+\_\+counter\+\_\+\+CAM}} \mbox{[}2\mbox{]} = \{0, 0\}
+\item 
+unsigned int \mbox{\hyperlink{main_8c_a65576eb16b6e54d275a167327bea7fb9}{former\+\_\+edge\+\_\+position\+\_\+\+CAM}} \mbox{[}2\mbox{]} = \{0, 0\}
+\item 
+unsigned int \mbox{\hyperlink{main_8c_a482c739ea6583c79139c1dda964b8934}{edge\+\_\+validation\+\_\+counter\+\_\+\+CAM\+\_\+ahead}} \mbox{[}2\mbox{]} = \{0, 0\}
+\item 
+unsigned int \mbox{\hyperlink{main_8c_a7143d1e41fd86e9f122d9c66be0b1d67}{edge\+\_\+position\+\_\+counter\+\_\+\+CAM\+\_\+ahead}} \mbox{[}2\mbox{]} = \{0, 0\}
+\item 
+unsigned int \mbox{\hyperlink{main_8c_ac49275c6b1fdb8331b6a85ded17ef302}{former\+\_\+edge\+\_\+position\+\_\+\+CAM\+\_\+ahead}} \mbox{[}2\mbox{]} = \{0, 0\}
+\item 
+double \mbox{\hyperlink{main_8c_ae8d79e34d9069c4d224e083290a85e6e}{gap\+\_\+to\+\_\+edge}}
+\item 
+double \mbox{\hyperlink{main_8c_a250f7761f51a2a07568fc906f8d43095}{gap\+\_\+to\+\_\+edge\+\_\+ahead}}
+\item 
+double \mbox{\hyperlink{main_8c_a9f65b0d3142356fc10814e114939a72a}{gap\+\_\+to\+\_\+first\+\_\+edge}} \mbox{[}2\mbox{]} = \{0, 0\}
+\item 
+double \mbox{\hyperlink{main_8c_a751e5904b3aa52cdffadc6ea4686d41f}{gap\+\_\+to\+\_\+first\+\_\+edge\+\_\+difference}} \mbox{[}2\mbox{]} = \{0, 0\}
+\item 
+double \mbox{\hyperlink{main_8c_a4433116b526521b3810d1671c1b9a96a}{tolerance\+\_\+window\+\_\+\+CAM}} \mbox{[}2\mbox{]}
+\item 
+bool \mbox{\hyperlink{main_8c_a8c4796f2e612fca802312c2226fcdec8}{CAM\+\_\+tolerance\+\_\+switch}} \mbox{[}2\mbox{]} = \{false, false\}
+\item 
+bool \mbox{\hyperlink{main_8c_a6c2d1f9afb9e34026dc2a85e0d7fa1e3}{CAM\+\_\+\+CRK\+\_\+synch\+\_\+status}} = false
+\item 
+bool \mbox{\hyperlink{main_8c_a03c0f18a6302f4a413c98919beedd057}{CAM\+\_\+\+CRK\+\_\+synch\+\_\+status\+\_\+ahead}} = false
+\item 
+bool \mbox{\hyperlink{main_8c_a734dd27ee07083ae6985cc7e642de6e7}{CAM\+\_\+\+CRK\+\_\+synch\+\_\+ahead}} \mbox{[}2\mbox{]} = \{false, false\}
+\item 
+bool \mbox{\hyperlink{main_8c_a4846863c93975e5d88fbd9b4ecc57d20}{CAM\+\_\+signal}} \mbox{[}2\mbox{]} = \{false, false\}
+\item 
+bool \mbox{\hyperlink{main_8c_a04da1dd6d4836425ca52d3b1696ec1a5}{CRK\+\_\+\+CAM\+\_\+synch}} \mbox{[}2\mbox{]} = \{false, false\}
+\item 
+bool \mbox{\hyperlink{main_8c_a7809eb20331648930f7a85897de70a88}{CAM\+\_\+config}} = false
+\item 
+int \mbox{\hyperlink{main_8c_a9979f80ab833421bad2e664b9f7d91d4}{teeth\+\_\+count\+\_\+overall}} = 0
+\item 
+bool \mbox{\hyperlink{main_8c_a44944c4febc3ff25dd242a52b1b42226}{communication\+\_\+active}} = false
+\item 
+bool \mbox{\hyperlink{main_8c_a6d78a853f38c5aa69102c7cb757623cb}{communication\+\_\+ready}} = false
+\item 
+bool \mbox{\hyperlink{main_8c_add696ba7a8f31a196fc34ea5afdeb48d}{communication\+\_\+validation}} = false
+\item 
+char \mbox{\hyperlink{main_8c_a906f58f9fb2ce60131ecacd1d649d6a1}{failure\+\_\+identify}} = \textquotesingle{}0\textquotesingle{}
+\item 
+int \mbox{\hyperlink{main_8c_a98358735d6113042210027fe829762de}{active\+\_\+cam\+\_\+failure}} = 0
+\item 
+bool \mbox{\hyperlink{main_8c_aa009bc0b69bbb38154e60d1428ffc33c}{failure\+\_\+active}} = false
+\item 
+bool \mbox{\hyperlink{main_8c_ae1dbfa52ababd302f93dbe4fd0620f8f}{failure\+\_\+active\+\_\+\+CAM\+\_\+blank\+\_\+out}} = false
+\item 
+bool \mbox{\hyperlink{main_8c_a9efd1f4caf11e1037604fb6f4b42ed31}{failure\+\_\+set}} = false
+\item 
+bool \mbox{\hyperlink{main_8c_a36381716e95bbb3090a24ba5260bf35d}{failure\+\_\+passed}} = false
+\item 
+bool \mbox{\hyperlink{main_8c_ae1abad2ed2b92b6b82254dc4debca57a}{failure\+\_\+waiting}} = false
+\item 
+bool \mbox{\hyperlink{main_8c_a155fe01f33d7c7c624afc3ac935b2523}{failure\+\_\+configured}} = false
+\item 
+bool \mbox{\hyperlink{main_8c_a22003ec99e75d7fde10d70c9e5ba1c7b}{failure\+\_\+configured\+\_\+\+CAM\+\_\+blank\+\_\+out}} = false
+\item 
+unsigned long \mbox{\hyperlink{main_8c_ab2fec6547dc914b855112ea2d069e652}{timer\+\_\+overflow\+\_\+\+CRK\+\_\+failure}} = 0
+\item 
+unsigned long \mbox{\hyperlink{main_8c_aa7f0f8e777321cf47da5f0dd59c5be94}{timer\+\_\+overflow\+\_\+\+CAM\+\_\+failure}} = 0
+\item 
+unsigned long \mbox{\hyperlink{main_8c_a7ccd9723b2e11820cc395d0b16931872}{timer\+\_\+overflow\+\_\+\+CAM\+\_\+\+REF\+\_\+\+CRK}} = 0
+\item 
+char \mbox{\hyperlink{main_8c_ad09cc41f983fa5c4f93b335e55684b81}{sc\+\_\+type\+\_\+\+CRK\+\_\+\+RUN\+\_\+\+OUT}}
+\item 
+unsigned int \mbox{\hyperlink{main_8c_a39121f24b916d4e2ea6e7f897bafe4a8}{teeth\+\_\+counter\+\_\+\+CRK\+\_\+\+RUN\+\_\+\+OUT}} = 0
+\item 
+unsigned int \mbox{\hyperlink{main_8c_a706090098ba2e12ba5bd608552f126d5}{angle\+\_\+to\+\_\+start\+\_\+failure\+\_\+\+CRK\+\_\+\+RUN\+\_\+\+OUT}}
+\item 
+unsigned int \mbox{\hyperlink{main_8c_ad90c6afa3ef6d8897b04b50f9161bd3a}{failure\+\_\+period\+\_\+\+CRK\+\_\+\+RUN\+\_\+\+OUT}}
+\item 
+unsigned int \mbox{\hyperlink{main_8c_aeab62b1deec35fe68ca4b720e3435984}{counter\+\_\+\+TDC0}}
+\item 
+int \mbox{\hyperlink{main_8c_ac6eafc14bbf628d09f0aea91c943dc44}{period\+\_\+counter\+\_\+\+CRK\+\_\+\+RUN\+\_\+\+OUT}}
+\item 
+double \mbox{\hyperlink{main_8c_a8156941efe0dcd826307b446f3ef48f1}{difference\+\_\+to\+\_\+edge\+\_\+\+TDC0}}
+\item 
+double \mbox{\hyperlink{main_8c_a89493411d9fa567844ffb6a621d46967}{difference\+\_\+to\+\_\+edge\+\_\+failure\+\_\+start}}
+\item 
+bool \mbox{\hyperlink{main_8c_af75c8735a41240c5a884f5024743c4c2}{detected\+\_\+\+TDC0}}
+\item 
+bool \mbox{\hyperlink{main_8c_a15ef7a57549da0cf7802f16dbd26487f}{TDC\+\_\+on\+\_\+edge}}
+\item 
+bool \mbox{\hyperlink{main_8c_a77556040fb54d335bacaf15336a82d29}{counter\+\_\+ready}} = false
+\item 
+bool \mbox{\hyperlink{main_8c_a5deea399d9689d2e2e0b3b3831462c5d}{counter\+\_\+reset}} = true
+\item 
+unsigned int \mbox{\hyperlink{main_8c_aaa021fc02b2a585f7a62ec97bbee6d5e}{counter\+\_\+\+CAM\+\_\+\+PER}} \mbox{[}2\mbox{]} = \{0, 0\}
+\item 
+unsigned int \mbox{\hyperlink{main_8c_a70548cc19cb8197d69bde4da728a470a}{number\+\_\+edges\+\_\+\+CAM\+\_\+\+PER}}
+\item 
+double \mbox{\hyperlink{main_8c_a2b533334c698857cb6a0c8eb0bc184d6}{filter\+\_\+time\+\_\+\+CAM\+\_\+\+PER}}
+\item 
+double \mbox{\hyperlink{main_8c_aa62fd33093aac3979c77d8ac47195785}{microsecond\+\_\+per\+\_\+timer\+\_\+tick\+\_\+\+CAM\+\_\+\+PER\+\_\+\+\_\+\+CRK\+\_\+\+TOOTH\+\_\+\+PER}} = 0.\+217
+\item 
+bool \mbox{\hyperlink{main_8c_a5107102b653d5cd439b1f861bd600f14}{all\+\_\+active\+\_\+edges\+\_\+\+CAM\+\_\+\+PER}} = false
+\item 
+char \mbox{\hyperlink{main_8c_a1aeabc5ac5f6b29223d857aceb659320}{active\+\_\+edges\+\_\+\+CAM\+\_\+\+PER}}
+\item 
+unsigned int \mbox{\hyperlink{main_8c_aa92e684341d20dd78cbbf8a8d98b1899}{start\+\_\+tooth\+\_\+\+CRK\+\_\+\+TOOTH\+\_\+\+PER}}
+\item 
+unsigned int \mbox{\hyperlink{main_8c_a6d79ff75c0424017b90b2039f2f5aeaa}{number\+\_\+pulses\+\_\+\+CRK\+\_\+\+TOOTH\+\_\+\+PER}}
+\item 
+unsigned int \mbox{\hyperlink{main_8c_a658a74de9ab44e3ad4b459d557dac9d7}{engine\+\_\+revolutions\+\_\+\+CRK\+\_\+\+TOOTH\+\_\+\+PER}}
+\item 
+unsigned int \mbox{\hyperlink{main_8c_a2068dfcf9f70475272677ad2446d6cdf}{teeth\+\_\+counter\+\_\+\+CRK\+\_\+\+TOOTH\+\_\+\+PER}}
+\item 
+unsigned int \mbox{\hyperlink{main_8c_ae00db4a9603885a19a44080bdb2331d9}{revolution\+\_\+counter\+\_\+\+CRK\+\_\+\+TOOTH\+\_\+\+PER}}
+\item 
+double \mbox{\hyperlink{main_8c_a0241a57f40777392b40aebc8ea433d2c}{calculation\+\_\+factor\+\_\+\+CRK\+\_\+\+TOOTH\+\_\+\+PER}}
+\item 
+unsigned int \mbox{\hyperlink{main_8c_ab28b6d5505e18cd397139cfa75aa3912}{number\+\_\+processing\+\_\+edges\+\_\+\+CAM\+\_\+delay}} \mbox{[}2\mbox{]} = \{0, 0\}
+\item 
+const unsigned int \mbox{\hyperlink{main_8c_a8468b6f06553d05bc83fddf395f376b2}{edges\+\_\+beetween\+\_\+shift\+\_\+\+CAM\+\_\+delay}} = 6
+\item 
+unsigned int \mbox{\hyperlink{main_8c_aa52be318f3219c8b3c92b5a843f548b3}{shift\+\_\+counter\+\_\+\+CAM\+\_\+delay}} \mbox{[}2\mbox{]}\mbox{[}\mbox{\hyperlink{main_8c_a8a8f99f059be11a4eb89c4fbf6d673d6}{edges\+\_\+beetween\+\_\+shift\+\_\+\+CAM\+\_\+delay\+\_\+definition}}\mbox{]}
+\item 
+double \mbox{\hyperlink{main_8c_a25e59de533be1ac55ec5453104b0da3b}{angle\+\_\+to\+\_\+edge\+\_\+\+CAM\+\_\+delay}} \mbox{[}2\mbox{]}\mbox{[}\mbox{\hyperlink{main_8c_a8a8f99f059be11a4eb89c4fbf6d673d6}{edges\+\_\+beetween\+\_\+shift\+\_\+\+CAM\+\_\+delay\+\_\+definition}}\mbox{]}
+\item 
+double \mbox{\hyperlink{main_8c_a7488bc4243e7ba92ade85f9186db2793}{delay\+\_\+angle\+\_\+\+CAM\+\_\+delay}}
+\item 
+double \mbox{\hyperlink{main_8c_af4fb580f228912ecc709426087150786}{delay\+\_\+factor\+\_\+\+CAM\+\_\+delay}} = 1.\+0
+\item 
+bool \mbox{\hyperlink{main_8c_ac73a776a47669561214b6ad84a70e641}{timer\+\_\+active\+\_\+\+CAM\+\_\+delay}} \mbox{[}2\mbox{]} = \{false, false\}
+\item 
+bool \mbox{\hyperlink{main_8c_a1ffeb87120d45d392916acb155ef3879}{interrupt\+\_\+check\+\_\+\+CAM\+\_\+delay}} \mbox{[}2\mbox{]}
+\item 
+unsigned int \mbox{\hyperlink{main_8c_a831028f10615ac593b739d4731a43060}{delay\+\_\+counter\+\_\+\+CAM\+\_\+\+REF\+\_\+\+CRK}}
+\item 
+long double \mbox{\hyperlink{main_8c_af17a3a4176170c04e909c2cffab83a3e}{angle\+\_\+time\+\_\+to\+\_\+start\+\_\+failure\+\_\+\+CAM\+\_\+\+REF\+\_\+\+CRK}}
+\item 
+double \mbox{\hyperlink{main_8c_a874e6e147c885cc35f55b3d8bc18ceb8}{difference\+\_\+to\+\_\+edge\+\_\+failure\+\_\+start\+\_\+\+CAM\+\_\+\+REF\+\_\+\+CRK}}
+\item 
+char \mbox{\hyperlink{main_8c_a97ace91c5a574a12275e24d4b4bd02be}{delay\+\_\+type\+\_\+\+CAM\+\_\+\+REF\+\_\+\+CRK}}
+\item 
+unsigned int \mbox{\hyperlink{main_8c_a42368ade50de18ac6efb5e231ba284ab}{number\+\_\+tooth\+\_\+off}} = 0
+\item 
+unsigned int \mbox{\hyperlink{main_8c_ab06ff1f3f9aa8e15f049ad90eb229aec}{number\+\_\+teeth\+\_\+between\+\_\+tooth\+\_\+off}} = 0
+\item 
+unsigned int \mbox{\hyperlink{main_8c_af2b350cad5f904241be3cd72267e8cd4}{counter\+\_\+tooth\+\_\+off}} = 0
+\item 
+unsigned int \mbox{\hyperlink{main_8c_a590ad1bd7a49f0ea3fb90f8e24997bb1}{teeth\+\_\+counter\+\_\+\+CRK\+\_\+\+TOOTH\+\_\+\+OFF}} = 0
+\item 
+unsigned int \mbox{\hyperlink{main_8c_adb0348602102ca6255e00dd691cfa53c}{counter\+\_\+gap\+\_\+left\+\_\+\+CRK\+\_\+\+TOOTH\+\_\+\+OFF}} = 0
+\item 
+unsigned int \mbox{\hyperlink{main_8c_a0afd59a7cbe5941cd4735019f3431de4}{teeth\+\_\+counter\+\_\+\+CRK\+\_\+\+GAP\+\_\+\+NOT\+\_\+\+DET}} = 0
+\item 
+unsigned int \mbox{\hyperlink{main_8c_a0efa411b2fc4c7948d45abd03d6264a0}{timer\+\_\+\+Counter\+\_\+\+CRK\+\_\+\+GAP\+\_\+\+NOT\+\_\+\+DET}} = 0
+\item 
+unsigned int \mbox{\hyperlink{main_8c_ae22dd0b559e11e340eacb7e5acea6269}{teeth\+\_\+counter\+\_\+\+SEG\+\_\+\+ADP\+\_\+\+ER\+\_\+\+LIM}} = 0
+\item 
+unsigned int \mbox{\hyperlink{main_8c_aebc1cf24310f46e5fd32d36c9b93edb5}{timer\+\_\+\+Counter\+\_\+\+SEG\+\_\+\+ADP\+\_\+\+ER\+\_\+\+LIM}} = 0
+\item 
+double \mbox{\hyperlink{main_8c_aeaf45155613124740bc925868c135034}{crk\+\_\+delay\+\_\+\+SEG\+\_\+\+ADP\+\_\+\+ER\+\_\+\+LIM}} = 0
+\item 
+double \mbox{\hyperlink{main_8c_ad60977ee83061906ebaf1f0c40ea504c}{crk\+\_\+pulse\+\_\+duration\+\_\+\+CRK\+\_\+\+PLS\+\_\+\+ORNG}} = 0
+\item 
+unsigned int \mbox{\hyperlink{main_8c_a21b65a4cdebaef539c0958653e7115da}{crk\+\_\+teeth\+\_\+off\+\_\+\+POSN\+\_\+\+ENG\+\_\+\+STST}} = 0
+\item 
+unsigned int \mbox{\hyperlink{main_8c_af4e125ce632016b07d28f6ac94a33643}{counter\+\_\+\+POSN\+\_\+\+ENG\+\_\+\+STST}} = 0
+\item 
+unsigned int \mbox{\hyperlink{main_8c_ad7903904908b0166e54d513591340b4c}{active\+\_\+\+CAM\+\_\+edges\+\_\+counter}} \mbox{[}2\mbox{]} = \{0, 0\}
+\item 
+unsigned int \mbox{\hyperlink{main_8c_a4337a7e2ea5f37681e9765a379c42831}{sc\+\_\+type\+\_\+\+SC\+\_\+\+CAM\+\_\+\+CRK}} = 0
+\item 
+int \mbox{\hyperlink{main_8c_ad4bfbcc44cc22bb72cbfd271bb4f4fd8}{char\+\_\+counter}} = 0
+\item 
+int \mbox{\hyperlink{main_8c_a5204b01d9c34219f9b26378de5164b0f}{data\+\_\+counter}} = 0
+\item 
+char \mbox{\hyperlink{main_8c_a17329928f3869c86738181f3fb57fbff}{in}}
+\item 
+char \mbox{\hyperlink{main_8c_a03535d979603bfbbf85a5fe5c4e1a176}{start\+\_\+char}} = \textquotesingle{}!\textquotesingle{}
+\item 
+char \mbox{\hyperlink{main_8c_a98232dc5af0ccab4ba04e8abe43453d6}{end\+\_\+char}} = \textquotesingle{}\%\textquotesingle{}
+\item 
+char \mbox{\hyperlink{main_8c_a3fd96a1924b3a3f85e716adaae2650e1}{input\+\_\+chars}} \mbox{[}250\mbox{]}
+\item 
+char \mbox{\hyperlink{main_8c_abd2445aa73e81f69b039b4ff5eb75687}{input}} \mbox{[}250\mbox{]}
+\item 
+int \mbox{\hyperlink{main_8c_adaacf85422658ac80004cdc8b1bd51f1}{input\+\_\+char\+\_\+counter}} = 0
+\item 
+char \mbox{\hyperlink{main_8c_aaaf7baa3d8ac85d9a42661d006cf45d1}{temp\+\_\+chars\+\_\+1}} \mbox{[}21\mbox{]}
+\item 
+char \mbox{\hyperlink{main_8c_abae06a6c6bd04626e03b075988b29798}{temp\+\_\+chars\+\_\+2}} \mbox{[}21\mbox{]}
+\item 
+char \mbox{\hyperlink{main_8c_accf419f1343baf3022d8110d77787da3}{temp\+\_\+chars\+\_\+3}} \mbox{[}21\mbox{]}
+\item 
+char \mbox{\hyperlink{main_8c_a46e88e75cf37f24014fc5343f7cda43a}{temp\+\_\+chars\+\_\+4}} \mbox{[}21\mbox{]}
+\item 
+char \mbox{\hyperlink{main_8c_ae979808ac8536b0694d8d4922b82b8c2}{temp\+\_\+chars\+\_\+5}} \mbox{[}21\mbox{]}
+\item 
+char \mbox{\hyperlink{main_8c_a7dfda55d11eebf66f16e7028582fc988}{temp\+\_\+chars\+\_\+6}} \mbox{[}21\mbox{]}
+\item 
+char \mbox{\hyperlink{main_8c_a57230e9c3089849595ec548dfb3d7cb3}{temp\+\_\+chars\+\_\+7}} \mbox{[}21\mbox{]}
+\item 
+char \mbox{\hyperlink{main_8c_af925a16ab23f8f57d70f2ad109a76653}{temp\+\_\+chars\+\_\+8}} \mbox{[}21\mbox{]}
+\item 
+char \mbox{\hyperlink{main_8c_ae1433699181c826d3b99480196999667}{temp\+\_\+chars\+\_\+9}} \mbox{[}21\mbox{]}
+\item 
+char \mbox{\hyperlink{main_8c_aaa5d3d9d9bb45454a966061259e9f0e0}{temp\+\_\+chars\+\_\+10}} \mbox{[}21\mbox{]}
+\item 
+bool \mbox{\hyperlink{main_8c_a3264ca17406556a54abe56667f2c8611}{receiving}} = false
+\item 
+bool \mbox{\hyperlink{main_8c_a9a75d3b2e50a13d5eed2e8c1068f0acb}{message\+\_\+received}} = false
+\item 
+bool \mbox{\hyperlink{main_8c_aa9fcd7a55fe9ac0028180822cbaceced}{com\+\_\+error}} = false
+\item 
+char \mbox{\hyperlink{main_8c_afe98920c33a9fc309d104f2039c15859}{message\+\_\+identify}}
+\item 
+char \mbox{\hyperlink{main_8c_a26089ca36471af8e06dab2ef71bdd1bc}{message}} \mbox{[}14\mbox{]} = \{\textquotesingle{}1\textquotesingle{}, \textquotesingle{}2\textquotesingle{}, \textquotesingle{}3\textquotesingle{}, \textquotesingle{}4\textquotesingle{}, \textquotesingle{}5\textquotesingle{}, \textquotesingle{}6\textquotesingle{}, \textquotesingle{}7\textquotesingle{}, \textquotesingle{}8\textquotesingle{}, \textquotesingle{}9\textquotesingle{}, \textquotesingle{}a\textquotesingle{}, \textquotesingle{}b\textquotesingle{}, \textquotesingle{}z\textquotesingle{}, \textquotesingle{}x\textquotesingle{}, \textquotesingle{}y\textquotesingle{}\}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{main_8c_a8a8f99f059be11a4eb89c4fbf6d673d6}\label{main_8c_a8a8f99f059be11a4eb89c4fbf6d673d6}} 
+\index{main.c@{main.c}!edges\_beetween\_shift\_CAM\_delay\_definition@{edges\_beetween\_shift\_CAM\_delay\_definition}}
+\index{edges\_beetween\_shift\_CAM\_delay\_definition@{edges\_beetween\_shift\_CAM\_delay\_definition}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{edges\_beetween\_shift\_CAM\_delay\_definition}{edges\_beetween\_shift\_CAM\_delay\_definition}}
+{\footnotesize\ttfamily \#define edges\+\_\+beetween\+\_\+shift\+\_\+\+CAM\+\_\+delay\+\_\+definition~6}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00032}{32}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{main_8c_a64653c452ab199760e9cdd6bdbbeeb76}\label{main_8c_a64653c452ab199760e9cdd6bdbbeeb76}} 
+\index{main.c@{main.c}!\_\_attribute\_\_@{\_\_attribute\_\_}}
+\index{\_\_attribute\_\_@{\_\_attribute\_\_}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{\_\_attribute\_\_()}{\_\_attribute\_\_()}}
+{\footnotesize\ttfamily void \+\_\+\+\_\+attribute\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{(\+\_\+\+\_\+interrupt\+\_\+\+\_\+, no\+\_\+auto\+\_\+psv)}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00398}{398}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{main_8c_a64653c452ab199760e9cdd6bdbbeeb76_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{main_8c_a840291bc02cba5474a4cb46a9b9566fe}\label{main_8c_a840291bc02cba5474a4cb46a9b9566fe}} 
+\index{main.c@{main.c}!main@{main}}
+\index{main@{main}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00283}{283}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=550pt]{main_8c_a840291bc02cba5474a4cb46a9b9566fe_cgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{main_8c_a1ab47ef12d9fd5a0a0c37354af662f7d}\label{main_8c_a1ab47ef12d9fd5a0a0c37354af662f7d}} 
+\index{main.c@{main.c}!active\_CAM\_edges@{active\_CAM\_edges}}
+\index{active\_CAM\_edges@{active\_CAM\_edges}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{active\_CAM\_edges}{active\_CAM\_edges}}
+{\footnotesize\ttfamily char active\+\_\+\+CAM\+\_\+edges\mbox{[}2\mbox{]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00088}{88}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_ad7903904908b0166e54d513591340b4c}\label{main_8c_ad7903904908b0166e54d513591340b4c}} 
+\index{main.c@{main.c}!active\_CAM\_edges\_counter@{active\_CAM\_edges\_counter}}
+\index{active\_CAM\_edges\_counter@{active\_CAM\_edges\_counter}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{active\_CAM\_edges\_counter}{active\_CAM\_edges\_counter}}
+{\footnotesize\ttfamily unsigned int active\+\_\+\+CAM\+\_\+edges\+\_\+counter\mbox{[}2\mbox{]} = \{0, 0\}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00234}{234}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a98358735d6113042210027fe829762de}\label{main_8c_a98358735d6113042210027fe829762de}} 
+\index{main.c@{main.c}!active\_cam\_failure@{active\_cam\_failure}}
+\index{active\_cam\_failure@{active\_cam\_failure}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{active\_cam\_failure}{active\_cam\_failure}}
+{\footnotesize\ttfamily int active\+\_\+cam\+\_\+failure = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00143}{143}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a1aeabc5ac5f6b29223d857aceb659320}\label{main_8c_a1aeabc5ac5f6b29223d857aceb659320}} 
+\index{main.c@{main.c}!active\_edges\_CAM\_PER@{active\_edges\_CAM\_PER}}
+\index{active\_edges\_CAM\_PER@{active\_edges\_CAM\_PER}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{active\_edges\_CAM\_PER}{active\_edges\_CAM\_PER}}
+{\footnotesize\ttfamily char active\+\_\+edges\+\_\+\+CAM\+\_\+\+PER}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00184}{184}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a5107102b653d5cd439b1f861bd600f14}\label{main_8c_a5107102b653d5cd439b1f861bd600f14}} 
+\index{main.c@{main.c}!all\_active\_edges\_CAM\_PER@{all\_active\_edges\_CAM\_PER}}
+\index{all\_active\_edges\_CAM\_PER@{all\_active\_edges\_CAM\_PER}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{all\_active\_edges\_CAM\_PER}{all\_active\_edges\_CAM\_PER}}
+{\footnotesize\ttfamily bool all\+\_\+active\+\_\+edges\+\_\+\+CAM\+\_\+\+PER = false}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00183}{183}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_af17a3a4176170c04e909c2cffab83a3e}\label{main_8c_af17a3a4176170c04e909c2cffab83a3e}} 
+\index{main.c@{main.c}!angle\_time\_to\_start\_failure\_CAM\_REF\_CRK@{angle\_time\_to\_start\_failure\_CAM\_REF\_CRK}}
+\index{angle\_time\_to\_start\_failure\_CAM\_REF\_CRK@{angle\_time\_to\_start\_failure\_CAM\_REF\_CRK}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{angle\_time\_to\_start\_failure\_CAM\_REF\_CRK}{angle\_time\_to\_start\_failure\_CAM\_REF\_CRK}}
+{\footnotesize\ttfamily long double angle\+\_\+time\+\_\+to\+\_\+start\+\_\+failure\+\_\+\+CAM\+\_\+\+REF\+\_\+\+CRK}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00206}{206}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a25e59de533be1ac55ec5453104b0da3b}\label{main_8c_a25e59de533be1ac55ec5453104b0da3b}} 
+\index{main.c@{main.c}!angle\_to\_edge\_CAM\_delay@{angle\_to\_edge\_CAM\_delay}}
+\index{angle\_to\_edge\_CAM\_delay@{angle\_to\_edge\_CAM\_delay}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{angle\_to\_edge\_CAM\_delay}{angle\_to\_edge\_CAM\_delay}}
+{\footnotesize\ttfamily double angle\+\_\+to\+\_\+edge\+\_\+\+CAM\+\_\+delay\mbox{[}2\mbox{]}\mbox{[}\mbox{\hyperlink{main_8c_a8a8f99f059be11a4eb89c4fbf6d673d6}{edges\+\_\+beetween\+\_\+shift\+\_\+\+CAM\+\_\+delay\+\_\+definition}}\mbox{]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00198}{198}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a706090098ba2e12ba5bd608552f126d5}\label{main_8c_a706090098ba2e12ba5bd608552f126d5}} 
+\index{main.c@{main.c}!angle\_to\_start\_failure\_CRK\_RUN\_OUT@{angle\_to\_start\_failure\_CRK\_RUN\_OUT}}
+\index{angle\_to\_start\_failure\_CRK\_RUN\_OUT@{angle\_to\_start\_failure\_CRK\_RUN\_OUT}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{angle\_to\_start\_failure\_CRK\_RUN\_OUT}{angle\_to\_start\_failure\_CRK\_RUN\_OUT}}
+{\footnotesize\ttfamily unsigned int angle\+\_\+to\+\_\+start\+\_\+failure\+\_\+\+CRK\+\_\+\+RUN\+\_\+\+OUT}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00167}{167}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a0241a57f40777392b40aebc8ea433d2c}\label{main_8c_a0241a57f40777392b40aebc8ea433d2c}} 
+\index{main.c@{main.c}!calculation\_factor\_CRK\_TOOTH\_PER@{calculation\_factor\_CRK\_TOOTH\_PER}}
+\index{calculation\_factor\_CRK\_TOOTH\_PER@{calculation\_factor\_CRK\_TOOTH\_PER}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{calculation\_factor\_CRK\_TOOTH\_PER}{calculation\_factor\_CRK\_TOOTH\_PER}}
+{\footnotesize\ttfamily double calculation\+\_\+factor\+\_\+\+CRK\+\_\+\+TOOTH\+\_\+\+PER}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00192}{192}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a7809eb20331648930f7a85897de70a88}\label{main_8c_a7809eb20331648930f7a85897de70a88}} 
+\index{main.c@{main.c}!CAM\_config@{CAM\_config}}
+\index{CAM\_config@{CAM\_config}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{CAM\_config}{CAM\_config}}
+{\footnotesize\ttfamily bool CAM\+\_\+config = false}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00119}{119}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a734dd27ee07083ae6985cc7e642de6e7}\label{main_8c_a734dd27ee07083ae6985cc7e642de6e7}} 
+\index{main.c@{main.c}!CAM\_CRK\_synch\_ahead@{CAM\_CRK\_synch\_ahead}}
+\index{CAM\_CRK\_synch\_ahead@{CAM\_CRK\_synch\_ahead}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{CAM\_CRK\_synch\_ahead}{CAM\_CRK\_synch\_ahead}}
+{\footnotesize\ttfamily bool CAM\+\_\+\+CRK\+\_\+synch\+\_\+ahead\mbox{[}2\mbox{]} = \{false, false\}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00116}{116}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a6c2d1f9afb9e34026dc2a85e0d7fa1e3}\label{main_8c_a6c2d1f9afb9e34026dc2a85e0d7fa1e3}} 
+\index{main.c@{main.c}!CAM\_CRK\_synch\_status@{CAM\_CRK\_synch\_status}}
+\index{CAM\_CRK\_synch\_status@{CAM\_CRK\_synch\_status}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{CAM\_CRK\_synch\_status}{CAM\_CRK\_synch\_status}}
+{\footnotesize\ttfamily bool CAM\+\_\+\+CRK\+\_\+synch\+\_\+status = false}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00114}{114}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a03c0f18a6302f4a413c98919beedd057}\label{main_8c_a03c0f18a6302f4a413c98919beedd057}} 
+\index{main.c@{main.c}!CAM\_CRK\_synch\_status\_ahead@{CAM\_CRK\_synch\_status\_ahead}}
+\index{CAM\_CRK\_synch\_status\_ahead@{CAM\_CRK\_synch\_status\_ahead}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{CAM\_CRK\_synch\_status\_ahead}{CAM\_CRK\_synch\_status\_ahead}}
+{\footnotesize\ttfamily bool CAM\+\_\+\+CRK\+\_\+synch\+\_\+status\+\_\+ahead = false}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00115}{115}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a77550eb84997c4bf1f3f258b305cb07b}\label{main_8c_a77550eb84997c4bf1f3f258b305cb07b}} 
+\index{main.c@{main.c}!CAM\_edges@{CAM\_edges}}
+\index{CAM\_edges@{CAM\_edges}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{CAM\_edges}{CAM\_edges}}
+{\footnotesize\ttfamily double CAM\+\_\+edges\mbox{[}2\mbox{]}\mbox{[}24\mbox{]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00085}{85}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a02b199f14e7143121536a08abae33788}\label{main_8c_a02b199f14e7143121536a08abae33788}} 
+\index{main.c@{main.c}!cam\_setup\_counter@{cam\_setup\_counter}}
+\index{cam\_setup\_counter@{cam\_setup\_counter}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{cam\_setup\_counter}{cam\_setup\_counter}}
+{\footnotesize\ttfamily int cam\+\_\+setup\+\_\+counter = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00091}{91}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a4846863c93975e5d88fbd9b4ecc57d20}\label{main_8c_a4846863c93975e5d88fbd9b4ecc57d20}} 
+\index{main.c@{main.c}!CAM\_signal@{CAM\_signal}}
+\index{CAM\_signal@{CAM\_signal}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{CAM\_signal}{CAM\_signal}}
+{\footnotesize\ttfamily bool CAM\+\_\+signal\mbox{[}2\mbox{]} = \{false, false\}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00117}{117}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a8c4796f2e612fca802312c2226fcdec8}\label{main_8c_a8c4796f2e612fca802312c2226fcdec8}} 
+\index{main.c@{main.c}!CAM\_tolerance\_switch@{CAM\_tolerance\_switch}}
+\index{CAM\_tolerance\_switch@{CAM\_tolerance\_switch}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{CAM\_tolerance\_switch}{CAM\_tolerance\_switch}}
+{\footnotesize\ttfamily bool CAM\+\_\+tolerance\+\_\+switch\mbox{[}2\mbox{]} = \{false, false\}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00113}{113}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_ad4bfbcc44cc22bb72cbfd271bb4f4fd8}\label{main_8c_ad4bfbcc44cc22bb72cbfd271bb4f4fd8}} 
+\index{main.c@{main.c}!char\_counter@{char\_counter}}
+\index{char\_counter@{char\_counter}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{char\_counter}{char\_counter}}
+{\footnotesize\ttfamily int char\+\_\+counter = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00241}{241}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_aa9fcd7a55fe9ac0028180822cbaceced}\label{main_8c_aa9fcd7a55fe9ac0028180822cbaceced}} 
+\index{main.c@{main.c}!com\_error@{com\_error}}
+\index{com\_error@{com\_error}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{com\_error}{com\_error}}
+{\footnotesize\ttfamily bool com\+\_\+error = false}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00261}{261}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a44944c4febc3ff25dd242a52b1b42226}\label{main_8c_a44944c4febc3ff25dd242a52b1b42226}} 
+\index{main.c@{main.c}!communication\_active@{communication\_active}}
+\index{communication\_active@{communication\_active}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{communication\_active}{communication\_active}}
+{\footnotesize\ttfamily bool communication\+\_\+active = false}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00123}{123}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a6d78a853f38c5aa69102c7cb757623cb}\label{main_8c_a6d78a853f38c5aa69102c7cb757623cb}} 
+\index{main.c@{main.c}!communication\_ready@{communication\_ready}}
+\index{communication\_ready@{communication\_ready}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{communication\_ready}{communication\_ready}}
+{\footnotesize\ttfamily bool communication\+\_\+ready = false}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00124}{124}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_add696ba7a8f31a196fc34ea5afdeb48d}\label{main_8c_add696ba7a8f31a196fc34ea5afdeb48d}} 
+\index{main.c@{main.c}!communication\_validation@{communication\_validation}}
+\index{communication\_validation@{communication\_validation}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{communication\_validation}{communication\_validation}}
+{\footnotesize\ttfamily bool communication\+\_\+validation = false}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00125}{125}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_af2b1f70badf370b8c61316f5dcefaf26}\label{main_8c_af2b1f70badf370b8c61316f5dcefaf26}} 
+\index{main.c@{main.c}!configuration\_complete@{configuration\_complete}}
+\index{configuration\_complete@{configuration\_complete}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{configuration\_complete}{configuration\_complete}}
+{\footnotesize\ttfamily bool configuration\+\_\+complete = false}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00094}{94}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_aaa021fc02b2a585f7a62ec97bbee6d5e}\label{main_8c_aaa021fc02b2a585f7a62ec97bbee6d5e}} 
+\index{main.c@{main.c}!counter\_CAM\_PER@{counter\_CAM\_PER}}
+\index{counter\_CAM\_PER@{counter\_CAM\_PER}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{counter\_CAM\_PER}{counter\_CAM\_PER}}
+{\footnotesize\ttfamily unsigned int counter\+\_\+\+CAM\+\_\+\+PER\mbox{[}2\mbox{]} = \{0, 0\}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00179}{179}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_adb0348602102ca6255e00dd691cfa53c}\label{main_8c_adb0348602102ca6255e00dd691cfa53c}} 
+\index{main.c@{main.c}!counter\_gap\_left\_CRK\_TOOTH\_OFF@{counter\_gap\_left\_CRK\_TOOTH\_OFF}}
+\index{counter\_gap\_left\_CRK\_TOOTH\_OFF@{counter\_gap\_left\_CRK\_TOOTH\_OFF}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{counter\_gap\_left\_CRK\_TOOTH\_OFF}{counter\_gap\_left\_CRK\_TOOTH\_OFF}}
+{\footnotesize\ttfamily unsigned int counter\+\_\+gap\+\_\+left\+\_\+\+CRK\+\_\+\+TOOTH\+\_\+\+OFF = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00215}{215}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_af4e125ce632016b07d28f6ac94a33643}\label{main_8c_af4e125ce632016b07d28f6ac94a33643}} 
+\index{main.c@{main.c}!counter\_POSN\_ENG\_STST@{counter\_POSN\_ENG\_STST}}
+\index{counter\_POSN\_ENG\_STST@{counter\_POSN\_ENG\_STST}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{counter\_POSN\_ENG\_STST}{counter\_POSN\_ENG\_STST}}
+{\footnotesize\ttfamily unsigned int counter\+\_\+\+POSN\+\_\+\+ENG\+\_\+\+STST = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00231}{231}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a77556040fb54d335bacaf15336a82d29}\label{main_8c_a77556040fb54d335bacaf15336a82d29}} 
+\index{main.c@{main.c}!counter\_ready@{counter\_ready}}
+\index{counter\_ready@{counter\_ready}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{counter\_ready}{counter\_ready}}
+{\footnotesize\ttfamily bool counter\+\_\+ready = false}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00175}{175}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a5deea399d9689d2e2e0b3b3831462c5d}\label{main_8c_a5deea399d9689d2e2e0b3b3831462c5d}} 
+\index{main.c@{main.c}!counter\_reset@{counter\_reset}}
+\index{counter\_reset@{counter\_reset}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{counter\_reset}{counter\_reset}}
+{\footnotesize\ttfamily bool counter\+\_\+reset = true}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00176}{176}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_aeab62b1deec35fe68ca4b720e3435984}\label{main_8c_aeab62b1deec35fe68ca4b720e3435984}} 
+\index{main.c@{main.c}!counter\_TDC0@{counter\_TDC0}}
+\index{counter\_TDC0@{counter\_TDC0}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{counter\_TDC0}{counter\_TDC0}}
+{\footnotesize\ttfamily unsigned int counter\+\_\+\+TDC0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00169}{169}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_af2b350cad5f904241be3cd72267e8cd4}\label{main_8c_af2b350cad5f904241be3cd72267e8cd4}} 
+\index{main.c@{main.c}!counter\_tooth\_off@{counter\_tooth\_off}}
+\index{counter\_tooth\_off@{counter\_tooth\_off}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{counter\_tooth\_off}{counter\_tooth\_off}}
+{\footnotesize\ttfamily unsigned int counter\+\_\+tooth\+\_\+off = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00213}{213}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a04da1dd6d4836425ca52d3b1696ec1a5}\label{main_8c_a04da1dd6d4836425ca52d3b1696ec1a5}} 
+\index{main.c@{main.c}!CRK\_CAM\_synch@{CRK\_CAM\_synch}}
+\index{CRK\_CAM\_synch@{CRK\_CAM\_synch}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{CRK\_CAM\_synch}{CRK\_CAM\_synch}}
+{\footnotesize\ttfamily bool CRK\+\_\+\+CAM\+\_\+synch\mbox{[}2\mbox{]} = \{false, false\}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00118}{118}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_acd78757977e1e4a37661d2abf4d0e274}\label{main_8c_acd78757977e1e4a37661d2abf4d0e274}} 
+\index{main.c@{main.c}!CRK\_config@{CRK\_config}}
+\index{CRK\_config@{CRK\_config}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{CRK\_config}{CRK\_config}}
+{\footnotesize\ttfamily bool CRK\+\_\+config = false}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00076}{76}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_aeaf45155613124740bc925868c135034}\label{main_8c_aeaf45155613124740bc925868c135034}} 
+\index{main.c@{main.c}!crk\_delay\_SEG\_ADP\_ER\_LIM@{crk\_delay\_SEG\_ADP\_ER\_LIM}}
+\index{crk\_delay\_SEG\_ADP\_ER\_LIM@{crk\_delay\_SEG\_ADP\_ER\_LIM}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{crk\_delay\_SEG\_ADP\_ER\_LIM}{crk\_delay\_SEG\_ADP\_ER\_LIM}}
+{\footnotesize\ttfamily double crk\+\_\+delay\+\_\+\+SEG\+\_\+\+ADP\+\_\+\+ER\+\_\+\+LIM = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00224}{224}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_ad60977ee83061906ebaf1f0c40ea504c}\label{main_8c_ad60977ee83061906ebaf1f0c40ea504c}} 
+\index{main.c@{main.c}!crk\_pulse\_duration\_CRK\_PLS\_ORNG@{crk\_pulse\_duration\_CRK\_PLS\_ORNG}}
+\index{crk\_pulse\_duration\_CRK\_PLS\_ORNG@{crk\_pulse\_duration\_CRK\_PLS\_ORNG}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{crk\_pulse\_duration\_CRK\_PLS\_ORNG}{crk\_pulse\_duration\_CRK\_PLS\_ORNG}}
+{\footnotesize\ttfamily double crk\+\_\+pulse\+\_\+duration\+\_\+\+CRK\+\_\+\+PLS\+\_\+\+ORNG = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00227}{227}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a66d1dc17c3815ec543259ff6cd358896}\label{main_8c_a66d1dc17c3815ec543259ff6cd358896}} 
+\index{main.c@{main.c}!CRK\_signal@{CRK\_signal}}
+\index{CRK\_signal@{CRK\_signal}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{CRK\_signal}{CRK\_signal}}
+{\footnotesize\ttfamily bool CRK\+\_\+signal = false}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00075}{75}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a7727b0a0a81b3a64c19a0e84fd498c5b}\label{main_8c_a7727b0a0a81b3a64c19a0e84fd498c5b}} 
+\index{main.c@{main.c}!CRK\_synch@{CRK\_synch}}
+\index{CRK\_synch@{CRK\_synch}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{CRK\_synch}{CRK\_synch}}
+{\footnotesize\ttfamily bool CRK\+\_\+synch = false}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00072}{72}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a00fe94a04e331cc5cdc95a8073c1ecb3}\label{main_8c_a00fe94a04e331cc5cdc95a8073c1ecb3}} 
+\index{main.c@{main.c}!CRK\_synch\_temp@{CRK\_synch\_temp}}
+\index{CRK\_synch\_temp@{CRK\_synch\_temp}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{CRK\_synch\_temp}{CRK\_synch\_temp}}
+{\footnotesize\ttfamily bool CRK\+\_\+synch\+\_\+temp = false}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00073}{73}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a21b65a4cdebaef539c0958653e7115da}\label{main_8c_a21b65a4cdebaef539c0958653e7115da}} 
+\index{main.c@{main.c}!crk\_teeth\_off\_POSN\_ENG\_STST@{crk\_teeth\_off\_POSN\_ENG\_STST}}
+\index{crk\_teeth\_off\_POSN\_ENG\_STST@{crk\_teeth\_off\_POSN\_ENG\_STST}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{crk\_teeth\_off\_POSN\_ENG\_STST}{crk\_teeth\_off\_POSN\_ENG\_STST}}
+{\footnotesize\ttfamily unsigned int crk\+\_\+teeth\+\_\+off\+\_\+\+POSN\+\_\+\+ENG\+\_\+\+STST = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00230}{230}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a5204b01d9c34219f9b26378de5164b0f}\label{main_8c_a5204b01d9c34219f9b26378de5164b0f}} 
+\index{main.c@{main.c}!data\_counter@{data\_counter}}
+\index{data\_counter@{data\_counter}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{data\_counter}{data\_counter}}
+{\footnotesize\ttfamily int data\+\_\+counter = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00242}{242}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a7488bc4243e7ba92ade85f9186db2793}\label{main_8c_a7488bc4243e7ba92ade85f9186db2793}} 
+\index{main.c@{main.c}!delay\_angle\_CAM\_delay@{delay\_angle\_CAM\_delay}}
+\index{delay\_angle\_CAM\_delay@{delay\_angle\_CAM\_delay}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{delay\_angle\_CAM\_delay}{delay\_angle\_CAM\_delay}}
+{\footnotesize\ttfamily double delay\+\_\+angle\+\_\+\+CAM\+\_\+delay}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00199}{199}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a831028f10615ac593b739d4731a43060}\label{main_8c_a831028f10615ac593b739d4731a43060}} 
+\index{main.c@{main.c}!delay\_counter\_CAM\_REF\_CRK@{delay\_counter\_CAM\_REF\_CRK}}
+\index{delay\_counter\_CAM\_REF\_CRK@{delay\_counter\_CAM\_REF\_CRK}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{delay\_counter\_CAM\_REF\_CRK}{delay\_counter\_CAM\_REF\_CRK}}
+{\footnotesize\ttfamily unsigned int delay\+\_\+counter\+\_\+\+CAM\+\_\+\+REF\+\_\+\+CRK}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00205}{205}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a26d6e169e9653b1993e992cff06397fb}\label{main_8c_a26d6e169e9653b1993e992cff06397fb}} 
+\index{main.c@{main.c}!delay\_counter\_CRK@{delay\_counter\_CRK}}
+\index{delay\_counter\_CRK@{delay\_counter\_CRK}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{delay\_counter\_CRK}{delay\_counter\_CRK}}
+{\footnotesize\ttfamily unsigned int delay\+\_\+counter\+\_\+\+CRK = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00064}{64}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_af4fb580f228912ecc709426087150786}\label{main_8c_af4fb580f228912ecc709426087150786}} 
+\index{main.c@{main.c}!delay\_factor\_CAM\_delay@{delay\_factor\_CAM\_delay}}
+\index{delay\_factor\_CAM\_delay@{delay\_factor\_CAM\_delay}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{delay\_factor\_CAM\_delay}{delay\_factor\_CAM\_delay}}
+{\footnotesize\ttfamily double delay\+\_\+factor\+\_\+\+CAM\+\_\+delay = 1.\+0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00200}{200}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_afb93846f1625d0d5cf6d531524e9fbb3}\label{main_8c_afb93846f1625d0d5cf6d531524e9fbb3}} 
+\index{main.c@{main.c}!delay\_off@{delay\_off}}
+\index{delay\_off@{delay\_off}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{delay\_off}{delay\_off}}
+{\footnotesize\ttfamily bool delay\+\_\+off = false}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00074}{74}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a97ace91c5a574a12275e24d4b4bd02be}\label{main_8c_a97ace91c5a574a12275e24d4b4bd02be}} 
+\index{main.c@{main.c}!delay\_type\_CAM\_REF\_CRK@{delay\_type\_CAM\_REF\_CRK}}
+\index{delay\_type\_CAM\_REF\_CRK@{delay\_type\_CAM\_REF\_CRK}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{delay\_type\_CAM\_REF\_CRK}{delay\_type\_CAM\_REF\_CRK}}
+{\footnotesize\ttfamily char delay\+\_\+type\+\_\+\+CAM\+\_\+\+REF\+\_\+\+CRK}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00208}{208}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_af75c8735a41240c5a884f5024743c4c2}\label{main_8c_af75c8735a41240c5a884f5024743c4c2}} 
+\index{main.c@{main.c}!detected\_TDC0@{detected\_TDC0}}
+\index{detected\_TDC0@{detected\_TDC0}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{detected\_TDC0}{detected\_TDC0}}
+{\footnotesize\ttfamily bool detected\+\_\+\+TDC0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00173}{173}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a89493411d9fa567844ffb6a621d46967}\label{main_8c_a89493411d9fa567844ffb6a621d46967}} 
+\index{main.c@{main.c}!difference\_to\_edge\_failure\_start@{difference\_to\_edge\_failure\_start}}
+\index{difference\_to\_edge\_failure\_start@{difference\_to\_edge\_failure\_start}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{difference\_to\_edge\_failure\_start}{difference\_to\_edge\_failure\_start}}
+{\footnotesize\ttfamily double difference\+\_\+to\+\_\+edge\+\_\+failure\+\_\+start}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00172}{172}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a874e6e147c885cc35f55b3d8bc18ceb8}\label{main_8c_a874e6e147c885cc35f55b3d8bc18ceb8}} 
+\index{main.c@{main.c}!difference\_to\_edge\_failure\_start\_CAM\_REF\_CRK@{difference\_to\_edge\_failure\_start\_CAM\_REF\_CRK}}
+\index{difference\_to\_edge\_failure\_start\_CAM\_REF\_CRK@{difference\_to\_edge\_failure\_start\_CAM\_REF\_CRK}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{difference\_to\_edge\_failure\_start\_CAM\_REF\_CRK}{difference\_to\_edge\_failure\_start\_CAM\_REF\_CRK}}
+{\footnotesize\ttfamily double difference\+\_\+to\+\_\+edge\+\_\+failure\+\_\+start\+\_\+\+CAM\+\_\+\+REF\+\_\+\+CRK}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00207}{207}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a8156941efe0dcd826307b446f3ef48f1}\label{main_8c_a8156941efe0dcd826307b446f3ef48f1}} 
+\index{main.c@{main.c}!difference\_to\_edge\_TDC0@{difference\_to\_edge\_TDC0}}
+\index{difference\_to\_edge\_TDC0@{difference\_to\_edge\_TDC0}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{difference\_to\_edge\_TDC0}{difference\_to\_edge\_TDC0}}
+{\footnotesize\ttfamily double difference\+\_\+to\+\_\+edge\+\_\+\+TDC0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00171}{171}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a5f76355a7410c0f9ba6f2685976f7789}\label{main_8c_a5f76355a7410c0f9ba6f2685976f7789}} 
+\index{main.c@{main.c}!distance\_gap\_to\_CAM\_edge@{distance\_gap\_to\_CAM\_edge}}
+\index{distance\_gap\_to\_CAM\_edge@{distance\_gap\_to\_CAM\_edge}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{distance\_gap\_to\_CAM\_edge}{distance\_gap\_to\_CAM\_edge}}
+{\footnotesize\ttfamily double distance\+\_\+gap\+\_\+to\+\_\+\+CAM\+\_\+edge\mbox{[}2\mbox{]}\mbox{[}24\mbox{]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00086}{86}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_ad34a843c27ea985d626a403d5dfd10ad}\label{main_8c_ad34a843c27ea985d626a403d5dfd10ad}} 
+\index{main.c@{main.c}!edge\_count\_CAM@{edge\_count\_CAM}}
+\index{edge\_count\_CAM@{edge\_count\_CAM}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{edge\_count\_CAM}{edge\_count\_CAM}}
+{\footnotesize\ttfamily unsigned int edge\+\_\+count\+\_\+\+CAM\mbox{[}2\mbox{]} = \{0, 0\}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00101}{101}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_afd23d6c84f8e20fca289ed0ee8715187}\label{main_8c_afd23d6c84f8e20fca289ed0ee8715187}} 
+\index{main.c@{main.c}!edge\_position\_counter\_CAM@{edge\_position\_counter\_CAM}}
+\index{edge\_position\_counter\_CAM@{edge\_position\_counter\_CAM}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{edge\_position\_counter\_CAM}{edge\_position\_counter\_CAM}}
+{\footnotesize\ttfamily unsigned int edge\+\_\+position\+\_\+counter\+\_\+\+CAM\mbox{[}2\mbox{]} = \{0, 0\}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00103}{103}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a7143d1e41fd86e9f122d9c66be0b1d67}\label{main_8c_a7143d1e41fd86e9f122d9c66be0b1d67}} 
+\index{main.c@{main.c}!edge\_position\_counter\_CAM\_ahead@{edge\_position\_counter\_CAM\_ahead}}
+\index{edge\_position\_counter\_CAM\_ahead@{edge\_position\_counter\_CAM\_ahead}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{edge\_position\_counter\_CAM\_ahead}{edge\_position\_counter\_CAM\_ahead}}
+{\footnotesize\ttfamily unsigned int edge\+\_\+position\+\_\+counter\+\_\+\+CAM\+\_\+ahead\mbox{[}2\mbox{]} = \{0, 0\}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00106}{106}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_ab0618b4a58fae08ae9d00346c60ec496}\label{main_8c_ab0618b4a58fae08ae9d00346c60ec496}} 
+\index{main.c@{main.c}!edge\_validation\_counter\_CAM@{edge\_validation\_counter\_CAM}}
+\index{edge\_validation\_counter\_CAM@{edge\_validation\_counter\_CAM}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{edge\_validation\_counter\_CAM}{edge\_validation\_counter\_CAM}}
+{\footnotesize\ttfamily unsigned int edge\+\_\+validation\+\_\+counter\+\_\+\+CAM\mbox{[}2\mbox{]} = \{0, 0\}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00102}{102}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a482c739ea6583c79139c1dda964b8934}\label{main_8c_a482c739ea6583c79139c1dda964b8934}} 
+\index{main.c@{main.c}!edge\_validation\_counter\_CAM\_ahead@{edge\_validation\_counter\_CAM\_ahead}}
+\index{edge\_validation\_counter\_CAM\_ahead@{edge\_validation\_counter\_CAM\_ahead}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{edge\_validation\_counter\_CAM\_ahead}{edge\_validation\_counter\_CAM\_ahead}}
+{\footnotesize\ttfamily unsigned int edge\+\_\+validation\+\_\+counter\+\_\+\+CAM\+\_\+ahead\mbox{[}2\mbox{]} = \{0, 0\}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00105}{105}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a8468b6f06553d05bc83fddf395f376b2}\label{main_8c_a8468b6f06553d05bc83fddf395f376b2}} 
+\index{main.c@{main.c}!edges\_beetween\_shift\_CAM\_delay@{edges\_beetween\_shift\_CAM\_delay}}
+\index{edges\_beetween\_shift\_CAM\_delay@{edges\_beetween\_shift\_CAM\_delay}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{edges\_beetween\_shift\_CAM\_delay}{edges\_beetween\_shift\_CAM\_delay}}
+{\footnotesize\ttfamily const unsigned int edges\+\_\+beetween\+\_\+shift\+\_\+\+CAM\+\_\+delay = 6}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00196}{196}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a98232dc5af0ccab4ba04e8abe43453d6}\label{main_8c_a98232dc5af0ccab4ba04e8abe43453d6}} 
+\index{main.c@{main.c}!end\_char@{end\_char}}
+\index{end\_char@{end\_char}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{end\_char}{end\_char}}
+{\footnotesize\ttfamily char end\+\_\+char = \textquotesingle{}\%\textquotesingle{}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00245}{245}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a658a74de9ab44e3ad4b459d557dac9d7}\label{main_8c_a658a74de9ab44e3ad4b459d557dac9d7}} 
+\index{main.c@{main.c}!engine\_revolutions\_CRK\_TOOTH\_PER@{engine\_revolutions\_CRK\_TOOTH\_PER}}
+\index{engine\_revolutions\_CRK\_TOOTH\_PER@{engine\_revolutions\_CRK\_TOOTH\_PER}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{engine\_revolutions\_CRK\_TOOTH\_PER}{engine\_revolutions\_CRK\_TOOTH\_PER}}
+{\footnotesize\ttfamily unsigned int engine\+\_\+revolutions\+\_\+\+CRK\+\_\+\+TOOTH\+\_\+\+PER}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00189}{189}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a7aeb1a0c2ff915edcc0973978f0dc21c}\label{main_8c_a7aeb1a0c2ff915edcc0973978f0dc21c}} 
+\index{main.c@{main.c}!engine\_start@{engine\_start}}
+\index{engine\_start@{engine\_start}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{engine\_start}{engine\_start}}
+{\footnotesize\ttfamily bool engine\+\_\+start = false}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00077}{77}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_ae97ec3b5829cdcf6527423f2a9cd4dcc}\label{main_8c_ae97ec3b5829cdcf6527423f2a9cd4dcc}} 
+\index{main.c@{main.c}!engine\_start\_counter@{engine\_start\_counter}}
+\index{engine\_start\_counter@{engine\_start\_counter}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{engine\_start\_counter}{engine\_start\_counter}}
+{\footnotesize\ttfamily unsigned int engine\+\_\+start\+\_\+counter = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00069}{69}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_aacb88e3d6fd3944b240b4439e81c96ae}\label{main_8c_aacb88e3d6fd3944b240b4439e81c96ae}} 
+\index{main.c@{main.c}!engine\_start\_counter\_limit@{engine\_start\_counter\_limit}}
+\index{engine\_start\_counter\_limit@{engine\_start\_counter\_limit}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{engine\_start\_counter\_limit}{engine\_start\_counter\_limit}}
+{\footnotesize\ttfamily unsigned int engine\+\_\+start\+\_\+counter\+\_\+limit = 2}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00070}{70}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_aa009bc0b69bbb38154e60d1428ffc33c}\label{main_8c_aa009bc0b69bbb38154e60d1428ffc33c}} 
+\index{main.c@{main.c}!failure\_active@{failure\_active}}
+\index{failure\_active@{failure\_active}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{failure\_active}{failure\_active}}
+{\footnotesize\ttfamily bool failure\+\_\+active = false}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00149}{149}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_ae1dbfa52ababd302f93dbe4fd0620f8f}\label{main_8c_ae1dbfa52ababd302f93dbe4fd0620f8f}} 
+\index{main.c@{main.c}!failure\_active\_CAM\_blank\_out@{failure\_active\_CAM\_blank\_out}}
+\index{failure\_active\_CAM\_blank\_out@{failure\_active\_CAM\_blank\_out}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{failure\_active\_CAM\_blank\_out}{failure\_active\_CAM\_blank\_out}}
+{\footnotesize\ttfamily bool failure\+\_\+active\+\_\+\+CAM\+\_\+blank\+\_\+out = false}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00150}{150}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a155fe01f33d7c7c624afc3ac935b2523}\label{main_8c_a155fe01f33d7c7c624afc3ac935b2523}} 
+\index{main.c@{main.c}!failure\_configured@{failure\_configured}}
+\index{failure\_configured@{failure\_configured}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{failure\_configured}{failure\_configured}}
+{\footnotesize\ttfamily bool failure\+\_\+configured = false}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00156}{156}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a22003ec99e75d7fde10d70c9e5ba1c7b}\label{main_8c_a22003ec99e75d7fde10d70c9e5ba1c7b}} 
+\index{main.c@{main.c}!failure\_configured\_CAM\_blank\_out@{failure\_configured\_CAM\_blank\_out}}
+\index{failure\_configured\_CAM\_blank\_out@{failure\_configured\_CAM\_blank\_out}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{failure\_configured\_CAM\_blank\_out}{failure\_configured\_CAM\_blank\_out}}
+{\footnotesize\ttfamily bool failure\+\_\+configured\+\_\+\+CAM\+\_\+blank\+\_\+out = false}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00157}{157}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a906f58f9fb2ce60131ecacd1d649d6a1}\label{main_8c_a906f58f9fb2ce60131ecacd1d649d6a1}} 
+\index{main.c@{main.c}!failure\_identify@{failure\_identify}}
+\index{failure\_identify@{failure\_identify}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{failure\_identify}{failure\_identify}}
+{\footnotesize\ttfamily char failure\+\_\+identify = \textquotesingle{}0\textquotesingle{}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00128}{128}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a36381716e95bbb3090a24ba5260bf35d}\label{main_8c_a36381716e95bbb3090a24ba5260bf35d}} 
+\index{main.c@{main.c}!failure\_passed@{failure\_passed}}
+\index{failure\_passed@{failure\_passed}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{failure\_passed}{failure\_passed}}
+{\footnotesize\ttfamily bool failure\+\_\+passed = false}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00152}{152}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_ad90c6afa3ef6d8897b04b50f9161bd3a}\label{main_8c_ad90c6afa3ef6d8897b04b50f9161bd3a}} 
+\index{main.c@{main.c}!failure\_period\_CRK\_RUN\_OUT@{failure\_period\_CRK\_RUN\_OUT}}
+\index{failure\_period\_CRK\_RUN\_OUT@{failure\_period\_CRK\_RUN\_OUT}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{failure\_period\_CRK\_RUN\_OUT}{failure\_period\_CRK\_RUN\_OUT}}
+{\footnotesize\ttfamily unsigned int failure\+\_\+period\+\_\+\+CRK\+\_\+\+RUN\+\_\+\+OUT}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00168}{168}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a9efd1f4caf11e1037604fb6f4b42ed31}\label{main_8c_a9efd1f4caf11e1037604fb6f4b42ed31}} 
+\index{main.c@{main.c}!failure\_set@{failure\_set}}
+\index{failure\_set@{failure\_set}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{failure\_set}{failure\_set}}
+{\footnotesize\ttfamily bool failure\+\_\+set = false}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00151}{151}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_ae1abad2ed2b92b6b82254dc4debca57a}\label{main_8c_ae1abad2ed2b92b6b82254dc4debca57a}} 
+\index{main.c@{main.c}!failure\_waiting@{failure\_waiting}}
+\index{failure\_waiting@{failure\_waiting}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{failure\_waiting}{failure\_waiting}}
+{\footnotesize\ttfamily bool failure\+\_\+waiting = false}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00153}{153}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_ae78fc7b1baf9c329b60166be6b88b85c}\label{main_8c_ae78fc7b1baf9c329b60166be6b88b85c}} 
+\index{main.c@{main.c}!filter\_time\_CAM@{filter\_time\_CAM}}
+\index{filter\_time\_CAM@{filter\_time\_CAM}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{filter\_time\_CAM}{filter\_time\_CAM}}
+{\footnotesize\ttfamily double filter\+\_\+time\+\_\+\+CAM\mbox{[}2\mbox{]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00084}{84}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a2b533334c698857cb6a0c8eb0bc184d6}\label{main_8c_a2b533334c698857cb6a0c8eb0bc184d6}} 
+\index{main.c@{main.c}!filter\_time\_CAM\_PER@{filter\_time\_CAM\_PER}}
+\index{filter\_time\_CAM\_PER@{filter\_time\_CAM\_PER}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{filter\_time\_CAM\_PER}{filter\_time\_CAM\_PER}}
+{\footnotesize\ttfamily double filter\+\_\+time\+\_\+\+CAM\+\_\+\+PER}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00181}{181}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a4acf9cde9660862148d0a73f10984ced}\label{main_8c_a4acf9cde9660862148d0a73f10984ced}} 
+\index{main.c@{main.c}!first\_edge\_to\_tdc0@{first\_edge\_to\_tdc0}}
+\index{first\_edge\_to\_tdc0@{first\_edge\_to\_tdc0}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{first\_edge\_to\_tdc0}{first\_edge\_to\_tdc0}}
+{\footnotesize\ttfamily double first\+\_\+edge\+\_\+to\+\_\+tdc0\mbox{[}2\mbox{]} = \{0, 0\}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00087}{87}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a30aee154f6067d411dbf4839fdc3cc93}\label{main_8c_a30aee154f6067d411dbf4839fdc3cc93}} 
+\index{main.c@{main.c}!first\_seg\_angle@{first\_seg\_angle}}
+\index{first\_seg\_angle@{first\_seg\_angle}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{first\_seg\_angle}{first\_seg\_angle}}
+{\footnotesize\ttfamily double first\+\_\+seg\+\_\+angle = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00042}{42}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a912fe456cc42c18b47eae6de3e35c4f8}\label{main_8c_a912fe456cc42c18b47eae6de3e35c4f8}} 
+\index{main.c@{main.c}!first\_seg\_start\_tooth@{first\_seg\_start\_tooth}}
+\index{first\_seg\_start\_tooth@{first\_seg\_start\_tooth}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{first\_seg\_start\_tooth}{first\_seg\_start\_tooth}}
+{\footnotesize\ttfamily unsigned int first\+\_\+seg\+\_\+start\+\_\+tooth = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00044}{44}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a65576eb16b6e54d275a167327bea7fb9}\label{main_8c_a65576eb16b6e54d275a167327bea7fb9}} 
+\index{main.c@{main.c}!former\_edge\_position\_CAM@{former\_edge\_position\_CAM}}
+\index{former\_edge\_position\_CAM@{former\_edge\_position\_CAM}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{former\_edge\_position\_CAM}{former\_edge\_position\_CAM}}
+{\footnotesize\ttfamily unsigned int former\+\_\+edge\+\_\+position\+\_\+\+CAM\mbox{[}2\mbox{]} = \{0, 0\}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00104}{104}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_ac49275c6b1fdb8331b6a85ded17ef302}\label{main_8c_ac49275c6b1fdb8331b6a85ded17ef302}} 
+\index{main.c@{main.c}!former\_edge\_position\_CAM\_ahead@{former\_edge\_position\_CAM\_ahead}}
+\index{former\_edge\_position\_CAM\_ahead@{former\_edge\_position\_CAM\_ahead}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{former\_edge\_position\_CAM\_ahead}{former\_edge\_position\_CAM\_ahead}}
+{\footnotesize\ttfamily unsigned int former\+\_\+edge\+\_\+position\+\_\+\+CAM\+\_\+ahead\mbox{[}2\mbox{]} = \{0, 0\}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00107}{107}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a85515a5ec371da776aeb2590d88bd83c}\label{main_8c_a85515a5ec371da776aeb2590d88bd83c}} 
+\index{main.c@{main.c}!gap\_ratio\_CRK\_DET@{gap\_ratio\_CRK\_DET}}
+\index{gap\_ratio\_CRK\_DET@{gap\_ratio\_CRK\_DET}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{gap\_ratio\_CRK\_DET}{gap\_ratio\_CRK\_DET}}
+{\footnotesize\ttfamily double gap\+\_\+ratio\+\_\+\+CRK\+\_\+\+DET = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00045}{45}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a61002eb84b7c4ab04392f09c08cb267c}\label{main_8c_a61002eb84b7c4ab04392f09c08cb267c}} 
+\index{main.c@{main.c}!gap\_ratio\_CRK\_VLD@{gap\_ratio\_CRK\_VLD}}
+\index{gap\_ratio\_CRK\_VLD@{gap\_ratio\_CRK\_VLD}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{gap\_ratio\_CRK\_VLD}{gap\_ratio\_CRK\_VLD}}
+{\footnotesize\ttfamily double gap\+\_\+ratio\+\_\+\+CRK\+\_\+\+VLD = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00047}{47}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_ae8d79e34d9069c4d224e083290a85e6e}\label{main_8c_ae8d79e34d9069c4d224e083290a85e6e}} 
+\index{main.c@{main.c}!gap\_to\_edge@{gap\_to\_edge}}
+\index{gap\_to\_edge@{gap\_to\_edge}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{gap\_to\_edge}{gap\_to\_edge}}
+{\footnotesize\ttfamily double gap\+\_\+to\+\_\+edge}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00108}{108}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a250f7761f51a2a07568fc906f8d43095}\label{main_8c_a250f7761f51a2a07568fc906f8d43095}} 
+\index{main.c@{main.c}!gap\_to\_edge\_ahead@{gap\_to\_edge\_ahead}}
+\index{gap\_to\_edge\_ahead@{gap\_to\_edge\_ahead}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{gap\_to\_edge\_ahead}{gap\_to\_edge\_ahead}}
+{\footnotesize\ttfamily double gap\+\_\+to\+\_\+edge\+\_\+ahead}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00109}{109}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a9f65b0d3142356fc10814e114939a72a}\label{main_8c_a9f65b0d3142356fc10814e114939a72a}} 
+\index{main.c@{main.c}!gap\_to\_first\_edge@{gap\_to\_first\_edge}}
+\index{gap\_to\_first\_edge@{gap\_to\_first\_edge}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{gap\_to\_first\_edge}{gap\_to\_first\_edge}}
+{\footnotesize\ttfamily double gap\+\_\+to\+\_\+first\+\_\+edge\mbox{[}2\mbox{]} = \{0, 0\}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00110}{110}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a751e5904b3aa52cdffadc6ea4686d41f}\label{main_8c_a751e5904b3aa52cdffadc6ea4686d41f}} 
+\index{main.c@{main.c}!gap\_to\_first\_edge\_difference@{gap\_to\_first\_edge\_difference}}
+\index{gap\_to\_first\_edge\_difference@{gap\_to\_first\_edge\_difference}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{gap\_to\_first\_edge\_difference}{gap\_to\_first\_edge\_difference}}
+{\footnotesize\ttfamily double gap\+\_\+to\+\_\+first\+\_\+edge\+\_\+difference\mbox{[}2\mbox{]} = \{0, 0\}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00111}{111}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a17329928f3869c86738181f3fb57fbff}\label{main_8c_a17329928f3869c86738181f3fb57fbff}} 
+\index{main.c@{main.c}!in@{in}}
+\index{in@{in}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{in}{in}}
+{\footnotesize\ttfamily char in}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00243}{243}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_abd2445aa73e81f69b039b4ff5eb75687}\label{main_8c_abd2445aa73e81f69b039b4ff5eb75687}} 
+\index{main.c@{main.c}!input@{input}}
+\index{input@{input}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{input}{input}}
+{\footnotesize\ttfamily char input\mbox{[}250\mbox{]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00247}{247}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_adaacf85422658ac80004cdc8b1bd51f1}\label{main_8c_adaacf85422658ac80004cdc8b1bd51f1}} 
+\index{main.c@{main.c}!input\_char\_counter@{input\_char\_counter}}
+\index{input\_char\_counter@{input\_char\_counter}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{input\_char\_counter}{input\_char\_counter}}
+{\footnotesize\ttfamily int input\+\_\+char\+\_\+counter = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00248}{248}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a3fd96a1924b3a3f85e716adaae2650e1}\label{main_8c_a3fd96a1924b3a3f85e716adaae2650e1}} 
+\index{main.c@{main.c}!input\_chars@{input\_chars}}
+\index{input\_chars@{input\_chars}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{input\_chars}{input\_chars}}
+{\footnotesize\ttfamily char input\+\_\+chars\mbox{[}250\mbox{]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00246}{246}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a1ffeb87120d45d392916acb155ef3879}\label{main_8c_a1ffeb87120d45d392916acb155ef3879}} 
+\index{main.c@{main.c}!interrupt\_check\_CAM\_delay@{interrupt\_check\_CAM\_delay}}
+\index{interrupt\_check\_CAM\_delay@{interrupt\_check\_CAM\_delay}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{interrupt\_check\_CAM\_delay}{interrupt\_check\_CAM\_delay}}
+{\footnotesize\ttfamily bool interrupt\+\_\+check\+\_\+\+CAM\+\_\+delay\mbox{[}2\mbox{]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00202}{202}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a1ff4d3545237dd73fc8c3022922e48c2}\label{main_8c_a1ff4d3545237dd73fc8c3022922e48c2}} 
+\index{main.c@{main.c}!low\_time\_CRK@{low\_time\_CRK}}
+\index{low\_time\_CRK@{low\_time\_CRK}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{low\_time\_CRK}{low\_time\_CRK}}
+{\footnotesize\ttfamily unsigned long low\+\_\+time\+\_\+\+CRK = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00057}{57}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a26089ca36471af8e06dab2ef71bdd1bc}\label{main_8c_a26089ca36471af8e06dab2ef71bdd1bc}} 
+\index{main.c@{main.c}!message@{message}}
+\index{message@{message}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{message}{message}}
+{\footnotesize\ttfamily char message\mbox{[}14\mbox{]} = \{\textquotesingle{}1\textquotesingle{}, \textquotesingle{}2\textquotesingle{}, \textquotesingle{}3\textquotesingle{}, \textquotesingle{}4\textquotesingle{}, \textquotesingle{}5\textquotesingle{}, \textquotesingle{}6\textquotesingle{}, \textquotesingle{}7\textquotesingle{}, \textquotesingle{}8\textquotesingle{}, \textquotesingle{}9\textquotesingle{}, \textquotesingle{}a\textquotesingle{}, \textquotesingle{}b\textquotesingle{}, \textquotesingle{}z\textquotesingle{}, \textquotesingle{}x\textquotesingle{}, \textquotesingle{}y\textquotesingle{}\}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00265}{265}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_afe98920c33a9fc309d104f2039c15859}\label{main_8c_afe98920c33a9fc309d104f2039c15859}} 
+\index{main.c@{main.c}!message\_identify@{message\_identify}}
+\index{message\_identify@{message\_identify}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{message\_identify}{message\_identify}}
+{\footnotesize\ttfamily char message\+\_\+identify}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00262}{262}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a9a75d3b2e50a13d5eed2e8c1068f0acb}\label{main_8c_a9a75d3b2e50a13d5eed2e8c1068f0acb}} 
+\index{main.c@{main.c}!message\_received@{message\_received}}
+\index{message\_received@{message\_received}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{message\_received}{message\_received}}
+{\footnotesize\ttfamily bool message\+\_\+received = false}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00260}{260}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_aa62fd33093aac3979c77d8ac47195785}\label{main_8c_aa62fd33093aac3979c77d8ac47195785}} 
+\index{main.c@{main.c}!microsecond\_per\_timer\_tick\_CAM\_PER\_\_CRK\_TOOTH\_PER@{microsecond\_per\_timer\_tick\_CAM\_PER\_\_CRK\_TOOTH\_PER}}
+\index{microsecond\_per\_timer\_tick\_CAM\_PER\_\_CRK\_TOOTH\_PER@{microsecond\_per\_timer\_tick\_CAM\_PER\_\_CRK\_TOOTH\_PER}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{microsecond\_per\_timer\_tick\_CAM\_PER\_\_CRK\_TOOTH\_PER}{microsecond\_per\_timer\_tick\_CAM\_PER\_\_CRK\_TOOTH\_PER}}
+{\footnotesize\ttfamily double microsecond\+\_\+per\+\_\+timer\+\_\+tick\+\_\+\+CAM\+\_\+\+PER\+\_\+\+\_\+\+CRK\+\_\+\+TOOTH\+\_\+\+PER = 0.\+217}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00182}{182}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a3d1c16f7b67a7b889ff09efcf7651345}\label{main_8c_a3d1c16f7b67a7b889ff09efcf7651345}} 
+\index{main.c@{main.c}!number\_active\_edges\_CAM@{number\_active\_edges\_CAM}}
+\index{number\_active\_edges\_CAM@{number\_active\_edges\_CAM}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{number\_active\_edges\_CAM}{number\_active\_edges\_CAM}}
+{\footnotesize\ttfamily unsigned int number\+\_\+active\+\_\+edges\+\_\+\+CAM\mbox{[}2\mbox{]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00082}{82}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_ac5798e2b7f5cad74f09b07e527613982}\label{main_8c_ac5798e2b7f5cad74f09b07e527613982}} 
+\index{main.c@{main.c}!number\_cylinder@{number\_cylinder}}
+\index{number\_cylinder@{number\_cylinder}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{number\_cylinder}{number\_cylinder}}
+{\footnotesize\ttfamily int number\+\_\+cylinder = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00043}{43}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a70548cc19cb8197d69bde4da728a470a}\label{main_8c_a70548cc19cb8197d69bde4da728a470a}} 
+\index{main.c@{main.c}!number\_edges\_CAM\_PER@{number\_edges\_CAM\_PER}}
+\index{number\_edges\_CAM\_PER@{number\_edges\_CAM\_PER}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{number\_edges\_CAM\_PER}{number\_edges\_CAM\_PER}}
+{\footnotesize\ttfamily unsigned int number\+\_\+edges\+\_\+\+CAM\+\_\+\+PER}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00180}{180}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_af9b6adca0c1aa5a6ba1da07c6f4e1588}\label{main_8c_af9b6adca0c1aa5a6ba1da07c6f4e1588}} 
+\index{main.c@{main.c}!number\_gap@{number\_gap}}
+\index{number\_gap@{number\_gap}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{number\_gap}{number\_gap}}
+{\footnotesize\ttfamily int number\+\_\+gap = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00040}{40}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_ac953f0c0d545347b98a28a5f7e1ea15c}\label{main_8c_ac953f0c0d545347b98a28a5f7e1ea15c}} 
+\index{main.c@{main.c}!number\_miss\_teeth@{number\_miss\_teeth}}
+\index{number\_miss\_teeth@{number\_miss\_teeth}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{number\_miss\_teeth}{number\_miss\_teeth}}
+{\footnotesize\ttfamily int number\+\_\+miss\+\_\+teeth = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00039}{39}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a8b96e45eeb664a177dede0e498910a1b}\label{main_8c_a8b96e45eeb664a177dede0e498910a1b}} 
+\index{main.c@{main.c}!number\_of\_CAM@{number\_of\_CAM}}
+\index{number\_of\_CAM@{number\_of\_CAM}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{number\_of\_CAM}{number\_of\_CAM}}
+{\footnotesize\ttfamily int number\+\_\+of\+\_\+\+CAM = 1}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00090}{90}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_ab28b6d5505e18cd397139cfa75aa3912}\label{main_8c_ab28b6d5505e18cd397139cfa75aa3912}} 
+\index{main.c@{main.c}!number\_processing\_edges\_CAM\_delay@{number\_processing\_edges\_CAM\_delay}}
+\index{number\_processing\_edges\_CAM\_delay@{number\_processing\_edges\_CAM\_delay}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{number\_processing\_edges\_CAM\_delay}{number\_processing\_edges\_CAM\_delay}}
+{\footnotesize\ttfamily unsigned int number\+\_\+processing\+\_\+edges\+\_\+\+CAM\+\_\+delay\mbox{[}2\mbox{]} = \{0, 0\}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00195}{195}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a6d79ff75c0424017b90b2039f2f5aeaa}\label{main_8c_a6d79ff75c0424017b90b2039f2f5aeaa}} 
+\index{main.c@{main.c}!number\_pulses\_CRK\_TOOTH\_PER@{number\_pulses\_CRK\_TOOTH\_PER}}
+\index{number\_pulses\_CRK\_TOOTH\_PER@{number\_pulses\_CRK\_TOOTH\_PER}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{number\_pulses\_CRK\_TOOTH\_PER}{number\_pulses\_CRK\_TOOTH\_PER}}
+{\footnotesize\ttfamily unsigned int number\+\_\+pulses\+\_\+\+CRK\+\_\+\+TOOTH\+\_\+\+PER}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00188}{188}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_ab040cae3d9ae46728a9af9db655c014e}\label{main_8c_ab040cae3d9ae46728a9af9db655c014e}} 
+\index{main.c@{main.c}!number\_real\_teeth@{number\_real\_teeth}}
+\index{number\_real\_teeth@{number\_real\_teeth}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{number\_real\_teeth}{number\_real\_teeth}}
+{\footnotesize\ttfamily unsigned int number\+\_\+real\+\_\+teeth = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00062}{62}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a896b3f467a176975dc687f95f1a1367e}\label{main_8c_a896b3f467a176975dc687f95f1a1367e}} 
+\index{main.c@{main.c}!number\_segments\_CRK@{number\_segments\_CRK}}
+\index{number\_segments\_CRK@{number\_segments\_CRK}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{number\_segments\_CRK}{number\_segments\_CRK}}
+{\footnotesize\ttfamily unsigned int number\+\_\+segments\+\_\+\+CRK = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00066}{66}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a05e75142d685997ef05acf36e45a356a}\label{main_8c_a05e75142d685997ef05acf36e45a356a}} 
+\index{main.c@{main.c}!number\_teeth\_between\_gaps@{number\_teeth\_between\_gaps}}
+\index{number\_teeth\_between\_gaps@{number\_teeth\_between\_gaps}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{number\_teeth\_between\_gaps}{number\_teeth\_between\_gaps}}
+{\footnotesize\ttfamily unsigned int number\+\_\+teeth\+\_\+between\+\_\+gaps = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00063}{63}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_ab06ff1f3f9aa8e15f049ad90eb229aec}\label{main_8c_ab06ff1f3f9aa8e15f049ad90eb229aec}} 
+\index{main.c@{main.c}!number\_teeth\_between\_tooth\_off@{number\_teeth\_between\_tooth\_off}}
+\index{number\_teeth\_between\_tooth\_off@{number\_teeth\_between\_tooth\_off}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{number\_teeth\_between\_tooth\_off}{number\_teeth\_between\_tooth\_off}}
+{\footnotesize\ttfamily unsigned int number\+\_\+teeth\+\_\+between\+\_\+tooth\+\_\+off = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00212}{212}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a9cf1c6135c61ae4be9df725537b3d7e3}\label{main_8c_a9cf1c6135c61ae4be9df725537b3d7e3}} 
+\index{main.c@{main.c}!number\_teeth\_CAM@{number\_teeth\_CAM}}
+\index{number\_teeth\_CAM@{number\_teeth\_CAM}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{number\_teeth\_CAM}{number\_teeth\_CAM}}
+{\footnotesize\ttfamily int number\+\_\+teeth\+\_\+\+CAM\mbox{[}2\mbox{]} = \{0, 0\}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00083}{83}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_afe64a7b02b07021acd3f4e7d30195fe2}\label{main_8c_afe64a7b02b07021acd3f4e7d30195fe2}} 
+\index{main.c@{main.c}!number\_teeth\_CRK@{number\_teeth\_CRK}}
+\index{number\_teeth\_CRK@{number\_teeth\_CRK}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{number\_teeth\_CRK}{number\_teeth\_CRK}}
+{\footnotesize\ttfamily int number\+\_\+teeth\+\_\+\+CRK = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00038}{38}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a42368ade50de18ac6efb5e231ba284ab}\label{main_8c_a42368ade50de18ac6efb5e231ba284ab}} 
+\index{main.c@{main.c}!number\_tooth\_off@{number\_tooth\_off}}
+\index{number\_tooth\_off@{number\_tooth\_off}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{number\_tooth\_off}{number\_tooth\_off}}
+{\footnotesize\ttfamily unsigned int number\+\_\+tooth\+\_\+off = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00211}{211}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a26f49697b8275c1863e0716a3c236480}\label{main_8c_a26f49697b8275c1863e0716a3c236480}} 
+\index{main.c@{main.c}!output\_level\_setting@{output\_level\_setting}}
+\index{output\_level\_setting@{output\_level\_setting}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{output\_level\_setting}{output\_level\_setting}}
+{\footnotesize\ttfamily bool output\+\_\+level\+\_\+setting = false}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00095}{95}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_ac6eafc14bbf628d09f0aea91c943dc44}\label{main_8c_ac6eafc14bbf628d09f0aea91c943dc44}} 
+\index{main.c@{main.c}!period\_counter\_CRK\_RUN\_OUT@{period\_counter\_CRK\_RUN\_OUT}}
+\index{period\_counter\_CRK\_RUN\_OUT@{period\_counter\_CRK\_RUN\_OUT}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{period\_counter\_CRK\_RUN\_OUT}{period\_counter\_CRK\_RUN\_OUT}}
+{\footnotesize\ttfamily int period\+\_\+counter\+\_\+\+CRK\+\_\+\+RUN\+\_\+\+OUT}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00170}{170}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a3264ca17406556a54abe56667f2c8611}\label{main_8c_a3264ca17406556a54abe56667f2c8611}} 
+\index{main.c@{main.c}!receiving@{receiving}}
+\index{receiving@{receiving}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{receiving}{receiving}}
+{\footnotesize\ttfamily bool receiving = false}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00259}{259}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_ae00db4a9603885a19a44080bdb2331d9}\label{main_8c_ae00db4a9603885a19a44080bdb2331d9}} 
+\index{main.c@{main.c}!revolution\_counter\_CRK\_TOOTH\_PER@{revolution\_counter\_CRK\_TOOTH\_PER}}
+\index{revolution\_counter\_CRK\_TOOTH\_PER@{revolution\_counter\_CRK\_TOOTH\_PER}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{revolution\_counter\_CRK\_TOOTH\_PER}{revolution\_counter\_CRK\_TOOTH\_PER}}
+{\footnotesize\ttfamily unsigned int revolution\+\_\+counter\+\_\+\+CRK\+\_\+\+TOOTH\+\_\+\+PER}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00191}{191}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_af3c32be62d5f2307cc01a316c01ba3dc}\label{main_8c_af3c32be62d5f2307cc01a316c01ba3dc}} 
+\index{main.c@{main.c}!revolution\_CRK@{revolution\_CRK}}
+\index{revolution\_CRK@{revolution\_CRK}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{revolution\_CRK}{revolution\_CRK}}
+{\footnotesize\ttfamily double revolution\+\_\+\+CRK = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00071}{71}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_ad09cc41f983fa5c4f93b335e55684b81}\label{main_8c_ad09cc41f983fa5c4f93b335e55684b81}} 
+\index{main.c@{main.c}!sc\_type\_CRK\_RUN\_OUT@{sc\_type\_CRK\_RUN\_OUT}}
+\index{sc\_type\_CRK\_RUN\_OUT@{sc\_type\_CRK\_RUN\_OUT}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{sc\_type\_CRK\_RUN\_OUT}{sc\_type\_CRK\_RUN\_OUT}}
+{\footnotesize\ttfamily char sc\+\_\+type\+\_\+\+CRK\+\_\+\+RUN\+\_\+\+OUT}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00165}{165}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a4337a7e2ea5f37681e9765a379c42831}\label{main_8c_a4337a7e2ea5f37681e9765a379c42831}} 
+\index{main.c@{main.c}!sc\_type\_SC\_CAM\_CRK@{sc\_type\_SC\_CAM\_CRK}}
+\index{sc\_type\_SC\_CAM\_CRK@{sc\_type\_SC\_CAM\_CRK}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{sc\_type\_SC\_CAM\_CRK}{sc\_type\_SC\_CAM\_CRK}}
+{\footnotesize\ttfamily unsigned int sc\+\_\+type\+\_\+\+SC\+\_\+\+CAM\+\_\+\+CRK = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00237}{237}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a8ce3b19a6074670b7a7b7f732c87a3a1}\label{main_8c_a8ce3b19a6074670b7a7b7f732c87a3a1}} 
+\index{main.c@{main.c}!segment\_counter\_CRK@{segment\_counter\_CRK}}
+\index{segment\_counter\_CRK@{segment\_counter\_CRK}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{segment\_counter\_CRK}{segment\_counter\_CRK}}
+{\footnotesize\ttfamily unsigned int segment\+\_\+counter\+\_\+\+CRK = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00065}{65}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a3bebca3239ddb07b8d20d917bf0974a0}\label{main_8c_a3bebca3239ddb07b8d20d917bf0974a0}} 
+\index{main.c@{main.c}!segment\_time\_CAM@{segment\_time\_CAM}}
+\index{segment\_time\_CAM@{segment\_time\_CAM}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{segment\_time\_CAM}{segment\_time\_CAM}}
+{\footnotesize\ttfamily unsigned long segment\+\_\+time\+\_\+\+CAM = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00100}{100}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a9c555c5cacf96afd9cc8ec7d39cecf38}\label{main_8c_a9c555c5cacf96afd9cc8ec7d39cecf38}} 
+\index{main.c@{main.c}!sensortype\_CAM@{sensortype\_CAM}}
+\index{sensortype\_CAM@{sensortype\_CAM}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{sensortype\_CAM}{sensortype\_CAM}}
+{\footnotesize\ttfamily char sensortype\+\_\+\+CAM\mbox{[}2\mbox{]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00089}{89}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a12faccd7c42eaf3bc1d085640a5b0286}\label{main_8c_a12faccd7c42eaf3bc1d085640a5b0286}} 
+\index{main.c@{main.c}!sensortype\_CRK@{sensortype\_CRK}}
+\index{sensortype\_CRK@{sensortype\_CRK}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{sensortype\_CRK}{sensortype\_CRK}}
+{\footnotesize\ttfamily char sensortype\+\_\+\+CRK}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00048}{48}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_aa52be318f3219c8b3c92b5a843f548b3}\label{main_8c_aa52be318f3219c8b3c92b5a843f548b3}} 
+\index{main.c@{main.c}!shift\_counter\_CAM\_delay@{shift\_counter\_CAM\_delay}}
+\index{shift\_counter\_CAM\_delay@{shift\_counter\_CAM\_delay}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{shift\_counter\_CAM\_delay}{shift\_counter\_CAM\_delay}}
+{\footnotesize\ttfamily unsigned int shift\+\_\+counter\+\_\+\+CAM\+\_\+delay\mbox{[}2\mbox{]}\mbox{[}\mbox{\hyperlink{main_8c_a8a8f99f059be11a4eb89c4fbf6d673d6}{edges\+\_\+beetween\+\_\+shift\+\_\+\+CAM\+\_\+delay\+\_\+definition}}\mbox{]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00197}{197}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_ace219fbc9fdee5cfbd6a2cff4784e4bc}\label{main_8c_ace219fbc9fdee5cfbd6a2cff4784e4bc}} 
+\index{main.c@{main.c}!shift\_counter\_CRK@{shift\_counter\_CRK}}
+\index{shift\_counter\_CRK@{shift\_counter\_CRK}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{shift\_counter\_CRK}{shift\_counter\_CRK}}
+{\footnotesize\ttfamily unsigned int shift\+\_\+counter\+\_\+\+CRK = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00067}{67}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a03535d979603bfbbf85a5fe5c4e1a176}\label{main_8c_a03535d979603bfbbf85a5fe5c4e1a176}} 
+\index{main.c@{main.c}!start\_char@{start\_char}}
+\index{start\_char@{start\_char}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{start\_char}{start\_char}}
+{\footnotesize\ttfamily char start\+\_\+char = \textquotesingle{}!\textquotesingle{}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00244}{244}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a26d8a4c954e505bb7d333d55f001e3cd}\label{main_8c_a26d8a4c954e505bb7d333d55f001e3cd}} 
+\index{main.c@{main.c}!start\_delay@{start\_delay}}
+\index{start\_delay@{start\_delay}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{start\_delay}{start\_delay}}
+{\footnotesize\ttfamily unsigned int start\+\_\+delay = 100}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00068}{68}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_aa92e684341d20dd78cbbf8a8d98b1899}\label{main_8c_aa92e684341d20dd78cbbf8a8d98b1899}} 
+\index{main.c@{main.c}!start\_tooth\_CRK\_TOOTH\_PER@{start\_tooth\_CRK\_TOOTH\_PER}}
+\index{start\_tooth\_CRK\_TOOTH\_PER@{start\_tooth\_CRK\_TOOTH\_PER}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{start\_tooth\_CRK\_TOOTH\_PER}{start\_tooth\_CRK\_TOOTH\_PER}}
+{\footnotesize\ttfamily unsigned int start\+\_\+tooth\+\_\+\+CRK\+\_\+\+TOOTH\+\_\+\+PER}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00187}{187}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a668b8400da7191cbf0928fdf21a9ae94}\label{main_8c_a668b8400da7191cbf0928fdf21a9ae94}} 
+\index{main.c@{main.c}!synch\_times\_valid@{synch\_times\_valid}}
+\index{synch\_times\_valid@{synch\_times\_valid}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{synch\_times\_valid}{synch\_times\_valid}}
+{\footnotesize\ttfamily bool synch\+\_\+times\+\_\+valid = false}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00078}{78}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a8bc6e99e5b5b1814027ef2f4c2524e8f}\label{main_8c_a8bc6e99e5b5b1814027ef2f4c2524e8f}} 
+\index{main.c@{main.c}!T\_TOOTH\_RAW@{T\_TOOTH\_RAW}}
+\index{T\_TOOTH\_RAW@{T\_TOOTH\_RAW}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{T\_TOOTH\_RAW}{T\_TOOTH\_RAW}}
+{\footnotesize\ttfamily unsigned long T\+\_\+\+TOOTH\+\_\+\+RAW = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00053}{53}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a9f76f4b71c284d9db477aac802286bcc}\label{main_8c_a9f76f4b71c284d9db477aac802286bcc}} 
+\index{main.c@{main.c}!T\_TOOTH\_RAW\_1@{T\_TOOTH\_RAW\_1}}
+\index{T\_TOOTH\_RAW\_1@{T\_TOOTH\_RAW\_1}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{T\_TOOTH\_RAW\_1}{T\_TOOTH\_RAW\_1}}
+{\footnotesize\ttfamily unsigned long T\+\_\+\+TOOTH\+\_\+\+RAW\+\_\+1 = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00052}{52}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a2cd636564c8794f7d2aeae0cd22c1ffa}\label{main_8c_a2cd636564c8794f7d2aeae0cd22c1ffa}} 
+\index{main.c@{main.c}!T\_TOOTH\_RAW\_1\_old@{T\_TOOTH\_RAW\_1\_old}}
+\index{T\_TOOTH\_RAW\_1\_old@{T\_TOOTH\_RAW\_1\_old}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{T\_TOOTH\_RAW\_1\_old}{T\_TOOTH\_RAW\_1\_old}}
+{\footnotesize\ttfamily unsigned long T\+\_\+\+TOOTH\+\_\+\+RAW\+\_\+1\+\_\+old = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00055}{55}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_afd691aae0f70e937a4dd458841dde240}\label{main_8c_afd691aae0f70e937a4dd458841dde240}} 
+\index{main.c@{main.c}!T\_TOOTH\_RAW\_2@{T\_TOOTH\_RAW\_2}}
+\index{T\_TOOTH\_RAW\_2@{T\_TOOTH\_RAW\_2}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{T\_TOOTH\_RAW\_2}{T\_TOOTH\_RAW\_2}}
+{\footnotesize\ttfamily unsigned long T\+\_\+\+TOOTH\+\_\+\+RAW\+\_\+2 = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00051}{51}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a118723accaf1b99cbcfbd76126114cf9}\label{main_8c_a118723accaf1b99cbcfbd76126114cf9}} 
+\index{main.c@{main.c}!T\_TOOTH\_RAW\_2\_old@{T\_TOOTH\_RAW\_2\_old}}
+\index{T\_TOOTH\_RAW\_2\_old@{T\_TOOTH\_RAW\_2\_old}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{T\_TOOTH\_RAW\_2\_old}{T\_TOOTH\_RAW\_2\_old}}
+{\footnotesize\ttfamily unsigned long T\+\_\+\+TOOTH\+\_\+\+RAW\+\_\+2\+\_\+old = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00054}{54}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a568c3e1a82c83ec6dcc955066df8c932}\label{main_8c_a568c3e1a82c83ec6dcc955066df8c932}} 
+\index{main.c@{main.c}!T\_TOOTH\_RAW\_old@{T\_TOOTH\_RAW\_old}}
+\index{T\_TOOTH\_RAW\_old@{T\_TOOTH\_RAW\_old}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{T\_TOOTH\_RAW\_old}{T\_TOOTH\_RAW\_old}}
+{\footnotesize\ttfamily unsigned long T\+\_\+\+TOOTH\+\_\+\+RAW\+\_\+old = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00056}{56}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a15ef7a57549da0cf7802f16dbd26487f}\label{main_8c_a15ef7a57549da0cf7802f16dbd26487f}} 
+\index{main.c@{main.c}!TDC\_on\_edge@{TDC\_on\_edge}}
+\index{TDC\_on\_edge@{TDC\_on\_edge}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{TDC\_on\_edge}{TDC\_on\_edge}}
+{\footnotesize\ttfamily bool TDC\+\_\+on\+\_\+edge}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00174}{174}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a2522b63ff5828da052d1c8b3ee9c157c}\label{main_8c_a2522b63ff5828da052d1c8b3ee9c157c}} 
+\index{main.c@{main.c}!tdc\_to\_gap@{tdc\_to\_gap}}
+\index{tdc\_to\_gap@{tdc\_to\_gap}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{tdc\_to\_gap}{tdc\_to\_gap}}
+{\footnotesize\ttfamily double tdc\+\_\+to\+\_\+gap = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00041}{41}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_ac15826e516583ca9efd204606ba7083c}\label{main_8c_ac15826e516583ca9efd204606ba7083c}} 
+\index{main.c@{main.c}!teeth\_count\_CAM\_CRK\_synch@{teeth\_count\_CAM\_CRK\_synch}}
+\index{teeth\_count\_CAM\_CRK\_synch@{teeth\_count\_CAM\_CRK\_synch}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{teeth\_count\_CAM\_CRK\_synch}{teeth\_count\_CAM\_CRK\_synch}}
+{\footnotesize\ttfamily unsigned int teeth\+\_\+count\+\_\+\+CAM\+\_\+\+CRK\+\_\+synch = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00060}{60}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a4bbd4ffdc69f028b74e8af0c54dd9ee0}\label{main_8c_a4bbd4ffdc69f028b74e8af0c54dd9ee0}} 
+\index{main.c@{main.c}!teeth\_count\_CAM\_CRK\_synch\_ahead@{teeth\_count\_CAM\_CRK\_synch\_ahead}}
+\index{teeth\_count\_CAM\_CRK\_synch\_ahead@{teeth\_count\_CAM\_CRK\_synch\_ahead}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{teeth\_count\_CAM\_CRK\_synch\_ahead}{teeth\_count\_CAM\_CRK\_synch\_ahead}}
+{\footnotesize\ttfamily unsigned int teeth\+\_\+count\+\_\+\+CAM\+\_\+\+CRK\+\_\+synch\+\_\+ahead = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00061}{61}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_ab187efc17c279156d2fbe40791bd1182}\label{main_8c_ab187efc17c279156d2fbe40791bd1182}} 
+\index{main.c@{main.c}!teeth\_count\_CRK@{teeth\_count\_CRK}}
+\index{teeth\_count\_CRK@{teeth\_count\_CRK}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{teeth\_count\_CRK}{teeth\_count\_CRK}}
+{\footnotesize\ttfamily unsigned int teeth\+\_\+count\+\_\+\+CRK = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00059}{59}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a9979f80ab833421bad2e664b9f7d91d4}\label{main_8c_a9979f80ab833421bad2e664b9f7d91d4}} 
+\index{main.c@{main.c}!teeth\_count\_overall@{teeth\_count\_overall}}
+\index{teeth\_count\_overall@{teeth\_count\_overall}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{teeth\_count\_overall}{teeth\_count\_overall}}
+{\footnotesize\ttfamily int teeth\+\_\+count\+\_\+overall = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00120}{120}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a0afd59a7cbe5941cd4735019f3431de4}\label{main_8c_a0afd59a7cbe5941cd4735019f3431de4}} 
+\index{main.c@{main.c}!teeth\_counter\_CRK\_GAP\_NOT\_DET@{teeth\_counter\_CRK\_GAP\_NOT\_DET}}
+\index{teeth\_counter\_CRK\_GAP\_NOT\_DET@{teeth\_counter\_CRK\_GAP\_NOT\_DET}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{teeth\_counter\_CRK\_GAP\_NOT\_DET}{teeth\_counter\_CRK\_GAP\_NOT\_DET}}
+{\footnotesize\ttfamily unsigned int teeth\+\_\+counter\+\_\+\+CRK\+\_\+\+GAP\+\_\+\+NOT\+\_\+\+DET = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00218}{218}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a39121f24b916d4e2ea6e7f897bafe4a8}\label{main_8c_a39121f24b916d4e2ea6e7f897bafe4a8}} 
+\index{main.c@{main.c}!teeth\_counter\_CRK\_RUN\_OUT@{teeth\_counter\_CRK\_RUN\_OUT}}
+\index{teeth\_counter\_CRK\_RUN\_OUT@{teeth\_counter\_CRK\_RUN\_OUT}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{teeth\_counter\_CRK\_RUN\_OUT}{teeth\_counter\_CRK\_RUN\_OUT}}
+{\footnotesize\ttfamily unsigned int teeth\+\_\+counter\+\_\+\+CRK\+\_\+\+RUN\+\_\+\+OUT = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00166}{166}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a590ad1bd7a49f0ea3fb90f8e24997bb1}\label{main_8c_a590ad1bd7a49f0ea3fb90f8e24997bb1}} 
+\index{main.c@{main.c}!teeth\_counter\_CRK\_TOOTH\_OFF@{teeth\_counter\_CRK\_TOOTH\_OFF}}
+\index{teeth\_counter\_CRK\_TOOTH\_OFF@{teeth\_counter\_CRK\_TOOTH\_OFF}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{teeth\_counter\_CRK\_TOOTH\_OFF}{teeth\_counter\_CRK\_TOOTH\_OFF}}
+{\footnotesize\ttfamily unsigned int teeth\+\_\+counter\+\_\+\+CRK\+\_\+\+TOOTH\+\_\+\+OFF = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00214}{214}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a2068dfcf9f70475272677ad2446d6cdf}\label{main_8c_a2068dfcf9f70475272677ad2446d6cdf}} 
+\index{main.c@{main.c}!teeth\_counter\_CRK\_TOOTH\_PER@{teeth\_counter\_CRK\_TOOTH\_PER}}
+\index{teeth\_counter\_CRK\_TOOTH\_PER@{teeth\_counter\_CRK\_TOOTH\_PER}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{teeth\_counter\_CRK\_TOOTH\_PER}{teeth\_counter\_CRK\_TOOTH\_PER}}
+{\footnotesize\ttfamily unsigned int teeth\+\_\+counter\+\_\+\+CRK\+\_\+\+TOOTH\+\_\+\+PER}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00190}{190}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_ae22dd0b559e11e340eacb7e5acea6269}\label{main_8c_ae22dd0b559e11e340eacb7e5acea6269}} 
+\index{main.c@{main.c}!teeth\_counter\_SEG\_ADP\_ER\_LIM@{teeth\_counter\_SEG\_ADP\_ER\_LIM}}
+\index{teeth\_counter\_SEG\_ADP\_ER\_LIM@{teeth\_counter\_SEG\_ADP\_ER\_LIM}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{teeth\_counter\_SEG\_ADP\_ER\_LIM}{teeth\_counter\_SEG\_ADP\_ER\_LIM}}
+{\footnotesize\ttfamily unsigned int teeth\+\_\+counter\+\_\+\+SEG\+\_\+\+ADP\+\_\+\+ER\+\_\+\+LIM = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00222}{222}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_aaaf7baa3d8ac85d9a42661d006cf45d1}\label{main_8c_aaaf7baa3d8ac85d9a42661d006cf45d1}} 
+\index{main.c@{main.c}!temp\_chars\_1@{temp\_chars\_1}}
+\index{temp\_chars\_1@{temp\_chars\_1}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{temp\_chars\_1}{temp\_chars\_1}}
+{\footnotesize\ttfamily char temp\+\_\+chars\+\_\+1\mbox{[}21\mbox{]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00249}{249}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_aaa5d3d9d9bb45454a966061259e9f0e0}\label{main_8c_aaa5d3d9d9bb45454a966061259e9f0e0}} 
+\index{main.c@{main.c}!temp\_chars\_10@{temp\_chars\_10}}
+\index{temp\_chars\_10@{temp\_chars\_10}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{temp\_chars\_10}{temp\_chars\_10}}
+{\footnotesize\ttfamily char temp\+\_\+chars\+\_\+10\mbox{[}21\mbox{]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00258}{258}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_abae06a6c6bd04626e03b075988b29798}\label{main_8c_abae06a6c6bd04626e03b075988b29798}} 
+\index{main.c@{main.c}!temp\_chars\_2@{temp\_chars\_2}}
+\index{temp\_chars\_2@{temp\_chars\_2}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{temp\_chars\_2}{temp\_chars\_2}}
+{\footnotesize\ttfamily char temp\+\_\+chars\+\_\+2\mbox{[}21\mbox{]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00250}{250}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_accf419f1343baf3022d8110d77787da3}\label{main_8c_accf419f1343baf3022d8110d77787da3}} 
+\index{main.c@{main.c}!temp\_chars\_3@{temp\_chars\_3}}
+\index{temp\_chars\_3@{temp\_chars\_3}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{temp\_chars\_3}{temp\_chars\_3}}
+{\footnotesize\ttfamily char temp\+\_\+chars\+\_\+3\mbox{[}21\mbox{]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00251}{251}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a46e88e75cf37f24014fc5343f7cda43a}\label{main_8c_a46e88e75cf37f24014fc5343f7cda43a}} 
+\index{main.c@{main.c}!temp\_chars\_4@{temp\_chars\_4}}
+\index{temp\_chars\_4@{temp\_chars\_4}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{temp\_chars\_4}{temp\_chars\_4}}
+{\footnotesize\ttfamily char temp\+\_\+chars\+\_\+4\mbox{[}21\mbox{]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00252}{252}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_ae979808ac8536b0694d8d4922b82b8c2}\label{main_8c_ae979808ac8536b0694d8d4922b82b8c2}} 
+\index{main.c@{main.c}!temp\_chars\_5@{temp\_chars\_5}}
+\index{temp\_chars\_5@{temp\_chars\_5}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{temp\_chars\_5}{temp\_chars\_5}}
+{\footnotesize\ttfamily char temp\+\_\+chars\+\_\+5\mbox{[}21\mbox{]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00253}{253}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a7dfda55d11eebf66f16e7028582fc988}\label{main_8c_a7dfda55d11eebf66f16e7028582fc988}} 
+\index{main.c@{main.c}!temp\_chars\_6@{temp\_chars\_6}}
+\index{temp\_chars\_6@{temp\_chars\_6}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{temp\_chars\_6}{temp\_chars\_6}}
+{\footnotesize\ttfamily char temp\+\_\+chars\+\_\+6\mbox{[}21\mbox{]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00254}{254}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a57230e9c3089849595ec548dfb3d7cb3}\label{main_8c_a57230e9c3089849595ec548dfb3d7cb3}} 
+\index{main.c@{main.c}!temp\_chars\_7@{temp\_chars\_7}}
+\index{temp\_chars\_7@{temp\_chars\_7}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{temp\_chars\_7}{temp\_chars\_7}}
+{\footnotesize\ttfamily char temp\+\_\+chars\+\_\+7\mbox{[}21\mbox{]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00255}{255}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_af925a16ab23f8f57d70f2ad109a76653}\label{main_8c_af925a16ab23f8f57d70f2ad109a76653}} 
+\index{main.c@{main.c}!temp\_chars\_8@{temp\_chars\_8}}
+\index{temp\_chars\_8@{temp\_chars\_8}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{temp\_chars\_8}{temp\_chars\_8}}
+{\footnotesize\ttfamily char temp\+\_\+chars\+\_\+8\mbox{[}21\mbox{]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00256}{256}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_ae1433699181c826d3b99480196999667}\label{main_8c_ae1433699181c826d3b99480196999667}} 
+\index{main.c@{main.c}!temp\_chars\_9@{temp\_chars\_9}}
+\index{temp\_chars\_9@{temp\_chars\_9}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{temp\_chars\_9}{temp\_chars\_9}}
+{\footnotesize\ttfamily char temp\+\_\+chars\+\_\+9\mbox{[}21\mbox{]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00257}{257}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_ac73a776a47669561214b6ad84a70e641}\label{main_8c_ac73a776a47669561214b6ad84a70e641}} 
+\index{main.c@{main.c}!timer\_active\_CAM\_delay@{timer\_active\_CAM\_delay}}
+\index{timer\_active\_CAM\_delay@{timer\_active\_CAM\_delay}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{timer\_active\_CAM\_delay}{timer\_active\_CAM\_delay}}
+{\footnotesize\ttfamily bool timer\+\_\+active\+\_\+\+CAM\+\_\+delay\mbox{[}2\mbox{]} = \{false, false\}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00201}{201}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a0efa411b2fc4c7948d45abd03d6264a0}\label{main_8c_a0efa411b2fc4c7948d45abd03d6264a0}} 
+\index{main.c@{main.c}!timer\_Counter\_CRK\_GAP\_NOT\_DET@{timer\_Counter\_CRK\_GAP\_NOT\_DET}}
+\index{timer\_Counter\_CRK\_GAP\_NOT\_DET@{timer\_Counter\_CRK\_GAP\_NOT\_DET}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{timer\_Counter\_CRK\_GAP\_NOT\_DET}{timer\_Counter\_CRK\_GAP\_NOT\_DET}}
+{\footnotesize\ttfamily unsigned int timer\+\_\+\+Counter\+\_\+\+CRK\+\_\+\+GAP\+\_\+\+NOT\+\_\+\+DET = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00219}{219}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_aebc1cf24310f46e5fd32d36c9b93edb5}\label{main_8c_aebc1cf24310f46e5fd32d36c9b93edb5}} 
+\index{main.c@{main.c}!timer\_Counter\_SEG\_ADP\_ER\_LIM@{timer\_Counter\_SEG\_ADP\_ER\_LIM}}
+\index{timer\_Counter\_SEG\_ADP\_ER\_LIM@{timer\_Counter\_SEG\_ADP\_ER\_LIM}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{timer\_Counter\_SEG\_ADP\_ER\_LIM}{timer\_Counter\_SEG\_ADP\_ER\_LIM}}
+{\footnotesize\ttfamily unsigned int timer\+\_\+\+Counter\+\_\+\+SEG\+\_\+\+ADP\+\_\+\+ER\+\_\+\+LIM = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00223}{223}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_af63272d2518e2577d29c0d278b3fa48e}\label{main_8c_af63272d2518e2577d29c0d278b3fa48e}} 
+\index{main.c@{main.c}!timer\_overflow\_CAM@{timer\_overflow\_CAM}}
+\index{timer\_overflow\_CAM@{timer\_overflow\_CAM}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{timer\_overflow\_CAM}{timer\_overflow\_CAM}}
+{\footnotesize\ttfamily unsigned long timer\+\_\+overflow\+\_\+\+CAM = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00099}{99}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_aa7f0f8e777321cf47da5f0dd59c5be94}\label{main_8c_aa7f0f8e777321cf47da5f0dd59c5be94}} 
+\index{main.c@{main.c}!timer\_overflow\_CAM\_failure@{timer\_overflow\_CAM\_failure}}
+\index{timer\_overflow\_CAM\_failure@{timer\_overflow\_CAM\_failure}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{timer\_overflow\_CAM\_failure}{timer\_overflow\_CAM\_failure}}
+{\footnotesize\ttfamily unsigned long timer\+\_\+overflow\+\_\+\+CAM\+\_\+failure = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00161}{161}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a7ccd9723b2e11820cc395d0b16931872}\label{main_8c_a7ccd9723b2e11820cc395d0b16931872}} 
+\index{main.c@{main.c}!timer\_overflow\_CAM\_REF\_CRK@{timer\_overflow\_CAM\_REF\_CRK}}
+\index{timer\_overflow\_CAM\_REF\_CRK@{timer\_overflow\_CAM\_REF\_CRK}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{timer\_overflow\_CAM\_REF\_CRK}{timer\_overflow\_CAM\_REF\_CRK}}
+{\footnotesize\ttfamily unsigned long timer\+\_\+overflow\+\_\+\+CAM\+\_\+\+REF\+\_\+\+CRK = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00162}{162}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_aa697468758fbf1b546cd67c827d8dd84}\label{main_8c_aa697468758fbf1b546cd67c827d8dd84}} 
+\index{main.c@{main.c}!timer\_overflow\_CRK@{timer\_overflow\_CRK}}
+\index{timer\_overflow\_CRK@{timer\_overflow\_CRK}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{timer\_overflow\_CRK}{timer\_overflow\_CRK}}
+{\footnotesize\ttfamily unsigned long timer\+\_\+overflow\+\_\+\+CRK = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00058}{58}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_ab2fec6547dc914b855112ea2d069e652}\label{main_8c_ab2fec6547dc914b855112ea2d069e652}} 
+\index{main.c@{main.c}!timer\_overflow\_CRK\_failure@{timer\_overflow\_CRK\_failure}}
+\index{timer\_overflow\_CRK\_failure@{timer\_overflow\_CRK\_failure}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{timer\_overflow\_CRK\_failure}{timer\_overflow\_CRK\_failure}}
+{\footnotesize\ttfamily unsigned long timer\+\_\+overflow\+\_\+\+CRK\+\_\+failure = 0}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00160}{160}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{main_8c_a4433116b526521b3810d1671c1b9a96a}\label{main_8c_a4433116b526521b3810d1671c1b9a96a}} 
+\index{main.c@{main.c}!tolerance\_window\_CAM@{tolerance\_window\_CAM}}
+\index{tolerance\_window\_CAM@{tolerance\_window\_CAM}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{tolerance\_window\_CAM}{tolerance\_window\_CAM}}
+{\footnotesize\ttfamily double tolerance\+\_\+window\+\_\+\+CAM\mbox{[}2\mbox{]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00112}{112}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
