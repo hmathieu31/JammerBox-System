@@ -708,9 +708,6 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM7_IRQHandler(void)
         {
         case 1: { // failure for the falling edge
             GPIO_ResetBits(GPIOG, 6);
-
-            GPIO_ResetBits(GPIOG, 6);
-
             if (failure_waiting == true)
             {                              // if the rising edge has already happen
                 if (sensortype_CRK == 'c') // sensor is cpdd
