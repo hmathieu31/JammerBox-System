@@ -6,6 +6,18 @@ p {
   margin: 0;
 }
 
+.frame-5 {
+  padding: 7% 22%;
+  box-sizing: border-box;
+  background-attachment: fixed;
+  background: url(../../public/BackgroundImage.png),
+    linear-gradient(0deg, rgba(255, 255, 255, 1), rgba(255, 255, 255, 1));
+  background-size: 100% 100%;
+  width: 100%;
+  min-width: 20em;
+  height: 100%;
+}
+
 .clip-contents {
   overflow: hidden;
 }
@@ -40,7 +52,7 @@ p {
 }
 
 .test-configuration {
-  padding: 62px 37px 35px 0px;
+  padding: 3em 5em;
   box-sizing: border-box;
   border-radius: 50px;
   background-color: rgba(231, 120, 23, 1);
@@ -107,7 +119,7 @@ p {
   font-size: 48px;
   font-family: IBM Plex Sans, sans-serif;
   font-weight: 700;
-  color: rgba(255, 255, 255, 1);
+  color: black;
   text-align: center;
   width: 281px;
   height: 77px;

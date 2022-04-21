@@ -29,7 +29,7 @@ p {
 }
 
 .frame-1 {
-  padding: 20% 10rem;
+  padding: 13% 10rem;
   box-sizing: border-box;
   background-attachment: fixed;
   background: url(../../public/BackgroundImage.png),
@@ -47,7 +47,7 @@ p {
 }
 
 .txt-271 {
-  font-size: 96px;
+  font-size: 6em;
   font-family: Maven Pro, sans-serif;
   font-weight: 700;
   color: rgba(95, 94, 94, 1);
@@ -78,7 +78,7 @@ p {
 }
 
 .txt-733 {
-  font-size: 40px;
+  font-size: 5vw;
   font-family: IBM Plex Sans, sans-serif;
   font-weight: 600;
   color: rgba(255, 255, 255, 1);
