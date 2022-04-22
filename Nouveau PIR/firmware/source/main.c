@@ -827,7 +827,7 @@ void __attribute__((__interrupt__, no_auto_psv)) _T9Interrupt(void)
 
 //## UART Receive Interrupt
 
-void __attribute__((__interrupt__, no_auto_psv)) _U2RXInterrupt(void)
+void __attribute__((__interrupt__, no_auto_psv)) USART1_IRQHandler(void)
 {
 
     //§ in = U2RXREG;//? UART Receive
