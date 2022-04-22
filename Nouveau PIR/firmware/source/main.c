@@ -829,22 +829,21 @@ void __attribute__((__interrupt__, no_auto_psv)) _T9Interrupt(void)
 
 void __attribute__((__interrupt__, no_auto_psv)) USART1_IRQHandler(void)
 {
-
-    //§ in = U2RXREG;//? UART Receive
+    //? UART Receive
     in = USART_ReceiveData(USART1);
 
-    //§ if (U2STAbits.PERR == 1 || U2STAbits.FERR == 1) {//? PERR : parity error status bit 1 if error detected 0 i no error detected
+    //? PERR : parity error status bit 1 if error detected 0 i no error detected
     if (USART_GetFlagStatus(USART1, USART_FLAG_PE) == SET || USART_GetFlagStatus(USART1, USART_FLAG_FE == SET))
     {
         UART_COM_error(); //? FERR : Framing Error Status bit 1 if error detected 0 i no error detected
 
-        //§ } else if (U2STAbits.OERR == 1) {                //? OERR : Receive Buffer Overrun Error Status bit  1 = Receive buffer has overflowed
+        //? OERR : Receive Buffer Overrun Error Status bit  1 = Receive buffer has overflowed
     }
     else if (USART_GetFlagStatus(USART1, USART_FLAG_ORE) == SET)
     {
         UART_COM_error(); //? 0 = Receive buffer has not overflowed. Clearing a previously set OERR bit (1 → 0 transition) will reset
 
-        //§ U2STAbits.OERR = 0;                         //? the receiver buffer and the UxRSR to the empty state
+        //? the receiver buffer and the UxRSR to the empty state
         USART_ReceiveData(USART1);
     }
     else
@@ -866,7 +865,6 @@ void __attribute__((__interrupt__, no_auto_psv)) USART1_IRQHandler(void)
         else if (in == start_char && char_counter == 1)
         {
 
-            //§ UART_send(message[13]); //send communication receive status
             USART_SendData(USART1, message[13]);
             receiving = true;  // set label that indicates receiving status
             com_error = false; // reset COM error, due to received start char
@@ -876,17 +874,8 @@ void __attribute__((__interrupt__, no_auto_psv)) USART1_IRQHandler(void)
             UART_COM_error(); // send failure message
         }
     }
-
-    //§ IFS1bits.U2RXIF = 0; //Clear U2RX Interrupt flag
     USART_ReceiveData(USART1);
 }
-
-//## UART Transmit Interrupt
-/* Probablement pas nécessaire de hadle ça manuellement car surement gérer par la stm32
-void __attribute__((__interrupt__, no_auto_psv)) _U2TXInterrupt(void) {
-    IFS1bits.U2TXIF = 0;
-}
-*/
 
 //## Default Interrupt
 
