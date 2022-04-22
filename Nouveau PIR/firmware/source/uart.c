@@ -139,30 +139,25 @@ extern bool communication_ready;
 
 // ## Uart2 Init ##
 
-void Uart2Init(void) {
+void Usart1Init(void) {
+    USART_InitTypeDef USART_InitStructure;
+    USART_ClockInitTypeDef USART_ClockInitStructure;
 
+    /*  * Baud rate: 9600 Bauds
+        * Word length = 8 Bits
+        * One Stop Bit
+        * Even parity
+        * Hardware flow control disabled (RTS and CTS signals)
+        * Receive and transmit enabled
+        */
+    USART_StructInit(&USART_InitStructure); // Initializes the USART_InitStructure to default values
+    USART_InitStructure.USART_Parity = USART_Parity_Even;
 
-    U2MODEbits.USIDL = 0; // Bit13 Continue in Idle
-    U2MODEbits.IREN = 0; // Bit12 No IR translation
-    U2MODEbits.RTSMD = 1; // Bit11 Simplex Mode
-    U2MODEbits.UEN = 0; // Bits8,9 TX,RX,CTS,RTS enabled
-    U2MODEbits.WAKE = 0; // Bit7 No Wake up
-    U2MODEbits.LPBACK = 0; // Bit6 No Loop Back
-    U2MODEbits.ABAUD = 0; // Bit5 No Autobaud (would require sending '55')
-    U2MODEbits.URXINV = 0; // Bit4 IdleState = 1  (for dsPIC)
-    U2MODEbits.BRGH = 0; // Bit3 16 clocks per bit period
-    U2MODEbits.PDSEL = 0b01; // Bits1,2 8bit, Even Parity
-    U2MODEbits.STSEL = 0; // Bit0 One Stop Bit
+    USART_ClockStructInit(&USART_ClockInitStructure); // Initializes the USART_ClockInitStructure to default values
 
+    USART_IrDACmd(USART1, DISABLE); // Disable the IRDA mode
+    USART_HalfDuplexCmd(USART1, DISABLE); // Disable the half-duplex mode
 
-    //  U2BRG = (Fcy/(16*BaudRate))-1
-    //  U2BRG = (36,85M/(16*9600))-1
-    //  U2BRG = 239
-
-    //	Failure: 0,04%
-    //	Baud rate = (36,85M/16*(239+1)) = 9596 
-
-    U2BRG = 240; // 36,85Mhz osc, 9600 Baud
 
 
     U2STAbits.UTXISEL1 = 0; //Bit15 Int when Char is transferred (1/2 config!)

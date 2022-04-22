@@ -319,7 +319,7 @@ int main(void)
 
     Port_G_config();
 
-    Uart2Init();
+    Usart1Init();
 
     TRISAbits.TRISA9 = 0;
 
