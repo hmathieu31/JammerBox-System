@@ -45,7 +45,6 @@ export default class ButtonList extends React.Component {
     this.state = {
       showModal: false,
       testName: "POLO",
-      showTestResult: false,
     };
 
     this.Buttons = [
@@ -72,15 +71,6 @@ export default class ButtonList extends React.Component {
     };
   }
 
-  handleShowTestResult() {
-    return() => {
-      this.setState((prev) => ({
-        showTestResult: true,
-        showModal: !prev.showModal,
-      }));
-    };
-  }
-
   makeButton(data) {
     return (
       <div>
@@ -94,9 +84,6 @@ export default class ButtonList extends React.Component {
         <Modal isOpen={this.state.showModal}>
           <ParameterPopup test={this.state.testName} 
                           handleOpenClose={this.handleOpenClose()}
-                          handleShowTestResult={this.handleShowTestResult()}
-            // handleOpenClose={this.handleOpenClose(data)}
-            // handleShowTestResult={this.handleShowTestResult()}
           />
         </Modal>
       </div>
