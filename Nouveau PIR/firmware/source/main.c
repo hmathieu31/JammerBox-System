@@ -290,25 +290,17 @@ int main(void) {
 
     // ## Initialisierung ##
 
-    ////OSCInit();
 
-    Timer1Init();
 
     Timer2Init();
 
     Timer3Init();
-
-    Timer4Init();
-
-    Timer5Init();
 
     Timer6Init();
 
     Timer7Init();
 
     Timer8Init();
-
-    Timer9Init();
 
     IC1Init();
 
@@ -514,38 +506,6 @@ void __attribute__((__interrupt__, no_auto_psv)) _IC6Interrupt(void) {
 }
 
 
-
-//## Timer 1 Interrupt: Communication validation
-
-void __attribute__((__interrupt__, no_auto_psv)) _T1Interrupt(void) {
-    if (communication_active == true) {
-        UART_send(message[11]);
-
-        if (communication_validation == true) {
-            if (communication_ready == true) {
-                communication_ready = false;
-            } else {
-                failure_identify = '0';
-                configuration_complete = false;
-                CRK_config = false;
-                CAM_config = false;
-                communication_active = false;
-                communication_validation = false;
-                T1CONbits.TON = 0;
-                TMR1 = 0x00;
-                Stalling_detection();
-            }
-        }
-
-        if (communication_active == true) {
-            communication_validation = !communication_validation;
-        }
-    }
-
-    IFS0bits.T1IF = 0; // Clear Timer1 Interrupt Flag
-}
-
-
 //## Timer 2 Interrupt CRK tooth time
 
 void __attribute__((__interrupt__, no_auto_psv)) _T2Interrupt(void) {
@@ -566,31 +526,6 @@ void __attribute__((__interrupt__, no_auto_psv)) _T3Interrupt(void) {
     timer_overflow_CAM++;
 
     IFS0bits.T3IF = 0; // Clear Timer3 Interrupt Flag
-
-}
-
-//## Timer 4 Interrupt: CRK failure circuit-entering
-
-void __attribute__((__interrupt__, no_auto_psv)) _T4Interrupt(void) {
-    // all overflows between the events
-    timer_overflow_CRK_failure++;
-
-    TMR4 = 0;
-
-    IFS1bits.T4IF = 0; // Clear Timer4 Interrupt Flag
-
-}
-
-//## Timer 5 Interrupt: CAM failure circuit-entering
-
-void __attribute__((__interrupt__, no_auto_psv)) _T5Interrupt(void) {
-
-    // all overflows between the events
-    timer_overflow_CAM_failure++;
-
-    TMR5 = 0;
-
-    IFS1bits.T5IF = 0; // Clear Timer5 Interrupt Flag
 
 }
 
@@ -732,15 +667,6 @@ void __attribute__((__interrupt__, no_auto_psv)) _T8Interrupt(void) {
     TMR8 = 0x00;
     IFS3bits.T8IF = 0; // Clear Timer8 Interrupt Flag
 }
-
-//## Timer 9 Interrupt: CAM_PER - pulse duration
-
-void __attribute__((__interrupt__, no_auto_psv)) _T9Interrupt(void) {
-    timer_overflow_CAM_REF_CRK++;
-
-    IFS3bits.T9IF = 0; // Clear Timer9 Interrupt Flag
-}
-
 
 //## UART Receive Interrupt
 
