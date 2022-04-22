@@ -5,6 +5,7 @@ import ReturnButton from "../components/returnButton.js";
 import ButtonList from "../components/ButtonList";
 
 function SynthesizeTests() {
+
   return (
     <>
       <div className="frame-1">
