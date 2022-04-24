@@ -137,7 +137,7 @@ extern bool communication_ready;
 
 // ### Functions ###
 
-// ## Uart2 Init ##
+// ## Uart1 Init ##
 
 void Usart1Init(void) {
     USART_InitTypeDef USART_InitStructure;
@@ -154,42 +154,46 @@ void Usart1Init(void) {
     USART_InitStructure.USART_Parity = USART_Parity_Even;
 
     USART_ClockStructInit(&USART_ClockInitStructure); // Initializes the USART_ClockInitStructure to default values
+    USART_ClockInitStructure.USART_Clock = USART_Clock_Enable;
 
     USART_IrDACmd(USART1, DISABLE); // Disable the IRDA mode
     USART_HalfDuplexCmd(USART1, DISABLE); // Disable the half-duplex mode
 
 
 
-    U2STAbits.UTXISEL1 = 0; //Bit15 Int when Char is transferred (1/2 config!)
-    U2STAbits.UTXINV = 0; //Bit14 N/A, IRDA config
-    U2STAbits.UTXISEL0 = 0; //Bit13 Other half of Bit15
-    U2STAbits.UTXBRK = 0; //Bit11 Disabled
-    U2STAbits.UTXEN = 0; //Bit10 TX pins controlled by periph
-    U2STAbits.URXISEL = 0b00; //Bits6,7 Int. on character recieved
-    U2STAbits.ADDEN = 0; //Bit5 Address Detect Disabled
+    // U2STAbits.UTXISEL1 = 0; //Bit15 Int when Char is transferred (1/2 config!)
+    // U2STAbits.UTXINV = 0; //Bit14 N/A, IRDA config
+    // U2STAbits.UTXISEL0 = 0; //Bit13 Other half of Bit15
+    // U2STAbits.UTXBRK = 0; //Bit11 Disabled
+    // U2STAbits.UTXEN = 0; //Bit10 TX pins controlled by periph
+    // U2STAbits.URXISEL = 0b00; //Bits6,7 Int. on character recieved
+    // U2STAbits.ADDEN = 0; //Bit5 Address Detect Disabled
 
 
-    //UART Transimit interrupt
-    IPC7bits.U2TXIP = 1; // Set interrupt priority
-    IFS1bits.U2TXIF = 0; // Clear the Transmit Interrupt Flag
-    IEC1bits.U2TXIE = 1; // Enable Transmit Interrupts
+    //UART Transmit interrupt
+    NVIC_EnableIRQ(USART1_IRQn);
+    NVIC_SetPriority(USART1_IRQn, 1);
+    USART_ClearITPendingBit(USART1, USART_IT_TXE);
+    USART_ITConfig(USART1, USART_IT_TXE, ENABLE);
 
     //UART Receive interrupt
-    IPC7bits.U2RXIP = 1; // Set interrupt priority
-    IFS1bits.U2RXIF = 0; // Clear the Recieve Interrupt Flag
-    IEC1bits.U2RXIE = 1; // Enable Recieve Interrupts
+    NVIC_EnableIRQ(USART1_IRQn);
+    NVIC_SetPriority(USART1_IRQn, 1);
+    USART_ClearITPendingBit(USART1, USART_IT_RXNE);
+    USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);
 
 
     // turn on UART
-    U2MODEbits.UARTEN = 1;
-    U2STAbits.UTXEN = 1;
+    USART_ClockInit(USART1, &USART_ClockInitStructure);
+    USART_Init(USART1, &USART_InitStructure);
+    USART_Cmd(USART1, ENABLE);
 }
 
 
 
 //## UART Receive Function
 
-void UART_receive(void) {
+void UART_receive(void) { // TODO: #43 port this function
 
     data_counter = 0; //Set data counter to 0
 
