@@ -19,6 +19,7 @@ p {
 }
 
 .flex-hcenter {
+  display: flex;
   justify-content: center;
   min-width: 20%;
 }

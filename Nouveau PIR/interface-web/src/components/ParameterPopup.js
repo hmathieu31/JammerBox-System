@@ -24,7 +24,7 @@ export default function ParameterPopup(truc) {
           <p className="txt-120 flex-hcenter">Nom du test</p>
           <div className="flex-col-hend">
             <div className="group-21">
-              <p className="txt-649">Parametre :</p>
+              <p className="txt-649">Parametgrrgrre :</p>
               <input className="rectangle-17 txt-905" />
             </div>
             <div className="group-786 flex-row">

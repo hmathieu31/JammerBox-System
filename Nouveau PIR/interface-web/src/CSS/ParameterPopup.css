@@ -7,7 +7,7 @@ p {
 }
 
 .frame-5 {
-  padding: 7% 22%;
+  padding: 7% 9%;
   box-sizing: border-box;
   background-attachment: fixed;
   background: url(../../public/BackgroundImage.png),
@@ -48,7 +48,6 @@ p {
 }
 
 .group-917 {
-  padding: 3% 5% 3% 5%;
   height: 100%;
   width: 100%;
 }
@@ -66,7 +65,7 @@ p {
 }
 
 .group-21 {
-  margin-bottom: 119px;
+  margin-bottom: 30%;
   box-sizing: border-box;
   height: 60px;
   width: 100%;
@@ -133,5 +132,6 @@ p {
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   height: 100px;
   width: 100%;
+  min-width: 40%;
   cursor: pointer;
 }

@@ -5,6 +5,17 @@ import React from "react";
 import Modal from "react-modal";
 
 class ParameterPopup extends React.Component {
+  options = [
+    {
+      label: "Ground",
+      value: "ground",
+    },
+    {
+      label: "Battery",
+      value: "battery",
+    },
+  ];
+
   render() {
     const { handleOpenClose } = this.props;
     return (
@@ -13,15 +24,30 @@ class ParameterPopup extends React.Component {
           <p className="txt-120 flex-hcenter">{this.props.testName}</p>
           <div className="group-213 flex-col-hend">
             <div className="group-21">
-              <p className="txt-649 flex-hcenter">Parametre :</p>
-              <input className="rectangle-17 txt-905" />
+              <p className="txt-649 flex-hcenter">{this.props.testParam} :</p>
+              {this.props.isSelect ? (
+                <select className="rectangle-17 txt-905 flex-hcenter">
+                  {this.options.map((option) => (
+                    <option value={option.value}>{option.label}</option>
+                  ))}
+                </select>
+              ) : (
+                <div>
+                  <input
+                    type="number"
+                    pattern="[0-9]*"
+                    className="rectangle-17 txt-905 flex-hcenter"
+                    onChange={this.props.handleRun}
+                  />
+                </div>
+              )}
             </div>
             <div className="group-786 flex-row">
               <button onClick={handleOpenClose} className="group-6">
-                <p className="txt-637 flex-hcenter">Let’s not go</p>
+                <p className="txt-637 flex-hcenter">Cancel</p>
               </button>
-              <button onClick={handleOpenClose} className="group-6">
-                <p className="txt-637 flex-hcenter">Let’s go</p>
+              <button onClick={this.props.handleRun} className="group-6">
+                <p className="txt-637 flex-hcenter">Run Test</p>
               </button>
             </div>
           </div>
@@ -32,10 +58,11 @@ class ParameterPopup extends React.Component {
 }
 
 class ButtonAttributes {
-  constructor(name, hasparam, paramsTab) {
+  constructor(name, hasparam, paramsTab, IsSelect) {
     this.hasParam = hasparam;
     this.testName = name;
     this.params = paramsTab;
+    this.isSelect = IsSelect;
   }
 
   getHasParam() {
@@ -49,6 +76,10 @@ class ButtonAttributes {
   getTestName() {
     return this.testName;
   }
+
+  getIsSelect() {
+    return this.isSelect;
+  }
 }
 
 export default class ButtonList extends React.Component {
@@ -57,44 +88,53 @@ export default class ButtonList extends React.Component {
     this.state = {
       showModal: false,
       testName: "",
+      testParam: "",
+      isSelect: false,
     };
     this.Buttons = new Array(
-      new ButtonAttributes("CRK SHORT CIRCUIT", false, null),
-      new ButtonAttributes("CAM SHORT CIRCUIT", false, null),
-      new ButtonAttributes("CRK SPK", false, null),
-      new ButtonAttributes("CRK RUN OUT", true, "Angle"),
-      new ButtonAttributes("CRK TOOTH OFF", true, "Teeth off"),
-      new ButtonAttributes("CRK GAP NOT DET", false, null),
-      new ButtonAttributes("CRK SEG ADP ERR LIM", false, null),
-      new ButtonAttributes("CRK PULSE DURATION", false, null),
-      new ButtonAttributes("CRK POSN ENG STST", false, null),
-      new ButtonAttributes("CAM DELAY", false, null),
-      new ButtonAttributes("CAM SPK", false, null),
-      new ButtonAttributes("CAM PAT ERR", false, null)
+      new ButtonAttributes("CRK SHORT CIRCUIT", true, "Output Signal", true),
+      new ButtonAttributes("CAM SHORT CIRCUIT", true, "Output Signal", true),
+      new ButtonAttributes("CRK SPK", false, null, false),
+      new ButtonAttributes("CRK RUN OUT", true, "Angle", false),
+      new ButtonAttributes("CRK TOOTH OFF", true, "Teeth off", false),
+      new ButtonAttributes("CRK GAP NOT DET", false, null, false),
+      new ButtonAttributes("CRK SEG ADP ERR LIM", true, "Angle", false),
+      new ButtonAttributes("CRK PULSE DURATION", true, "Duration", false),
+      new ButtonAttributes("CRK POSN ENG STST", true, "Teeth Off", false),
+      new ButtonAttributes("CAM DELAY", true, "°CRK", false),
+      new ButtonAttributes("CAM SPK", false, null, false),
+      new ButtonAttributes("CAM PAT ERR", false, null, false)
     );
   }
 
   handleOpenClose(data) {
     return () => {
-      this.setState((prev) => ({
+      this.setState(() => ({
         testName: data.getTestName(),
-        showModal: !prev.showModal,
+        testParam: data.getParams(),
+        showModal: data.getHasParam(),
+        isSelect: data.getIsSelect(),
       }));
     };
   }
 
-  truc() {
-    console.log("Hoh");
+  runTest(data) {
+    return async (event) => {
+      console.log(event.target.value);
+      await new Promise((r) => setTimeout(r, 2000));
+    };
   }
 
   makeButton(data) {
-    console.log(data);
     return (
       <div>
         <Modal isOpen={this.state.showModal} className="frame-5">
           <ParameterPopup
             handleOpenClose={this.handleOpenClose(data)}
+            handleRun={this.runTest(data)}
             testName={this.state.testName}
+            testParam={this.state.testParam}
+            isSelect={this.state.isSelect}
           />
         </Modal>
         <button
