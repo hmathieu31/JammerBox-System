@@ -26,7 +26,13 @@ class ParameterPopup extends React.Component {
             <div className="group-21">
               <p className="txt-649 flex-hcenter">{this.props.testParam} :</p>
               {this.props.isSelect ? (
-                <select className="rectangle-17 txt-905 flex-hcenter">
+                <select
+                  onChange={this.props.handleChange}
+                  className="rectangle-17 txt-905 flex-hcenter"
+                >
+                  <option value="none" selected disabled hidden>
+                    Select option
+                  </option>
                   {this.options.map((option) => (
                     <option value={option.value}>{option.label}</option>
                   ))}
@@ -37,7 +43,7 @@ class ParameterPopup extends React.Component {
                     type="number"
                     pattern="[0-9]*"
                     className="rectangle-17 txt-905 flex-hcenter"
-                    onChange={this.props.handleRun}
+                    onChange={this.props.handleChange}
                   />
                 </div>
               )}
@@ -90,6 +96,7 @@ export default class ButtonList extends React.Component {
       testName: "",
       testParam: "",
       isSelect: false,
+      valueSelect: null,
     };
     this.Buttons = new Array(
       new ButtonAttributes("CRK SHORT CIRCUIT", true, "Output Signal", true),
@@ -118,12 +125,20 @@ export default class ButtonList extends React.Component {
     };
   }
 
-  runTest(data) {
-    return async (event) => {
-      console.log(event.target.value);
-      await new Promise((r) => setTimeout(r, 2000));
-    };
-  }
+  changeData = (e) => {
+    console.log(e.target.value);
+    this.setState({
+      valueSelect: e.target.value,
+    });
+  };
+
+  runTest = () => {
+    console.log("Run test");
+    console.log(this.state.valueSelect);
+    this.setState({
+      showModal: false,
+    });
+  };
 
   makeButton(data) {
     return (
@@ -131,7 +146,8 @@ export default class ButtonList extends React.Component {
         <Modal isOpen={this.state.showModal} className="frame-5">
           <ParameterPopup
             handleOpenClose={this.handleOpenClose(data)}
-            handleRun={this.runTest(data)}
+            handleRun={this.runTest}
+            handleChange={this.changeData}
             testName={this.state.testName}
             testParam={this.state.testParam}
             isSelect={this.state.isSelect}
