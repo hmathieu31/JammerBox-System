@@ -1,67 +1,9 @@
 import "../CSS/Background.css";
 import "../CSS/MainPage.css";
 import "../CSS/ParameterPopup.css";
+import ParameterPopup from "./ParameterPopup";
 import React from "react";
 import Modal from "react-modal";
-
-class ParameterPopup extends React.Component {
-  options = [
-    {
-      label: "Ground",
-      value: "ground",
-    },
-    {
-      label: "Battery",
-      value: "battery",
-    },
-  ];
-
-  render() {
-    const { handleOpenClose } = this.props;
-    return (
-      <div className="test-configuration flex-col-hstart-vstart clip-contents">
-        <div className="group-917 flex-col-hcenter">
-          <p className="txt-120 flex-hcenter">{this.props.testName}</p>
-          <div className="group-213 flex-col-hend">
-            <div className="group-21">
-              <p className="txt-649 flex-hcenter">{this.props.testParam} :</p>
-              {this.props.isSelect ? (
-                <select
-                  onChange={this.props.handleChange}
-                  className="rectangle-17 txt-905 flex-hcenter"
-                >
-                  <option value="none" selected disabled hidden>
-                    Select option
-                  </option>
-                  {this.options.map((option) => (
-                    <option value={option.value}>{option.label}</option>
-                  ))}
-                </select>
-              ) : (
-                <div>
-                  <input
-                    type="number"
-                    pattern="[0-9]*"
-                    className="rectangle-17 txt-905 flex-hcenter"
-                    onChange={this.props.handleChange}
-                  />
-                </div>
-              )}
-            </div>
-            <div className="group-786 flex-row">
-              <button onClick={handleOpenClose} className="group-6">
-                <p className="txt-637 flex-hcenter">Cancel</p>
-              </button>
-              <button onClick={this.props.handleRun} className="group-6">
-                <p className="txt-637 flex-hcenter">Run Test</p>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-}
 
 class ButtonAttributes {
   constructor(name, hasparam, paramsTab, IsSelect) {
@@ -98,7 +40,7 @@ export default class ButtonList extends React.Component {
       isSelect: false,
       valueSelect: null,
     };
-    this.Buttons = new Array(
+    this.Buttons = [
       new ButtonAttributes("CRK SHORT CIRCUIT", true, "Output Signal", true),
       new ButtonAttributes("CAM SHORT CIRCUIT", true, "Output Signal", true),
       new ButtonAttributes("CRK SPK", false, null, false),
@@ -110,8 +52,8 @@ export default class ButtonList extends React.Component {
       new ButtonAttributes("CRK POSN ENG STST", true, "Teeth Off", false),
       new ButtonAttributes("CAM DELAY", true, "°CRK", false),
       new ButtonAttributes("CAM SPK", false, null, false),
-      new ButtonAttributes("CAM PAT ERR", false, null, false)
-    );
+      new ButtonAttributes("CAM PAT ERR", false, null, false),
+    ];
   }
 
   handleOpenClose(data) {
@@ -132,18 +74,57 @@ export default class ButtonList extends React.Component {
     });
   };
 
+  sendData = (jsonData) => {
+    fetch("http://localhost:8080/run", {
+      method: "POST",
+      mode: "cors",
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify(jsonData),
+    }).then(() => {
+      console.log("Success with running test");
+    });
+  };
+
   runTest = () => {
+    var jsonData = {
+      TestName: this.state.testName.replace(/\s/g, ""),
+      TestParameter: this.state?.testParam.replace(/\s/g, ""),
+      TestValue: this.state.valueSelect,
+    };
+
     console.log("Run test");
-    console.log(this.state.valueSelect);
+    this.sendData(jsonData);
+
+    console.log(JSON.stringify(jsonData));
+
     this.setState({
       showModal: false,
     });
   };
 
-  makeButton(data) {
+  directRunTest = (data) => {
+    return () => {
+      var jsonData = {
+        TestName: data.getTestName(),
+        TestParameter: "",
+        TestValue: "",
+      };
+      this.sendData(jsonData);
+      setTimeout(() => {
+        this.props.navigate("/");
+      }, 2000);
+    };
+  };
+
+  makeButton = (data, index) => {
     return (
-      <div>
-        <Modal isOpen={this.state.showModal} className="frame-5">
+      <div key={index}>
+        <Modal
+          isOpen={this.state.showModal}
+          className="frame-5"
+          ariaHideApp={false}
+          key={index}
+        >
           <ParameterPopup
             handleOpenClose={this.handleOpenClose(data)}
             handleRun={this.runTest}
@@ -154,8 +135,11 @@ export default class ButtonList extends React.Component {
           />
         </Modal>
         <button
-          key={this.Buttons.indexOf(data)}
-          onClick={this.handleOpenClose(data)}
+          onClick={
+            data.getHasParam()
+              ? this.handleOpenClose(data)
+              : this.directRunTest(data)
+          }
           className="group-6 txt-733"
         >
           {data}
@@ -168,8 +152,8 @@ export default class ButtonList extends React.Component {
         </Modal>
       </div>
     );
-  }
+  };
   render() {
-    return <div>{this.Buttons.map(this.makeButton, this)}</div>;
+    return <div>{this.Buttons.map(this.makeButton)}</div>;
   }
 }

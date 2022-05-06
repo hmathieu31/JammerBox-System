@@ -1,31 +1,19 @@
 import "../CSS/MainPage.css";
 import "../components/ReturnButton.js";
 import ReturnButton from "../components/ReturnButton.js";
+import ButtonList from "../components/ButtonList";
+import { useNavigate } from "react-router-dom";
 
-function SynthesizeTests() {
-  var Buttons = ["Lol", "Test", "Haha!", "Truc", "NOOOOn"];
-
-  function makeButton(data) {
-    return (
-      <button
-        key={Buttons.indexOf(data)}
-        className="group-6"
-        onClick={console.log}
-      >
-        {data}
-      </button>
-    );
-  }
-
+export default function SynthesizeTests() {
+  let navigate = useNavigate();
   return (
     <>
         <p className="txt-271 flex-hcenter">Synthesize Tests</p>
         {ReturnButton()}
         <div>
-          <ButtonList />
+          <ButtonList navigate={navigate} />
         </div>
       </div>
     </>
   );
-
-export default SynthesizeTests
+}
