@@ -40,6 +40,7 @@ export default class ParameterPopup extends React.Component {
                     pattern="[0-9]*"
                     className="rectangle-17 txt-905 flex-hcenter"
                     onChange={this.props.handleChange}
+                    placeholder="0"
                   />
                 </div>
               )}

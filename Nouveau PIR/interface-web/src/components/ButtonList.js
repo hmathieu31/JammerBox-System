@@ -82,7 +82,7 @@ export default class ButtonList extends React.Component {
     };
 
     console.log("Run test");
-    fetch("http://localhost:8080/exemple", {
+    fetch("http://localhost:8080/run", {
       method: "POST",
       mode: "cors",
       headers: { "Content-type": "application/json" },
@@ -107,7 +107,7 @@ export default class ButtonList extends React.Component {
       };
 
       console.log("Run test");
-      fetch("http://localhost:8080/exemple", {
+      fetch("http://localhost:8080/run", {
         method: "POST",
         mode: "cors",
         headers: { "Content-type": "application/json" },
@@ -118,13 +118,14 @@ export default class ButtonList extends React.Component {
     };
   };
 
-  makeButton(data) {
+  makeButton = (data, index) => {
     return (
-      <div>
+      <div key={index}>
         <Modal
           isOpen={this.state.showModal}
           className="frame-5"
           ariaHideApp={false}
+          key={index}
         >
           <ParameterPopup
             handleOpenClose={this.handleOpenClose(data)}
@@ -136,7 +137,6 @@ export default class ButtonList extends React.Component {
           />
         </Modal>
         <button
-          key={this.Buttons.indexOf(data)}
           onClick={
             data.getHasParam()
               ? this.handleOpenClose(data)
@@ -148,8 +148,8 @@ export default class ButtonList extends React.Component {
         </button>
       </div>
     );
-  }
+  };
   render() {
-    return <div>{this.Buttons.map(this.makeButton, this)}</div>;
+    return <div>{this.Buttons.map(this.makeButton)}</div>;
   }
 }

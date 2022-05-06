@@ -3,7 +3,7 @@ import "../components/ReturnButton.js";
 import ReturnButton from "../components/ReturnButton.js";
 import ButtonList from "../components/ButtonList";
 
-function SynthesizeTests() {
+export default function SynthesizeTests() {
   return (
     <>
       <div className="frame-1">
@@ -16,5 +16,3 @@ function SynthesizeTests() {
     </>
   );
 }
-
-export default SynthesizeTests;

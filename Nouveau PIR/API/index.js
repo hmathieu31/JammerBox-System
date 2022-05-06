@@ -14,7 +14,11 @@ app.use(
 app.use(bp.json());
 app.use(bp.urlencoded({ extended: true }));
 
-app.post("/exemple", (req, res) => {
+app.post("/run", (req, res) => {
+  if (req.body === undefined) {
+    res.status(404).send("Body not defined");
+    break;
+  }
   var param1 = req.body.TestName;
   var param2 = req.body.TestParameter;
   var param3 = req.body.TestValue;
