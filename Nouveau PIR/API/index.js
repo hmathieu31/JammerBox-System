@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const exemple = require("./exemple.json");
 const shell = require("shelljs");
+const bp = require("body-parser");
 
 const cors = require("cors");
 app.use(
@@ -10,8 +11,14 @@ app.use(
   })
 );
 
-app.get("/exemple", (req, res) => {
-  shell.exec("../script_exemple.sh");
+app.use(bp.json());
+app.use(bp.urlencoded({ extended: true }));
+
+app.post("/exemple", (req, res) => {
+  var param1 = req.body.TestName;
+  var param2 = req.body.TestParameter;
+  var param3 = req.body.TestValue;
+  shell.exec("../script_exemple.sh " + param1 + " " + param2 + " " + param3);
   res.status(200).json(exemple);
 });
 

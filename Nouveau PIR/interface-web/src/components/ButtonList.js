@@ -143,7 +143,10 @@ export default class ButtonList extends React.Component {
     fetch("http://localhost:8080/exemple", {
       method: "POST",
       mode: "cors",
+      headers: { "Content-type": "application/json" },
       body: JSON.stringify(jsonData),
+    }).then(() => {
+      console.log("Success with running test");
     });
 
     console.log(JSON.stringify(jsonData));
