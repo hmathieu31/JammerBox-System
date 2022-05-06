@@ -3,8 +3,6 @@ import "../CSS/MainPage.css";
 import "../CSS/ParameterPopup.css";
 import React from "react";
 import Modal from "react-modal";
-import { Execute_script } from "../Execute_script.js";
-import { json } from "express";
 
 class ParameterPopup extends React.Component {
   options = [
@@ -134,7 +132,7 @@ export default class ButtonList extends React.Component {
     });
   };
 
-  async runTest() {
+  runTest = () => {
     var jsonData = {
       TestName: this.state.testName,
       TestParameter: this.state.testParam,
@@ -148,27 +146,21 @@ export default class ButtonList extends React.Component {
       body: JSON.stringify(jsonData),
     });
 
+    console.log(JSON.stringify(jsonData));
+
     this.setState({
       showModal: false,
     });
-  }
-
-  async componentDidMount() {
-    // POST request using fetch with async/await
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ title: "React POST Request Example" }),
-    };
-    const response = await fetch("https://reqres.in/api/posts", requestOptions);
-    const data = await response.json();
-    this.setState({ postId: data.id });
-  }
+  };
 
   makeButton(data) {
     return (
       <div>
-        <Modal isOpen={this.state.showModal} className="frame-5">
+        <Modal
+          isOpen={this.state.showModal}
+          className="frame-5"
+          ariaHideApp={false}
+        >
           <ParameterPopup
             handleOpenClose={this.handleOpenClose(data)}
             handleRun={this.runTest}
