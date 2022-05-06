@@ -98,7 +98,7 @@ export default class ButtonList extends React.Component {
       isSelect: false,
       valueSelect: null,
     };
-    this.Buttons = new Array(
+    this.Buttons = [
       new ButtonAttributes("CRK SHORT CIRCUIT", true, "Output Signal", true),
       new ButtonAttributes("CAM SHORT CIRCUIT", true, "Output Signal", true),
       new ButtonAttributes("CRK SPK", false, null, false),
@@ -110,8 +110,8 @@ export default class ButtonList extends React.Component {
       new ButtonAttributes("CRK POSN ENG STST", true, "Teeth Off", false),
       new ButtonAttributes("CAM DELAY", true, "°CRK", false),
       new ButtonAttributes("CAM SPK", false, null, false),
-      new ButtonAttributes("CAM PAT ERR", false, null, false)
-    );
+      new ButtonAttributes("CAM PAT ERR", false, null, false),
+    ];
   }
 
   handleOpenClose(data) {
@@ -134,8 +134,8 @@ export default class ButtonList extends React.Component {
 
   runTest = () => {
     var jsonData = {
-      TestName: this.state.testName,
-      TestParameter: this.state.testParam,
+      TestName: this.state.testName.replace(/\s/g, ""),
+      TestParameter: this.state?.testParam.replace(/\s/g, ""),
       TestValue: this.state.valueSelect,
     };
 
@@ -154,6 +154,26 @@ export default class ButtonList extends React.Component {
     this.setState({
       showModal: false,
     });
+  };
+
+  directRunTest = (data) => {
+    return () => {
+      var jsonData = {
+        TestName: data.getTestName(),
+        TestParameter: "",
+        TestValue: "",
+      };
+
+      console.log("Run test");
+      fetch("http://localhost:8080/exemple", {
+        method: "POST",
+        mode: "cors",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify(jsonData),
+      }).then(() => {
+        console.log("Success with running test");
+      });
+    };
   };
 
   makeButton(data) {
@@ -175,7 +195,11 @@ export default class ButtonList extends React.Component {
         </Modal>
         <button
           key={this.Buttons.indexOf(data)}
-          onClick={this.handleOpenClose(data)}
+          onClick={
+            data.getHasParam()
+              ? this.handleOpenClose(data)
+              : this.directRunTest(data)
+          }
           className="group-6 txt-733"
         >
           {data.getTestName()}
