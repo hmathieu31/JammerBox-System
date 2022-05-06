@@ -3,6 +3,8 @@ import "../CSS/MainPage.css";
 import "../CSS/ParameterPopup.css";
 import React from "react";
 import Modal from "react-modal";
+import { Execute_script } from "../Execute_script.js";
+import { json } from "express";
 
 class ParameterPopup extends React.Component {
   options = [
@@ -132,13 +134,36 @@ export default class ButtonList extends React.Component {
     });
   };
 
-  runTest = () => {
+  async runTest() {
+    var jsonData = {
+      TestName: this.state.testName,
+      TestParameter: this.state.testParam,
+      TestValue: this.state.valueSelect,
+    };
+
     console.log("Run test");
-    console.log(this.state.valueSelect);
+    fetch("http://localhost:8080/exemple", {
+      method: "POST",
+      mode: "cors",
+      body: JSON.stringify(jsonData),
+    });
+
     this.setState({
       showModal: false,
     });
-  };
+  }
+
+  async componentDidMount() {
+    // POST request using fetch with async/await
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ title: "React POST Request Example" }),
+    };
+    const response = await fetch("https://reqres.in/api/posts", requestOptions);
+    const data = await response.json();
+    this.setState({ postId: data.id });
+  }
 
   makeButton(data) {
     return (
