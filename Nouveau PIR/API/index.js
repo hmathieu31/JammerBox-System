@@ -1,10 +1,12 @@
+const usb = require("usb");
 const express = require("express");
 const app = express();
 const exemple = require("./exemple.json");
 const shell = require("shelljs");
 const bp = require("body-parser");
-
 const cors = require("cors");
+const fs = require("fs");
+
 app.use(
   cors({
     origin: "http://localhost:3000",
@@ -28,4 +30,5 @@ app.post("/run", (req, res) => {
 
 app.listen(8080, () => {
   console.log("Serveur à l'écoute");
+  shell.exec("touch /Volumes/KINGSTON/test.json");
 });
