@@ -74,14 +74,7 @@ export default class ButtonList extends React.Component {
     });
   };
 
-  runTest = () => {
-    var jsonData = {
-      TestName: this.state.testName.replace(/\s/g, ""),
-      TestParameter: this.state?.testParam.replace(/\s/g, ""),
-      TestValue: this.state.valueSelect,
-    };
-
-    console.log("Run test");
+  sendData = (jsonData) => {
     fetch("http://localhost:8080/run", {
       method: "POST",
       mode: "cors",
@@ -90,6 +83,17 @@ export default class ButtonList extends React.Component {
     }).then(() => {
       console.log("Success with running test");
     });
+  };
+
+  runTest = () => {
+    var jsonData = {
+      TestName: this.state.testName.replace(/\s/g, ""),
+      TestParameter: this.state?.testParam.replace(/\s/g, ""),
+      TestValue: this.state.valueSelect,
+    };
+
+    console.log("Run test");
+    this.sendData(jsonData);
 
     console.log(JSON.stringify(jsonData));
 
@@ -105,16 +109,10 @@ export default class ButtonList extends React.Component {
         TestParameter: "",
         TestValue: "",
       };
-
-      console.log("Run test");
-      fetch("http://localhost:8080/run", {
-        method: "POST",
-        mode: "cors",
-        headers: { "Content-type": "application/json" },
-        body: JSON.stringify(jsonData),
-      }).then(() => {
-        console.log("Success with running test");
-      });
+      this.sendData(jsonData);
+      setTimeout(() => {
+        this.props.navigate("/");
+      }, 2000);
     };
   };
 

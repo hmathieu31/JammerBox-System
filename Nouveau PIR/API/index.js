@@ -17,13 +17,13 @@ app.use(bp.urlencoded({ extended: true }));
 app.post("/run", (req, res) => {
   if (req.body === undefined) {
     res.status(404).send("Body not defined");
-    break;
+  } else {
+    var param1 = req.body.TestName;
+    var param2 = req.body.TestParameter;
+    var param3 = req.body.TestValue;
+    shell.exec("../script_exemple.sh " + param1 + " " + param2 + " " + param3);
+    res.status(200).json(exemple);
   }
-  var param1 = req.body.TestName;
-  var param2 = req.body.TestParameter;
-  var param3 = req.body.TestValue;
-  shell.exec("../script_exemple.sh " + param1 + " " + param2 + " " + param3);
-  res.status(200).json(exemple);
 });
 
 app.listen(8080, () => {
