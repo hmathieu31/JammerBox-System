@@ -835,7 +835,7 @@ void __attribute__((__interrupt__, no_auto_psv)) USART1_IRQHandler(void)
     //? PERR : parity error status bit 1 if error detected 0 i no error detected
     if (USART_GetFlagStatus(USART1, USART_FLAG_PE) == SET || USART_GetFlagStatus(USART1, USART_FLAG_FE == SET))
     {
-        UART_COM_error(); //? FERR : Framing Error Status bit 1 if error detected 0 i no error detected
+        UART_COM_error(); //? FERR : Framing Error Status bit 1 if error detected 0 if no error detected
 
         //? OERR : Receive Buffer Overrun Error Status bit  1 = Receive buffer has overflowed
     }
