@@ -226,13 +226,13 @@
 						CRK_synch_temp = false;
 		
 						//Send CRK-sycnhronization status
-						UART_send(message[4]);
+						USART_send(message[4]);
 		
 						CRK_CAM_synch[0] = false;
                         CRK_CAM_synch[1] = false;
                         
 						//Send CRK_CAM-sycnhronization status
-						UART_send(message[6]);
+						USART_send(message[6]);
 		
 						//Reset actual failure scenarios
 						Failure_synch_reset(failure_identify);
@@ -279,7 +279,7 @@
 						CRK_synch = true;
 	
 						//Send CRK-sycnhronization status
-						UART_send(message[3]);
+						USART_send(message[3]);
 					}
 					else
 					{
@@ -639,16 +639,16 @@
 		//Reset CRK and CAM_CRK synchronization
 		if(CRK_synch == true)
 		{
-			UART_send(message[4]);	//CRK synchronization lost
+			USART_send(message[4]);	//CRK synchronization lost
 		}
 		
 		if(CRK_CAM_synch[0] == true)
 		{
-			UART_send(message[6]);	//CAM_CRK synchronization lost
+			USART_send(message[6]);	//CAM_CRK synchronization lost
 		}
 		if(CRK_CAM_synch[1] == true)
 		{
-			UART_send(message[6]);	//CAM_CRK synchronization lost
+			USART_send(message[6]);	//CAM_CRK synchronization lost
 		}
         
 		CRK_synch = false;
@@ -694,7 +694,7 @@
 		//Reset CRK and CAM_CRK synchronization
 		if(CRK_synch == true)
 		{
-			UART_send(message[4]);	//CRK synchronization lost
+			USART_send(message[4]);	//CRK synchronization lost
 		}
 
 		CRK_synch = false;
@@ -737,7 +737,7 @@
 
 		if(CRK_CAM_synch[camId] == true)
 		{
-			UART_send(message[6]);	//CAM_CRK synchronization lost
+			USART_send(message[6]);	//CAM_CRK synchronization lost
 		}
 
 		CRK_CAM_synch[camId] = false;
@@ -832,7 +832,7 @@
 		CRK_CAM_synch[camId] = true;
 											
 		//Send CRK_CAM-sycnhronization status
-		UART_send(message[5]);
+		USART_send(message[5]);
 
 		CAM_CRK_synch_status = false;
 		CAM_CRK_synch_status_ahead = false;

@@ -89,7 +89,7 @@
 		}
 
 		// Send configuration status
-		UART_send(message[1]);
+		USART_send(message[1]);
 	}
 
 
@@ -136,7 +136,7 @@
 		}
 
 		// Send configuration status
-		UART_send(message[2]);
+		USART_send(message[2]);
 
 	}
 
