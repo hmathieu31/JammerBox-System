@@ -6,7 +6,7 @@ const bp = require("body-parser");
 const cors = require("cors");
 const fs = require("fs");
 
-var allowedOrigins = ["http://localhost:3000"];
+var allowedOrigins = ["http://localhost:3000", "10.6.0.8"];
 
 app.use(
   cors({
