@@ -105,17 +105,20 @@
 		// Fcy: 36,85 MHz
 		// 36,85 Mhz/ 8 = 4606 kHz = 0.217 �s
 
-		T7CONbits.TON = 0; 			// Disable Timer
-		T7CONbits.TSIDL = 0;		// Continue timer operation in idle mode
-		T7CONbits.TGATE = 0; 		// Disable Gated Timer mode
-		T7CONbits.TCS = 0; 			// Select internal instruction cycle clock
-		T7CONbits.TCKPS = 0b01; 	// Select 1:8 Prescaler
-		TMR7 = 0x00; 				// Clear timer register
-		PR7 = 0x002E;				// Load the period value //5us 0x0017 is too low for pulse recognition, double value
+		RCC->APB1ENR |= RCC_APB1ENR_TIM4EN; // Enable APB clock for the Timer4
+		TIM_Cmd(TIM4, DISABLE); // Disable Timer4
+		//No idle mode handling necessary on STM32
+		TIM_ITConfig(TIM4, TIM_IT_Trigger, DISABLE); // Disable Trigger Interrupt (called Gated Timer mode on Microchip)
+		TIM_InternalClockConfig(TIM4); // Tell the STM32 to use the internal clock (ticking at 72MHz)
+		TIM_SetCounter(TIM4, 0); // Clear Timer4 counter
+		// TIM_period = (1/72MHz) * (PSC+1) *(ARR+1)
+		// (1/72MHz) * (0+1) * (719+1) = 10µs
+		TIM_PrescalerConfig(TIM4, 0, TIM_PSCReloadMode_Immediate);
+		TIM_SetAutoreload(TIM4, 719);
 		
-		IPC12bits.T7IP = 0x04; 		// Set Timer7 Interrupt Priority Level
-		IFS3bits.T7IF = 0; 			// Clear Timer7 Interrupt Flag
-		IEC3bits.T7IE = 1; 			// Enable Timer7 interrupt
+		NIVC_SetPriority(TIM4_IRQn, 4); // Set Timer4 TIM4_IRQn Interrupt Priority Level
+		TIM_ClearFlag(TIM4, TIM_FLAG_Update); // Clear Timer4 Interrupt Flag
+		TIM_ITConfig(TIM4, TIM_IT_Update, ENABLE); // Enable Timer4 interrupt
 	}
 
 	// ## Timer8 Init **Prescaler: 64; CRK_RUN_OUT/CAM_delay**
@@ -124,14 +127,16 @@
 		// FCPU with PLL = 73,7 MHz
 		// Fcy: 36,85 MHz
 		// 36,85 Mhz/ 64 = 575,78 kHz = 1.73 �s
-		T8CONbits.TON = 0; 			// Disable Timer
-		T8CONbits.TSIDL = 0;		// Continue timer operation in idle mode
-		T8CONbits.TGATE = 0; 		// Disable Gated Timer mode
-		T8CONbits.TCS = 0; 			// Select internal instruction cycle clock
-		T8CONbits.TCKPS = 0b10; 	// Select 1:64 Prescaler
-		TMR8 = 0x00; 				// Clear timer register
-		PR8 = 0xFFFF;				// Load the period value
+
+		SysTick->CTRL &= ~SysTick_CTRL_ENABLE;
+		//Systtick is not subject to any idle mode
+		TIM_InternalClockConfig(TIM4); // Tell the STM32 to use the internal clock (ticking at 72MHz)
+		TIM_SetCounter(TIM4, 0); // Clear Timer4 counter
+		// Set to a 120ms period
+		// 120ms perdiod corresponds to 72*120 ticks with a 72MHz internal clock
+		SysTick_Config (72*120);//TODO: check that it expects 72MHz in the calculus (and not 72/8)
 		
+		//TODO: Use SYSTICK
 		IPC12bits.T8IP = 0x02; 		// Set Timer8 Interrupt Priority Level
 		IFS3bits.T8IF = 0; 			// Clear Timer8 Interrupt Flag
 		IEC3bits.T8IE = 1; 			// Enable Timer8 interrupt
