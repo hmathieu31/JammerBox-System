@@ -16,10 +16,10 @@ p {
 }
 
 .frame-2 {
-  padding: 271px 402px;
+  padding: 800px 800px;
   box-sizing: border-box;
   background-attachment: fixed;
-  background: url(../../public/floppa.jpg) no-repeat center fixed,
+  background: url(../images/floppa.jpg) no-repeat center fixed,
     linear-gradient(0deg, rgba(255, 255, 255, 1), rgba(255, 255, 255, 1));
   background-size: 100% 100%; 
   width: 100%;
