@@ -1,41 +1,6 @@
 import "../CSS/Background.css";
 import "../CSS/MainPage.css";
 import "../CSS/ParameterPopup.css";
-<<<<<<< HEAD
-import Modal from "react-modal";
-import { Navigate, useNavigate } from "react-router-dom";
-
-function ParameterPopup(props) {  
-  let navigate = useNavigate();
-
-  let Test_result = () => {
-    navigate("/test_result")
-  }
-
-  return (
-    <>
-    <div className="test-configuration flex-col-hstart-vstart clip-contents">
-      <div className="group-917 flex-col-hcenter">
-        <p className="txt-120 flex-hcenter"> {props.test} </p>
-        <div className="group-213 flex-col-hend">
-          <div className="group-21">
-            <p className="txt-649 flex-hcenter">Parametre :</p>
-            <input className="rectangle-17 txt-905" />
-          </div>
-          <div className="group-786 flex-row">
-            <button onClick={props.handleOpenClose} className="group-6">
-              <p className="txt-905 flex-hcenter">Let’s not go</p>
-            </button>
-            <button onClick={() => {props.handleOpenClose(); Test_result();} } className="group-6">
-              <p className="txt-637 flex-hcenter">Let’s go</p>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-    </>
-  );
-=======
 import ParameterPopup from "./ParameterPopup";
 import React from "react";
 import Modal from "react-modal";
@@ -64,7 +29,6 @@ class ButtonAttributes {
   getIsSelect() {
     return this.isSelect;
   }
->>>>>>> 7aedd78a (Another merge...)
 }
 
 
@@ -95,23 +59,15 @@ export default class ButtonList extends React.Component {
 
   handleOpenClose(data) {
     return () => {
-<<<<<<< HEAD
-      this.setState((prev) => ({
-        showModal: !prev.showModal,
-=======
       this.setState(() => ({
         testName: data.getTestName(),
         testParam: data.getParams(),
         showModal: data.getHasParam(),
         isSelect: data.getIsSelect(),
->>>>>>> 7aedd78a (Another merge...)
       }));
     };
   }
 
-<<<<<<< HEAD
-  makeButton(data) {
-=======
   changeData = (e) => {
     console.log(e.target.value);
     this.setState({
@@ -162,7 +118,6 @@ export default class ButtonList extends React.Component {
   };
 
   makeButton = (data, index) => {
->>>>>>> 7aedd78a (Another merge...)
     return (
       <div>
         <button
@@ -170,13 +125,6 @@ export default class ButtonList extends React.Component {
           onClick={this.handleOpenClose}
           className="group-6 txt-733"
         >
-<<<<<<< HEAD
-          {data}
-        </button>
-        <Modal isOpen={this.state.showModal}>
-          <ParameterPopup test={data} 
-                          handleOpenClose={this.handleOpenClose()}
-=======
           <ParameterPopup
             handleOpenClose={this.handleOpenClose(data)}
             handleRun={this.runTest}
@@ -184,7 +132,6 @@ export default class ButtonList extends React.Component {
             testName={this.state.testName}
             testParam={this.state.testParam}
             isSelect={this.state.isSelect}
->>>>>>> 7aedd78a (Another merge...)
           />
         </Modal>
       </div>

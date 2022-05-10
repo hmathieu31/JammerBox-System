@@ -33,7 +33,7 @@ p {
   padding: 20% 10rem;
   box-sizing: border-box;
   background-attachment: fixed;
-  background: url(..//../public/BackgroundImage.png),
+  background: url(../../public/BackgroundImage.png),
     linear-gradient(0deg, rgba(255, 255, 255, 1), rgba(255, 255, 255, 1));
   background-size: 100% 100%;
   width: 100%;
@@ -96,4 +96,10 @@ p {
   width: 355px;
   height: 69px;
   word-wrap: break-word;
+}
+
+.group-44 {
+  display: flex;
+  align-items: center;
+  /* justify-content: center; */
 }
