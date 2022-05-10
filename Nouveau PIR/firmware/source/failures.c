@@ -788,7 +788,7 @@
 						shift_counter_CAM_delay[cam_id][i] = 1;
 						angle_to_edge_CAM_delay[cam_id][i] = ((double)(SysTick->VAL)/former_teeth_time)*revolution_CRK;
 						SysTick->CTRL &= ~SysTick_CTRL_ENABLE;
-						SysTick->VAL = 0;
+						SysTick->VAL = (2^24) -1;
 						timer_active_CAM_delay[cam_id] = false;
                         number_processing_edges_CAM_delay[cam_id]++;
 						break;

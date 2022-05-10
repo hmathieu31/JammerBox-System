@@ -14,6 +14,7 @@
 #include "stm32f10x_gpio.h"
 #include "stm32f10x_tim.h"
 #include "stm32f10x_usart.h"
+#include "stm32f10x_exti.h"
 #include "string.h"
 
 // ### Programm includes ###
@@ -395,96 +396,86 @@ int main(void)
 
 //## Capture Event rising edge --CRK--
 
-void __attribute__((__interrupt__, no_auto_psv)) _IC1Interrupt(void)
+void __attribute__((__interrupt__, no_auto_psv)) EXTI4_15_IRQHANDLER()
 {
 
-    CRK_signal = true; // Set actual signal level
-
-    if (failure_active == false) // Set CRK-output
+    if (EXTI_GetITStatus(EXTI_Line8) != RESET) // Capture Event rising edge --CRK--
     {
-        Output_CRK_no_failure();
+        CRK_signal = true; // Set actual signal level
+
+        if (failure_active == false) // Set CRK-output
+        {
+            Output_CRK_no_failure();
+        }
+        else if (failure_identify != '1' && failure_identify != '4' && failure_identify != 'f' && failure_identify != 'b' && failure_identify != 'i' && failure_identify != 'j' && failure_identify != 'k' && failure_identify != 'l' && failure_identify != 'm')
+        {
+            Output_CRK_no_failure();
+        }
+
+        low_time_CRK = IC1BUF; // Set actual low time of CRK signal
+
+        Output_CRK(failure_identify); // CRK Output
+        timer_overflow_CRK = 0;       // edge was detected, so no stalling
+
+        EXTI_ClearITPendingBit(EXTI_Line8); // Clear IC1 Interrupt Flag
     }
-    else if (failure_identify != '1' && failure_identify != '4' && failure_identify != 'f' && failure_identify != 'b' && failure_identify != 'i' && failure_identify != 'j' && failure_identify != 'k' && failure_identify != 'l' && failure_identify != 'm')
+    else if (EXTI_GetITStatus(EXTI_Line9) != RESET) //## Capture Event falling edge --CRK--
     {
-        Output_CRK_no_failure();
+        CRK_signal = false; // Set actual signal level
+
+        if (failure_active == false) // Set CRK-output
+        {
+            Output_CRK_no_failure();
+        }
+        else if (failure_identify != '1' && failure_identify != '4' && failure_identify != 'f' && failure_identify != 'h' && failure_identify != 'i' && failure_identify != 'j' && failure_identify != 'k' && failure_identify != 'l' && failure_identify != 'm')
+        {
+            Output_CRK_no_failure();
+        }
+
+        sync_CRK_preparation(); // CRK synchronisation preparation
+
+        Output_CRK(failure_identify); // CRK Output
+        if (configuration_complete == true)
+        {
+            sync_CRK(); // CRK synchronization
+        }
+        timer_overflow_CRK = 0; // edge was detected, so no stalling
+
+        EXTI_ClearITPendingBit(EXTI_Line9); // Clear IC2 Interrupt Flag
     }
+    else if (EXTI_GetITStatus(EXTI_Line10) != RESET)
+    { //## Capture Event rising edge --CAM1--
 
-    low_time_CRK = (unsigned long)IC1BUF; // Set actual low time of CRK signal
+        CAM_signal[0] = true; // Set actual signal level
 
-    Output_CRK(failure_identify); // CRK Output
-    timer_overflow_CRK = 0;       // edge was detected, so no stalling
-    EXTI_ClearFlag(EXTI_PR_PR8); //Clear IC2 Interrupt Flag
-}
+        Output_CAM(failure_identify, 0); // CAM1 Output
 
-//## Capture Event falling edge --CRK--
+        if (configuration_complete == true)
+        {
+            sync_CAM_CRK(0); // CAM_CRK synchronization
+        }
+        timer_overflow_CAM = 0; // edge was detected, so no stalling
 
-void __attribute__((__interrupt__, no_auto_psv)) _IC2Interrupt(void)
-{
-
-    CRK_signal = false; // Set actual signal level
-
-    if (failure_active == false) // Set CRK-output
-    {
-        Output_CRK_no_failure();
+        EXTI_ClearITPendingBit(EXTI_Line10); // Clear IC3 Interrupt Flag
     }
-    else if (failure_identify != '1' && failure_identify != '4' && failure_identify != 'f' && failure_identify != 'h' && failure_identify != 'i' && failure_identify != 'j' && failure_identify != 'k' && failure_identify != 'l' && failure_identify != 'm')
-    {
-        Output_CRK_no_failure();
+    else if (EXTI_GetITStatus(EXTI_Line11) != RESET)
+    {                          //## Capture Event falling edge --CAM1--
+        CAM_signal[0] = false; // Set actual signal level
+
+        Timer3Reset();
+
+        Output_CAM(failure_identify, 0); // CAM1 Output
+
+        if (configuration_complete == true)
+        {
+            sync_CAM_CRK(0); // CAM_CRK synchronization
+        }
+        timer_overflow_CAM = 0; // edge was detected, so no stalling
+
+        EXTI_ClearITPendingBit(EXTI_Line11); // Clear IC4 Interrupt Flag
     }
-
-    sync_CRK_preparation(); // CRK synchronisation preparation
-
-    Output_CRK(failure_identify); // CRK Output
-    if (configuration_complete == true)
-    {
-        sync_CRK(); // CRK synchronization
-    }
-    timer_overflow_CRK = 0; // edge was detected, so no stalling
-    IFS0bits.IC2IF = 0;     // Clar IC2 Interrupt Flag
-}
-
-//## Capture Event rising edge --CAM1--
-
-void __attribute__((__interrupt__, no_auto_psv)) _IC3Interrupt(void)
-{
-
-    CAM_signal[0] = true; // Set actual signal level
-
-    Output_CAM(failure_identify, 0); // CAM1 Output
-
-    if (configuration_complete == true)
-    {
-        sync_CAM_CRK(0); // CAM_CRK synchronization
-    }
-    timer_overflow_CAM = 0; // edge was detected, so no stalling
-    IFS2bits.IC3IF = 0;     // Clear IC3 Interrupt Flag
-}
-
-//## Capture Event falling edge --CAM1--
-
-void __attribute__((__interrupt__, no_auto_psv)) _IC4Interrupt(void)
-{
-
-    CAM_signal[0] = false; // Set actual signal level
-
-    Timer3Reset();
-
-    Output_CAM(failure_identify, 0); // CAM1 Output
-
-    if (configuration_complete == true)
-    {
-        sync_CAM_CRK(0); // CAM_CRK synchronization
-    }
-    timer_overflow_CAM = 0; // edge was detected, so no stalling
-    IFS2bits.IC4IF = 0;     // Clear IC4 Interrupt Flag
-}
-
-//## Capture Event rising edge --CAM2--
-
-void __attribute__((__interrupt__, no_auto_psv)) _IC5Interrupt(void)
-{
-    if (number_of_CAM == 2)
-    {
+    else if (EXTI_GetITStatus(EXTI_Line12) != RESET)
+    {                         //## Capture Event rising edge --CAM2--
         CAM_signal[1] = true; // Set actual signal level
 
         Output_CAM(failure_identify, 1); // CAM2 Output
@@ -494,34 +485,32 @@ void __attribute__((__interrupt__, no_auto_psv)) _IC5Interrupt(void)
             sync_CAM_CRK(1); // CAM_CRK synchronization
         }
         timer_overflow_CAM = 0; // edge was detected, so no stalling
+
+        EXTI_ClearITPendingBit(EXTI_Line12); // Clear IC5 Interrupt Flag
     }
-    IFS2bits.IC5IF = 0; // Clear IC5 Interrupt Flag
-}
-
-//## Capture Event falling edge --CAM2--
-
-void __attribute__((__interrupt__, no_auto_psv)) _IC6Interrupt(void)
-{
-    if (number_of_CAM == 2)
+    else if (EXTI_GetITStatus(EXTI_Line13) != RESET) //## Capture Event falling edge --CAM2--
     {
-        CAM_signal[1] = false; // Set actual signal level
-
-        Timer3Reset();
-
-        Output_CAM(failure_identify, 1); // CAM2 Output
-
-        if (configuration_complete == true)
+        if (number_of_CAM == 2)
         {
-            sync_CAM_CRK(1); // CAM_CRK synchronization
+            CAM_signal[1] = false; // Set actual signal level
+
+            Timer3Reset();
+
+            Output_CAM(failure_identify, 1); // CAM2 Output
+
+            if (configuration_complete == true)
+            {
+                sync_CAM_CRK(1); // CAM_CRK synchronization
+            }
+            timer_overflow_CAM = 0; // edge was detected, so no stalling
         }
-        timer_overflow_CAM = 0; // edge was detected, so no stalling
+        EXTI_ClearITPendingBit(EXTI_Line13); // Clear IC5 Interrupt Flag
     }
-    IFS2bits.IC6IF = 0; // Clear IC6 Interrupt Flag
 }
 
 //## Timer 1 Interrupt: Communication validation
 
-void __attribute__((__interrupt__, no_auto_psv)) _T1Interrupt(void)
+void __attribute__((__interrupt__, no_auto_psv)) TIM1_IRQHandler(void)
 {
     if (communication_active == true)
     {
@@ -706,7 +695,8 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM7_IRQHandler(void)
         timer_Counter_SEG_ADP_ER_LIM++;
         switch (timer_Counter_SEG_ADP_ER_LIM)
         {
-        case 1: { // failure for the falling edge
+        case 1:
+        { // failure for the falling edge
             GPIO_ResetBits(GPIOG, 6);
             if (failure_waiting == true)
             {                              // if the rising edge has already happen
@@ -733,7 +723,8 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM7_IRQHandler(void)
             failure_passed = true;
             break;
         }
-        case 2: {                   // failure for the rising edge
+        case 2:
+        {                           // failure for the rising edge
             SEG_ADP_ER_LIM_reset(); //?SEG_... failure_inactive, passed and waiting =false, init timer 7 & 8, SEG_...error counter reset
             break;
         }
@@ -766,7 +757,8 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM8_IRQHandler(void)
         timer_Counter_CRK_GAP_NOT_DET++;
         switch (timer_Counter_CRK_GAP_NOT_DET)
         {
-        case 1: {
+        case 1:
+        {
             GPIO_ResetBits(GPIOG, 6);
 
             if (sensortype_CRK == 'c')
@@ -787,7 +779,8 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM8_IRQHandler(void)
             }
             break;
         }
-        case 2: {
+        case 2:
+        {
             GPIO_SetBits(GPIOG, 6);
 
             TIM_Cmd(TIM8, DISABLE);
@@ -796,7 +789,8 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM8_IRQHandler(void)
             failure_active = false;
             break;
         }
-        default: {
+        default:
+        {
             GPIO_SetBits(GPIOG, 6);
 
             TIM_Cmd(TIM8, DISABLE);
