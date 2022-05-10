@@ -231,13 +231,13 @@
 						CRK_synch_temp = false;
 		
 						//Send CRK-sycnhronization status
-						UART_send(message[4]);
+						USART_send(message[4]);
 		
 						CRK_CAM_synch[0] = false;
                         CRK_CAM_synch[1] = false;
                         
 						//Send CRK_CAM-sycnhronization status
-						UART_send(message[6]);
+						USART_send(message[6]);
 		
 						//Reset actual failure scenarios
 						Failure_synch_reset(failure_identify);
@@ -284,7 +284,7 @@
 						CRK_synch = true;
 	
 						//Send CRK-sycnhronization status
-						UART_send(message[3]);
+						USART_send(message[3]);
 					}
 					else
 					{
@@ -644,16 +644,16 @@
 		//Reset CRK and CAM_CRK synchronization
 		if(CRK_synch == true)
 		{
-			UART_send(message[4]);	//CRK synchronization lost
+			USART_send(message[4]);	//CRK synchronization lost
 		}
 		
 		if(CRK_CAM_synch[0] == true)
 		{
-			UART_send(message[6]);	//CAM_CRK synchronization lost
+			USART_send(message[6]);	//CAM_CRK synchronization lost
 		}
 		if(CRK_CAM_synch[1] == true)
 		{
-			UART_send(message[6]);	//CAM_CRK synchronization lost
+			USART_send(message[6]);	//CAM_CRK synchronization lost
 		}
         
 		CRK_synch = false;
@@ -663,7 +663,7 @@
         teeth_count_overall=0;
 
 		//Reset failure secenarios
-		Failure_reset(); //Wasn't implemented in old PIR
+		Failure_reset(); //!Wasn't implemented in old PIR
 
 		//Output signal level treatment
 		output_level_setting = false;
@@ -699,7 +699,7 @@
 		//Reset CRK and CAM_CRK synchronization
 		if(CRK_synch == true)
 		{
-			UART_send(message[4]);	//CRK synchronization lost
+			USART_send(message[4]);	//CRK synchronization lost
 		}
 
 		CRK_synch = false;
@@ -742,7 +742,7 @@
 
 		if(CRK_CAM_synch[camId] == true)
 		{
-			UART_send(message[6]);	//CAM_CRK synchronization lost
+			USART_send(message[6]);	//CAM_CRK synchronization lost
 		}
 
 		CRK_CAM_synch[camId] = false;
@@ -765,7 +765,7 @@
 		T_TOOTH_RAW = IC2BUF;
 
 		//Calculate tooth time
-		T_TOOTH_RAW = T_TOOTH_RAW + timer_overflow_CRK *62999;
+		T_TOOTH_RAW = T_TOOTH_RAW + timer_overflow_CRK * TIM2->ARR;
        
         //test
         if(delay_off == true)
@@ -804,9 +804,9 @@
 	void gap_to_edge_calculation(void)
 	{
 		//calculate angles between reference gap and CAM-edges when synchronization is not yet done PR2: Timer periode value, TMR2 TMR counter at that moment
-		gap_to_edge = (((double)teeth_count_CAM_CRK_synch - 1.0) + (double)(((unsigned long)(TIM_GetCounter(TIM2)) + timer_overflow_CRK*62999)/T_TOOTH_RAW))*revolution_CRK; 
+		gap_to_edge = (((double)teeth_count_CAM_CRK_synch - 1.0) + (double)(((unsigned long)(TIM_GetCounter(TIM2)) + timer_overflow_CRK*TIM2->ARR)/T_TOOTH_RAW))*revolution_CRK; 
 							
-		gap_to_edge_ahead = (((double)teeth_count_CAM_CRK_synch_ahead - 1.0) + (double)(((unsigned long)(TIM_GetCounter(TIM2)) + timer_overflow_CRK*62999)/T_TOOTH_RAW))*revolution_CRK;
+		gap_to_edge_ahead = (((double)teeth_count_CAM_CRK_synch_ahead - 1.0) + (double)(((unsigned long)(TIM_GetCounter(TIM2)) + timer_overflow_CRK*TIM2->ARR)/T_TOOTH_RAW))*revolution_CRK;
 	}
 
 // ## Reset CAM_CRK_synch
@@ -837,7 +837,7 @@
 		CRK_CAM_synch[camId] = true;
 											
 		//Send CRK_CAM-sycnhronization status
-		UART_send(message[5]);
+		USART_send(message[5]);
 
 		CAM_CRK_synch_status = false;
 		CAM_CRK_synch_status_ahead = false;
