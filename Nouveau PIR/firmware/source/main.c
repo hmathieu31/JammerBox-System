@@ -413,7 +413,7 @@ void __attribute__((__interrupt__, no_auto_psv)) _IC1Interrupt(void)
 
     Output_CRK(failure_identify); // CRK Output
     timer_overflow_CRK = 0;       // edge was detected, so no stalling
-    IFS0bits.IC1IF = 0;           // Clear IC1 Interrupt Flag
+    EXTI_ClearFlag(EXTI_PR_PR8); //Clear IC2 Interrupt Flag
 }
 
 //## Capture Event falling edge --CRK--
