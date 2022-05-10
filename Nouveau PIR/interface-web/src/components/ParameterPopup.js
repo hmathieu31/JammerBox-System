@@ -1,10 +1,4 @@
 import React from "react";
-<<<<<<< HEAD
-import Modal from "react-modal";
-import "../CSS/ParameterPopup.css";
-import "../CSS/MainPage.css";
-=======
->>>>>>> origin/InterfaceWeb
 
 export default class ParameterPopup extends React.Component {
   options = [

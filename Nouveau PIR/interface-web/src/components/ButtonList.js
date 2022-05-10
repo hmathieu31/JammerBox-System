@@ -1,47 +1,11 @@
-import React from "react";
 import "../CSS/Background.css";
 import "../CSS/MainPage.css";
 import "../CSS/ParameterPopup.css";
-<<<<<<< HEAD
-=======
 import ParameterPopup from "./ParameterPopup";
 import React from "react";
->>>>>>> origin/InterfaceWeb
 import Modal from "react-modal";
 import { Navigate, useNavigate } from "react-router-dom";
 
-<<<<<<< HEAD
-function ParameterPopup(props) {  
-  let navigate = useNavigate();
-
-  let Test_result = () => {
-    navigate("/test_result")
-  }
-
-  return (
-    <>
-    <div className="test-configuration flex-col-hstart-vstart clip-contents">
-      <div className="group-917 flex-col-hcenter">
-        <p className="txt-120 flex-hcenter"> {props.test} </p>
-        <div className="group-213 flex-col-hend">
-          <div className="group-21">
-            <p className="txt-649 flex-hcenter">Parametre :</p>
-            <input className="rectangle-17 txt-905" />
-          </div>
-          <div className="group-786 flex-row">
-            <button onClick={props.handleOpenClose} className="group-6">
-              <p className="txt-905 flex-hcenter">Let’s not go</p>
-            </button>
-            <button onClick={() => {props.handleOpenClose(); Test_result();} } className="group-6">
-              <p className="txt-637 flex-hcenter">Let’s go</p>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-    </>
-  );
-=======
 class ButtonAttributes {
   constructor(name, hasparam, paramsTab, IsSelect) {
     this.hasParam = hasparam;
@@ -65,7 +29,6 @@ class ButtonAttributes {
   getIsSelect() {
     return this.isSelect;
   }
->>>>>>> origin/InterfaceWeb
 }
 
 
@@ -97,25 +60,17 @@ export default class ButtonList extends React.Component {
     ];
   }
 
-  handleOpenClose() {
+  handleOpenClose(data) {
     return () => {
-<<<<<<< HEAD
-      this.setState((prev) => ({
-        showModal: !prev.showModal,
-=======
       this.setState(() => ({
         testName: data.getTestName(),
         testParam: data.getParams(),
         showModal: data.getHasParam(),
         isSelect: data.getIsSelect(),
->>>>>>> origin/InterfaceWeb
       }));
     };
   }
 
-<<<<<<< HEAD
-  makeButton(data) {
-=======
   changeData = (e) => {
     console.log(e.target.value);
     this.setState({
@@ -166,7 +121,6 @@ export default class ButtonList extends React.Component {
   };
 
   makeButton = (data, index) => {
->>>>>>> origin/InterfaceWeb
     return (
       <div key={index}>
         <Modal
@@ -175,13 +129,6 @@ export default class ButtonList extends React.Component {
           ariaHideApp={false}
           key={index}
         >
-<<<<<<< HEAD
-          {data}
-        </button>
-        <Modal isOpen={this.state.showModal}>
-          <ParameterPopup test={data} 
-                          handleOpenClose={this.handleOpenClose()}
-=======
           <ParameterPopup
             handleOpenClose={this.handleOpenClose(data)}
             handleRun={this.runTest}
@@ -189,7 +136,6 @@ export default class ButtonList extends React.Component {
             testName={this.state.testName}
             testParam={this.state.testParam}
             isSelect={this.state.isSelect}
->>>>>>> origin/InterfaceWeb
           />
         </Modal>
         <button

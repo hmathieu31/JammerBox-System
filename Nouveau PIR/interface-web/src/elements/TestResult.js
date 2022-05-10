@@ -1,6 +1,6 @@
 import React from "react";
 import "../CSS/TestResult.css";
-import ReturnButton from "../components/returnButton";
+import ReturnButton from "../components/ReturnButton";
 import LoadingSymbol from "../components/loadingSymbol";
 
 function TestResult(props) {

@@ -1,7 +1,6 @@
 import React from 'react'
 import "../CSS/UnderConstruction.css";
-import "../components/returnButton.js";
-import ReturnButton from "../components/returnButton.js";
+import ReturnButton from "../components/ReturnButton.js";
 
 export default function UnderConstruction() {
   return (
