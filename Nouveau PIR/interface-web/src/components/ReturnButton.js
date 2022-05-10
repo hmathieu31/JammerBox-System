@@ -11,7 +11,7 @@ function ReturnButton() {
   return (
     <div className="flex-col-hstart-vstart topleft">
       <input
-        class="arrow-circle-up"
+        className="arrow-circle-up"
         type="submit"
         value=""
         onClick={HomePage}
