@@ -75,7 +75,7 @@ export default class ButtonList extends React.Component {
   };
 
   sendData = (jsonData) => {
-    fetch("http://localhost:8080/run", {
+    fetch("http://192.168.1.92:8080/run", {
       method: "POST",
       mode: "cors",
       headers: { "Content-type": "application/json" },
