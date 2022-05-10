@@ -289,7 +289,7 @@ int main(void)
 
     Timer1Init();
 
-    Timer2Init();
+    Timer2Init();   //? We probabaly can replace the Timer 2 by the watchdog timer (and use timer 2 for timer 4) (some refactoring time incoming)
 
     Timer3Init();
 
