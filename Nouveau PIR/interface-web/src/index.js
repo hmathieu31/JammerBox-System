@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Routes, Route, Link, BrowserRouter } from "react-router-dom";
+import { Routes, Route, BrowserRouter } from "react-router-dom";
 import "./index.css";
 import reportWebVitals from "./components/reportWebVitals";
 import MainPage from "./elements/MainPage.js";
