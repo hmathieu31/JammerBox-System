@@ -7,7 +7,7 @@
 /*****************************************************************************/
 
 // ### Basic includes ###
-#include "p33FJ256GP710A.h"
+//#include "p33FJ256GP710A.h"
 #include "stdbool.h"
 #include "string.h"
 #include "stdlib.h"
@@ -795,6 +795,8 @@ void UART_receive(void) {
 //## UART Send Function
 
 void UART_send(char message) {
+    USART_SendData(USART1,message);
+    /*
     if (U2STAbits.UTXBF == 1) // Check if transmit buffer is full
     {
         while (U2STAbits.UTXBF == 1); // Wait until transmit buffer is writeable
@@ -802,7 +804,7 @@ void UART_send(char message) {
         U2TXREG = message;
     } else {
         U2TXREG = message;
-    }
+    }*/
 }
 
 

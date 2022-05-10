@@ -13,6 +13,7 @@
 #include "stdlib.h"
 #include "string.h"
 #include "stm32f10x.h"
+#include "stm32f10x_exti.h"
 #include "stm32f10x_gpio.h"
 #include "stm32f10x_tim.h"
 #include "stm32f10x_usart.h"
@@ -49,6 +50,14 @@ double gap_ratio_CRK_DET = 0; // Typical Value for C_CRK_GAP_DET = 1.375
 // Gap ratio CRK for Gap Validation
 double gap_ratio_CRK_VLD = 0; // Typical Value for C_CRK_GAP_VLD = 3
 char sensortype_CRK; // c = CPDD  h = hall sensor 
+
+//Variables to replace the input capture buffer
+unsigned long IC1BUF;
+unsigned long IC2BUF; 
+unsigned long IC3BUF; 
+unsigned long IC4BUF; 
+unsigned long IC5BUF; 
+unsigned long IC6BUF; 
 
 //** Calculation variables **
 unsigned long T_TOOTH_RAW_2 = 0;
@@ -420,6 +429,7 @@ void __attribute__((__interrupt__, no_auto_psv)) _IC1Interrupt(void) {
     Output_CRK(failure_identify); //CRK Output
     timer_overflow_CRK=0; //edge was detected, so no stalling
     IFS0bits.IC1IF = 0; //Clear IC1 Interrupt Flag
+    
 
 }
 
@@ -444,10 +454,12 @@ void __attribute__((__interrupt__, no_auto_psv)) _IC2Interrupt(void) {
 
     Output_CRK(failure_identify); //CRK Output
     if (configuration_complete == true) {
-        sync_CRK(); //CRK synchronization
+        sync_CRK(); //CRK synchronizatione
     }
-    timer_overflow_CRK=0; //edge was detected, so no stalling
-    IFS0bits.IC2IF = 0; //Clar IC2 Interrupt Flag
+    timer_overflow_CRK = 0; //edge was detected, so no stalling
+    IC2BUF = TIM_GetCounter(TIM2);
+    EXTI_ClearFlag(EXTI_PR_PR9); //Clear IC2 Interrupt Flag
+    
 }
 
 //## Capture Event rising edge --CAM1--
@@ -462,7 +474,9 @@ void __attribute__((__interrupt__, no_auto_psv)) _IC3Interrupt(void) {
         sync_CAM_CRK(0); //CAM_CRK synchronization
     }
     timer_overflow_CAM = 0; //edge was detected, so no stalling
-    IFS2bits.IC3IF = 0; //Clear IC3 Interrupt Flag
+
+   EXTI_ClearFlag(EXTI_PR_PR10); //Clear IC3 interrupt flag
+
 }
 
 
@@ -480,7 +494,7 @@ void __attribute__((__interrupt__, no_auto_psv)) _IC4Interrupt(void) {
         sync_CAM_CRK(0); //CAM_CRK synchronization
     }
     timer_overflow_CAM=0; //edge was detected, so no stalling
-    IFS2bits.IC4IF = 0; //Clear IC4 Interrupt Flag
+    EXTI_ClearFlag(EXTI_PR_PR11); //Clear IC4 Interrupt Flag
 }
 
 
@@ -497,8 +511,9 @@ void __attribute__((__interrupt__, no_auto_psv)) _IC5Interrupt(void) {
             sync_CAM_CRK(1); //CAM_CRK synchronization
         }
         timer_overflow_CAM=0; //edge was detected, so no stalling  
-    }
-    IFS2bits.IC5IF = 0; //Clear IC5 Interrupt Flag
+    } 
+    EXTI_ClearFlag(EXTI_PR_PR12); //Clear IC5 Interrupt Flag
+ 
 }
 
 
@@ -518,7 +533,7 @@ void __attribute__((__interrupt__, no_auto_psv)) _IC6Interrupt(void) {
         }
         timer_overflow_CAM=0; //edge was detected, so no stalling
     }
-    IFS2bits.IC6IF = 0; //Clear IC6 Interrupt Flag
+    EXTI_ClearFlag(EXTI_PR_PR13);  //Clear IC6 Interrupt Flag
 }
 
 
@@ -538,9 +553,9 @@ void __attribute__((__interrupt__, no_auto_psv)) _T1Interrupt(void) {
                 CRK_config = false;
                 CAM_config = false;
                 communication_active = false;
-                communication_validation = false;
-                T1CONbits.TON = 0;
-                TMR1 = 0x00;
+                communication_validation = false;               
+                TIM_Cmd(TIM1, DISABLE); //Stop timer1
+                TIM_SetCounter(TIM1, 0);
                 Stalling_detection();
             }
         }
@@ -550,7 +565,9 @@ void __attribute__((__interrupt__, no_auto_psv)) _T1Interrupt(void) {
         }
     }
 
-    IFS0bits.T1IF = 0; // Clear Timer1 Interrupt Flag
+    //IFS0bits.T1IF = 0; // Clear Timer1 Interrupt Flag
+    TIM_ClearFlag(TIM1, TIM_FLAG_Update);
+    
 }
 
 
