@@ -3,12 +3,18 @@
 /* Programm        :  Failures			                                     */
 /* Controller      :  dsPIC33F                                               */
 /* Latest change   :  31.08.2020                                             */
-/* Author          :  Grégoire Chabin/Christian Ringlstetter/Thomas Pichler  */
+/* Author          :  Grï¿½goire Chabin/Christian Ringlstetter/Thomas Pichler  */
 /*****************************************************************************/
 
 // ### Basic includes ###
 
-	#include "p33FJ256GP710A.h"
+    #include "config.h"
+    #include "stdlib.h"
+    #include "stm32f10x.h"
+    #include "stm32f10x_gpio.h"
+    #include "stm32f10x_tim.h"
+    #include "stm32f10x_usart.h"
+    #include "string.h"
 	#include "stdbool.h"
 	#include "failures.h"
 
@@ -110,9 +116,9 @@
 
 	//** CAM_REF_CRK **
 	extern unsigned int delay_counter_CAM_REF_CRK;								
-	extern long double angle_time_to_start_failure_CAM_REF_CRK;			// Value Delay (ms or °CRK)	
+	extern long double angle_time_to_start_failure_CAM_REF_CRK;			// Value Delay (ms or ï¿½CRK)	
 	extern double difference_to_edge_failure_start_CAM_REF_CRK;			
-	extern char delay_type_CAM_REF_CRK;									// t: time / c: °CRK
+	extern char delay_type_CAM_REF_CRK;									// t: time / c: ï¿½CRK
    
    
     //** CRK_TOOTH_OFF **
@@ -648,20 +654,34 @@
 //## CAM_delay: CAM_TOOTH_OFF / CAM_REF_CRK / CAM_SYN / CAM_SYN_CRK
 	void CAM_delay (int cam_id)
 	{
-		if(T4CONbits.TON == 1)
+		if(TIM4->CR1 & TIM_CR1_CEN)
 		{
 			double former_teeth_time; 
 			former_teeth_time = Former_teeth_time_calculation(T_TOOTH_RAW, teeth_count_CRK, number_miss_teeth);
-	
-			if(((double)TMR4/former_teeth_time)*revolution_CRK >= (revolution_CRK/2.0))
+            // TODO #51 : Check If we can get rid of Timer 4 and by what we can replace it 
+			if(((double)TIM_GetCounter(TIM4)/former_teeth_time)*revolution_CRK >= (revolution_CRK/2.0))
 			{
                 if(cam_id == 0){
-                   LATGbits.LATG7 = !LATGbits.LATG7; 
+                    if (GPIO_ReadInputDataBit(GPIOG, 5) == 1)
+                        {
+                        GPIO_ResetBits(GPIOG, 5);
+                        }
+                    else
+                        {
+                         GPIO_SetBits(GPIOG, 5);
+                        };
                 }else if(cam_id == 1){
-                   LATGbits.LATG8 = !LATGbits.LATG8;
+                    if (GPIO_ReadInputDataBit(GPIOG, 6) == 1)
+                        {
+                        GPIO_ResetBits(GPIOG, 6);
+                        }
+                        else
+                        {
+                        GPIO_SetBits(GPIOG, 6);
+                        };
                 }
-				T4CONbits.TON = 0;
-				Timer4Reset();
+				TIM_Cmd(TIM4,DISABLE);
+                TIM_SetCounter(TIM4,0);
 			}
 		}
 		
@@ -673,23 +693,37 @@
 			double former_teeth_time; 
 			former_teeth_time = Former_teeth_time_calculation(T_TOOTH_RAW, teeth_count_CRK, number_miss_teeth);
 
-			if(((double)TMR8/former_teeth_time) * revolution_CRK >= (delay_angle_CAM_delay * delay_factor_CAM_delay))
+			if(((double)TIM_GetCounter(TIM8)/former_teeth_time) * revolution_CRK >= (delay_angle_CAM_delay * delay_factor_CAM_delay))
 			{
-				T8CONbits.TON = 0;
-				TMR8 = 0;
+				TIM_Cmd(TIM8,DISABLE);
+				TIM_SetCounter(TIM8,0);
 				timer_active_CAM_delay[cam_id] = false;
 
 				if(interrupt_check_CAM_delay[cam_id] == false)
 				{
                     if(cam_id == 0){
-                        LATGbits.LATG7 = !LATGbits.LATG7; 
+                        if (GPIO_ReadInputDataBit(GPIOG, 5) == 1)
+                        {
+                        GPIO_ResetBits(GPIOG, 5);
+                        }
+                        else
+                        {
+                        GPIO_SetBits(GPIOG, 5);
+                        }; 
                     }else if(cam_id == 1){
-                        LATGbits.LATG8 = !LATGbits.LATG8;
+                        if (GPIO_ReadInputDataBit(GPIOG, 6) == 1)
+                        {
+                        GPIO_ResetBits(GPIOG, 6);
+                        }
+                        else
+                        {
+                        GPIO_SetBits(GPIOG, 6);
+                        };
                     }
 	
 					if(active_CAM_edges[cam_id] == 'r' || active_CAM_edges[cam_id] == 'f')
 					{
-						T4CONbits.TON = 1;
+						TIM_Cmd(TIM8,ENABLE);
 					}
 				}
 			}
@@ -717,15 +751,29 @@
 						angle_to_edge_CAM_delay[cam_id][i] = 0;
 						number_processing_edges_CAM_delay[cam_id]--;
                         if(cam_id == 0){
-                           LATGbits.LATG7 = !LATGbits.LATG7; 
+                           if (GPIO_ReadInputDataBit(GPIOG, 5) == 1)
+                                {
+                                GPIO_ResetBits(GPIOG, 5);
+                                }
+                                else
+                                {
+                                GPIO_SetBits(GPIOG, 5);
+                                }; 
                         }else if(cam_id == 1){
-                           LATGbits.LATG8 = !LATGbits.LATG8;
+                           if (GPIO_ReadInputDataBit(GPIOG, 6) == 1)
+                                {
+                                GPIO_ResetBits(GPIOG, 6);
+                                }
+                                else
+                                {
+                                GPIO_SetBits(GPIOG, 6);
+                                };
                         }
 						
 			
 						if(active_CAM_edges[cam_id] == 'r' || active_CAM_edges[cam_id] == 'f')
 						{
-							T4CONbits.TON = 1;
+                            TIM_Cmd(TIM4,ENABLE);
 						}
 
 						break;

@@ -8,6 +8,8 @@
 
 // ### Basic includes ###
 	#include "p33FJ256GP710A.h"
+	#include "stm32f10x.h"
+    #include "stm32f10x_gpio.h"
 	#include "stdbool.h"
 	#include "system_configuration.h"
 
@@ -179,20 +181,41 @@
 		if(!output_set)
 		{
 			// Check CRK input signal level
-			if(PORTDbits.RD8 != PORTGbits.RG6)
+			if(GPIO_ReadInputDataBit(GPIOD,8) != GPIO_ReadInputDataBit(GPIOG,4))
 			{
-				LATGbits.LATG6 = !LATGbits.LATG6;
+				if (GPIO_ReadInputDataBit(GPIOG, 4) == 1)
+                        {
+                        GPIO_ResetBits(GPIOG, 4);
+                        }
+                    else
+                        {
+                         GPIO_SetBits(GPIOG, 4);
+                        };
 			}
 	
 			// Check CAM input signal level
-			if(PORTDbits.RD10 != PORTGbits.RG7)
+			if(GPIO_ReadInputDataBit(GPIOD,10) != GPIO_ReadInputDataBit(GPIOG,5))
 			{
-				LATGbits.LATG7 = !LATGbits.LATG7;
+				if (GPIO_ReadInputDataBit(GPIOG, 5) == 1)
+                        {
+                        GPIO_ResetBits(GPIOG, 5);
+                        }
+                    else
+                        {
+                         GPIO_SetBits(GPIOG, 5);
+                        };
 			}
             
-            if(PORTDbits.RD12 != PORTGbits.RG8)
+            if(GPIO_ReadInputDataBit(GPIOD,12) != GPIO_ReadInputDataBit(GPIOG,6))
 			{
-				LATGbits.LATG8 = !LATGbits.LATG8;
+				if (GPIO_ReadInputDataBit(GPIOG, 6) == 1)
+                        {
+                        GPIO_ResetBits(GPIOG, 6);
+                        }
+                    else
+                        {
+                         GPIO_SetBits(GPIOG, 6);
+                        };	
 			}
 
 			output_level_setting = true;

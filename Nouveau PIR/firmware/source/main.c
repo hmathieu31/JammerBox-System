@@ -8,10 +8,13 @@
 
 
 // ### Basic includes ###
-#include "p33FJ256GP710A.h"
 #include "config.h"
 #include "stdbool.h"
 #include "stdlib.h"
+#include "stm32f10x.h"
+#include "stm32f10x_gpio.h"
+#include "stm32f10x_tim.h"
+#include "stm32f10x_usart.h"
 #include "string.h"
 
 
@@ -318,11 +321,7 @@ int main(void) {
 
     Uart2Init();
 
-
-    TRISAbits.TRISA9 = 0;
-
-    LATAbits.LATA9 = 0;
-
+    GPIO_SetBits(GPIOG,3);
     // ## Main loop ##
     while (1) {
         //failure processing
@@ -340,13 +339,13 @@ int main(void) {
         {
             //Stalling_detection();
             Stalling_detection_CRK();
-            LATAbits.LATA9 = 1;
+            GPIO_SetBits(GPIOG,3);
         }
         //reset all values when CAM stalling is detected //was not here before
         if ((timer_overflow_CAM > 5)) {
             Stalling_detection_CAM(0);
             Stalling_detection_CAM(1);
-            LATAbits.LATA9 = 1;
+            GPIO_SetBits(GPIOG,3);
         }
 
 
@@ -358,23 +357,23 @@ int main(void) {
         
         
         if (CRK_synch) {
-            LATAbits.LATA0 = 1;
-            LATAbits.LATA3 = 0;
+            GPIO_SetBits(GPIOG,0);
+            GPIO_ResetBits(GPIOG,2);
         } else {
-            LATAbits.LATA0 = 0;
+            GPIO_ResetBits(GPIOG,0);
         }
 
         if (CRK_synch_temp) {
-            LATAbits.LATA1 = 1;
+            GPIO_SetBits(GPIOG,1);
         } else {
-            LATAbits.LATA1 = 0;
+            GPIO_ResetBits(GPIOG,1);
         }
 
         if (CRK_synch) {
-            LATAbits.LATA9 = 1;
+            GPIO_SetBits(GPIOG,3);
         }
         else{
-            LATAbits.LATA9 = 0;
+            GPIO_ResetBits(GPIOG,3);
         }
     };
 }
