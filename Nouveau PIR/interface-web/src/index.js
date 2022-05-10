@@ -54,12 +54,11 @@ ReactDOM.render(
       <Routes>
         <Route exact path="/" element={<MainPage />} />
         <Route exact path="/synthesize_tests" element={<SynthesizeTests />} />
-<<<<<<< HEAD
         <Route exact path="/tests_historics" element={<Test_historics />} />
         <Route exact path="/configuration" element={<Configuration />} />
         <Route exact path="/test_result" element={<TestResult name="Testing" />}
-=======
         <Route exact path="/tests_historics" element={<UnderConstruction />} />
+        <Route exact path="/tests_historics" element={<Test_historics />} />
         <Route
           exact
           path="/configuration"
@@ -74,7 +73,6 @@ ReactDOM.render(
           exact
           path="/test_result"
           element={<TestResult name="Testing" />}
->>>>>>> 59d52c5c (Configuration working and message protocol sending working great)
         />
       </Routes>
     </BrowserRouter>

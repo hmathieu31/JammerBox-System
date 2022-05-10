@@ -1,15 +1,13 @@
-import serial
+from serial import Serial
 import sys
 from time import sleep
 
 print(sys.argv)
 usart_message = "!"
-#ser = serial.Serial("/dev/ttyS0", 9600)    #Open port with baud rate
-#received_data = ser.read()              #read serial port
-sleep(0.03)
-#data_left = ser.inWaiting()             #check for remaining byte
-#received_data += ser.read(data_left)
-#print (received_data)                   #print received data
+print("Opening port...")
+ser = Serial("/dev/ttyS0", 9600,timeout=0.5)    #Open port with baud rate
+print("Port opened!")
+#                   #print received data
 
 testName  = sys.argv[1]
 message_identifier = "0"
@@ -32,4 +30,11 @@ for i in range(2,len(sys.argv)):
 usart_message+="%"
 print(usart_message)
 
-#ser.write(message_identifier)   
+ser.write(usart_message.encode())
+sleep(0.03)   
+databuffer = ser.in_waiting
+if databuffer>0:
+    received_data = ser.read(size=64)              #read serial port
+    print (received_data)
+else:
+    print("No data to read")

@@ -4,33 +4,15 @@ import "../CSS/ParameterPopup.css";
 import ParameterPopup from "./ParameterPopup";
 import React from "react";
 import Modal from "react-modal";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Provider as AlertProvider } from "react-alert";
+import AlertTemplate from "react-alert-template-basic";
 
-class ButtonAttributes {
-  constructor(name, hasparam, paramsTab, IsSelect) {
-    this.hasParam = hasparam;
-    this.testName = name;
-    this.params = paramsTab;
-    this.isSelect = IsSelect;
-  }
-
-  getHasParam() {
-    return this.hasParam;
-  }
-
-  getParams() {
-    return this.params;
-  }
-
-  getTestName() {
-    return this.testName;
-  }
-
-  getIsSelect() {
-    return this.isSelect;
-  }
-}
-
+const options = {
+  position: "bottom center",
+  timeout: 5000,
+  offset: "30px",
+  transition: "scale",
+};
 
 export default class ButtonList extends React.Component {
   
@@ -76,7 +58,7 @@ export default class ButtonList extends React.Component {
   };
 
   sendData = (jsonData) => {
-    fetch("http://localhost:8080/run", {
+    fetch("http://172.20.10.9:8080/run", {
       method: "POST",
       mode: "cors",
       headers: { "Content-type": "application/json" },
@@ -105,7 +87,11 @@ export default class ButtonList extends React.Component {
 
     this.setState({
       showModal: false,
+      valueSelect: null,
     });
+
+    console.log("Value after sending test parameters");
+    console.log(this.valueSelect);
   };
 
   directRunTest = (data) => {
@@ -130,14 +116,17 @@ export default class ButtonList extends React.Component {
           onClick={this.handleOpenClose}
           className="group-6 txt-733"
         >
-          <ParameterPopup
-            handleOpenClose={this.handleOpenClose(data)}
-            handleRun={this.runTest}
-            handleChange={this.changeData}
-            testName={this.state.testName}
-            testParam={this.state.testParam}
-            isSelect={this.state.isSelect}
-          />
+          <AlertProvider template={AlertTemplate} {...options}>
+            <ParameterPopup
+              handleOpenClose={this.handleOpenClose(data)}
+              handleRun={this.runTest}
+              handleChange={this.changeData}
+              testName={this.state.testName}
+              testParam={this.state.testParam}
+              isSelect={this.state.isSelect}
+              valueSelected={this.state.valueSelect}
+            />
+          </AlertProvider>
         </Modal>
       </div>
     );
