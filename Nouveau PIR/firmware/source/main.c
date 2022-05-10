@@ -635,8 +635,7 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM6_IRQHandler(void)
         //? Le mieux est d'avoir PSC le plus petit possible
         //? Mais ARR doit pas dépasser (2^16)-1 = 65535
         //? 72Mhz*PSC+1*ARR+1
-        TIM_PrescalerConfig(TIM7, 0, TIM_PSCReloadMode_Immediate); //? Define PSC value
-        TIM_SetAutoreload(TIM7, 1439);                             //? Define ARR value 20us*72Mhz = 1440
+        TIM_SetAutoreload(TIM7, 1439);//? Define ARR value 20us*72Mhz = 1440 (PSC=0 pour TIM7)
 
         TIM_Cmd(TIM7, ENABLE);
 
@@ -712,19 +711,16 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM7_IRQHandler(void)
             {                              // if the rising edge has already happen
                 if (sensortype_CRK == 'c') // sensor is cpdd
                 {
-                    TIM_PrescalerConfig(TIM8, 0, TIM_PSCReloadMode_Immediate);
-                    TIM_SetAutoreload(TIM8, 3599); //? 72*50=3600
+                    SysTick_Config(3600); //? 72MHz*50us=3600
                 }
                 else if (sensortype_CRK == 'h')
                 { // all the others
-                    TIM_PrescalerConfig(TIM8, 0, TIM_PSCReloadMode_Immediate);
-                    TIM_SetAutoreload(TIM8, (T_TOOTH_RAW / 2) - 1); //? If setted period is more than 910 us PSC should be set higher
+                    SysTick_Config((T_TOOTH_RAW / 2) - 1);
                 }
                 else
                 {
                     // if sensor type not set, shouldn't happen
-                    TIM_PrescalerConfig(TIM8, 0, TIM_PSCReloadMode_Immediate);
-                    TIM_SetAutoreload(TIM8, 1);
+                    SysTick_Config(1);
                 }
 
                 // Start timer 8
@@ -757,7 +753,7 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM7_IRQHandler(void)
 /*****************************************************************************/
 
 //## Timer 8 Interrupt
-
+//TODO Modify TIM8_IRQHandler to a systick version
 void __attribute__((__interrupt__, no_auto_psv)) TIM8_IRQHandler(void)
 {
 
@@ -772,18 +768,15 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM8_IRQHandler(void)
             if (sensortype_CRK == 'c')
             {
                 //§ PR8 = 0x001D;   // 29 * 1.73us = 50.1us
-                TIM_PrescalerConfig(TIM8, 0, TIM_PSCReloadMode_Immediate); //? Define PSC value
-                TIM_SetAutoreload(TIM8, 3599);
+                SysTick_Config(3600); //? 72MHz*50us
             }
             else if (sensortype_CRK == 'h')
             {
-                TIM_PrescalerConfig(TIM8, 0, TIM_PSCReloadMode_Immediate);
-                TIM_SetAutoreload(TIM8, (T_TOOTH_RAW / 2) - 1); //? If setted period is more than 910us PSC should be set higher
+                SysTick_Config((T_TOOTH_RAW / 2) - 1);
             }
             else
             {
-                TIM_PrescalerConfig(TIM8, 0, TIM_PSCReloadMode_Immediate);
-                TIM_SetAutoreload(TIM8, 1);
+                SysTick_Config(1);
             }
             break;
         }
