@@ -173,7 +173,7 @@ void Usart1Init(void) {
 
     //UART Transmit interrupt
     NVIC_EnableIRQ(USART1_IRQn);
-    NVIC_SetPriority(USART1_IRQn, 1);
+    NVIC_SetPriority(USART1_IRQn, 1); // Set priority of the USATR1 interrupt to 1
     USART_ClearITPendingBit(USART1, USART_IT_TXE);
     USART_ITConfig(USART1, USART_IT_TXE, ENABLE);
 
@@ -184,7 +184,7 @@ void Usart1Init(void) {
     USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);
 
 
-    // turn on UART
+    // turn on USART
     USART_ClockInit(USART1, &USART_ClockInitStructure);
     USART_Init(USART1, &USART_InitStructure);
     USART_Cmd(USART1, ENABLE);
@@ -193,8 +193,8 @@ void Usart1Init(void) {
 
 
 //## UART Receive Function
-//? Called when a character is received on the USART1
-void UART_receive(void) { // TODO: #43 port this function
+//? Called whenever a character is received on the USART1
+void UART_receive(void) {
 
     data_counter = 0; //Set data counter to 0
 
@@ -791,8 +791,12 @@ void UART_receive(void) { // TODO: #43 port this function
 
 
 
-//## UART Send Function
-
+/**
+ * @brief Function used to send a message via USART.
+ * In practice, simply calls the USART_send function from the stm32 standard library
+ *
+ * @param message 
+ */
 void USART_send(char message) {
     USART_SendData(USART1, message);
 }
