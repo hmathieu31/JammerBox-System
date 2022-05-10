@@ -82,7 +82,7 @@ export default class ButtonList extends React.Component {
           {data}
         </button>
         <Modal isOpen={this.state.showModal}>
-          <ParameterPopup test={this.state.testName} 
+          <ParameterPopup test={data} 
                           handleOpenClose={this.handleOpenClose()}
           />
         </Modal>
