@@ -10,6 +10,8 @@
 	#include "stm32f10x.h"
 	#include "stm32f10x_tim.h"
 	#include "timer.h"
+	#include <stm32f10x.h>
+	#include <stm32f10x_tim.h>
 
 
 // ### Variables ###
@@ -167,23 +169,16 @@
 
 	//## Timer2Reset **Prescaler: 64; CRK Synchronization; tooth time** 
 	void Timer2Reset(void){
-		TMR2 = 0x00;				// Reset TMR2
+		TIM_SetCounter(TIM1, 0);		//Reset Timer2 sur l'ancien PIR, TIM1 pour nous
 		timer_overflow_CRK = 0;
 	}
 	
 
 	//## Timer3Reset **Prescaler: 256; CAM Synchronization; segment time** 
 	void Timer3Reset(void){
-		TMR3 = 0x00;				// Reset TMR3
+		TIM_SetCounter(TIM2, 0);				// Reset Timer3
 		timer_overflow_CAM = 0;
 	}
-
-	//## Timer9Reset **Prescaler: 64; CAM_delay** 
-	void Timer9Reset(void){
-		TMR9 = 0x00;				// Reset TMR9
-		timer_overflow_CAM_REF_CRK = 0;
-	}
-
 
 /*****************************************************************************/
 /*****************************************************************************/

@@ -11,6 +11,7 @@
 #include "stdbool.h"
 #include "stdlib.h"
 #include "stm32f10x.h"
+#include "stm32f10x_exti.h"
 #include "stm32f10x_gpio.h"
 #include "stm32f10x_tim.h"
 #include "stm32f10x_usart.h"
@@ -47,6 +48,14 @@ double gap_ratio_CRK_DET = 0; // Typical Value for C_CRK_GAP_DET = 1.375
 // Gap ratio CRK for Gap Validation
 double gap_ratio_CRK_VLD = 0; // Typical Value for C_CRK_GAP_VLD = 3
 char sensortype_CRK;          // c = CPDD  h = hall sensor
+
+//Variables to replace the input capture buffer
+unsigned long IC1BUF;
+unsigned long IC2BUF; 
+unsigned long IC3BUF; 
+unsigned long IC4BUF; 
+unsigned long IC5BUF; 
+unsigned long IC6BUF; 
 
 //** Calculation variables **
 unsigned long T_TOOTH_RAW_2 = 0;
@@ -510,9 +519,9 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM1_IRQHandler(void)
                 CRK_config = false;
                 CAM_config = false;
                 communication_active = false;
-                communication_validation = false;
-                T1CONbits.TON = 0;
-                TMR1 = 0x00;
+                communication_validation = false;               
+                TIM_Cmd(TIM1, DISABLE); //Stop timer1
+                TIM_SetCounter(TIM1, 0);
                 Stalling_detection();
             }
         }
