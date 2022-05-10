@@ -301,9 +301,6 @@ int main(void) {
 
     //***************** Initialization ********************
 
-    wiringPiSetup();
-
-    
 
     // ## Initialisierung ##
 
@@ -542,7 +539,7 @@ void __attribute__((__interrupt__, no_auto_psv)) _IC6Interrupt(void) {
 
 void __attribute__((__interrupt__, no_auto_psv)) _T1Interrupt(void) {
     if (communication_active == true) {
-        UART_send(message[11]);
+        USART_send(message[11]);
 
         if (communication_validation == true) {
             if (communication_ready == true) {
@@ -565,9 +562,7 @@ void __attribute__((__interrupt__, no_auto_psv)) _T1Interrupt(void) {
         }
     }
 
-    //IFS0bits.T1IF = 0; // Clear Timer1 Interrupt Flag
     TIM_ClearFlag(TIM1, TIM_FLAG_Update);
-    
 }
 
 
@@ -578,7 +573,6 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM2_IRQHandler(void) {
     // all overflows between the events
     timer_overflow_CRK++;
 
-    //§ IFS0bits.T2IF = 0; // Clear Timer2 Interrupt Flag
     TIM_ClearFlag(TIM2,TIM_FLAG_Update);
 
 }
