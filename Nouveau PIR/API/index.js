@@ -1,9 +1,9 @@
 const usb = require("usb");
 const express = require("express");
 const app = express();
-const shell = require("shelljs");
 const bp = require("body-parser");
 const cors = require("cors");
+const { spawn } = require("child_process");
 const fs = require("fs");
 
 var allowedOrigins = ["http://localhost:3000", "http://192.168.1.92:3000"];
@@ -32,7 +32,21 @@ app.post("/run", (req, res) => {
     var param1 = req.body.TestName;
     var param2 = req.body.TestParameter;
     var param3 = req.body.TestValue;
-    shell.exec("../script_exemple.sh " + param1 + " " + param2 + " " + param3);
+    var dataToSend;
+    const python = spawn("python", [
+      "../USART_Script.py",
+      param1,
+      param2,
+      param3,
+    ]);
+    python.stdout.on("python", function (data) {
+      console.log("Pipe data from python script ...");
+      dataToSend = data.toString();
+    });
+    python.on("close", (code) => {
+      console.log(`child process close all stdio with code ${code}`);
+      res.send(dataToSend);
+    });
     res.status(200).json();
   }
 });
