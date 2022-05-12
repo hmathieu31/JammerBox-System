@@ -10,12 +10,12 @@ data = sys.argv[3]
 
 message_identifier = 0
 
-ser = serial.Serial("/dev/ttyS0", 9600)    #Open port with baud rate
-received_data = ser.read()              #read serial port
+#ser = serial.Serial("/dev/ttyS0", 9600)    #Open port with baud rate
+#received_data = ser.read()              #read serial port
 sleep(0.03)
-data_left = ser.inWaiting()             #check for remaining byte
-received_data += ser.read(data_left)
-print (received_data)                   #print received data
+#data_left = ser.inWaiting()             #check for remaining byte
+#received_data += ser.read(data_left)
+#print (received_data)                   #print received data
 
 if testName == "CONFIGCRK":message_identifier="1"
 elif testName == "CONFIGCAM":message_identifier="2"
@@ -29,6 +29,6 @@ elif testName == "CRKGAPNOTDET":message_identifier="i"
 elif testName == "CRKPOSNENGSTST":message_identifier="l"
 elif testName == "CRKSEGADPERRLIM":message_identifier="j"
 
+print(message_identifier)
 
-
-ser.write(message_identifier)   
+#ser.write(message_identifier)   

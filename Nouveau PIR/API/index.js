@@ -4,6 +4,7 @@ const app = express();
 const bp = require("body-parser");
 const cors = require("cors");
 const { spawn } = require("child_process");
+const { PythonShell } = require("python-shell");
 const fs = require("fs");
 
 var allowedOrigins = ["http://localhost:3000", "http://192.168.1.92:3000"];
@@ -32,6 +33,7 @@ app.post("/run", (req, res) => {
     var param1 = req.body.TestName;
     var param2 = req.body.TestParameter;
     var param3 = req.body.TestValue;
+    console.log(param1, param2, param3);
     var dataToSend;
     const python = spawn("python", [
       "../USART_Script.py",
@@ -39,14 +41,15 @@ app.post("/run", (req, res) => {
       param2,
       param3,
     ]);
-    python.stdout.on("python", function (data) {
-      console.log("Pipe data from python script ...");
-      dataToSend = data.toString();
-    });
-    python.on("close", (code) => {
-      console.log(`child process close all stdio with code ${code}`);
-      res.send(dataToSend);
-    });
+    PythonShell.run(
+      "../USART_Script.py",
+      { args: [param1, param2, param3] },
+      function (err, results) {
+        if (err) throw err;
+        // results is an array consisting of messages collected during execution
+        console.log("results: %j", results);
+      }
+    );
     res.status(200).json();
   }
 });
