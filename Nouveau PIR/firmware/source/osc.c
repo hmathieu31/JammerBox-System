@@ -12,6 +12,9 @@
 // ### Functions ###
 
 	// ## OSC Init ##
+	/*
+		@brief Sets the base microchip frequency to 40MHz
+	*/
 	void OSCInit(void){
 	
 	    // Configure Oscillator to operate the device at 40Mhz

@@ -10,6 +10,7 @@
 	#include "stdbool.h"
 	#include "system_configuration.h"
 	#include "stm32f10x.h"
+  #include "stm32f10x_gpio.h"
 // ### Programm includes ###
 	#include "synchronization.h"
 	#include "uart.h"
@@ -178,20 +179,41 @@
 		if(!output_set)
 		{
 			// Check CRK input signal level
-			if(PORTDbits.RD8 != PORTGbits.RG6)
+			if(GPIO_ReadInputDataBit(GPIOB,8) != GPIO_ReadInputDataBit(GPIOA,4))
 			{
-				LATGbits.LATG6 = !LATGbits.LATG6;
+				if (GPIO_ReadInputDataBit(GPIOA, 4) == 1)
+                        {
+                        GPIO_ResetBits(GPIOA, 4);
+                        }
+                    else
+                        {
+                         GPIO_SetBits(GPIOA, 4);
+                        };
 			}
 	
 			// Check CAM input signal level
-			if(PORTDbits.RD10 != PORTGbits.RG7)
+			if(GPIO_ReadInputDataBit(GPIOB,10) != GPIO_ReadInputDataBit(GPIOA,5))
 			{
-				LATGbits.LATG7 = !LATGbits.LATG7;
+				if (GPIO_ReadInputDataBit(GPIOA, 5) == 1)
+                        {
+                        GPIO_ResetBits(GPIOA, 5);
+                        }
+                    else
+                        {
+                         GPIO_SetBits(GPIOA, 5);
+                        };
 			}
             
-            if(PORTDbits.RD12 != PORTGbits.RG8)
+            if(GPIO_ReadInputDataBit(GPIOB,12) != GPIO_ReadInputDataBit(GPIOA,6))
 			{
-				LATGbits.LATG8 = !LATGbits.LATG8;
+				if (GPIO_ReadInputDataBit(GPIOA, 6) == 1)
+                        {
+                        GPIO_ResetBits(GPIOA, 6);
+                        }
+                    else
+                        {
+                         GPIO_SetBits(GPIOA, 6);
+                        };	
 			}
 
 			output_level_setting = true;
