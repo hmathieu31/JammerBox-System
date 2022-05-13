@@ -223,7 +223,7 @@
 				}
             case 'i': //CRK_GAP_NOT_DET
 				{
-                    Output_CRK_GAP_NOT_DET(); //PR8!!!
+                    Output_CRK_GAP_NOT_DET(); 
 					break;
 				}  
             case 'j': //SEG_ADP_ER_LIM
