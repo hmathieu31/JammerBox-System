@@ -891,7 +891,7 @@ void Output_CRK_TOOTH_OFF(void){
         if(CRK_signal == false)
         {   // if failure active and the Crk is set to 0 set Crk output at 1 to miss a tooth
             failure_passed = true;
-            GPIO_SetBits(GPIOG, 6);  
+            GPIO_SetBits(GPIOG, 4);  
         }
         else if(failure_passed == true)
         {   // a tooth has been skiped
@@ -957,7 +957,7 @@ void Output_CRK_GAP_NOT_DET(void){
         if((teeth_counter_CRK_GAP_NOT_DET == number_teeth_between_gaps ) && failure_active == false)
         {
             failure_active = true;
-            SysTick_Config(128 * T_TOOTH_RAW * 1.5) // to be in the midle of the gap 
+            SysTick_SetPeriod(T_TOOTH_RAW * 1.5); // to be in the midle of the gap 
 
         }
         else if((failure_active == true) && (CRK_signal == true))
