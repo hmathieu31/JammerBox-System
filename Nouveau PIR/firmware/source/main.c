@@ -283,28 +283,20 @@ char message[14] = {'1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'z', 
 
 int main(void)
 {
+    Config_clock_tree();
+    // ## Initialising ##
 
-    // ## Initialisierung ##
 
-    OSCInit();
 
-    Timer1Init();
-
-    Timer2Init();
+    Timer2Init();   //? We probabaly can replace the Timer 2 by the watchdog timer (and use timer 2 for timer 4) (some refactoring time incoming)
 
     Timer3Init();
-
-    Timer4Init();
-
-    Timer5Init();
 
     Timer6Init();
 
     Timer7Init();
 
     Timer8Init();
-
-    Timer9Init();
 
     IC1Init();
 
@@ -320,12 +312,9 @@ int main(void)
 
     Port_G_config();
 
-    Usart1Init();
+    Uart2Init();
 
-    TRISAbits.TRISA9 = 0;
-
-    LATAbits.LATA9 = 0;
-
+    GPIO_ResetBits(GPIOA,3);
     // ## Main loop ##
     while (1)
     {
@@ -346,48 +335,39 @@ int main(void)
         {
             // Stalling_detection();
             Stalling_detection_CRK();
-            LATAbits.LATA9 = 1;
+            GPIO_SetBits(GPIOA,3);
         }
         // reset all values when CAM stalling is detected //was not here before
         if ((timer_overflow_CAM > 5))
         {
             Stalling_detection_CAM(0);
             Stalling_detection_CAM(1);
-            LATAbits.LATA9 = 1;
+            GPIO_SetBits(GPIOA,3);
         }
 
         // send failure configuration status
         UART_send_failure_configuration_status(failure_identify, failure_configured, failure_configured_CAM_blank_out);
 
         // check input signal level and set corresponding output level
-        Input_signal_observe(output_level_setting);
-
-        if (CRK_synch)
-        {
-            LATAbits.LATA0 = 1;
-            LATAbits.LATA3 = 0;
-        }
-        else
-        {
-            LATAbits.LATA0 = 0;
+        Input_signal_observe(output_level_setting);     
+        if (CRK_synch) {
+            GPIO_SetBits(GPIOA,0);
+            GPIO_ResetBits(GPIOA,2);
+        } else {
+            GPIO_ResetBits(GPIOA,0);
         }
 
-        if (CRK_synch_temp)
-        {
-            LATAbits.LATA1 = 1;
-        }
-        else
-        {
-            LATAbits.LATA1 = 0;
+        if (CRK_synch_temp) {
+            GPIO_SetBits(GPIOA,1);
+        } else {
+            GPIO_ResetBits(GPIOA,1);
         }
 
-        if (CRK_synch)
-        {
-            LATAbits.LATA9 = 1;
+        if (CRK_synch) {
+            GPIO_SetBits(GPIOA,3);
         }
-        else
-        {
-            LATAbits.LATA9 = 0;
+        else{
+            GPIO_ResetBits(GPIOA,3);
         }
     };
 }
@@ -508,6 +488,7 @@ void __attribute__((__interrupt__, no_auto_psv)) EXTI4_15_IRQHANDLER()
     }
 }
 
+
 //## Timer 1 Interrupt: Communication validation
 
 void __attribute__((__interrupt__, no_auto_psv)) TIM1_IRQHandler(void)
@@ -542,7 +523,7 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM1_IRQHandler(void)
         }
     }
 
-    IFS0bits.T1IF = 0; // Clear Timer1 Interrupt Flag
+     TIM_ClearFlag(TIM1, TIM_FLAG_Update); // Clear Timer1 Interrupt Flag
 }
 
 //## Timer 2 Interrupt CRK tooth time
@@ -567,30 +548,6 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM3_IRQHandler(void)
 
     TIM_ClearFlag(TIM3, TIM_FLAG_Update);
 }
-
-//## Timer 4 Interrupt: CRK failure circuit-entering
-
-void __attribute__((__interrupt__, no_auto_psv)) TIM4_IRQHandler(void)
-{
-    // all overflows between the events
-    timer_overflow_CRK_failure++;
-
-    TIM_SetCounter(TIM4, 0);
-    TIM_ClearFlag(TIM4, TIM_FLAG_Update);
-}
-
-//## Timer 5 Interrupt: CAM failure circuit-entering
-
-void __attribute__((__interrupt__, no_auto_psv)) TIM5_IRQHandler(void)
-{
-
-    // all overflows between the events
-    timer_overflow_CAM_failure++;
-
-    TIM_SetCounter(TIM5, 0);
-    TIM_ClearFlag(TIM5, TIM_FLAG_Update);
-}
-
 //## Timer 6 Interrupt: CAM_PER - start value
 
 void __attribute__((__interrupt__, no_auto_psv)) TIM6_IRQHandler(void)
@@ -809,16 +766,6 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM8_IRQHandler(void)
 
     TIM_ClearFlag(TIM8, TIM_FLAG_Update);
 }
-
-//## Timer 9 Interrupt: CAM_PER - pulse duration
-
-void __attribute__((__interrupt__, no_auto_psv)) _T9Interrupt(void)
-{
-    timer_overflow_CAM_REF_CRK++;
-
-    TIM_ClearFlag(TIM9, TIM_FLAG_Update);
-}
-
 //## UART Receive Interrupt
 
 void __attribute__((__interrupt__, no_auto_psv)) USART1_IRQHandler(void)
