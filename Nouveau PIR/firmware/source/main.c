@@ -752,9 +752,8 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM7_IRQHandler(void)
 /*****************************************************************************/
 /*****************************************************************************/
 
-//## Timer 8 Interrupt
-//TODO Modify TIM8_IRQHandler to a systick version
-void __attribute__((__interrupt__, no_auto_psv)) TIM8_IRQHandler(void)
+//## Systick Interrupt
+void __attribute__((__interrupt__, no_auto_psv)) SysTick_Handler (void)
 {
 
     if (failure_identify == 'i')
