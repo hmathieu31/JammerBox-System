@@ -1,9 +1,10 @@
 const usb = require("usb");
 const express = require("express");
 const app = express();
-const shell = require("shelljs");
 const bp = require("body-parser");
 const cors = require("cors");
+const { spawn } = require("child_process");
+const { PythonShell } = require("python-shell");
 const fs = require("fs");
 
 var allowedOrigins = ["http://localhost:3000", "http://192.168.1.92:3000"];
@@ -32,7 +33,23 @@ app.post("/run", (req, res) => {
     var param1 = req.body.TestName;
     var param2 = req.body.TestParameter;
     var param3 = req.body.TestValue;
-    shell.exec("../script_exemple.sh " + param1 + " " + param2 + " " + param3);
+    console.log(param1, param2, param3);
+    var dataToSend;
+    const python = spawn("python", [
+      "../USART_Script.py",
+      param1,
+      param2,
+      param3,
+    ]);
+    PythonShell.run(
+      "../USART_Script.py",
+      { args: [param1, param2, param3] },
+      function (err, results) {
+        if (err) throw err;
+        // results is an array consisting of messages collected during execution
+        console.log("results: %j", results);
+      }
+    );
     res.status(200).json();
   }
 });

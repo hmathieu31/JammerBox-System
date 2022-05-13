@@ -6,6 +6,7 @@ import reportWebVitals from "./components/reportWebVitals";
 import MainPage from "./elements/MainPage.js";
 import SynthesizeTests from "./elements/SynthesizeTests.js";
 import UnderConstruction from "./elements/TestsHistorics";
+import Configuration from "./elements/Configuration";
 import TestResult from "./elements/TestResult";
 
 const rootElement = document.getElementById("root");
@@ -17,9 +18,13 @@ ReactDOM.render(
         <Route exact path="/" element={<MainPage />} />
         <Route exact path="/synthesize_tests" element={<SynthesizeTests />} />
         <Route exact path="/tests_historics" element={<UnderConstruction />} />
+        <Route exact path="/configuration" element={<Configuration />} />
         {/* Testing test result */}
-        <Route exact path="/test_result" element={ < TestResult name="Testing" /> } />
-
+        <Route
+          exact
+          path="/test_result"
+          element={<TestResult name="Testing" />}
+        />
       </Routes>
     </BrowserRouter>
   </div>,
