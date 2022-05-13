@@ -1,6 +1,7 @@
 import "../CSS/Background.css";
 import "../CSS/MainPage.css";
 import "../CSS/ShowTestDiv.css";
+import "../CSS/reloadSymbol.css";
 import React from "react";
 
 export default function POPOSSpace(props) {
@@ -20,11 +21,7 @@ export default function POPOSSpace(props) {
                 <p className="txt-311">Parameter : {parametre}  </p>
                 </div>
               </div>
-              <img
-                src="https://firebasestorage.googleapis.com/v0/b/unify-bc2ad.appspot.com/o/qlkpf4n6e3i-36%3A12?alt=media&token=76f599da-6cd1-4112-8b99-28659b6695ce"
-                alt="Not Found"
-                className="replay"
-              />
+              <button className="reload_symbol"/>
         </div>
     </div>
     )
