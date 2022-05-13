@@ -10,11 +10,10 @@ export default function Testing () {
         return (
             <POPOSSpace // Change this component for one that suits the rest of the projet
             id={obj.id}
-            first_name={obj.first_name}
-            last_name={obj.last_name}
-            email={obj.email}
-            gender={obj.gender}
-            ip_address={obj.ip_address}
+            test_name={obj.test_name}
+            date={obj.date}
+            parametre={obj.parametre}
+            result={obj.result}
           />
         )
       })

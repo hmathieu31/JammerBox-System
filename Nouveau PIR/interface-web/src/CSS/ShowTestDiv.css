@@ -17,15 +17,15 @@ p {
 }
 
 .group-13 {
-  padding: 7px 21px 10px 29px;
+  padding: 15px 21px 10px 29px;
   box-sizing: border-box;
   background-color: rgba(106, 88, 177, 0.922);
   width: 556px;
-  height: 128px;
+  height: 120px;
 }
 
 .group-814 {
-  height: 65%;
+  height: 72%;
 }
 
 .group-17 {
@@ -56,21 +56,23 @@ p {
 }
 
 .txt-8105 {
-  font-size: 24px;
+  font-size: 16px;
   font-family: Maven Pro, sans-serif;
   font-weight: 500;
   color: rgba(255, 255, 255, 1);
   text-align: center;
-  width: 169px;
-  height: 31px;
+  width: 300px;
+  height: 20px;
   word-wrap: break-word;
 }
 
 .rectangle-19 {
   background-color: rgba(225, 18, 18, 1);
-  width: 195px;
+  width: 300px;
   height: 30px;
   border-radius: 11px;
+align-items: center;
+display: flex;
 }
 
 .replay {

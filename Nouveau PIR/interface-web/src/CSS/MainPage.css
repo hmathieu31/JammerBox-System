@@ -97,3 +97,9 @@ p {
   height: 69px;
   word-wrap: break-word;
 }
+
+.group-44 {
+  display: flex;
+  align-items: center;
+  /* justify-content: center; */
+}

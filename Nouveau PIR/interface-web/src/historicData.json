@@ -1,43 +1,49 @@
 [{
   "id": 1,
-  "first_name": "Jeanette",
-  "last_name": "Penddreth",
-  "email": "jpenddreth0@census.gov",
-  "gender": "Female",
-  "ip_address": "26.58.193.2"
-}, {
+  "test_name": "CRK RUN OUT",
+  "date": "13/05/22",
+  "parametre": "Angle = 5",
+  "result": "success"  
+}, 
+{
   "id": 2,
-  "first_name": "Giavani",
-  "last_name": "Frediani",
-  "email": "gfrediani1@senate.gov",
-  "gender": "Male",
-  "ip_address": "229.179.4.212"
-}, {
+  "test_name": "CRK TOOTH OFF",
+  "date": "13/05/22",
+  "parametre": "Teeth Off = 10",
+  "result": "success"  
+},
+{
   "id": 3,
-  "first_name": "Noell",
-  "last_name": "Bea",
-  "email": "nbea2@imageshack.us",
-  "gender": "Female",
-  "ip_address": "180.66.162.255"
-}, {
+  "test_name": "CRK PULSE DURATION",
+  "date": "13/05/22",
+  "parametre": "Duration = 40",
+  "result": "success"  
+},
+{
   "id": 4,
-  "first_name": "Willard",
-  "last_name": "Valek",
-  "email": "wvalek3@vk.com",
-  "gender": "Male",
-  "ip_address": "67.76.188.26"
-}, {
-    "id": 5,
-    "first_name": "Alejo",
-    "last_name": "Mancinelli",
-    "email": "aaaaa@vk.com",
-    "gender": "Male",
-    "ip_address": "100.100.100.100"
-  }, {
-    "id": 5,
-    "first_name": "Viktor",
-    "last_name": "Maasdfasfda",
-    "email": "aaafaa@vk.com",
-    "gender": "Male",
-    "ip_address": "100.100.100.100"
-  }]
+  "test_name": "CRK SPK",
+  "date": "13/05/22",
+  "parametre": null,
+  "result": "success"  
+},
+{
+  "id": 5,
+  "test_name": "CAM DELAY",
+  "date": "13/05/22",
+  "parametre": "°CRK = 10",
+  "result": "success"  
+},
+{
+  "id": 6,
+  "test_name": "CRK SHORT CIRCUIT",
+  "date": "13/05/22",
+  "parametre": "Output Signal = Battery",
+  "result": "success"  
+},
+{
+  "id": 7,
+  "test_name": "CRK GAP NOT DET",
+  "date": "13/05/22",
+  "parametre": null,
+  "result": "success"
+  } ]
