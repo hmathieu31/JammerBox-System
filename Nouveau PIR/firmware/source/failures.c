@@ -364,11 +364,11 @@
 	{		
 		if(CRK_signal == true)
 		{
-			GPIO_SetBits(GPIOG,6);
+			GPIO_SetBits(GPIOA,6);
 		}
 		else
 		{
-			GPIO_ResetBits(GPIOG,6);
+			GPIO_ResetBits(GPIOA,6);
 		}
 	}
 

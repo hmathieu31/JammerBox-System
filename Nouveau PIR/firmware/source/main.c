@@ -610,13 +610,13 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM6_IRQHandler(void)
     if (failure_identify == '5')
     { // CAM_PER //?CAM_PER is the error identified by '5'
 
-        if (GPIO_ReadInputDataBit(GPIOG, 5) == 1)
+        if (GPIO_ReadInputDataBit(GPIOA, 5) == 1)
         {
-            GPIO_ResetBits(GPIOG, 5);
+            GPIO_ResetBits(GPIOA, 5);
         }
         else
         {
-            GPIO_SetBits(GPIOG, 5);
+            GPIO_SetBits(GPIOA, 5);
         };
 
         counter_CAM_PER[0]++; //? Number of times we lost CAM with timer 6 ?
@@ -639,13 +639,13 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM6_IRQHandler(void)
 
         TIM_Cmd(TIM7, ENABLE);
 
-        if (GPIO_ReadInputDataBit(GPIOG, 4) == 1)
+        if (GPIO_ReadInputDataBit(GPIOA, 4) == 1)
         {
-            GPIO_ResetBits(GPIOG, 4);
+            GPIO_ResetBits(GPIOA, 4);
         }
         else
         {
-            GPIO_SetBits(GPIOG, 4);
+            GPIO_SetBits(GPIOA, 4);
         };
 
         TIM_Cmd(TIM6, DISABLE);
@@ -653,7 +653,7 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM6_IRQHandler(void)
     else if (failure_identify == 'b')
     { // CRK_SHO_LEVEL
 
-        GPIO_SetBits(GPIOG, 4);
+        GPIO_SetBits(GPIOA, 4);
 
         TIM_Cmd(TIM6, DISABLE);
     }
@@ -667,13 +667,13 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM7_IRQHandler(void)
 
     if (failure_identify == '5') // CAM_PER --> Cam_Spk
     {
-        if (GPIO_ReadInputDataBit(GPIOG, 6) == 1)
+        if (GPIO_ReadInputDataBit(GPIOA, 6) == 1)
         {
-            GPIO_ResetBits(GPIOG, 6);
+            GPIO_ResetBits(GPIOA, 6);
         }
         else
         {
-            GPIO_SetBits(GPIOG, 6);
+            GPIO_SetBits(GPIOA, 6);
         };
 
         counter_CAM_PER[1]++; // Number of times we lost CAM with timer 7
@@ -688,13 +688,13 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM7_IRQHandler(void)
     }
     else if (failure_identify == '6') // CRK_TOOTH_PER
     {
-        if (GPIO_ReadInputDataBit(GPIOG, 4) == 1)
+        if (GPIO_ReadInputDataBit(GPIOA, 4) == 1)
         {
-            GPIO_ResetBits(GPIOG, 4);
+            GPIO_ResetBits(GPIOA, 4);
         }
         else
         {
-            GPIO_SetBits(GPIOG, 4);
+            GPIO_SetBits(GPIOA, 4);
         };
 
         TIM_Cmd(TIM7, DISABLE);
@@ -706,7 +706,7 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM7_IRQHandler(void)
         switch (timer_Counter_SEG_ADP_ER_LIM)
         {
         case 1: { // failure for the falling edge
-            GPIO_ResetBits(GPIOG, 4);
+            GPIO_ResetBits(GPIOA, 4);
             if (failure_waiting == true)
             {                              // if the rising edge has already happen
                 if (sensortype_CRK == 'c') // sensor is cpdd
@@ -738,7 +738,7 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM7_IRQHandler(void)
     }
     else if (failure_identify == 'k') // CrkPlsOrng
     {
-        GPIO_SetBits(GPIOG, 4);
+        GPIO_SetBits(GPIOA, 4);
 
         TIM_Cmd(TIM7, DISABLE);
     }
@@ -763,7 +763,7 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM8_IRQHandler(void)
         switch (timer_Counter_CRK_GAP_NOT_DET)
         {
         case 1: {
-            GPIO_ResetBits(GPIOG, 4);
+            GPIO_ResetBits(GPIOA, 4);
 
             if (sensortype_CRK == 'c')
             {
@@ -781,7 +781,7 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM8_IRQHandler(void)
             break;
         }
         case 2: {
-            GPIO_SetBits(GPIOG, 4);
+            GPIO_SetBits(GPIOA, 4);
 
             TIM_Cmd(TIM8, DISABLE);
 
@@ -790,7 +790,7 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM8_IRQHandler(void)
             break;
         }
         default: {
-            GPIO_SetBits(GPIOG, 4);
+            GPIO_SetBits(GPIOA, 4);
 
             TIM_Cmd(TIM8, DISABLE);
             timer_Counter_CRK_GAP_NOT_DET = 0;
