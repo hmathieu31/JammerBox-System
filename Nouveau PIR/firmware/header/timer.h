@@ -11,6 +11,9 @@
 
 // ### Functions ###
 
+	// Set period of Systick timer
+	float Systick_SetPeriod(float);
+
 	// ## Timer1 Init **Prescaler: 256; Communication validation** 
 
 	void Timer1Init(void);
