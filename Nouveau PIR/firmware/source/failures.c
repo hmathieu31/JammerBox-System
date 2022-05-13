@@ -662,22 +662,22 @@
 			if(((double)TIM_GetCounter(TIM4)/former_teeth_time)*revolution_CRK >= (revolution_CRK/2.0))
 			{
                 if(cam_id == 0){
-                    if (GPIO_ReadInputDataBit(GPIOG, 5) == 1)
+                    if (GPIO_ReadInputDataBit(GPIOA, 5) == 1)
                         {
-                        GPIO_ResetBits(GPIOG, 5);
+                        GPIO_ResetBits(GPIOA, 5);
                         }
                     else
                         {
-                         GPIO_SetBits(GPIOG, 5);
+                         GPIO_SetBits(GPIOA, 5);
                         };
                 }else if(cam_id == 1){
-                    if (GPIO_ReadInputDataBit(GPIOG, 6) == 1)
+                    if (GPIO_ReadInputDataBit(GPIOA, 6) == 1)
                         {
-                        GPIO_ResetBits(GPIOG, 6);
+                        GPIO_ResetBits(GPIOA, 6);
                         }
                         else
                         {
-                        GPIO_SetBits(GPIOG, 6);
+                        GPIO_SetBits(GPIOA, 6);
                         };
                 }
 				TIM_Cmd(TIM4,DISABLE);
@@ -693,7 +693,7 @@
 			double former_teeth_time; 
 			former_teeth_time = Former_teeth_time_calculation(T_TOOTH_RAW, teeth_count_CRK, number_miss_teeth);
 
-			if(((double)TIM_GetCounter(TIM8)/former_teeth_time) * revolution_CRK >= (delay_angle_CAM_delay * delay_factor_CAM_delay))
+			if(((double)SysTick->VAL/former_teeth_time) * revolution_CRK >= (delay_angle_CAM_delay * delay_factor_CAM_delay))
 			{
 				TIM_Cmd(TIM8,DISABLE);
 				TIM_SetCounter(TIM8,0);
@@ -702,22 +702,22 @@
 				if(interrupt_check_CAM_delay[cam_id] == false)
 				{
                     if(cam_id == 0){
-                        if (GPIO_ReadInputDataBit(GPIOG, 5) == 1)
+                        if (GPIO_ReadInputDataBit(GPIOA, 5) == 1)
                         {
-                        GPIO_ResetBits(GPIOG, 5);
+                        GPIO_ResetBits(GPIOA, 5);
                         }
                         else
                         {
-                        GPIO_SetBits(GPIOG, 5);
+                        GPIO_SetBits(GPIOA, 5);
                         }; 
                     }else if(cam_id == 1){
-                        if (GPIO_ReadInputDataBit(GPIOG, 6) == 1)
+                        if (GPIO_ReadInputDataBit(GPIOA, 6) == 1)
                         {
-                        GPIO_ResetBits(GPIOG, 6);
+                        GPIO_ResetBits(GPIOA, 6);
                         }
                         else
                         {
-                        GPIO_SetBits(GPIOG, 6);
+                        GPIO_SetBits(GPIOA, 6);
                         };
                     }
 	
@@ -751,22 +751,22 @@
 						angle_to_edge_CAM_delay[cam_id][i] = 0;
 						number_processing_edges_CAM_delay[cam_id]--;
                         if(cam_id == 0){
-                           if (GPIO_ReadInputDataBit(GPIOG, 5) == 1)
+                           if (GPIO_ReadInputDataBit(GPIOA, 5) == 1)
                                 {
-                                GPIO_ResetBits(GPIOG, 5);
+                                GPIO_ResetBits(GPIOA, 5);
                                 }
                                 else
                                 {
-                                GPIO_SetBits(GPIOG, 5);
+                                GPIO_SetBits(GPIOA, 5);
                                 }; 
                         }else if(cam_id == 1){
-                           if (GPIO_ReadInputDataBit(GPIOG, 6) == 1)
+                           if (GPIO_ReadInputDataBit(GPIOA, 6) == 1)
                                 {
-                                GPIO_ResetBits(GPIOG, 6);
+                                GPIO_ResetBits(GPIOA, 6);
                                 }
                                 else
                                 {
-                                GPIO_SetBits(GPIOG, 6);
+                                GPIO_SetBits(GPIOA, 6);
                                 };
                         }
 						

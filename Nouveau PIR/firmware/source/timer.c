@@ -65,7 +65,6 @@
 		// Fcy: 36,85 MHz
 		// 36,85 Mhz/ 64 = 575,78 kHz = 1,7367744624683038660599534544444�s
 
-		RCC->APB2ENR |= RCC_APB2ENR_TIM1EN; // Enable APB clock for the Timer1
 		TIM_Cmd(TIM1, DISABLE); // Disable Timer1
 		//No idle mode handling necessary on STM32
 		TIM_ITConfig(TIM1, TIM_IT_Trigger, DISABLE); // Disable Trigger Interrupt (called Gated Timer mode on Microchip)
@@ -91,7 +90,6 @@
 		// Fcy: 36,85 MHz
 		// 36,85 Mhz/ 256 = 143,95 kHz = 6.946 �s
 
-		RCC->APB1ENR |= RCC_APB1ENR_TIM3EN; // Enable APB clock for the Timer2
 		TIM_Cmd(TIM2, DISABLE); // Disable Timer2
 		//No idle mode handling necessary on STM32
 		TIM_ITConfig(TIM2, TIM_IT_Trigger, DISABLE); // Disable Trigger Interrupt (called Gated Timer mode on Microchip)
@@ -115,8 +113,6 @@
 		// FCPU with PLL = 73,7 MHz
 		// Fcy: 36,85 MHz
 		// 36,85 Mhz/ 8 = 4606 kHz = 0.217 �s
-
-		RCC->APB1ENR |= RCC_APB1ENR_TIM3EN; // Enable APB clock for the Timer3
 		TIM_Cmd(TIM3, DISABLE); // Disable Timer3
 		//No idle mode handling necessary on STM32
 		TIM_ITConfig(TIM3, TIM_IT_Trigger, DISABLE); // Disable Trigger Interrupt (called Gated Timer mode on Microchip)
@@ -140,7 +136,6 @@
 		// Fcy: 36,85 MHz
 		// 36,85 Mhz/ 8 = 4606 kHz = 0.217 �s
 
-		RCC->APB1ENR |= RCC_APB1ENR_TIM4EN; // Enable APB clock for the Timer4
 		TIM_Cmd(TIM4, DISABLE); // Disable Timer4
 		//No idle mode handling necessary on STM32
 		TIM_ITConfig(TIM4, TIM_IT_Trigger, DISABLE); // Disable Trigger Interrupt (called Gated Timer mode on Microchip)

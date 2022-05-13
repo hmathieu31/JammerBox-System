@@ -321,7 +321,7 @@ int main(void) {
 
     Uart2Init();
 
-    GPIO_SetBits(GPIOG,3);
+    GPIO_ResetBits(GPIOA,3);
     // ## Main loop ##
     while (1) {
         //failure processing
@@ -339,13 +339,13 @@ int main(void) {
         {
             //Stalling_detection();
             Stalling_detection_CRK();
-            GPIO_SetBits(GPIOG,3);
+            GPIO_SetBits(GPIOA,3);
         }
         //reset all values when CAM stalling is detected //was not here before
         if ((timer_overflow_CAM > 5)) {
             Stalling_detection_CAM(0);
             Stalling_detection_CAM(1);
-            GPIO_SetBits(GPIOG,3);
+            GPIO_SetBits(GPIOA,3);
         }
 
 
@@ -357,23 +357,23 @@ int main(void) {
         
         
         if (CRK_synch) {
-            GPIO_SetBits(GPIOG,0);
-            GPIO_ResetBits(GPIOG,2);
+            GPIO_SetBits(GPIOA,0);
+            GPIO_ResetBits(GPIOA,2);
         } else {
-            GPIO_ResetBits(GPIOG,0);
+            GPIO_ResetBits(GPIOA,0);
         }
 
         if (CRK_synch_temp) {
-            GPIO_SetBits(GPIOG,1);
+            GPIO_SetBits(GPIOA,1);
         } else {
-            GPIO_ResetBits(GPIOG,1);
+            GPIO_ResetBits(GPIOA,1);
         }
 
         if (CRK_synch) {
-            GPIO_SetBits(GPIOG,3);
+            GPIO_SetBits(GPIOA,3);
         }
         else{
-            GPIO_ResetBits(GPIOG,3);
+            GPIO_ResetBits(GPIOA,3);
         }
     };
 }

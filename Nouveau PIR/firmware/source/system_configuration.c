@@ -181,40 +181,40 @@
 		if(!output_set)
 		{
 			// Check CRK input signal level
-			if(GPIO_ReadInputDataBit(GPIOD,8) != GPIO_ReadInputDataBit(GPIOG,4))
+			if(GPIO_ReadInputDataBit(GPIOB,8) != GPIO_ReadInputDataBit(GPIOA,4))
 			{
-				if (GPIO_ReadInputDataBit(GPIOG, 4) == 1)
+				if (GPIO_ReadInputDataBit(GPIOA, 4) == 1)
                         {
-                        GPIO_ResetBits(GPIOG, 4);
+                        GPIO_ResetBits(GPIOA, 4);
                         }
                     else
                         {
-                         GPIO_SetBits(GPIOG, 4);
+                         GPIO_SetBits(GPIOA, 4);
                         };
 			}
 	
 			// Check CAM input signal level
-			if(GPIO_ReadInputDataBit(GPIOD,10) != GPIO_ReadInputDataBit(GPIOG,5))
+			if(GPIO_ReadInputDataBit(GPIOB,10) != GPIO_ReadInputDataBit(GPIOA,5))
 			{
-				if (GPIO_ReadInputDataBit(GPIOG, 5) == 1)
+				if (GPIO_ReadInputDataBit(GPIOA, 5) == 1)
                         {
-                        GPIO_ResetBits(GPIOG, 5);
+                        GPIO_ResetBits(GPIOA, 5);
                         }
                     else
                         {
-                         GPIO_SetBits(GPIOG, 5);
+                         GPIO_SetBits(GPIOA, 5);
                         };
 			}
             
-            if(GPIO_ReadInputDataBit(GPIOD,12) != GPIO_ReadInputDataBit(GPIOG,6))
+            if(GPIO_ReadInputDataBit(GPIOB,12) != GPIO_ReadInputDataBit(GPIOA,6))
 			{
-				if (GPIO_ReadInputDataBit(GPIOG, 6) == 1)
+				if (GPIO_ReadInputDataBit(GPIOA, 6) == 1)
                         {
-                        GPIO_ResetBits(GPIOG, 6);
+                        GPIO_ResetBits(GPIOA, 6);
                         }
                     else
                         {
-                         GPIO_SetBits(GPIOG, 6);
+                         GPIO_SetBits(GPIOA, 6);
                         };	
 			}
 
