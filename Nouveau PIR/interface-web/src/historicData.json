@@ -1,49 +1,19 @@
-[{
-  "id": 1,
-  "test_name": "CRK RUN OUT",
-  "date": "13/05/22",
-  "parametre": "Angle = 5",
-  "result": "success"  
-}, 
 {
-  "id": 2,
-  "test_name": "CRK TOOTH OFF",
-  "date": "13/05/22",
-  "parametre": "Teeth Off = 10",
-  "result": "success"  
-},
-{
-  "id": 3,
-  "test_name": "CRK PULSE DURATION",
-  "date": "13/05/22",
-  "parametre": "Duration = 40",
-  "result": "success"  
-},
-{
-  "id": 4,
-  "test_name": "CRK SPK",
-  "date": "13/05/22",
-  "parametre": null,
-  "result": "success"  
-},
-{
-  "id": 5,
-  "test_name": "CAM DELAY",
-  "date": "13/05/22",
-  "parametre": "°CRK = 10",
-  "result": "success"  
-},
-{
-  "id": 6,
-  "test_name": "CRK SHORT CIRCUIT",
-  "date": "13/05/22",
-  "parametre": "Output Signal = Battery",
-  "result": "success"  
-},
-{
-  "id": 7,
-  "test_name": "CRK GAP NOT DET",
-  "date": "13/05/22",
-  "parametre": null,
-  "result": "success"
-  } ]
+    "Tests 1" : 
+    {
+      "id": 1,
+      "test_name": "CRK RUN OUT",
+      "date": "13/05/22",
+      "parametre": "Angle = 5",
+      "result": "success"  
+    },
+
+    "Tests 2" : 
+    {
+      "id": 2,
+      "test_name": "CRK RUN OUT",
+      "date": "13/05/22",
+      "parametre": "Angle = 5",
+      "result": "success"  
+    } 
+}

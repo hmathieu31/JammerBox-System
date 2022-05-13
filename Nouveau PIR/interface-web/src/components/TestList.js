@@ -6,17 +6,24 @@ import POPOSSpace from './ShowTestDiv';
 
 export default function Testing () {
 
-    const spaces = data.map((obj) => {
-        return (
-            <POPOSSpace // Change this component for one that suits the rest of the projet
-            id={obj.id}
-            test_name={obj.test_name}
-            date={obj.date}
-            parametre={obj.parametre}
-            result={obj.result}
-          />
-        )
-      })
+  const jsonData = require('../historicData.json');
+  console.log(jsonData);
+
+
+  //console.log(Object.entries(jsonData));
+
+  const spaces = Object.entries(jsonData).map((obj) => {
+    var newObj = obj[1];
+    console.log(newObj.id);
+  return(  
+    <POPOSSpace
+    id={newObj.id}
+    test_name={newObj.test_name}
+    date={newObj.date}
+    parametre={newObj.parametre}
+    result={newObj.result}
+    />
+  )})
 
     return (
         <div className="POPOSList">
