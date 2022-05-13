@@ -7,7 +7,6 @@
 /*****************************************************************************/
 
 // ### Basic includes ###
-	#include "p33FJ256GP710A.h"
 	#include "stdbool.h"
 	#include "synchronization.h"
 //#include "math.h"
@@ -137,11 +136,11 @@
 				// Teeth Counter CRK
 				if ((teeth_count_CRK < number_teeth_between_gaps)) 
 				{
-					//360°CRK for one gap; 180° for two gaps; 120° for three gaps
+					//360ï¿½CRK for one gap; 180ï¿½ for two gaps; 120ï¿½ for three gaps
 					//test
                     //teeth_count_CRK++; 
 	
-					//720°CRK for CAM CRK synchronization
+					//720ï¿½CRK for CAM CRK synchronization
 					teeth_count_CAM_CRK_synch++;
 					teeth_count_CAM_CRK_synch_ahead++;
 				}
@@ -771,7 +770,7 @@
 				// Teeth Counter CRK
 				if ((teeth_count_CRK < number_teeth_between_gaps)) 
 				{
-					//360°CRK for one gap; 180° for two gaps; 120° for three gaps
+					//360ï¿½CRK for one gap; 180ï¿½ for two gaps; 120ï¿½ for three gaps
 					teeth_count_CRK++;
                 }
                 else

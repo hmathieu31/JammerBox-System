@@ -7,12 +7,10 @@
 /*****************************************************************************/
 
 // ### Basic includes ###
-	#include "p33FJ256GP710A.h"
-	#include "stm32f10x.h"
-    #include "stm32f10x_gpio.h"
 	#include "stdbool.h"
 	#include "system_configuration.h"
-
+	#include "stm32f10x.h"
+  #include "stm32f10x_gpio.h"
 // ### Programm includes ###
 	#include "synchronization.h"
 	#include "uart.h"
@@ -221,4 +219,18 @@
 			output_level_setting = true;
 		}		
 	}	
+/************************************************************************/
+/************************************************************************/
+//Activation of all clock trees for all used peripherals
+void Config_clock_tree(void)
+{
+	//USART1 GPIO A9 et A10 si on utilise les gpios
+	RCC->APB2ENR |= RCC_APB2ENR_TIM1EN;															
+	RCC->APB1ENR |= RCC_APB1ENR_TIM2EN;
+	RCC->APB1ENR |= RCC_APB1ENR_TIM3EN;
+	RCC->APB1ENR |= RCC_APB1ENR_TIM4EN;
+	RCC->APB2ENR |= RCC_APB2ENR_USART1EN;
+	RCC->APB2ENR |= RCC_APB2ENR_IOPAEN;
+	RCC->APB2ENR |= RCC_APB2ENR_IOPBEN;
+}
 

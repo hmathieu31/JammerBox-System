@@ -3,15 +3,16 @@
 /* Programm        :  UART		                                             */
 /* Controller      :  dsPIC33F                                               */
 /* Latest change   :  31.08.2020                                             */
-/* Author          :  Grégoire Chabin/Christian Ringlstetter/Thomas Pichler  */
+/* Author          :  Grï¿½goire Chabin/Christian Ringlstetter/Thomas Pichler  */
 /*****************************************************************************/
 
 // ### Basic includes ###
-#include "p33FJ256GP710A.h"
 #include "stdbool.h"
 #include "string.h"
 #include "stdlib.h"
 #include "uart.h"
+#include "stm32f10x.h"
+#include "stm32f10x_usart.h"
 
 // ### Programm includes ###
 #include "system_configuration.h"
@@ -104,8 +105,8 @@ extern double calculation_factor_CRK_TOOTH_PER;
 extern double delay_angle_CAM_delay;
 extern double delay_factor_CAM_delay;
 
-//** CAM_REF_CRK **											// t: time / c: °CRK	
-extern long double angle_time_to_start_failure_CAM_REF_CRK; // Value Delay (ms or °CRK)			
+//** CAM_REF_CRK **											// t: time / c: ï¿½CRK	
+extern long double angle_time_to_start_failure_CAM_REF_CRK; // Value Delay (ms or ï¿½CRK)			
 extern char delay_type_CAM_REF_CRK;
 
 //** CRK_TOOTH_OFF **
@@ -136,64 +137,63 @@ extern bool communication_ready;
 
 // ### Functions ###
 
-// ## Uart2 Init ##
+// ## Uart1 Init ##
 
-void Uart2Init(void) {
+void Usart1Init(void) {
+    USART_InitTypeDef USART_InitStructure;
+    USART_ClockInitTypeDef USART_ClockInitStructure;
 
+    /*  * Baud rate: 9600 Bauds
+        * Word length = 8 Bits
+        * One Stop Bit
+        * Even parity
+        * Hardware flow control disabled (RTS and CTS signals)
+        * Receive and transmit enabled
+        */
+    USART_StructInit(&USART_InitStructure); // Initializes the USART_InitStructure to default values
+    USART_InitStructure.USART_Parity = USART_Parity_Even;
 
-    U2MODEbits.USIDL = 0; // Bit13 Continue in Idle
-    U2MODEbits.IREN = 0; // Bit12 No IR translation
-    U2MODEbits.RTSMD = 1; // Bit11 Simplex Mode
-    U2MODEbits.UEN = 0; // Bits8,9 TX,RX,CTS,RTS enabled
-    U2MODEbits.WAKE = 0; // Bit7 No Wake up
-    U2MODEbits.LPBACK = 0; // Bit6 No Loop Back
-    U2MODEbits.ABAUD = 0; // Bit5 No Autobaud (would require sending '55')
-    U2MODEbits.URXINV = 0; // Bit4 IdleState = 1  (for dsPIC)
-    U2MODEbits.BRGH = 0; // Bit3 16 clocks per bit period
-    U2MODEbits.PDSEL = 0b01; // Bits1,2 8bit, Even Parity
-    U2MODEbits.STSEL = 0; // Bit0 One Stop Bit
+    USART_ClockStructInit(&USART_ClockInitStructure); // Initializes the USART_ClockInitStructure to default values
+    USART_ClockInitStructure.USART_Clock = USART_Clock_Enable;
 
-
-    //  U2BRG = (Fcy/(16*BaudRate))-1
-    //  U2BRG = (36,85M/(16*9600))-1
-    //  U2BRG = 239
-
-    //	Failure: 0,04%
-    //	Baud rate = (36,85M/16*(239+1)) = 9596 
-
-    U2BRG = 240; // 36,85Mhz osc, 9600 Baud
+    USART_IrDACmd(USART1, DISABLE); // Disable the IRDA mode
+    USART_HalfDuplexCmd(USART1, DISABLE); // Disable the half-duplex mode
 
 
-    U2STAbits.UTXISEL1 = 0; //Bit15 Int when Char is transferred (1/2 config!)
-    U2STAbits.UTXINV = 0; //Bit14 N/A, IRDA config
-    U2STAbits.UTXISEL0 = 0; //Bit13 Other half of Bit15
-    U2STAbits.UTXBRK = 0; //Bit11 Disabled
-    U2STAbits.UTXEN = 0; //Bit10 TX pins controlled by periph
-    U2STAbits.URXISEL = 0b00; //Bits6,7 Int. on character recieved
-    U2STAbits.ADDEN = 0; //Bit5 Address Detect Disabled
+
+    // U2STAbits.UTXISEL1 = 0; //Bit15 Int when Char is transferred (1/2 config!)
+    // U2STAbits.UTXINV = 0; //Bit14 N/A, IRDA config
+    // U2STAbits.UTXISEL0 = 0; //Bit13 Other half of Bit15
+    // U2STAbits.UTXBRK = 0; //Bit11 Disabled
+    // U2STAbits.UTXEN = 0; //Bit10 TX pins controlled by periph
+    // U2STAbits.URXISEL = 0b00; //Bits6,7 Int. on character recieved
+    // U2STAbits.ADDEN = 0; //Bit5 Address Detect Disabled
 
 
-    //UART Transimit interrupt
-    IPC7bits.U2TXIP = 1; // Set interrupt priority
-    IFS1bits.U2TXIF = 0; // Clear the Transmit Interrupt Flag
-    IEC1bits.U2TXIE = 1; // Enable Transmit Interrupts
+    //UART Transmit interrupt
+    NVIC_EnableIRQ(USART1_IRQn);
+    NVIC_SetPriority(USART1_IRQn, 1);
+    USART_ClearITPendingBit(USART1, USART_IT_TXE);
+    USART_ITConfig(USART1, USART_IT_TXE, ENABLE);
 
     //UART Receive interrupt
-    IPC7bits.U2RXIP = 1; // Set interrupt priority
-    IFS1bits.U2RXIF = 0; // Clear the Recieve Interrupt Flag
-    IEC1bits.U2RXIE = 1; // Enable Recieve Interrupts
+    NVIC_EnableIRQ(USART1_IRQn);
+    NVIC_SetPriority(USART1_IRQn, 1);
+    USART_ClearITPendingBit(USART1, USART_IT_RXNE);
+    USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);
 
 
     // turn on UART
-    U2MODEbits.UARTEN = 1;
-    U2STAbits.UTXEN = 1;
+    USART_ClockInit(USART1, &USART_ClockInitStructure);
+    USART_Init(USART1, &USART_InitStructure);
+    USART_Cmd(USART1, ENABLE);
 }
 
 
 
 //## UART Receive Function
 
-void UART_receive(void) {
+void UART_receive(void) { // TODO: #43 port this function
 
     data_counter = 0; //Set data counter to 0
 
@@ -819,7 +819,7 @@ void UART_COM_error(void) {
         message_received = false;
 
         //communication error treatment
-        UART_send(message[0]);
+        USART_SendData(USART1,message[0]);
     }
 }
 

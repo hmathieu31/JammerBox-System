@@ -10,14 +10,13 @@
 
     #include "config.h"
     #include "stdlib.h"
-    #include "stm32f10x.h"
-    #include "stm32f10x_gpio.h"
-    #include "stm32f10x_tim.h"
     #include "stm32f10x_usart.h"
     #include "string.h"
 	#include "stdbool.h"
 	#include "failures.h"
-
+    #include "stm32f10x.h"
+    #include "stm32f10x_gpio.h"
+    #include "stm32f10x_tim.h"
 // ### Programm includes ###
 	#include "timer.h"
     #include "synchronization.h"
@@ -369,11 +368,11 @@
 	{		
 		if(CRK_signal == true)
 		{
-			LATGbits.LATG6 = 1;
+			GPIO_SetBits(GPIOG,6);
 		}
 		else
 		{
-			LATGbits.LATG6 = 0;
+			GPIO_ResetBits(GPIOG,6);
 		}
 	}
 

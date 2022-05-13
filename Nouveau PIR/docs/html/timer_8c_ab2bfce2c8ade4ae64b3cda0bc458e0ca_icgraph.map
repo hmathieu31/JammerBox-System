@@ -1,0 +1,11 @@
+<map id="Timer2Reset" name="Timer2Reset">
+<area shape="rect" id="node1" title=" " alt="" coords="849,107,944,133"/>
+<area shape="rect" id="node2" href="$synchronization_8c.html#acde4eb7626d6b5f4d9aa424d378bb77d" title=" " alt="" coords="661,56,787,83"/>
+<area shape="rect" id="node8" href="$synchronization_8c.html#a94f5b23c085bc254fc8c299869074e73" title=" " alt="" coords="437,107,595,133"/>
+<area shape="rect" id="node9" href="$synchronization_8c.html#ab7c6d4bad6a9b90b4c6f897705746250" title=" " alt="" coords="647,157,801,184"/>
+<area shape="rect" id="node3" href="$system__configuration_8c.html#ad963f06dc329af81a8139668d5e8cbe9" title=" " alt="" coords="433,56,599,83"/>
+<area shape="rect" id="node4" href="$system__configuration_8c.html#a9ed4ba8234d683606da8eeaa8845cb98" title=" " alt="" coords="255,5,385,32"/>
+<area shape="rect" id="node7" href="$system__configuration_8c.html#a89bb1b58a659dfbbcb0cab106d7ce4c3" title=" " alt="" coords="255,56,385,83"/>
+<area shape="rect" id="node5" href="$uart_8c.html#aeb908abd909e8d4eb02495bd782db540" title=" " alt="" coords="104,56,207,83"/>
+<area shape="rect" id="node6" href="$main_8c.html#a840291bc02cba5474a4cb46a9b9566fe" title=" " alt="" coords="5,81,56,108"/>
+</map>

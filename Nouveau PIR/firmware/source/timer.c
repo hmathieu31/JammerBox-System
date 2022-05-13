@@ -21,7 +21,6 @@
 	extern unsigned long timer_overflow_CAM_REF_CRK;
 
 // ### Functions ###
-
 	// Returns the computed value, 0 if impossible
 	float Systick_SetPeriod(float Duration_us) {
 	vu32 Nb_Reload;
@@ -64,7 +63,6 @@
 		// FCPU with PLL = 73,7 MHz
 		// Fcy: 36,85 MHz
 		// 36,85 Mhz/ 64 = 575,78 kHz = 1,7367744624683038660599534544444�s
-
 		TIM_Cmd(TIM1, DISABLE); // Disable Timer1
 		//No idle mode handling necessary on STM32
 		TIM_ITConfig(TIM1, TIM_IT_Trigger, DISABLE); // Disable Trigger Interrupt (called Gated Timer mode on Microchip)
@@ -89,7 +87,6 @@
 		// FCPU with PLL = 73,7 MHz
 		// Fcy: 36,85 MHz
 		// 36,85 Mhz/ 256 = 143,95 kHz = 6.946 �s
-
 		TIM_Cmd(TIM2, DISABLE); // Disable Timer2
 		//No idle mode handling necessary on STM32
 		TIM_ITConfig(TIM2, TIM_IT_Trigger, DISABLE); // Disable Trigger Interrupt (called Gated Timer mode on Microchip)
@@ -135,7 +132,6 @@
 		// FCPU with PLL = 73,7 MHz
 		// Fcy: 36,85 MHz
 		// 36,85 Mhz/ 8 = 4606 kHz = 0.217 �s
-
 		TIM_Cmd(TIM4, DISABLE); // Disable Timer4
 		//No idle mode handling necessary on STM32
 		TIM_ITConfig(TIM4, TIM_IT_Trigger, DISABLE); // Disable Trigger Interrupt (called Gated Timer mode on Microchip)
@@ -145,7 +141,7 @@
 		// (1/72MHz) * (0+1) * (719+1) = 10µs
 		TIM_PrescalerConfig(TIM4, 0, TIM_PSCReloadMode_Immediate);
 		TIM_SetAutoreload(TIM4, 719);
-		
+	
 		NIVC_SetPriority(TIM4_IRQn, 4); // Set Timer4 TIM4_IRQn Interrupt Priority Level
 		TIM_ClearFlag(TIM4, TIM_FLAG_Update); // Clear Timer4 Interrupt Flag
 		TIM_ITConfig(TIM4, TIM_IT_Update, ENABLE); // Enable Timer4 interrupt

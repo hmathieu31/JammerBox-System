@@ -7,7 +7,6 @@
 /*****************************************************************************/
 
 // ### Basic includes ###
-	#include "p33FJ256GP710A.h"
 	#include "ic.h"
 	#include "stm32f10x.h"
 	#include "stm32f10x_exti.h"
