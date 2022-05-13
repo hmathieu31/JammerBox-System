@@ -35,12 +35,6 @@ app.post("/run", (req, res) => {
     var param3 = req.body.TestValue;
     console.log(param1, param2, param3);
     var dataToSend;
-    const python = spawn("python", [
-      "../USART_Script.py",
-      param1,
-      param2,
-      param3,
-    ]);
     PythonShell.run(
       "../USART_Script.py",
       { args: [param1, param2, param3] },
