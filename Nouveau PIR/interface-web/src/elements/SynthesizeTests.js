@@ -1,5 +1,5 @@
+import React from 'react'
 import "../CSS/MainPage.css";
-import "../components/ReturnButton.js";
 import ReturnButton from "../components/ReturnButton.js";
 import ButtonList from "../components/ButtonList";
 import { useNavigate } from "react-router-dom";

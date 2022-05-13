@@ -19,7 +19,6 @@ p {
 }
 
 .flex-hcenter {
-  display: flex;
   justify-content: center;
   min-width: 20%;
 }
@@ -30,7 +29,7 @@ p {
 }
 
 .frame-1 {
-  padding: 13% 10rem;
+  padding: 271px 402px;
   box-sizing: border-box;
   background-attachment: fixed;
   background: url(../../public/BackgroundImage.png),
@@ -38,7 +37,7 @@ p {
   background-size: 100% 100%;
   width: 100%;
   min-width: 20em;
-  height: 100%;
+  height: undefined;
 }
 
 .group-19 {
@@ -48,7 +47,7 @@ p {
 }
 
 .txt-271 {
-  font-size: 6em;
+  font-size: 96px;
   font-family: Maven Pro, sans-serif;
   font-weight: 700;
   color: rgba(95, 94, 94, 1);
@@ -71,7 +70,6 @@ p {
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   height: 100px;
   width: 100%;
-  cursor: pointer;
 }
 
 .group-6:hover {
@@ -79,7 +77,7 @@ p {
 }
 
 .txt-733 {
-  font-size: 5vw;
+  font-size: 40px;
   font-family: IBM Plex Sans, sans-serif;
   font-weight: 600;
   color: rgba(255, 255, 255, 1);
@@ -96,10 +94,4 @@ p {
   width: 355px;
   height: 69px;
   word-wrap: break-word;
-}
-
-.group-44 {
-  display: flex;
-  align-items: center;
-  /* justify-content: center; */
 }

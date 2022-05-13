@@ -4,6 +4,7 @@ import "../CSS/ParameterPopup.css";
 import ParameterPopup from "./ParameterPopup";
 import React from "react";
 import Modal from "react-modal";
+import { Navigate, useNavigate } from "react-router-dom";
 
 class ButtonAttributes {
   constructor(name, hasparam, paramsTab, IsSelect) {
@@ -30,7 +31,9 @@ class ButtonAttributes {
   }
 }
 
+
 export default class ButtonList extends React.Component {
+  
   constructor() {
     super();
     this.state = {
@@ -40,6 +43,7 @@ export default class ButtonList extends React.Component {
       isSelect: false,
       valueSelect: null,
     };
+
     this.Buttons = [
       new ButtonAttributes("CRK SHORT CIRCUIT", true, "Output Signal", true),
       new ButtonAttributes("CAM SHORT CIRCUIT", true, "Output Signal", true),
