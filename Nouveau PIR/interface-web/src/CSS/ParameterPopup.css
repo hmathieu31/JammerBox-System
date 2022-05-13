@@ -1,0 +1,137 @@
+/* Testconfiguration */
+
+@import url("https://fonts.googleapis.com/css2?family=IBM Plex Sans:wght@700&display=swap");
+
+p {
+  margin: 0;
+}
+
+.frame-5 {
+  padding: 7% 9%;
+  box-sizing: border-box;
+  background-attachment: fixed;
+  background: url(../../public/BackgroundImage.png),
+    linear-gradient(0deg, rgba(255, 255, 255, 1), rgba(255, 255, 255, 1));
+  background-size: 100% 100%;
+  width: 100%;
+  min-width: 20em;
+  height: 100%;
+}
+
+.flex-col-hstart-vstart {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.flex-col-hcenter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.flex-col-hend {
+  flex-direction: column;
+}
+
+.flex-row {
+  display: flex;
+}
+
+.test-configuration {
+  box-sizing: border-box;
+  border-radius: 50px;
+  background-color: rgba(231, 120, 23, 1);
+  width: 100%;
+  min-width: 50%;
+}
+
+.group-917 {
+  height: 100%;
+  width: 100%;
+}
+
+.txt-120 {
+  font-size: 48px;
+  font-family: IBM Plex Sans, sans-serif;
+  font-weight: 700;
+  color: rgba(0, 0, 0, 1);
+  text-align: center;
+  width: 492px;
+  height: 72px;
+  word-wrap: break-word;
+  margin-bottom: 118px;
+}
+
+.group-21 {
+  margin-bottom: 30%;
+  box-sizing: border-box;
+  height: 60px;
+  width: 100%;
+}
+
+.txt-649 {
+  font-size: 48px;
+  font-family: IBM Plex Sans, sans-serif;
+  font-weight: 700;
+  color: rgba(0, 0, 0, 1);
+  text-align: center;
+  width: 375px;
+  height: 84px;
+  word-wrap: break-word;
+}
+
+.rectangle-17 {
+  background-color: rgba(255, 255, 255, 1);
+  border: 3px solid rgba(0, 0, 0, 1);
+  box-sizing: border-box;
+  width: 405px;
+  height: 100%;
+  border-radius: 20px;
+}
+
+.group-786 {
+  width: fit-content;
+  padding: center;
+}
+
+.txt-905 {
+  font-size: 48px;
+  font-family: IBM Plex Sans, sans-serif;
+  font-weight: 700;
+  color: black;
+  text-align: center;
+  width: 365px;
+  height: 77px;
+  word-wrap: break-word;
+}
+
+.txt-637 {
+  font-size: 3em;
+  font-family: IBM Plex Sans, sans-serif;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 1);
+  text-align: center;
+  width: 227px;
+  height: 77px;
+  word-wrap: break-word;
+}
+
+.buttonPopup {
+  padding: 2% 3% 4% 5%;
+  margin-bottom: 41px;
+  box-sizing: border-box;
+  border-radius: 37px;
+  background-color: rgba(228, 30, 19, 1);
+  background: linear-gradient(
+    to bottom,
+    rgba(228, 30, 19, 1),
+    rgba(278, 80, 69, 0.75)
+  );
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  height: 100px;
+  width: 100%;
+  min-width: 40%;
+  cursor: pointer;
+}
