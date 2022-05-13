@@ -1,3 +1,4 @@
 .editorconfig
 .vscode/*
 Ancien PIR/src/firmware/doc/**
+Nouveau PIR/firmware/bin

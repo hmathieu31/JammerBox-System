@@ -7,7 +7,7 @@
 /*****************************************************************************/
 
 // ### Basic includes ###
-	#include "p33FJ256GP710A.h"
+//	#include "p33FJ256GP710A.h"
 	#include "stdbool.h"
 	#include "synchronization.h"
 //#include "math.h"
@@ -137,11 +137,11 @@
 				// Teeth Counter CRK
 				if ((teeth_count_CRK < number_teeth_between_gaps)) 
 				{
-					//360°CRK for one gap; 180° for two gaps; 120° for three gaps
+					//360ï¿½CRK for one gap; 180ï¿½ for two gaps; 120ï¿½ for three gaps
 					//test
                     //teeth_count_CRK++; 
 	
-					//720°CRK for CAM CRK synchronization
+					//720ï¿½CRK for CAM CRK synchronization
 					teeth_count_CAM_CRK_synch++;
 					teeth_count_CAM_CRK_synch_ahead++;
 				}
@@ -591,81 +591,81 @@
 // ## Stalling Detection Function
 	void Stalling_detection(void)
 	{
-        Timer2Reset();
-		Timer3Reset();
-		Timer4Reset();
-		Timer5Reset();
+        Timer2Reset(); //
+		Timer3Reset(); //
+		Timer4Reset(); //
+		Timer5Reset(); //
 
 		//check all IC-buffers for overflow
-		IC_overflow_check();
+		IC_overflow_check();  //
 
-		T_TOOTH_RAW_2 = 0;
-		T_TOOTH_RAW_1 = 0; 
-		T_TOOTH_RAW = 0; 
-		synch_times_valid = false;
+		T_TOOTH_RAW_2 = 0;  //
+		T_TOOTH_RAW_1 = 0;  //
+		T_TOOTH_RAW = 0;  //
+		synch_times_valid = false;  //
 
-		low_time_CRK = 0;
+		low_time_CRK = 0;  //
 
-		delay_off = false;
-		delay_counter_CRK = 0;
-		teeth_count_CRK = 0;
-		teeth_count_CAM_CRK_synch = 0;
-		teeth_count_CAM_CRK_synch_ahead = 0;
-		edge_count_CAM[0] = 0;
-        edge_count_CAM[1] = 0;
-		edge_validation_counter_CAM[0] = 0;
-        edge_validation_counter_CAM[1] = 0;
-		edge_position_counter_CAM[0] = 0;
-        edge_position_counter_CAM[1] = 0;
-		former_edge_position_CAM[0] = 0;
-        former_edge_position_CAM[1] = 0;
-		edge_validation_counter_CAM_ahead[0] = 0;
-        edge_validation_counter_CAM_ahead[1] = 0;
-		edge_position_counter_CAM_ahead[0] = 0;
-        edge_position_counter_CAM_ahead[1] = 0;
-		former_edge_position_CAM_ahead[0] = 0;
-        former_edge_position_CAM_ahead[1] = 0;
-		segment_counter_CRK = 0;
-		shift_counter_CRK = 0;
-		CAM_tolerance_switch[0] = false;
-        CAM_tolerance_switch[1] = false;
-		CAM_CRK_synch_status = false;
-		CAM_CRK_synch_status_ahead = false;
-		CAM_CRK_synch_ahead[0] = false;
-        CAM_CRK_synch_ahead[1] = false;
-		tolerance_window_CAM[0] = 2.0 * revolution_CRK;
-        tolerance_window_CAM[1] = 2.0 * revolution_CRK;
+		delay_off = false;  //
+		delay_counter_CRK = 0;  //
+		teeth_count_CRK = 0;  //
+		teeth_count_CAM_CRK_synch = 0;  //
+		teeth_count_CAM_CRK_synch_ahead = 0; //
+		edge_count_CAM[0] = 0;  //
+        edge_count_CAM[1] = 0; //
+		edge_validation_counter_CAM[0] = 0;  //
+        edge_validation_counter_CAM[1] = 0; //
+		edge_position_counter_CAM[0] = 0; //
+        edge_position_counter_CAM[1] = 0; //
+		former_edge_position_CAM[0] = 0; //
+        former_edge_position_CAM[1] = 0; //
+		edge_validation_counter_CAM_ahead[0] = 0; //
+        edge_validation_counter_CAM_ahead[1] = 0; //
+		edge_position_counter_CAM_ahead[0] = 0; //
+        edge_position_counter_CAM_ahead[1] = 0; //
+		former_edge_position_CAM_ahead[0] = 0; //
+        former_edge_position_CAM_ahead[1] = 0; //
+		segment_counter_CRK = 0;  //
+		shift_counter_CRK = 0;  //
+		CAM_tolerance_switch[0] = false; //
+        CAM_tolerance_switch[1] = false; //
+		CAM_CRK_synch_status = false; //
+		CAM_CRK_synch_status_ahead = false; //
+		CAM_CRK_synch_ahead[0] = false; //
+        CAM_CRK_synch_ahead[1] = false; //
+		tolerance_window_CAM[0] = 2.0 * revolution_CRK;  //  x2
+        tolerance_window_CAM[1] = 2.0 * revolution_CRK; // x2
 
 	
 		//Reset CRK and CAM_CRK synchronization
-		if(CRK_synch == true)
+		if(CRK_synch == true)  //
 		{
 			UART_send(message[4]);	//CRK synchronization lost
 		}
 		
-		if(CRK_CAM_synch[0] == true)
+		if(CRK_CAM_synch[0] == true)  //
 		{
 			UART_send(message[6]);	//CAM_CRK synchronization lost
 		}
-		if(CRK_CAM_synch[1] == true)
+		if(CRK_CAM_synch[1] == true)  //
 		{
 			UART_send(message[6]);	//CAM_CRK synchronization lost
 		}
         
-		CRK_synch = false;
-		CRK_synch_temp = false;
-		CRK_CAM_synch[0] = false;
-        CRK_CAM_synch[1] = false;
-        teeth_count_overall=0;
+		CRK_synch = false;  //
+		CRK_synch_temp = false; //
+		CRK_CAM_synch[0] = false; //
+        CRK_CAM_synch[1] = false; //
+        teeth_count_overall=0; //
 
 		//Reset failure secenarios
-		Failure_reset();
+		Failure_reset();  // x2
 
 		//Output signal level treatment
-		output_level_setting = false;
+		output_level_setting = false;  // x2
 
-		engine_start = false;
-		engine_start_counter = 0;	
+		engine_start = false;  // x2
+		engine_start_counter = 0;  // x2
 	}	
 
 // ## Stalling Detection Function
@@ -771,7 +771,7 @@
 				// Teeth Counter CRK
 				if ((teeth_count_CRK < number_teeth_between_gaps)) 
 				{
-					//360°CRK for one gap; 180° for two gaps; 120° for three gaps
+					//360ï¿½CRK for one gap; 180ï¿½ for two gaps; 120ï¿½ for three gaps
 					teeth_count_CRK++;
                 }
                 else
