@@ -754,7 +754,7 @@ void UART_receive(void) { // TODO: #43 port this function
                     communication_active = true;
                     communication_ready = true;
 
-                    T1CONbits.TON = 1;
+                    TIM_Cmd(TIM1, ENABLE);
 
                     UART_send(message[11]);
                 } else {
