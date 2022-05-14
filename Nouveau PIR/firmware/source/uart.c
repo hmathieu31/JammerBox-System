@@ -13,7 +13,6 @@
 #include "uart.h"
 #include "stm32f10x.h"
 #include "stm32f10x_usart.h"
-#include "stm32f10x_tim.h"
 
 // ### Programm includes ###
 #include "system_configuration.h"
@@ -195,6 +194,7 @@ void Usart1Init(void) {
 //## UART Receive Function
 //? Called whenever a character is received on the USART1
 void USART_receive(void) {
+
 
     data_counter = 0; //Set data counter to 0
 
@@ -549,7 +549,7 @@ void USART_receive(void) {
         case ('9'): // CRK_TOOTH_PER(START or STOP)
         {
             if (data_counter == 1 && temp_chars_1[0] == 'B') {
-                TIM_SetAutoreload(TIM3, 15);  // set timer for 3.5 us
+                PR6 = 0x0D;  // set timer for 2.821 us
                 failure_identify = '6';
 
             } else if (data_counter == 1 && temp_chars_1[0] == 'S') {
@@ -788,6 +788,7 @@ void USART_receive(void) {
     //communication receive status
     USART_send(message[12]);
 }
+
 
 
 

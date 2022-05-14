@@ -11,9 +11,9 @@
 
 // ### Functions ###
 
-	void Port_G_config(void)
+	void GPIOs_config(void)
 	{	
-		TRISG = 0xF20F;
+		pinMode(6, OUTPUT);
 	}
 	
 	
