@@ -59,7 +59,7 @@
 	}
 
 	// ## Timer2 Init **Prescaler: 64; CRK Synchronization; tooth time** 
-	void Timer2Init(void){
+	void TIM1Init(void){
 
 		// Aim: resolution of < 2 �s;
 		// FCPU with PLL = 73,7 MHz
@@ -83,7 +83,7 @@
 
 
 	// ## Timer3 Init **CAM Synchronization; segment time** 
-	void Timer3Init(void){
+	void TIM2Init(void){
 		
 		// Aim: high timer duration
 		// FCPU with PLL = 73,7 MHz
@@ -106,7 +106,7 @@
 	}
 	
 	// ## Timer6 Init **CAM_PER/CRK_TOOTH_PER(start-value)//CRK_SHO_LEVEL pulse duration**
-	void Timer6Init(void)
+	void TIM3Init(void)
 	{
 		// Aim: Timer ticks < 1 �s
 		// FCPU with PLL = 73,7 MHz
@@ -128,7 +128,7 @@
 	}
 
 	// ## Timer7 Init **Prescaler: 8; CAM_PER/CRK_TOOTH_PER(pulse duration)**
-	void Timer7Init(void)
+	void TIM4Init(void)
 	{
 		// Aim: Timer ticks < 1 �s
 		// FCPU with PLL = 73,7 MHz
@@ -150,7 +150,7 @@
 	}
 
 	// ## Timer8 Init **Prescaler: 64; CRK_RUN_OUT/CAM_delay**
-	void Timer8Init(void)
+	void SystickInit(void)
 	{
 		// FCPU with PLL = 73,7 MHz
 		// Fcy: 36,85 MHz
@@ -168,14 +168,14 @@
 	}
 
 	//## Timer2Reset **Prescaler: 64; CRK Synchronization; tooth time** 
-	void Timer2Reset(void){
+	void TIM1Reset(void){
 		TIM_SetCounter(TIM1, 0);		//Reset Timer2 sur l'ancien PIR, TIM1 pour nous
 		timer_overflow_CRK = 0;
 	}
 	
 
-	//## Timer3Reset **Prescaler: 256; CAM Synchronization; segment time** 
-	void Timer3Reset(void){
+	//## TIM2Reset **Prescaler: 256; CAM Synchronization; segment time** 
+	void TIM2Reset(void){
 		TIM_SetCounter(TIM2, 0);				// Reset Timer3
 		timer_overflow_CAM = 0;
 	}

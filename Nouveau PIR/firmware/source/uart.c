@@ -549,7 +549,7 @@ void USART_receive(void) {
         case ('9'): // CRK_TOOTH_PER(START or STOP)
         {
             if (data_counter == 1 && temp_chars_1[0] == 'B') {
-                PR6 = 0x0D;  // set timer for 2.821 us
+               TIM_SetAutoreload(TIM3,15);
                 failure_identify = '6';
 
             } else if (data_counter == 1 && temp_chars_1[0] == 'S') {

@@ -595,8 +595,8 @@
 // ## Stalling Detection Function
 	void Stalling_detection(void)
 	{
-        Timer2Reset();
-		Timer3Reset();
+        TIM1Reset();
+		TIM2Reset();
 		Timer4Reset();
 		Timer5Reset();
 
@@ -675,7 +675,7 @@
 // ## Stalling Detection Function
 	void Stalling_detection_CRK(void)
 	{
-		Timer2Reset();
+		TIM1Reset();
 		Timer4Reset();
 
 		//check all IC-buffers for overflow
@@ -719,7 +719,7 @@
 // ## Stalling Detection Function
 	void Stalling_detection_CAM(int camId)
 	{
-		Timer3Reset();
+		TIM2Reset();
 		Timer5Reset();
 
 		//check all IC-buffers for overflow
@@ -786,7 +786,7 @@
         }
 
 		// reset timer 2
-		Timer2Reset();
+		TIM1Reset();
 	}
 
 // ## CAM_CRK synchronisation preparation
@@ -797,7 +797,7 @@
 		//segment_time_CAM = segment_time_CAM + timer_overflow_CAM * (unsigned long)PR3;
 		
 		// reset timer 3
-		Timer3Reset();	
+		TIM2Reset();	
 	}
 
 // ## Gap to edge calculation

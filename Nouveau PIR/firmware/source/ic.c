@@ -13,7 +13,7 @@
 // ### Functions ###
 
 	// ## Input capture 1 Init  ** CRK ** rising edge
-	void IC1Init(void){
+	void EXTI8Init(void){
 		EXTI_InitTypeDef EXTI_Struct;
 		EXTI_StructInit(&EXTI_Struct);
 		EXTI_Struct.EXTI_Line=EXTI_Line8;
@@ -24,7 +24,7 @@
 	}
 
 	// ## Input capture 2 Init ** CRK ** falling edge 
-	void IC2Init(void){
+	void EXTI9Init(void){
 		EXTI_InitTypeDef EXTI_Struct;
 		EXTI_StructInit(&EXTI_Struct);
 		EXTI_Struct.EXTI_Line=EXTI_Line9;
@@ -35,7 +35,7 @@
 	}
 
 	// ## Input capture 2 Init  ** CAM1 ** rising edge
-	void IC3Init(void){
+	void EXTI10Init(void){
 		EXTI_InitTypeDef EXTI_Struct;
 		EXTI_StructInit(&EXTI_Struct);
 		EXTI_Struct.EXTI_Line=EXTI_Line10;
@@ -46,7 +46,7 @@
 	}
 
 	// ## Input capture 4 Init ** CAM1 ** falling edge 
-	void IC4Init(void){
+	void EXTI11Init(void){
 		EXTI_InitTypeDef EXTI_Struct;
 		EXTI_StructInit(&EXTI_Struct);
 		EXTI_Struct.EXTI_Line=EXTI_Line11;
@@ -57,7 +57,7 @@
 	}
     
 	// ## Input capture 5 Init ** CAM2 ** rising edge 
-	void IC5Init(void){
+	void EXTI12Init(void){
 		EXTI_InitTypeDef EXTI_Struct;
 		EXTI_StructInit(&EXTI_Struct);
 		EXTI_Struct.EXTI_Line=EXTI_Line12;
@@ -68,7 +68,7 @@
 	}
 
 	// ## Input capture 6 Init ** CAM2 ** falling edge 
-	void IC6Init(void){
+	void EXTI13Init(void){
 		EXTI_InitTypeDef EXTI_Struct;
 		EXTI_StructInit(&EXTI_Struct);
 		EXTI_Struct.EXTI_Line=EXTI_Line13;
