@@ -17,6 +17,7 @@
     #include "stm32f10x.h"
     #include "stm32f10x_gpio.h"
     #include "stm32f10x_tim.h"
+    #include "stm32f1xx_hal_gpio.h"
 // ### Programm includes ###
 	#include "timer.h"
     #include "synchronization.h"
@@ -475,34 +476,34 @@
 		if(active_edges_CAM_PER == 'b')
 		{
             if(cam_id == 0){ // For CAM1
-                T6CONbits.TON = 1; 			// Enable Timer6 
-                PR6 = (filter_time_CAM[cam_id] / 2.0 - 5) / microsecond_per_timer_tick_CAM_PER__CRK_TOOTH_PER;
+                TIM_CMD(TIM3, ENABLE); // Enable Timer6 			 
+                TIM_SetAutoreload(TIM3, (filter_time_CAM[cam_id] / 2.0 - 5) / microsecond_per_timer_tick_CAM_PER__CRK_TOOTH_PER ) ;
             }
             else{ // For CAM2
-                T7CONbits.TON = 1; 			// Enable Timer7
-                PR7 = (filter_time_CAM[cam_id] / 2.0 - 5) / microsecond_per_timer_tick_CAM_PER__CRK_TOOTH_PER;
+                TIM_CMD(TIM4, ENABLE);			// Enable Timer7
+                TIM_SetAutoreload(TIM4, (filter_time_CAM[cam_id] / 2.0 - 5) / microsecond_per_timer_tick_CAM_PER__CRK_TOOTH_PER);
             }					
 		}
 		else if(active_edges_CAM_PER == 'f' && CAM_signal[cam_id] == false)
 		{
             if(cam_id == 0){ // For CAM1
-                T6CONbits.TON = 1; 			// Enable Timer6 
-                PR6 = (filter_time_CAM[cam_id] / 2.0 - 5) / microsecond_per_timer_tick_CAM_PER__CRK_TOOTH_PER;
+                TIM_CMD(TIM3, ENABLE); // Enable Timer6
+                TIM_SetAutoreload(TIM3, (filter_time_CAM[cam_id] / 2.0 - 5) / microsecond_per_timer_tick_CAM_PER__CRK_TOOTH_PER ) ; 	
             }
             else{ // For CAM2
-                T7CONbits.TON = 1; 			// Enable Timer7
-                PR7 = (filter_time_CAM[cam_id] / 2.0 - 5) / microsecond_per_timer_tick_CAM_PER__CRK_TOOTH_PER;
+                TIM_CMD(TIM4, ENABLE);			// Enable Timer7
+                TIM_SetAutoreload(TIM4, (filter_time_CAM[cam_id] / 2.0 - 5) / microsecond_per_timer_tick_CAM_PER__CRK_TOOTH_PER);
             }
 		}
 		else if(active_edges_CAM_PER == 'r' && CAM_signal[cam_id] == true)
 		{
             if(cam_id == 0){ // For CAM1
-                T6CONbits.TON = 1; 			// Enable Timer6  
-                PR6 = (filter_time_CAM[cam_id] / 2.0 - 5) / microsecond_per_timer_tick_CAM_PER__CRK_TOOTH_PER;
+                TIM_CMD(TIM3, ENABLE); // Enable Timer6
+                TIM_SetAutoreload(TIM3, (filter_time_CAM[cam_id] / 2.0 - 5) / microsecond_per_timer_tick_CAM_PER__CRK_TOOTH_PER ) ; 
             }
             else{ // For CAM2
-                T7CONbits.TON = 1; 			// Enable Timer7
-                PR7 = (filter_time_CAM[cam_id] / 2.0 - 5) / microsecond_per_timer_tick_CAM_PER__CRK_TOOTH_PER;
+                TIM_CMD(TIM4, ENABLE);			// Enable Timer7
+                TIM_SetAutoreload(TIM4, (filter_time_CAM[cam_id] / 2.0 - 5) / microsecond_per_timer_tick_CAM_PER__CRK_TOOTH_PER);
             }	
 		}		
 	}
@@ -510,16 +511,16 @@
 //## CAM_PER_reset
 	void CAM_PER_reset(void)
 	{
-		if(T6CONbits.TON == 1)
+		if(TIM3->CR1 & TIM_CR1_CEN)
 		{
-			T6CONbits.TON = 0;
-			TMR6 = 0;
+			TIM_CMD(TIM3, DISABLE);
+			TIM_SetCounter(TIM3, 0);
 		}
 
-		if(T7CONbits.TON == 1)
+		if(TIM4->CR1 & TIM_CR1_CEN)
 		{
-			T7CONbits.TON = 0;
-			TMR7 = 0;
+			TIM_CMD(TIM4, DISABLE);
+			TIM_SetCounter(TIM4, 0);
 		}
 
         Timer6Init();
@@ -543,16 +544,16 @@
 //## CRK_TOOTH_PER_reset
 	void CRK_TOOTH_PER_reset(void)
 	{
-		if(T6CONbits.TON == 1)
+		if(TIM3->CR1 & TIM_CR1_CEN )
 		{
-			T6CONbits.TON = 0;
-			TMR6 = 0;
+			TIM_CMD(TIM3, DISABLE);
+			TIM_SetCounter(TIM3, 0);
 		}
 
-		if(T7CONbits.TON == 1)
+		if(TIM4->CR1 & TIM_CR1_CEN )
 		{
-			T7CONbits.TON = 0;
-			TMR7 = 0;
+			TIM_CMD(TIM4, DISABLE);
+			TIM_SetCounter(TIM4, 0);
 		}
 
 		failure_set = false;
@@ -571,7 +572,7 @@
 					{
 						if(engine_start == true)
 						{
-							T8CONbits.TON = 1; 							// Enable Timer8 till the first falling CRK_edge
+							SysTick->CTRL |= SysTick_CTRL_ENABLE;		// Enable Timer8 till the first falling CRK_edge
 							timer_active_CAM_delay[cam_id] = true;
 						}
 						else
@@ -587,7 +588,7 @@
 						{
 							if(engine_start == true)
 							{
-								T8CONbits.TON = 1; 							// Enable Timer8 till the first falling CRK_edge
+								SysTick->CTRL |= SysTick_CTRL_ENABLE;							// Enable Timer8 till the first falling CRK_edge
 								timer_active_CAM_delay[cam_id] = true;
 
 								if(failure_active == false)
@@ -603,9 +604,9 @@
 						else if(CAM_signal[cam_id] == true && failure_active == false)
 						{
                             if(cam_id == 0){
-                               LATGbits.LATG7 = !LATGbits.LATG7; 
+                                HAL_GPIO_TogglePin(GPIOA, 5); //Toggle A5
                             }else if(cam_id == 1){
-                               LATGbits.LATG8 = !LATGbits.LATG8;
+                               HAL_GPIO_TogglePin(GPIOA, 6); //Toggle A6
                             }
 						}
 
@@ -617,7 +618,7 @@
 						{
 							if(engine_start == true)
 							{
-								T8CONbits.TON = 1; 							// Enable Timer8 till the first falling CRK_edge
+								SysTick->CTRL |= SysTick_CTRL_ENABLE;	 							// Enable Timer8 till the first falling CRK_edge
 								timer_active_CAM_delay[cam_id] = true;
 
 								if(failure_active == false)
@@ -633,9 +634,9 @@
 						else if(CAM_signal[cam_id] == false && failure_active == false)
 						{
                             if(cam_id == 0){
-                                LATGbits.LATG7 = !LATGbits.LATG7; 
+                                HAL_GPIO_TogglePin(GPIOA, 5);
                             }else if(cam_id == 1){
-                               LATGbits.LATG8 = !LATGbits.LATG8;
+                                HAL_GPIO_TogglePin(GPIOA, 6);
                             }
 						}
 
@@ -749,7 +750,7 @@
 
 				if(shift_counter_CAM_delay[cam_id][i] != 0)
 				{
-					if(angle_to_edge_CAM_delay[cam_id][i] + ((double)(shift_counter_CAM_delay[cam_id][i] - 1) + ((double)((unsigned long)TMR2 + timer_overflow_CRK*(unsigned long)PR2))/former_teeth_time) * revolution_CRK >= (delay_angle_CAM_delay * delay_factor_CAM_delay))
+					if(angle_to_edge_CAM_delay[cam_id][i] + ((double)(shift_counter_CAM_delay[cam_id][i] - 1) + ((double)((unsigned long)TIMGetCounter(TIM4) + timer_overflow_CRK*(unsigned long)(TIM2->ARR)))/former_teeth_time) * revolution_CRK >= (delay_angle_CAM_delay * delay_factor_CAM_delay)) //Aurait été plus propre avec un getAutoreload
 					{
 						shift_counter_CAM_delay[cam_id][i] = 0;
 						angle_to_edge_CAM_delay[cam_id][i] = 0;
@@ -882,12 +883,13 @@
 	{
 		failure_active = false;
 		failure_set = false;
-		T8CONbits.TON = 0;
-		TMR8 = 0;
-		T9CONbits.TON = 0;
-		Timer9Reset();
-		T4CONbits.TON = 0;
-		Timer4Reset();		
+		SysTick->CTRL &= ~SysTick_CTRL_ENABLE;
+		SysTick->VAL = (2^24)-1;  //clear systick count
+		//T9CONbits.TON = 0;
+		//Timer9Reset();
+        //TIM5_disable
+		//TIM5_disable
+				
 		number_processing_edges_CAM_delay[0] = 0;
         number_processing_edges_CAM_delay[1] = 0;
 		timer_active_CAM_delay[0] = false;
@@ -1130,19 +1132,19 @@ void Output_CAM_PAT_ERR(int cam_id){
                 if (CAM_signal[cam_id] == false)
                 {
                     if(cam_id == 0){
-                        LATGbits.LATG7 = 1;
+                        GPIO_SetBits(GPIOA, 5);
                     }
                     else{
-                       LATGbits.LATG8 = 1; 
+                       GPIO_SetBits(GPIOA, 6); 
                     }                 
                 } 
                 else if (CAM_signal[cam_id] == true)
                 {
                     if(cam_id == 0){
-                        LATGbits.LATG7 = 0;
+                        GPIO_ResetBits(GPIOA, 5);
                     }
                     else{
-                       LATGbits.LATG8 = 0; 
+                       GPIO_ResetBits(GPIOA, 6);
                     }           
                 }   
                 active_CAM_edges_counter[cam_id] = 0;                
@@ -1162,10 +1164,10 @@ void Output_CAM_PAT_ERR(int cam_id){
                 { // after an abitrary number of CAM edges skip this edge in output to generate the failure
                     active_CAM_edges_counter[cam_id] =0; 
                     if(cam_id == 0){
-                        LATGbits.LATG7 = 1;
+                        GPIO_SetBits(GPIOA, 5);
                     }
                     else{
-                       LATGbits.LATG8 = 1; 
+                       GPIO_SetBits(GPIOA, 5); 
                     }   
                 }
                 else
@@ -1184,10 +1186,10 @@ void Output_CAM_PAT_ERR(int cam_id){
                 { // after an abitrary number of CAM edges skip this edge in output to generate the failure
                     active_CAM_edges_counter[cam_id] =0; 
                     if(cam_id == 0){
-                        LATGbits.LATG7 = 0;
+                        GPIO_ResetBits(GPIOA, 5);
                     }
                     else{
-                       LATGbits.LATG8 = 0; 
+                       GPIO_ResetBits(GPIOA, 6);
                     } 
                 }
                 else
