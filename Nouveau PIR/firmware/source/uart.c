@@ -194,7 +194,7 @@ void Usart1Init(void) {
 
 //## UART Receive Function
 //? Called whenever a character is received on the USART1
-void UART_receive(void) {
+void USART_receive(void) {
 
     data_counter = 0; //Set data counter to 0
 

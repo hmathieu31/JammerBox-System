@@ -337,7 +337,7 @@ int main(void)
         // process the received message
         if (message_received == true && com_error == false)
         {
-            UART_receive();
+            USART_receive();
         }
 
         // reset all values when CRK stalling is detected

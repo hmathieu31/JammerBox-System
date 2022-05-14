@@ -17,7 +17,7 @@
 
 	//### UART Receive Function ###
 
-	void UART_receive(void);
+	void USART_receive(void);
 
 	//### UART Send Function ###
 	
