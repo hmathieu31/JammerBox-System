@@ -319,8 +319,8 @@ int main(void)
 
     IC6Init();
 
-    GPIOs_config();
-
+    PORT_A_Config();
+    PORT_B_Config();
     Uart2Init();
 
     GPIO_ResetBits(GPIOA,3);
