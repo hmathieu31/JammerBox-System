@@ -15,6 +15,7 @@
 	#include "timer.h"
 	#include "uart.h"
 	#include "failures.h"
+	#include "stm32f10x_tim.h"
 
 // ### Variables ###
 
@@ -24,7 +25,11 @@
 	extern int number_miss_teeth;
 	extern int number_gap;
 	extern double gap_ratio_CRK_DET;
-	extern double gap_ratio_CRK_VLD;							
+	extern double gap_ratio_CRK_VLD;
+
+	//variables to replace input capture buffer
+	extern unsigned long IC1BUF;
+	extern unsigned long IC2BUF;						
 
 	//** Calculation variables **
 	extern unsigned long T_TOOTH_RAW_2;
@@ -226,13 +231,13 @@
 						CRK_synch_temp = false;
 		
 						//Send CRK-sycnhronization status
-						UART_send(message[4]);
+						USART_send(message[4]);
 		
 						CRK_CAM_synch[0] = false;
                         CRK_CAM_synch[1] = false;
                         
 						//Send CRK_CAM-sycnhronization status
-						UART_send(message[6]);
+						USART_send(message[6]);
 		
 						//Reset actual failure scenarios
 						Failure_synch_reset(failure_identify);
@@ -279,7 +284,7 @@
 						CRK_synch = true;
 	
 						//Send CRK-sycnhronization status
-						UART_send(message[3]);
+						USART_send(message[3]);
 					}
 					else
 					{
@@ -639,16 +644,16 @@
 		//Reset CRK and CAM_CRK synchronization
 		if(CRK_synch == true)
 		{
-			UART_send(message[4]);	//CRK synchronization lost
+			USART_send(message[4]);	//CRK synchronization lost
 		}
 		
 		if(CRK_CAM_synch[0] == true)
 		{
-			UART_send(message[6]);	//CAM_CRK synchronization lost
+			USART_send(message[6]);	//CAM_CRK synchronization lost
 		}
 		if(CRK_CAM_synch[1] == true)
 		{
-			UART_send(message[6]);	//CAM_CRK synchronization lost
+			USART_send(message[6]);	//CAM_CRK synchronization lost
 		}
         
 		CRK_synch = false;
@@ -658,7 +663,7 @@
         teeth_count_overall=0;
 
 		//Reset failure secenarios
-		Failure_reset();
+		Failure_reset(); //!Wasn't implemented in old PIR
 
 		//Output signal level treatment
 		output_level_setting = false;
@@ -694,7 +699,7 @@
 		//Reset CRK and CAM_CRK synchronization
 		if(CRK_synch == true)
 		{
-			UART_send(message[4]);	//CRK synchronization lost
+			USART_send(message[4]);	//CRK synchronization lost
 		}
 
 		CRK_synch = false;
@@ -737,7 +742,7 @@
 
 		if(CRK_CAM_synch[camId] == true)
 		{
-			UART_send(message[6]);	//CAM_CRK synchronization lost
+			USART_send(message[6]);	//CAM_CRK synchronization lost
 		}
 
 		CRK_CAM_synch[camId] = false;
@@ -757,10 +762,10 @@
 	void sync_CRK_preparation(void) 
 	{
 		//Read Timer value from IC3-buffer
-		T_TOOTH_RAW = (unsigned long)IC2BUF;
+		T_TOOTH_RAW = IC2BUF;
 
 		//Calculate tooth time
-		T_TOOTH_RAW = T_TOOTH_RAW + timer_overflow_CRK * (unsigned long)PR2;
+		T_TOOTH_RAW = T_TOOTH_RAW + timer_overflow_CRK * TIM2->ARR;
        
         //test
         if(delay_off == true)
@@ -798,10 +803,10 @@
 // ## Gap to edge calculation
 	void gap_to_edge_calculation(void)
 	{
-		//calculate angles between reference gap and CAM-edges when synchronization is not yet done
-		gap_to_edge = (((double)teeth_count_CAM_CRK_synch - 1.0) + (double)(((unsigned long)TMR2 + timer_overflow_CRK*(unsigned long)PR2)/T_TOOTH_RAW))*revolution_CRK;
+		//calculate angles between reference gap and CAM-edges when synchronization is not yet done PR2: Timer periode value, TMR2 TMR counter at that moment
+		gap_to_edge = (((double)teeth_count_CAM_CRK_synch - 1.0) + (double)(((unsigned long)(TIM_GetCounter(TIM2)) + timer_overflow_CRK*TIM2->ARR)/T_TOOTH_RAW))*revolution_CRK; 
 							
-		gap_to_edge_ahead = (((double)teeth_count_CAM_CRK_synch_ahead - 1.0) + (double)(((unsigned long)TMR2 + timer_overflow_CRK*(unsigned long)PR2)/T_TOOTH_RAW))*revolution_CRK;
+		gap_to_edge_ahead = (((double)teeth_count_CAM_CRK_synch_ahead - 1.0) + (double)(((unsigned long)(TIM_GetCounter(TIM2)) + timer_overflow_CRK*TIM2->ARR)/T_TOOTH_RAW))*revolution_CRK;
 	}
 
 // ## Reset CAM_CRK_synch
@@ -832,80 +837,17 @@
 		CRK_CAM_synch[camId] = true;
 											
 		//Send CRK_CAM-sycnhronization status
-		UART_send(message[5]);
+		USART_send(message[5]);
 
 		CAM_CRK_synch_status = false;
 		CAM_CRK_synch_status_ahead = false;
 		shift_counter_CRK = 0;
 	}
 
-// ## IC overflow check
+// ## IC overflow check	
 	void IC_overflow_check()
 	{
-		if(IC1CONbits.ICBNE == 1)
-		{
-			int i;
-			int buffer;
-	
-			for(i = 0; i<4;i++)
-			{
-				buffer = IC1BUF;
-			}
-		}
-	
-		if(IC2CONbits.ICBNE == 1)
-		{
-			int i;
-			int buffer;
-	
-			for(i = 0; i<4;i++)
-			{
-				buffer = IC2BUF;
-			}
-		}
-
-		if(IC3CONbits.ICBNE == 1)
-		{
-			int i;
-			int buffer;
-
-			for(i = 0; i<4;i++)
-			{
-				buffer = IC3BUF;
-			}
-		}
-
-		if(IC4CONbits.ICBNE == 1)
-		{
-			int i;
-			int buffer;
-	
-			for(i = 0; i<4;i++)
-			{
-				buffer = IC4BUF;
-			}
-		}	
-                		
-        if(IC5CONbits.ICBNE == 1)
-		{
-			int i;
-			int buffer;
-	
-			for(i = 0; i<4;i++)
-			{
-				buffer = IC5BUF;
-			}
-		}	
-        
-        if(IC6CONbits.ICBNE == 1)
-		{
-			int i;
-			int buffer;
-	
-			for(i = 0; i<4;i++)
-			{
-				buffer = IC6BUF;
-			}
-		}	
+		IC1BUF = 0;
+		IC2BUF = 0;
 	}
 

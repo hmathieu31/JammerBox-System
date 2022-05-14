@@ -754,7 +754,7 @@ void UART_receive(void) { // TODO: #43 port this function
                     communication_active = true;
                     communication_ready = true;
 
-                    T1CONbits.TON = 1;
+                    TIM_Cmd(TIM1, ENABLE);
 
                     UART_send(message[11]);
                 } else {
@@ -793,6 +793,8 @@ void UART_receive(void) { // TODO: #43 port this function
 //## UART Send Function
 
 void UART_send(char message) {
+    USART_SendData(USART1,message);
+    /*
     if (U2STAbits.UTXBF == 1) // Check if transmit buffer is full
     {
         while (U2STAbits.UTXBF == 1); // Wait until transmit buffer is writeable
@@ -800,7 +802,7 @@ void UART_send(char message) {
         U2TXREG = message;
     } else {
         U2TXREG = message;
-    }
+    }*/
 }
 
 
