@@ -565,13 +565,13 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM6_IRQHandler(void)
     if (failure_identify == '5')
     { // CAM_PER //?CAM_PER is the error identified by '5'
 
-        if (GPIO_ReadInputDataBit(GPIOG, 7) == 1)
+        if (GPIO_ReadInputDataBit(GPIOA, 5) == 1)
         {
-            GPIO_ResetBits(GPIOG, 7);
+            GPIO_ResetBits(GPIOA, 5);
         }
         else
         {
-            GPIO_SetBits(GPIOG, 7);
+            GPIO_SetBits(GPIOA, 5);
         };
 
         counter_CAM_PER[0]++; //? Number of times we lost CAM with timer 6 ?
@@ -590,18 +590,17 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM6_IRQHandler(void)
         //? Le mieux est d'avoir PSC le plus petit possible
         //? Mais ARR doit pas dépasser (2^16)-1 = 65535
         //? 72Mhz*PSC+1*ARR+1
-        TIM_PrescalerConfig(TIM7, 0, TIM_PSCReloadMode_Immediate); //? Define PSC value
-        TIM_SetAutoreload(TIM7, 1439);                             //? Define ARR value 20us*72Mhz = 1440
+        TIM_SetAutoreload(TIM7, 1439);//? Define ARR value 20us*72Mhz = 1440 (PSC=0 pour TIM7)
 
         TIM_Cmd(TIM7, ENABLE);
 
-        if (GPIO_ReadInputDataBit(GPIOG, 6) == 1)
+        if (GPIO_ReadInputDataBit(GPIOA, 4) == 1)
         {
-            GPIO_ResetBits(GPIOG, 6);
+            GPIO_ResetBits(GPIOA, 4);
         }
         else
         {
-            GPIO_SetBits(GPIOG, 6);
+            GPIO_SetBits(GPIOA, 4);
         };
 
         TIM_Cmd(TIM6, DISABLE);
@@ -609,7 +608,7 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM6_IRQHandler(void)
     else if (failure_identify == 'b')
     { // CRK_SHO_LEVEL
 
-        GPIO_SetBits(GPIOG, 6);
+        GPIO_SetBits(GPIOA, 4);
 
         TIM_Cmd(TIM6, DISABLE);
     }
@@ -623,13 +622,13 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM7_IRQHandler(void)
 
     if (failure_identify == '5') // CAM_PER --> Cam_Spk
     {
-        if (GPIO_ReadInputDataBit(GPIOG, 8) == 1)
+        if (GPIO_ReadInputDataBit(GPIOA, 6) == 1)
         {
-            GPIO_ResetBits(GPIOG, 8);
+            GPIO_ResetBits(GPIOA, 6);
         }
         else
         {
-            GPIO_SetBits(GPIOG, 8);
+            GPIO_SetBits(GPIOA, 6);
         };
 
         counter_CAM_PER[1]++; // Number of times we lost CAM with timer 7
@@ -644,13 +643,13 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM7_IRQHandler(void)
     }
     else if (failure_identify == '6') // CRK_TOOTH_PER
     {
-        if (GPIO_ReadInputDataBit(GPIOG, 6) == 1)
+        if (GPIO_ReadInputDataBit(GPIOA, 4) == 1)
         {
-            GPIO_ResetBits(GPIOG, 6);
+            GPIO_ResetBits(GPIOA, 4);
         }
         else
         {
-            GPIO_SetBits(GPIOG, 6);
+            GPIO_SetBits(GPIOA, 4);
         };
 
         TIM_Cmd(TIM7, DISABLE);
@@ -661,26 +660,22 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM7_IRQHandler(void)
         timer_Counter_SEG_ADP_ER_LIM++;
         switch (timer_Counter_SEG_ADP_ER_LIM)
         {
-        case 1:
-        { // failure for the falling edge
-            GPIO_ResetBits(GPIOG, 6);
+        case 1: { // failure for the falling edge
+            GPIO_ResetBits(GPIOA, 4);
             if (failure_waiting == true)
             {                              // if the rising edge has already happen
                 if (sensortype_CRK == 'c') // sensor is cpdd
                 {
-                    TIM_PrescalerConfig(TIM8, 0, TIM_PSCReloadMode_Immediate);
-                    TIM_SetAutoreload(TIM8, 3599); //? 72*50=3600
+                    SysTick_Config(3600); //? 72MHz*50us=3600
                 }
                 else if (sensortype_CRK == 'h')
                 { // all the others
-                    TIM_PrescalerConfig(TIM8, 0, TIM_PSCReloadMode_Immediate);
-                    TIM_SetAutoreload(TIM8, (T_TOOTH_RAW / 2) - 1); //? If setted period is more than 910 us PSC should be set higher
+                    SysTick_Config((T_TOOTH_RAW / 2) - 1);
                 }
                 else
                 {
                     // if sensor type not set, shouldn't happen
-                    TIM_PrescalerConfig(TIM8, 0, TIM_PSCReloadMode_Immediate);
-                    TIM_SetAutoreload(TIM8, 1);
+                    SysTick_Config(1);
                 }
 
                 // Start timer 8
@@ -699,7 +694,7 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM7_IRQHandler(void)
     }
     else if (failure_identify == 'k') // CrkPlsOrng
     {
-        GPIO_SetBits(GPIOG, 6);
+        GPIO_SetBits(GPIOA, 4);
 
         TIM_Cmd(TIM7, DISABLE);
     }
@@ -713,9 +708,8 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM7_IRQHandler(void)
 /*****************************************************************************/
 /*****************************************************************************/
 
-//## Timer 8 Interrupt
-
-void __attribute__((__interrupt__, no_auto_psv)) TIM8_IRQHandler(void)
+//## Systick Interrupt
+void __attribute__((__interrupt__, no_auto_psv)) SysTick_Handler (void)
 {
 
     if (failure_identify == 'i')
@@ -723,31 +717,26 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM8_IRQHandler(void)
         timer_Counter_CRK_GAP_NOT_DET++;
         switch (timer_Counter_CRK_GAP_NOT_DET)
         {
-        case 1:
-        {
-            GPIO_ResetBits(GPIOG, 6);
+        case 1: {
+            GPIO_ResetBits(GPIOA, 4);
 
             if (sensortype_CRK == 'c')
             {
                 //§ PR8 = 0x001D;   // 29 * 1.73us = 50.1us
-                TIM_PrescalerConfig(TIM8, 0, TIM_PSCReloadMode_Immediate); //? Define PSC value
-                TIM_SetAutoreload(TIM8, 3599);
+                SysTick_Config(3600); //? 72MHz*50us
             }
             else if (sensortype_CRK == 'h')
             {
-                TIM_PrescalerConfig(TIM8, 0, TIM_PSCReloadMode_Immediate);
-                TIM_SetAutoreload(TIM8, (T_TOOTH_RAW / 2) - 1); //? If setted period is more than 910us PSC should be set higher
+                SysTick_Config((T_TOOTH_RAW / 2) - 1);
             }
             else
             {
-                TIM_PrescalerConfig(TIM8, 0, TIM_PSCReloadMode_Immediate);
-                TIM_SetAutoreload(TIM8, 1);
+                SysTick_Config(1);
             }
             break;
         }
-        case 2:
-        {
-            GPIO_SetBits(GPIOG, 6);
+        case 2: {
+            GPIO_SetBits(GPIOA, 4);
 
             TIM_Cmd(TIM8, DISABLE);
 
@@ -755,9 +744,8 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM8_IRQHandler(void)
             failure_active = false;
             break;
         }
-        default:
-        {
-            GPIO_SetBits(GPIOG, 6);
+        default: {
+            GPIO_SetBits(GPIOA, 4);
 
             TIM_Cmd(TIM8, DISABLE);
             timer_Counter_CRK_GAP_NOT_DET = 0;
