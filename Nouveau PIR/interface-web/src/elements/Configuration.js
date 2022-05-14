@@ -7,16 +7,69 @@ import { useAlert } from "react-alert";
 export default function Configuration() {
   const [inputFileS, setInputFile] = useState(null);
   const inputFile = React.useRef();
+  const alert = useAlert();
   let fileReader;
 
-  const onButtonClick = () => {
+  const sendData = (jsonData) => {
+    fetch("http://localhost:8080/config", {
+      method: "POST",
+      mode: "cors",
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify(jsonData),
+    }).then(
+      (data) => {
+        console.log(data.status);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  };
+
+  const onButtonClickUpload = () => {
     inputFile.current.click();
+  };
+
+  const onButtonClickConf = (conf) => {
+    var jsonData;
+    return () => {
+      if (inputFileS == null) alert.show("No configuration uploaded!");
+      else {
+        if (conf === "CRK") {
+          jsonData = {
+            Config: "CRK",
+            NumOfCrkTeeth: inputFileS["NumOfTeeth"],
+            NumOfMissingTeeth: 0,
+            NumOfGaps: inputFileS["NumOfGap"],
+            DistanceTDC0toGap: inputFileS["Tdc0"],
+            FirstSegErAngle: inputFileS["FirstErSegAngle"],
+            NumberCylinder: inputFileS["NumOfCylinder"],
+            SensorType: inputFileS["CrkSensorType"],
+          };
+        } else {
+          jsonData = {
+            Config: "CAM",
+            NumCamEdge: inputFileS["Cam0NumOfEdges"],
+            NumOfCam: 1,
+            ActiveEdges: inputFileS["Cam0Active_edge"],
+            SensorType: inputFileS["Cam0SensorType"],
+            FilterTime: inputFileS["Cam0FilterInMicroSec"],
+            CamEdges: inputFileS["Cam0EdgePos"],
+          };
+        }
+        sendData(jsonData);
+      }
+    };
   };
 
   const handleFileRead = (e) => {
     const content = fileReader.result;
-    console.log(JSON.parse(content));
-    // … do something with the 'content' …
+    const configs = Object.entries(JSON.parse(content));
+    const configDict = Object.assign(
+      {},
+      ...configs.map((x) => ({ [x[0]]: x[1] }))
+    );
+    setInputFile(configDict);
   };
 
   const onChangeFile = (event) => {
@@ -27,7 +80,7 @@ export default function Configuration() {
       fileReader = new FileReader();
       fileReader.onloadend = handleFileRead;
       fileReader.readAsText(file);
-      setInputFile(file);
+      console.log(inputFileS);
     } else {
       alert.show("Oh look, an alert!");
     }
@@ -38,10 +91,13 @@ export default function Configuration() {
       <div className="frame-1">
         <p className="txt-271 flex-hcenter">Configuration</p>
         {ReturnButton()}
+        <button className="group-6 txt-733" onClick={onButtonClickUpload}>
+          UPLOAD CONFIGS
+        </button>
         <div>
           <p className="txt-271">CRK</p>
         </div>
-        <button className="group-6 txt-733" onClick={onButtonClick}>
+        <button className="group-6 txt-733" onClick={onButtonClickConf("CRK")}>
           CONFIG CRK
         </button>
         <button className="group-6 txt-733">RESET CRK CONFIG</button>
@@ -55,7 +111,10 @@ export default function Configuration() {
         />
         <div>
           <p className="txt-271">CAM</p>
-          <button className="group-6 txt-733" onClick={onButtonClick}>
+          <button
+            className="group-6 txt-733"
+            onClick={onButtonClickConf("CAM")}
+          >
             CONFIG CAM
           </button>
           <button className="group-6 txt-733">RESET CAM CONFIG</button>
