@@ -336,7 +336,7 @@ int main(void)
         // process the received message
         if (message_received == true && com_error == false)
         {
-            UART_receive();
+            USART_receive();
         }
 
         // reset all values when CRK stalling is detected
@@ -504,7 +504,7 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM1_IRQHandler(void)
 {
     if (communication_active == true)
     {
-        UART_send(message[11]);
+        USART_send(message[11]);
 
         if (communication_validation == true)
         {

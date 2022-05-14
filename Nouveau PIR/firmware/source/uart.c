@@ -172,7 +172,7 @@ void Usart1Init(void) {
 
     //UART Transmit interrupt
     NVIC_EnableIRQ(USART1_IRQn);
-    NVIC_SetPriority(USART1_IRQn, 1);
+    NVIC_SetPriority(USART1_IRQn, 1); // Set priority of the USATR1 interrupt to 1
     USART_ClearITPendingBit(USART1, USART_IT_TXE);
     USART_ITConfig(USART1, USART_IT_TXE, ENABLE);
 
@@ -183,7 +183,7 @@ void Usart1Init(void) {
     USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);
 
 
-    // turn on UART
+    // turn on USART
     USART_ClockInit(USART1, &USART_ClockInitStructure);
     USART_Init(USART1, &USART_InitStructure);
     USART_Cmd(USART1, ENABLE);
@@ -192,8 +192,9 @@ void Usart1Init(void) {
 
 
 //## UART Receive Function
+//? Called whenever a character is received on the USART1
+void USART_receive(void) {
 
-void UART_receive(void) { // TODO: #43 port this function
 
     data_counter = 0; //Set data counter to 0
 
@@ -689,7 +690,7 @@ void UART_receive(void) { // TODO: #43 port this function
         {
             if (data_counter == 2 && temp_chars_1[0] == 'B') {
                 crk_pulse_duration_CRK_PLS_ORNG = atof(temp_chars_2);
-                PR7 =  ( crk_pulse_duration_CRK_PLS_ORNG / 0.217); 
+                TIM_SetAutoreload(TIM4, 18 * (( crk_pulse_duration_CRK_PLS_ORNG / 0.217)+1) - 1); 
                 failure_identify = 'k';
                 failure_active = true;
 
@@ -756,7 +757,7 @@ void UART_receive(void) { // TODO: #43 port this function
 
                     TIM_Cmd(TIM1, ENABLE);
 
-                    UART_send(message[11]);
+                    USART_send(message[11]);
                 } else {
                     communication_ready = true;
                 }
@@ -785,24 +786,20 @@ void UART_receive(void) { // TODO: #43 port this function
     message_received = false;
 
     //communication receive status
-    UART_send(message[12]);
+    USART_send(message[12]);
 }
 
 
 
-//## UART Send Function
 
-void UART_send(char message) {
-    USART_SendData(USART1,message);
-    /*
-    if (U2STAbits.UTXBF == 1) // Check if transmit buffer is full
-    {
-        while (U2STAbits.UTXBF == 1); // Wait until transmit buffer is writeable
-
-        U2TXREG = message;
-    } else {
-        U2TXREG = message;
-    }*/
+/**
+ * @brief Function used to send a message via USART.
+ * In practice, simply calls the USART_send function from the stm32 standard library
+ *
+ * @param message 
+ */
+void USART_send(char message) {
+    USART_SendData(USART1, message);
 }
 
 
@@ -829,18 +826,18 @@ void UART_COM_error(void) {
 
 void UART_send_failure_configuration_status(char failure_ident, bool failure_conf, bool failure_conf_CAM_blank_out) {
     if ((failure_ident == '0' || failure_ident == '2') && failure_conf == true) {
-        UART_send(message[8]);
+        USART_send(message[8]);
         failure_configured = false;
     } else if ((failure_ident != '0' && failure_ident != '2') && failure_conf == false) {
-        UART_send(message[7]);
+        USART_send(message[7]);
         failure_configured = true;
     }
 
     if ((failure_ident != '2' && failure_ident != '3') && failure_conf_CAM_blank_out == true) {
-        UART_send(message[10]);
+        USART_send(message[10]);
         failure_configured_CAM_blank_out = false;
     } else if ((failure_ident == '2' || failure_ident == '3') && failure_conf_CAM_blank_out == false) {
-        UART_send(message[9]);
+        USART_send(message[9]);
         failure_configured_CAM_blank_out = true;
     }
 }
