@@ -21,7 +21,6 @@
 // ### Programm includes ###
 #include "failures.h"
 #include "ic.h"
-#include "osc.h"
 #include "port_config.h"
 #include "synchronization.h"
 #include "system_configuration.h"
