@@ -53,8 +53,8 @@ export default class ButtonList extends React.Component {
 
   runTest = () => {
     var jsonData = {
-      TestName: this.state.testName.replace(/\s/g, ""),
-      TestParameter: this.state?.testParam.replace(/\s/g, ""),
+      TestName: this.state.testName,
+      TestParameter: this.state?.testParam,
       TestValue: this.state.valueSelect,
     };
 

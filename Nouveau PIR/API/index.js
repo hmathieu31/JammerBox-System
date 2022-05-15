@@ -7,7 +7,8 @@ const { spawn } = require("child_process");
 const { PythonShell } = require("python-shell");
 const fs = require("fs");
 
-var allowedOrigins = ["http://localhost:3000", "http://192.168.1.92:3000"];
+const allowedOrigins = ["http://localhost:3000", "http://192.168.1.92:3000"];
+const historicPath = "../interface-web/src/historicData.json";
 
 app.use(
   cors({
@@ -33,25 +34,37 @@ app.post("/run", (req, res) => {
     var param1 = req.body.TestName;
     var param2 = req.body.TestParameter;
     var param3 = req.body.TestValue;
-    runPythonScript([param1, param3]);
-    res.status(200).json();
-    fs.readFile("../interface-web/src/historicData.json", function (err, data) {
-      console.log(data);
-      var json = JSON.parse(data);
-      json2 = [];
-      for (var i in json) {
-        json2.push(i);
-      }
-      console.log(json);
-      json2.push(JSON.parse(req.body));
-      fs.writeFile(
-        "../interface-web/src/historicData.json",
-        JSON.stringify(json),
-        function (err) {
-          if (err) throw err;
-          console.log('The "data to append" was appended to file!');
-        }
-      );
+    var testResult;
+
+    try {
+      runPythonScript([param1.replace(/\s/g, ""), param3]);
+      testResult = "success";
+      res.status(200).json();
+    } catch (e) {
+      testResult = "failed";
+      res.status(400).send("An error occured : ", e);
+    }
+    var json;
+    fs.readFile(historicPath, function (err, data) {
+      json = JSON.parse(data);
+      var objectId = Object.keys(json).length + 1;
+      const date = new Date();
+      json["Test " + objectId] = {
+        id: objectId,
+        test_name: param1,
+        date:
+          date.getDate() +
+          "/" +
+          (date.getMonth() + 1) +
+          "/" +
+          date.getFullYear(),
+        parametre: param2 + " = " + param3,
+        result: testResult,
+      };
+      fs.writeFile(historicPath, JSON.stringify(json), function (err) {
+        if (err) throw err;
+        console.log('The "data to append" was appended to file!');
+      });
     });
   }
 });
