@@ -1,5 +1,6 @@
 import "../CSS/Background.css";
 import "../CSS/MainPage.css";
+import "../CSS/Historics.css";
 import React from "react";
 import POPOSSpace from "./ShowTestDiv";
 
