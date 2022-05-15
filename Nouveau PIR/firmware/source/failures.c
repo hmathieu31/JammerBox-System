@@ -17,7 +17,6 @@
     #include "stm32f10x.h"
     #include "stm32f10x_gpio.h"
     #include "stm32f10x_tim.h"
-    #include "stm32f1xx_hal_gpio.h"
 // ### Programm includes ###
 	#include "timer.h"
     #include "synchronization.h"
@@ -476,33 +475,33 @@
 		if(active_edges_CAM_PER == 'b')
 		{
             if(cam_id == 0){ // For CAM1
-                TIM_CMD(TIM3, ENABLE); // Enable Timer6 			 
+                TIM_CMD(TIM3, ENABLE); // Enable Timer3 (formerly Timer6 on microchip)			 
                 TIM_SetAutoreload(TIM3, (filter_time_CAM[cam_id] / 2.0 - 5) / microsecond_per_timer_tick_CAM_PER__CRK_TOOTH_PER ) ;
             }
             else{ // For CAM2
-                TIM_CMD(TIM4, ENABLE);			// Enable Timer7
+                TIM_CMD(TIM4, ENABLE);			// Enable Timer4 (formerly Timer7 on microchip)
                 TIM_SetAutoreload(TIM4, (filter_time_CAM[cam_id] / 2.0 - 5) / microsecond_per_timer_tick_CAM_PER__CRK_TOOTH_PER);
             }					
 		}
 		else if(active_edges_CAM_PER == 'f' && CAM_signal[cam_id] == false)
 		{
             if(cam_id == 0){ // For CAM1
-                TIM_CMD(TIM3, ENABLE); // Enable Timer6
+                TIM_CMD(TIM3, ENABLE); // Enable Timer3 (formerly Timer6 on microchip)	
                 TIM_SetAutoreload(TIM3, (filter_time_CAM[cam_id] / 2.0 - 5) / microsecond_per_timer_tick_CAM_PER__CRK_TOOTH_PER ) ; 	
             }
             else{ // For CAM2
-                TIM_CMD(TIM4, ENABLE);			// Enable Timer7
+                TIM_CMD(TIM4, ENABLE);  // Enable Timer4 (formerly Timer7 on microchip)
                 TIM_SetAutoreload(TIM4, (filter_time_CAM[cam_id] / 2.0 - 5) / microsecond_per_timer_tick_CAM_PER__CRK_TOOTH_PER);
             }
 		}
 		else if(active_edges_CAM_PER == 'r' && CAM_signal[cam_id] == true)
 		{
             if(cam_id == 0){ // For CAM1
-                TIM_CMD(TIM3, ENABLE); // Enable Timer6
+                TIM_CMD(TIM3, ENABLE); // Enable Timer3 (formerly Timer6 on microchip)	
                 TIM_SetAutoreload(TIM3, (filter_time_CAM[cam_id] / 2.0 - 5) / microsecond_per_timer_tick_CAM_PER__CRK_TOOTH_PER ) ; 
             }
             else{ // For CAM2
-                TIM_CMD(TIM4, ENABLE);			// Enable Timer7
+                TIM_CMD(TIM4, ENABLE);  // Enable Timer4 (formerly Timer7 on microchip)
                 TIM_SetAutoreload(TIM4, (filter_time_CAM[cam_id] / 2.0 - 5) / microsecond_per_timer_tick_CAM_PER__CRK_TOOTH_PER);
             }	
 		}		
@@ -511,20 +510,20 @@
 //## CAM_PER_reset
 	void CAM_PER_reset(void)
 	{
-		if(TIM3->CR1 & TIM_CR1_CEN)
+		if(TIM3->CR1 & TIM_CR1_CEN) // if timer3 is enabled
 		{
 			TIM_CMD(TIM3, DISABLE);
-			TIM_SetCounter(TIM3, 0);
+			TIM_SetCounter(TIM3, 0); // disable and reset the timer
 		}
 
-		if(TIM4->CR1 & TIM_CR1_CEN)
+		if(TIM4->CR1 & TIM_CR1_CEN) // if timer4 is enabled
 		{
 			TIM_CMD(TIM4, DISABLE);
-			TIM_SetCounter(TIM4, 0);
+			TIM_SetCounter(TIM4, 0); // disable and reset the timer
 		}
 
-        TIM3Init();
-        TIM4Init();
+        Timer6Init(); //TODO: #75 Refactor name of function
+        Timer7Init(); //TODO: Refactor name of function
 		counter_CAM_PER[0] = 0;
         counter_CAM_PER[1] = 0;
 	}
@@ -536,7 +535,7 @@
 	{	
 		if(CRK_signal == false)
 		{
-			TIM_Cmd(TIM1, ENABLE);//Enable timer 6 (notre timer 1)
+			TIM_Cmd(TIM1, ENABLE);  //Enable timer1 (formerly Timer6 on microchip)
 		}
 	}
 
@@ -544,16 +543,16 @@
 //## CRK_TOOTH_PER_reset
 	void CRK_TOOTH_PER_reset(void)
 	{
-		if(TIM3->CR1 & TIM_CR1_CEN )
+		if(TIM3->CR1 & TIM_CR1_CEN ) // if timer3 is enabled
 		{
 			TIM_CMD(TIM3, DISABLE);
-			TIM_SetCounter(TIM3, 0);
+			TIM_SetCounter(TIM3, 0); // disable and reset the timer
 		}
 
-		if(TIM4->CR1 & TIM_CR1_CEN )
+		if(TIM4->CR1 & TIM_CR1_CEN ) // if timer4 is enabled
 		{
 			TIM_CMD(TIM4, DISABLE);
-			TIM_SetCounter(TIM4, 0);
+			TIM_SetCounter(TIM4, 0); // disable and reset the timer
 		}
 
 		failure_set = false;
@@ -572,7 +571,7 @@
 					{
 						if(engine_start == true)
 						{
-							SysTick->CTRL |= SysTick_CTRL_ENABLE;		// Enable Timer8 till the first falling CRK_edge
+							SysTick->CTRL |= SysTick_CTRL_ENABLE;   // Enable the SysTick (formerly Timer8 on microchip) till the first falling CRK_edge
 							timer_active_CAM_delay[cam_id] = true;
 						}
 						else
@@ -588,7 +587,7 @@
 						{
 							if(engine_start == true)
 							{
-								SysTick->CTRL |= SysTick_CTRL_ENABLE;							// Enable Timer8 till the first falling CRK_edge
+								SysTick->CTRL |= SysTick_CTRL_ENABLE;   // Enable the SysTick (formerly Timer8 on microchip) till the first falling CRK_edge
 								timer_active_CAM_delay[cam_id] = true;
 
 								if(failure_active == false)
@@ -604,12 +603,12 @@
 						else if(CAM_signal[cam_id] == true && failure_active == false)
 						{
                             if(cam_id == 0){
-                                HAL_GPIO_TogglePin(GPIOA, 5); //Toggle A5
+                                HAL_GPIO_TogglePin(GPIOA, 5); //Toggle GPIOA5
                             }else if(cam_id == 1){
-                               HAL_GPIO_TogglePin(GPIOA, 6); //Toggle A6
+                               HAL_GPIO_TogglePin(GPIOA, 6); //Toggle GPIOA6
+                               //TODO: #76 HAL and stdlib cannot be used together. Either implement a toggle function or use HAL everywhere.
                             }
 						}
-
 						break;	
 					}
 				case ('r'):
@@ -618,7 +617,7 @@
 						{
 							if(engine_start == true)
 							{
-								SysTick->CTRL |= SysTick_CTRL_ENABLE;	 							// Enable Timer8 till the first falling CRK_edge
+								SysTick->CTRL |= SysTick_CTRL_ENABLE;	// Enable the SysTick (formerly Timer8 on microchip) till the first falling CRK_edge
 								timer_active_CAM_delay[cam_id] = true;
 
 								if(failure_active == false)
@@ -635,11 +634,12 @@
 						{
                             if(cam_id == 0){
                                 HAL_GPIO_TogglePin(GPIOA, 5);
+                               //TODO: HAL and stdlib cannot be used together. Either implement a toggle function or use HAL everywhere.
                             }else if(cam_id == 1){
                                 HAL_GPIO_TogglePin(GPIOA, 6);
+                               //TODO: HAL and stdlib cannot be used together. Either implement a toggle function or use HAL everywhere.
                             }
 						}
-
 						break;	
 					}
 				default:
@@ -659,7 +659,7 @@
 //## CAM_delay: CAM_TOOTH_OFF / CAM_REF_CRK / CAM_SYN / CAM_SYN_CRK
 	void CAM_delay (int cam_id)
 	{
-		if(TIM4->CR1 & TIM_CR1_CEN)
+		if(TIM4->CR1 & TIM_CR1_CEN) // if timer4 is enabled
 		{
 			double former_teeth_time; 
 			former_teeth_time = Former_teeth_time_calculation(T_TOOTH_RAW, teeth_count_CRK, number_miss_teeth);
@@ -699,7 +699,7 @@
 
 			if(((double)SysTick->VAL/former_teeth_time) * revolution_CRK >= (delay_angle_CAM_delay * delay_factor_CAM_delay))
 			{
-				TIM_Cmd(TIM8,DISABLE);
+				TIM_Cmd(TIM8,DISABLE); //TODO: #77 Port with systick
 				TIM_SetCounter(TIM8,0);
 				timer_active_CAM_delay[cam_id] = false;
 
@@ -882,14 +882,10 @@
 	{
 		failure_active = false;
 		failure_set = false;
-		SysTick->CTRL &= ~SysTick_CTRL_ENABLE;
-		SysTick->VAL = (2^24)-1;  //clear systick count
-		//T9CONbits.TON = 0;
-		//Timer9Reset();
-        //TIM5_disable
-		//TIM5_disable
-				
-		number_processing_edges_CAM_delay[0] = 0;
+		SysTick->CTRL &= ~SysTick_CTRL_ENABLE; // disable SysTick
+		SysTick->VAL = (2^24)-1;  //clear systick counter
+		//TODO: #78 There is a deactivation + reset of former timer4 (new software implemented timer) to implement here
+        number_processing_edges_CAM_delay[0] = 0;
         number_processing_edges_CAM_delay[1] = 0;
 		timer_active_CAM_delay[0] = false;
         timer_active_CAM_delay[1] = false;
@@ -1023,7 +1019,7 @@ void Output_CRK_GAP_NOT_DET(void){
 void CRK_GAP_NOT_DET_reset(void){
     failure_active_CAM_blank_out = false;
     failure_active = false;      
-    SystickInit();
+    Timer8Init(); //TODO: Refactor the name
 }    
 
 //## Output_SEG_ADP_ER_LIM
@@ -1075,22 +1071,22 @@ void SEG_ADP_ER_LIM_reset(void){
     failure_active = false;
     failure_passed = false;
     failure_waiting = false;
-    TIM4Init();
-    SystickInit();
+    Timer7Init();   //TODO: Refactor the name
+    Timer8Init();   //TODO: Refactor the name
     timer_Counter_SEG_ADP_ER_LIM = 0;
 }    
 
 //## Output_CRK_pulse_duration
 void Output_CRK_pulse_duration(void){
     if(CRK_signal == false){
-        TIM_CMD(TIM4, ENABLE); //start the timer 7 (notre 4)  
-        GPIO_ResetBits(GPIOA, 4); 
+        TIM_CMD(TIM4, ENABLE); //start the timer4 (formerly TIM7 on microchip)
+        GPIO_ResetBits(GPIOG, 4); 
     }
 }
 
 //## CRK_PLS_ORNG_reset
 void CRK_pulse_duration_reset(void){
-    TIM4Init();
+    Timer7Init();   //TODO: Refactor the name
     failure_active = false;
 } 
 
@@ -1166,7 +1162,7 @@ void Output_CAM_PAT_ERR(int cam_id){
                         GPIO_SetBits(GPIOA, 5);
                     }
                     else{
-                       GPIO_SetBits(GPIOA, 5); 
+                       GPIO_SetBits(GPIOA, 6); 
                     }   
                 }
                 else
