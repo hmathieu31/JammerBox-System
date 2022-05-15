@@ -8,7 +8,7 @@
     "@testing-library/user-event": "^13.5.0",
     "async_hooks": "^1.0.0",
     "browserify-zlib": "^0.2.0",
-    "fs": "0.0.1-security",
+    "fs": "^0.0.1-security",
     "net": "^1.0.2",
     "path-browserify": "^1.0.1",
     "react": "^17.0.2",

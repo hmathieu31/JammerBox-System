@@ -33,9 +33,26 @@ app.post("/run", (req, res) => {
     var param1 = req.body.TestName;
     var param2 = req.body.TestParameter;
     var param3 = req.body.TestValue;
-    console.log(param1, param2, param3);
     runPythonScript([param1, param3]);
     res.status(200).json();
+    fs.readFile("../interface-web/src/historicData.json", function (err, data) {
+      console.log(data);
+      var json = JSON.parse(data);
+      json2 = [];
+      for (var i in json) {
+        json2.push(i);
+      }
+      console.log(json);
+      json2.push(JSON.parse(req.body));
+      fs.writeFile(
+        "../interface-web/src/historicData.json",
+        JSON.stringify(json),
+        function (err) {
+          if (err) throw err;
+          console.log('The "data to append" was appended to file!');
+        }
+      );
+    });
   }
 });
 
