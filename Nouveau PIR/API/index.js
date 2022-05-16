@@ -73,6 +73,7 @@ app.post("/config", (req, res) => {
   if (req.body === undefined) {
     res.status(404).send("Body not defined");
   } else {
+    var params;
     if (req.body.Config === "CRK") {
       var conf = "CONFIGCRK";
       var NumOfCrkTeeth = req.body.NumOfCrkTeeth;
@@ -82,23 +83,17 @@ app.post("/config", (req, res) => {
       var FirstSegErAngle = req.body.FirstSegErAngle;
       var NumberCylinder = req.body.NumberCylinder;
       var SensorType = req.body.SensorType;
-      try {
-        runPythonScript([
-          conf,
-          NumOfCrkTeeth,
-          NumOfMissingTeeth,
-          NumOfGaps,
-          DistanceTDC0toGap,
-          FirstSegErAngle,
-          NumberCylinder,
-          SensorType,
-        ]);
-        res.status(200).json();
-      } catch (e) {
-        res.status(404).send(e);
-        console.log(e);
-      }
-    } else {
+      params = [
+        conf,
+        NumOfCrkTeeth,
+        NumOfMissingTeeth,
+        NumOfGaps,
+        DistanceTDC0toGap,
+        FirstSegErAngle,
+        NumberCylinder,
+        SensorType,
+      ];
+    } else if (req.body.Config === "CAM") {
       var conf = "CONFIGCAM";
       var NumCamEdge = req.body.NumCamEdge;
       var NumOfCam = req.body.NumOfCam;
@@ -106,22 +101,28 @@ app.post("/config", (req, res) => {
       var SensorType = req.body.SensorType;
       var FilterTime = req.body.FilterTime;
       var CamEdges = req.body.CamEdges;
-      try {
-        runPythonScript([
-          conf,
-          NumCamEdge,
-          NumOfCam,
-          ActiveEdges,
-          SensorType,
-          FilterTime,
-          CamEdges,
-        ]);
-        res.status(200).json();
-      } catch (e) {
-        res.status(404).send(e);
-        console.log(e);
-      }
+      params = [
+        conf,
+        NumCamEdge,
+        NumOfCam,
+        ActiveEdges,
+        SensorType,
+        FilterTime,
+        CamEdges,
+      ];
+    } else if (req.body.Config === "RESETCRK") {
+      var conf = "RESETCRK";
+      params = [conf];
+    } else if (req.body.Config === "RESETCAM") {
+      var conf = "RESETCAM";
+      params = [conf];
+    }
+    try {
+      runPythonScript(params);
       res.status(200).json();
+    } catch (e) {
+      res.status(400).send(e);
+      console.log(e);
     }
   }
 });

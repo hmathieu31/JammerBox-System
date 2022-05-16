@@ -46,7 +46,7 @@ export default function Configuration() {
             NumberCylinder: inputFileS["NumOfCylinder"],
             SensorType: inputFileS["CrkSensorType"],
           };
-        } else {
+        } else if (conf === "CAM") {
           jsonData = {
             Config: "CAM",
             NumCamEdge: inputFileS["Cam0NumOfEdges"],
@@ -56,6 +56,10 @@ export default function Configuration() {
             FilterTime: inputFileS["Cam0FilterInMicroSec"],
             CamEdges: inputFileS["Cam0EdgePos"],
           };
+        } else if (conf === "RESETCRK") {
+          jsonData = { Config: "RESETCRK" };
+        } else if (conf === "RESETCAM") {
+          jsonData = { Config: "RESETCAM" };
         }
         sendData(jsonData);
       }
@@ -100,7 +104,12 @@ export default function Configuration() {
         <button className="group-6 txt-733" onClick={onButtonClickConf("CRK")}>
           CONFIG CRK
         </button>
-        <button className="group-6 txt-733">RESET CRK CONFIG</button>
+        <button
+          className="group-6 txt-733"
+          onClick={onButtonClickConf("RESETCAM")}
+        >
+          RESET CRK CONFIG
+        </button>
         <input
           id="myInput"
           type="file"
@@ -117,7 +126,12 @@ export default function Configuration() {
           >
             CONFIG CAM
           </button>
-          <button className="group-6 txt-733">RESET CAM CONFIG</button>
+          <button
+            className="group-6 txt-733"
+            onClick={onButtonClickConf("RESETCAM")}
+          >
+            RESET CAM CONFIG
+          </button>
         </div>
       </div>
     </>
