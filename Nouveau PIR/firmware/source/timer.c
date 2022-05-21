@@ -3,13 +3,15 @@
 /* Programm        :  Timer                                                  */
 /* Controller      :  dsPIC33F                                               */
 /* Latest change   :  31.08.2020                                             */
-/* Author          :  Grégoire Chabin/Christian Ringlstetter/Thomas Pichler  */
+/* Author          :  Grï¿½goire Chabin/Christian Ringlstetter/Thomas Pichler  */
 /*****************************************************************************/
 
 // ### Basic includes ###
 
-	#include "p33FJ256GP710A.h"
+	//#include "p33FJ256GP710A.h"
 	#include "timer.h"
+	#include <stm32f10x.h>
+	#include <stm32f10x_tim.h>
 
 
 // ### Variables ###
@@ -28,7 +30,7 @@
 		// Aim: high timer duration
 		// FCPU with PLL = 73,7 MHz
 		// Fcy: 36,85 MHz
-		// 36,85 Mhz/ 64 = 575,78 kHz = 1,737 µs
+		// 36,85 Mhz/ 64 = 575,78 kHz = 1,737 ï¿½s
 
 		T1CONbits.TON = 0; 			// Disable Timer
 		T1CONbits.TSIDL = 0;		// Continue timer operation in idle mode
@@ -46,10 +48,10 @@
 	// ## Timer2 Init **Prescaler: 64; CRK Synchronization; tooth time** 
 	void Timer2Init(void){
 
-		// Aim: resolution of < 2 µs;
+		// Aim: resolution of < 2 ï¿½s;
 		// FCPU with PLL = 73,7 MHz
 		// Fcy: 36,85 MHz
-		// 36,85 Mhz/ 64 = 575,78 kHz = 1,7367744624683038660599534544444µs
+		// 36,85 Mhz/ 64 = 575,78 kHz = 1,7367744624683038660599534544444ï¿½s
 		
 		T2CONbits.TON = 0; 			// Disable Timer
 		T2CONbits.TSIDL = 0;		// Continue timer operation in idle mode
@@ -74,7 +76,7 @@
 		// Aim: high timer duration
 		// FCPU with PLL = 73,7 MHz
 		// Fcy: 36,85 MHz
-		// 36,85 Mhz/ 256 = 143,95 kHz = 6.946 µs
+		// 36,85 Mhz/ 256 = 143,95 kHz = 6.946 ï¿½s
 
 		T3CONbits.TON = 0; 			// Disable Timer
 		T3CONbits.TSIDL = 0;		// Continue timer operation in idle mode
@@ -94,10 +96,10 @@
 	// ## Timer4 Init **Prescaler: 64; CRK_NO_SIG/CAM_delay**  
 	void Timer4Init(void)
 	{
-		// Aim: resolution of < 2 µs;
+		// Aim: resolution of < 2 ï¿½s;
 		// FCPU with PLL = 73,7 MHz
 		// Fcy: 36,85 MHz
-		// 36,85 Mhz/ 64 = 575,78 kHz = 1,737 µs
+		// 36,85 Mhz/ 64 = 575,78 kHz = 1,737 ï¿½s
 
 		T4CONbits.TON = 0; 			// Disable Timer
 		T4CONbits.TSIDL = 0;		// Continue timer operation in idle mode
@@ -118,7 +120,7 @@
 		// Aim: high timer duration
 		// FCPU with PLL = 73,7 MHz
 		// Fcy: 36,85 MHz
-		// 36,85 Mhz/ 256 = 143,95 kHz = 6.946 µs
+		// 36,85 Mhz/ 256 = 143,95 kHz = 6.946 ï¿½s
 
 		T5CONbits.TON = 0; 			// Disable Timer
 		T5CONbits.TSIDL = 0;		// Continue timer operation in idle mode
@@ -136,10 +138,10 @@
 	// ## Timer6 Init **Prescaler: 8; CAM_PER/CRK_TOOTH_PER(start-value)//CRK_SHO_LEVEL pulse duration**
 	void Timer6Init(void)
 	{
-		// Aim: Timer ticks < 1 µs
+		// Aim: Timer ticks < 1 ï¿½s
 		// FCPU with PLL = 73,7 MHz
 		// Fcy: 36,85 MHz
-		// 36,85 Mhz/ 8 = 4606 kHz = 0.217 µs
+		// 36,85 Mhz/ 8 = 4606 kHz = 0.217 ï¿½s
 
 		T6CONbits.TON = 0; 			// Disable Timer
 		T6CONbits.TSIDL = 0;		// Continue timer operation in idle mode
@@ -157,10 +159,10 @@
 	// ## Timer7 Init **Prescaler: 8; CAM_PER/CRK_TOOTH_PER(pulse duration)**
 	void Timer7Init(void)
 	{
-		// Aim: Timer ticks < 1 µs
+		// Aim: Timer ticks < 1 ï¿½s
 		// FCPU with PLL = 73,7 MHz
 		// Fcy: 36,85 MHz
-		// 36,85 Mhz/ 8 = 4606 kHz = 0.217 µs
+		// 36,85 Mhz/ 8 = 4606 kHz = 0.217 ï¿½s
 
 		T7CONbits.TON = 0; 			// Disable Timer
 		T7CONbits.TSIDL = 0;		// Continue timer operation in idle mode
@@ -180,7 +182,7 @@
 	{
 		// FCPU with PLL = 73,7 MHz
 		// Fcy: 36,85 MHz
-		// 36,85 Mhz/ 64 = 575,78 kHz = 1.73 µs
+		// 36,85 Mhz/ 64 = 575,78 kHz = 1.73 ï¿½s
 		T8CONbits.TON = 0; 			// Disable Timer
 		T8CONbits.TSIDL = 0;		// Continue timer operation in idle mode
 		T8CONbits.TGATE = 0; 		// Disable Gated Timer mode
@@ -200,7 +202,7 @@
 		// Aim: high timer duration
 		// FCPU with PLL = 73,7 MHz
 		// Fcy: 36,85 MHz
-		// 36,85 Mhz/ 64 = 575,78 kHz = 1.73 µs
+		// 36,85 Mhz/ 64 = 575,78 kHz = 1.73 ï¿½s
 
 		T9CONbits.TON = 0; 			// Disable Timer
 		T9CONbits.TSIDL = 0;		// Continue timer operation in idle mode
@@ -217,35 +219,16 @@
 
 	//## Timer2Reset **Prescaler: 64; CRK Synchronization; tooth time** 
 	void Timer2Reset(void){
-		TMR2 = 0x00;				// Reset TMR2
+		TIM_SetCounter(TIM1, 0);		//Reset Timer2 sur l'ancien PIR, TIM1 pour nous
 		timer_overflow_CRK = 0;
 	}
 	
 
 	//## Timer3Reset **Prescaler: 256; CAM Synchronization; segment time** 
 	void Timer3Reset(void){
-		TMR3 = 0x00;				// Reset TMR3
+		TIM_SetCounter(TIM2, 0);				// Reset Timer3
 		timer_overflow_CAM = 0;
 	}
-
-	//## Timer4Reset **Prescaler: 64; CRK_NO_SIG/CAM_delay** 
-	void Timer4Reset(void){
-		TMR4 = 0x00;				// Reset TMR4
-		timer_overflow_CRK_failure = 0;
-	}
-
-	//## Timer5Reset **CAM Prescaler: 256; CAM_NO_SIG** 
-	void Timer5Reset(void){
-		TMR5 = 0x00;				// Reset TMR5
-		timer_overflow_CAM_failure = 0;
-	}
-
-	//## Timer9Reset **Prescaler: 64; CAM_delay** 
-	void Timer9Reset(void){
-		TMR9 = 0x00;				// Reset TMR9
-		timer_overflow_CAM_REF_CRK = 0;
-	}
-
 
 /*****************************************************************************/
 /*****************************************************************************/

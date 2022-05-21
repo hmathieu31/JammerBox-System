@@ -3,7 +3,7 @@
 /* Programm        :  Main		                                             */
 /* Controller      :  dsPIC33F                                               */
 /* Latest change   :  31.08.2020                                             */
-/* Author          :  Grégoire Chabin/Christian Ringlstetter/Thomas Pichler  */
+/* Author          :  Grï¿½goire Chabin/Christian Ringlstetter/Thomas Pichler  */
 /*****************************************************************************/
 
 
@@ -208,9 +208,9 @@ bool interrupt_check_CAM_delay[2];
 
 //** CAM_REF_CRK **
 unsigned int delay_counter_CAM_REF_CRK;
-long double angle_time_to_start_failure_CAM_REF_CRK; // Value Delay (ms or °CRK)
+long double angle_time_to_start_failure_CAM_REF_CRK; // Value Delay (ms or ï¿½CRK)
 double difference_to_edge_failure_start_CAM_REF_CRK;
-char delay_type_CAM_REF_CRK; // t: time / c: °CRK
+char delay_type_CAM_REF_CRK; // t: time / c: ï¿½CRK
 
 //** CRK_TOOTH_OFF **
 unsigned int number_tooth_off = 0;

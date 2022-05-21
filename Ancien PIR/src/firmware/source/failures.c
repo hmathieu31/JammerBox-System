@@ -3,12 +3,12 @@
 /* Programm        :  Failures			                                     */
 /* Controller      :  dsPIC33F                                               */
 /* Latest change   :  31.08.2020                                             */
-/* Author          :  Grégoire Chabin/Christian Ringlstetter/Thomas Pichler  */
+/* Author          :  Grï¿½goire Chabin/Christian Ringlstetter/Thomas Pichler  */
 /*****************************************************************************/
 
 // ### Basic includes ###
 
-	#include "p33FJ256GP710A.h"
+	//#include "p33FJ256GP710A.h"
 	#include "stdbool.h"
 	#include "failures.h"
 
@@ -110,9 +110,9 @@
 
 	//** CAM_REF_CRK **
 	extern unsigned int delay_counter_CAM_REF_CRK;								
-	extern long double angle_time_to_start_failure_CAM_REF_CRK;			// Value Delay (ms or °CRK)	
+	extern long double angle_time_to_start_failure_CAM_REF_CRK;			// Value Delay (ms or ï¿½CRK)	
 	extern double difference_to_edge_failure_start_CAM_REF_CRK;			
-	extern char delay_type_CAM_REF_CRK;									// t: time / c: °CRK
+	extern char delay_type_CAM_REF_CRK;									// t: time / c: ï¿½CRK
    
    
     //** CRK_TOOTH_OFF **
