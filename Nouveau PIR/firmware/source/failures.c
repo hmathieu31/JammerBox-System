@@ -20,6 +20,7 @@
 // ### Programm includes ###
 	#include "timer.h"
     #include "synchronization.h"
+    #include "TIM5.h"
 
 // ### Variables ###
 	
@@ -148,6 +149,9 @@
     
     //** SC_CAM_CRK **
     extern unsigned int sc_type_SC_CAM_CRK;
+
+    //TIM5 variables
+    extern int tim5_Counting = 0; //boolean
 
 
 //### Functions ###
@@ -535,7 +539,7 @@
 	{	
 		if(CRK_signal == false)
 		{
-			TIM_Cmd(TIM1, ENABLE);  //Enable timer1 (formerly Timer6 on microchip)
+			TIM_Cmd(TIM3, ENABLE);//Enable timer 6 (notre timer 1)
 		}
 	}
 
@@ -659,11 +663,12 @@
 //## CAM_delay: CAM_TOOTH_OFF / CAM_REF_CRK / CAM_SYN / CAM_SYN_CRK
 	void CAM_delay (int cam_id)
 	{
-		if(TIM4->CR1 & TIM_CR1_CEN) // if timer4 is enabled
+		if(TIM5_Counting)
 		{
 			double former_teeth_time; 
 			former_teeth_time = Former_teeth_time_calculation(T_TOOTH_RAW, teeth_count_CRK, number_miss_teeth);
-			if(((double)TIM_GetCounter(TIM4)/former_teeth_time)*revolution_CRK >= (revolution_CRK/2.0))
+            // TODO #51 : Check If we can get rid of Timer 4 and by what we can replace it 
+			if(((double)Tim5_GetTicks/former_teeth_time)*revolution_CRK >= (revolution_CRK/2.0))
 			{
                 if(cam_id == 0){
                     if (GPIO_ReadInputDataBit(GPIOA, 5) == 1)
@@ -684,8 +689,8 @@
                         GPIO_SetBits(GPIOA, 6);
                         };
                 }
-				TIM_Cmd(TIM4,DISABLE);
-                TIM_SetCounter(TIM4,0);
+				tim5_Stop();
+                Tim5_Reset();
 			}
 		}
 		
@@ -699,8 +704,8 @@
 
 			if(((double)SysTick->VAL/former_teeth_time) * revolution_CRK >= (delay_angle_CAM_delay * delay_factor_CAM_delay))
 			{
-				TIM_Cmd(TIM8,DISABLE); //TODO: #77 Port with systick
-				TIM_SetCounter(TIM8,0);
+                SysTick->CTRL &= ~SysTick_CTRL_ENABLE;
+				SysTick->VAL = (2^24) -1;
 				timer_active_CAM_delay[cam_id] = false;
 
 				if(interrupt_check_CAM_delay[cam_id] == false)
@@ -727,7 +732,7 @@
 	
 					if(active_CAM_edges[cam_id] == 'r' || active_CAM_edges[cam_id] == 'f')
 					{
-						TIM_Cmd(TIM8,ENABLE);
+						SysTick->CTRL |= SysTick_CTRL_ENABLE;
 					}
 				}
 			}
@@ -749,7 +754,7 @@
 
 				if(shift_counter_CAM_delay[cam_id][i] != 0)
 				{
-					if(angle_to_edge_CAM_delay[cam_id][i] + ((double)(shift_counter_CAM_delay[cam_id][i] - 1) + ((double)((unsigned long)TIMGetCounter(TIM4) + timer_overflow_CRK*(unsigned long)(TIM2->ARR)))/former_teeth_time) * revolution_CRK >= (delay_angle_CAM_delay * delay_factor_CAM_delay)) //Aurait été plus propre avec un getAutoreload
+					if(angle_to_edge_CAM_delay[cam_id][i] + ((double)(shift_counter_CAM_delay[cam_id][i] - 1) + ((double)(Tim5_GetTicks() + timer_overflow_CRK*(unsigned long)(TIM2->ARR)))/former_teeth_time) * revolution_CRK >= (delay_angle_CAM_delay * delay_factor_CAM_delay)) //Aurait été plus propre avec un getAutoreload
 					{
 						shift_counter_CAM_delay[cam_id][i] = 0;
 						angle_to_edge_CAM_delay[cam_id][i] = 0;
@@ -777,7 +782,7 @@
 			
 						if(active_CAM_edges[cam_id] == 'r' || active_CAM_edges[cam_id] == 'f')
 						{
-                            TIM_Cmd(TIM4,ENABLE);
+                            tim5_Start();
 						}
 
 						break;

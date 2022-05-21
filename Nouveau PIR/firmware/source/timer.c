@@ -12,6 +12,7 @@
 	#include "timer.h"
 	#include <stm32f10x.h>
 	#include <stm32f10x_tim.h>
+	#include "Tim5.h"
 
 
 // ### Variables ###
@@ -21,6 +22,8 @@
 	extern unsigned long timer_overflow_CRK_failure;
 	extern unsigned long timer_overflow_CAM_failure;
 	extern unsigned long timer_overflow_CAM_REF_CRK;
+	extern int 	tim5_Counting;
+	extern int tim5_CounterOverflow;
 
 // ### Functions ###
 	// Returns the computed value, 0 if impossible
@@ -61,6 +64,9 @@
 	// ## Timer2 Init **Prescaler: 64; CRK Synchronization; tooth time** 
 	void TIM1Init(void){
 
+		if (tim5_Counting){
+        	tim5_CounterOverflow++;
+    	}
 		// Aim: resolution of < 2 �s;
 		// FCPU with PLL = 73,7 MHz
 		// Fcy: 36,85 MHz
