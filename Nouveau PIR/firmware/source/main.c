@@ -296,27 +296,27 @@ int main(void)
 
 
 
-    Timer2Init();   //? We probabaly can replace the Timer 2 by the watchdog timer (and use timer 2 for timer 4) (some refactoring time incoming)
+    TIM1Init();   //? We probabaly can replace the Timer 2 by the watchdog timer (and use timer 2 for timer 4) (some refactoring time incoming)
 
-    Timer3Init();
+    TIM2Init();
 
-    Timer6Init();
+    TIM3Init();
 
-    Timer7Init();
+    TIM4Init();
 
-    Timer8Init();
+    SystickInit();
 
-    IC1Init();
+    EXTI8Init();
 
-    IC2Init();
+    EXTI9Init();
 
-    IC3Init();
+    EXTI10Init();
 
-    IC4Init();
+    EXTI11Init();
 
-    IC5Init();
+    EXTI12Init();
 
-    IC6Init();
+    EXTI13Init();
 
     PORT_A_Config();
     PORT_B_Config();
@@ -450,7 +450,7 @@ void __attribute__((__interrupt__, no_auto_psv)) EXTI4_15_IRQHANDLER()
     {                          //## Capture Event falling edge --CAM1--
         CAM_signal[0] = false; // Set actual signal level
 
-        Timer3Reset();
+        TIM2Reset();
 
         Output_CAM(failure_identify, 0); // CAM1 Output
 
@@ -482,7 +482,7 @@ void __attribute__((__interrupt__, no_auto_psv)) EXTI4_15_IRQHANDLER()
         {
             CAM_signal[1] = false; // Set actual signal level
 
-            Timer3Reset();
+            TIM2Reset();
 
             Output_CAM(failure_identify, 1); // CAM2 Output
 
@@ -576,10 +576,10 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM6_IRQHandler(void)
         counter_CAM_PER[0]++; //? Number of times we lost CAM with timer 6 ?
         if (counter_CAM_PER[0] == 2)
         {
-            TIM_Cmd(TIM6, DISABLE);
+            TIM_Cmd(TIM3, DISABLE);
             counter_CAM_PER[0] = 0; //? Reset timer 6 CAM lost counter
         }
-        TIM_SetCounter(TIM6, 0); // reset the timers counter
+        TIM_SetCounter(TIM3, 0); // reset the timers counter
     }
     else if (failure_identify == '6')
     { // CRK_TOOTH_PER
@@ -589,9 +589,9 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM6_IRQHandler(void)
         //? Le mieux est d'avoir PSC le plus petit possible
         //? Mais ARR doit pas dépasser (2^16)-1 = 65535
         //? 72Mhz*PSC+1*ARR+1
-        TIM_SetAutoreload(TIM7, 1439);//? Define ARR value 20us*72Mhz = 1440 (PSC=0 pour TIM7)
+        TIM_SetAutoreload(TIM4, 1439);//? Define ARR value 20us*72Mhz = 1440 (PSC=0 pour TIM7)
 
-        TIM_Cmd(TIM7, ENABLE);
+        TIM_Cmd(TIM4, ENABLE);
 
         if (GPIO_ReadInputDataBit(GPIOA, 4) == 1)
         {
@@ -602,16 +602,16 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM6_IRQHandler(void)
             GPIO_SetBits(GPIOA, 4);
         };
 
-        TIM_Cmd(TIM6, DISABLE);
+        TIM_Cmd(TIM3, DISABLE);
     }
     else if (failure_identify == 'b')
     { // CRK_SHO_LEVEL
 
         GPIO_SetBits(GPIOA, 4);
 
-        TIM_Cmd(TIM6, DISABLE);
+        TIM_Cmd(TIM3, DISABLE);
     }
-    TIM_ClearFlag(TIM6, TIM_FLAG_Update); // Clear Timer6 Interrupt Flag
+    TIM_ClearFlag(TIM3, TIM_FLAG_Update); // Clear Timer6 Interrupt Flag
 }
 
 //## Timer 7 Interrupt: CAM_PER - pulse duration
@@ -634,11 +634,11 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM7_IRQHandler(void)
         if (counter_CAM_PER[1] == 2)
         {
 
-            TIM_Cmd(TIM7, DISABLE);
+            TIM_Cmd(TIM4, DISABLE);
 
             counter_CAM_PER[1] = 0; // Reset timer 7 CAM counter
         }
-        TIM_SetCounter(TIM7, 0);
+        TIM_SetCounter(TIM4, 0);
     }
     else if (failure_identify == '6') // CRK_TOOTH_PER
     {
@@ -651,7 +651,7 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM7_IRQHandler(void)
             GPIO_SetBits(GPIOA, 4);
         };
 
-        TIM_Cmd(TIM7, DISABLE);
+        TIM_Cmd(TIM4, DISABLE);
     }
     else if (failure_identify == 'j')
     { // SEG_ADP_ER_LIM
@@ -678,7 +678,7 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM7_IRQHandler(void)
                 }
 
                 // Start timer 8
-                TIM_Cmd(TIM8, ENABLE);
+                SysTick->CTRL |= SysTick_CTRL_ENABLE;
             }
             failure_passed = true;
             break;
@@ -689,20 +689,20 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM7_IRQHandler(void)
             break;
         }
         }
-        TIM_Cmd(TIM7, DISABLE);
+        TIM_Cmd(TIM4, DISABLE);
     }
     else if (failure_identify == 'k') // CrkPlsOrng
     {
         GPIO_SetBits(GPIOA, 4);
 
-        TIM_Cmd(TIM7, DISABLE);
+        TIM_Cmd(TIM4, DISABLE);
     }
     else
     {
-        TIM_Cmd(TIM7, DISABLE);
+        TIM_Cmd(TIM4, DISABLE);
     } //? Stop timer 7
 
-    TIM_ClearFlag(TIM7, TIM_FLAG_Update);
+    TIM_ClearFlag(TIM4, TIM_FLAG_Update);
 }
 /*****************************************************************************/
 /*****************************************************************************/
@@ -737,7 +737,7 @@ void __attribute__((__interrupt__, no_auto_psv)) SysTick_Handler (void)
         case 2: {
             GPIO_SetBits(GPIOA, 4);
 
-            TIM_Cmd(TIM8, DISABLE);
+            SysTick->CTRL &= ~SysTick_CTRL_ENABLE;
 
             timer_Counter_CRK_GAP_NOT_DET = 0;
             failure_active = false;
@@ -746,7 +746,7 @@ void __attribute__((__interrupt__, no_auto_psv)) SysTick_Handler (void)
         default: {
             GPIO_SetBits(GPIOA, 4);
 
-            TIM_Cmd(TIM8, DISABLE);
+            SysTick->CTRL &= ~SysTick_CTRL_ENABLE;
             timer_Counter_CRK_GAP_NOT_DET = 0;
             failure_active = false;
             break;
@@ -758,9 +758,7 @@ void __attribute__((__interrupt__, no_auto_psv)) SysTick_Handler (void)
         Output_CRK_no_failure();
         SEG_ADP_ER_LIM_reset();
     }
-    TIM_SetCounter(TIM8, 0);
-
-    TIM_ClearFlag(TIM8, TIM_FLAG_Update);
+    SysTick->VAL = (2^24)-1;  //clear systick count
 }
 //## UART Receive Interrupt
 
