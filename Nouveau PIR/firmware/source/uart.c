@@ -549,7 +549,7 @@ void USART_receive(void) {
         case ('9'): // CRK_TOOTH_PER(START or STOP)
         {
             if (data_counter == 1 && temp_chars_1[0] == 'B') {
-               TIM_SetAutoreload(TIM3,15);
+               TIM_SetAutoreload(TIM3,17);
                 failure_identify = '6';
 
             } else if (data_counter == 1 && temp_chars_1[0] == 'S') {
