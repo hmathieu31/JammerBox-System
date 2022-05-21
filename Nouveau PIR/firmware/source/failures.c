@@ -20,7 +20,7 @@
 // ### Programm includes ###
 	#include "timer.h"
     #include "synchronization.h"
-    #include "TIM5.h"
+    #include "Tim5.h"
 
 // ### Variables ###
 	
@@ -151,7 +151,8 @@
     extern unsigned int sc_type_SC_CAM_CRK;
 
     //TIM5 variables
-    extern int tim5_Counting = 0; //boolean
+    extern int tim5_Counting;
+    extern int tim5_CounterOverflow;
 
 
 //### Functions ###
@@ -663,12 +664,12 @@
 //## CAM_delay: CAM_TOOTH_OFF / CAM_REF_CRK / CAM_SYN / CAM_SYN_CRK
 	void CAM_delay (int cam_id)
 	{
-		if(TIM5_Counting)
+		if(tim5_Counting)
 		{
 			double former_teeth_time; 
 			former_teeth_time = Former_teeth_time_calculation(T_TOOTH_RAW, teeth_count_CRK, number_miss_teeth);
             // TODO #51 : Check If we can get rid of Timer 4 and by what we can replace it 
-			if(((double)Tim5_GetTicks/former_teeth_time)*revolution_CRK >= (revolution_CRK/2.0))
+			if(((double)Tim5_GetTicks()/former_teeth_time)*revolution_CRK >= (revolution_CRK/2.0))
 			{
                 if(cam_id == 0){
                     if (GPIO_ReadInputDataBit(GPIOA, 5) == 1)
@@ -678,7 +679,7 @@
                     else
                         {
                          GPIO_SetBits(GPIOA, 5);
-                        };
+                        }
                 }else if(cam_id == 1){
                     if (GPIO_ReadInputDataBit(GPIOA, 6) == 1)
                         {
@@ -687,9 +688,9 @@
                         else
                         {
                         GPIO_SetBits(GPIOA, 6);
-                        };
+                        }
                 }
-				tim5_Stop();
+				Tim5_Stop();
                 Tim5_Reset();
 			}
 		}

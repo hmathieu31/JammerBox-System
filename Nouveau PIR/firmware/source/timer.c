@@ -15,6 +15,7 @@
 	#include "Tim5.h"
 
 
+
 // ### Variables ###
 
 	extern unsigned long timer_overflow_CRK;
@@ -22,8 +23,6 @@
 	extern unsigned long timer_overflow_CRK_failure;
 	extern unsigned long timer_overflow_CAM_failure;
 	extern unsigned long timer_overflow_CAM_REF_CRK;
-	extern int 	tim5_Counting;
-	extern int tim5_CounterOverflow;
 
 // ### Functions ###
 	// Returns the computed value, 0 if impossible
