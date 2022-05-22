@@ -132,7 +132,7 @@
 		TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE); // Enable Timer3 interrupt
 	}
 
-	// ## Timer7 Init **Prescaler: 8; CAM_PER/CRK_TOOTH_PER(pulse duration)**
+	// ## Timer4 Init **Prescaler: 8; CAM_PER/CRK_TOOTH_PER(pulse duration)**
 	void Timer4Init(void)
 	{
 		// Aim: Timer ticks < 1 �s
@@ -154,7 +154,7 @@
 		TIM_ITConfig(TIM4, TIM_IT_Update, ENABLE); // Enable Timer4 interrupt
 	}
 
-	// ## Timer8 Init **Prescaler: 64; CRK_RUN_OUT/CAM_delay**
+	// ## SysTick Timer Init **Prescaler: 64; CRK_RUN_OUT/CAM_delay**
 	void SysTickInit(void)
 	{
 		// FCPU with PLL = 73,7 MHz

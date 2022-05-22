@@ -1050,7 +1050,7 @@ void Output_CRK_GAP_NOT_DET(void){
 void CRK_GAP_NOT_DET_reset(void){
     failure_active_CAM_blank_out = false;
     failure_active = false;      
-    SysTickInit(); //TODO: Refactor the name
+    SysTickInit();
 }    
 
 //## Output_SEG_ADP_ER_LIM
@@ -1102,8 +1102,8 @@ void SEG_ADP_ER_LIM_reset(void){
     failure_active = false;
     failure_passed = false;
     failure_waiting = false;
-    Timer4Init();   //TODO: Refactor the name
-    SysTickInit();   //TODO: Refactor the name
+    Timer4Init();
+    SysTickInit();
     timer_Counter_SEG_ADP_ER_LIM = 0;
 }    
 
@@ -1117,7 +1117,7 @@ void Output_CRK_pulse_duration(void){
 
 //## CRK_PLS_ORNG_reset
 void CRK_pulse_duration_reset(void){
-    Timer4Init();   //TODO: Refactor the name
+    Timer4Init();
     failure_active = false;
 } 
 
