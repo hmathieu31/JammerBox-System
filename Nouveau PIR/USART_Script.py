@@ -1,10 +1,10 @@
-import serial
+from serial import Serial
 import sys
 from time import sleep
 
 print(sys.argv)
 usart_message = "!"
-ser = serial.Serial("/dev/ttyS0", 9600)    #Open port with baud rate
+ser = Serial("/dev/ttyS0", 9600)    #Open port with baud rate
 received_data = ser.read()              #read serial port
 sleep(0.03)
 data_left = ser.inWaiting()             #check for remaining byte
