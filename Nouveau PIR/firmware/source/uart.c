@@ -7,17 +7,19 @@
 /*****************************************************************************/
 
 // ### Basic includes ###
-#include "stdbool.h"
-#include "string.h"
-#include "stdlib.h"
-#include "uart.h"
+#include <stdbool.h>
+#include <string.h>
+#include <stdlib.h>
+
+// ### Hardware specific includes ###
 #include "stm32f10x.h"
 #include "stm32f10x_usart.h"
 
-// ### Programm includes ###
+// ### Program includes ###
 #include "system_configuration.h"
 #include "failures.h"
 #include "timer.h"
+#include "uart.h"
 
 // ### Variables ###
 
