@@ -597,8 +597,8 @@
 	{
         TIM1Reset();
 		TIM2Reset();
-		Timer4Reset();
-		Timer5Reset();
+//		Timer4Reset(); 	// TODO: Either these functions are to be removed or they must be implemented in the source file.
+//		Timer5Reset();
 
 		//check all IC-buffers for overflow
 		IC_overflow_check();
@@ -676,7 +676,7 @@
 	void Stalling_detection_CRK(void)
 	{
 		TIM1Reset();
-		Timer4Reset();
+//		Timer4Reset();	// Is this necessary as well?
 
 		//check all IC-buffers for overflow
 		IC_overflow_check();
@@ -720,7 +720,7 @@
 	void Stalling_detection_CAM(int camId)
 	{
 		TIM2Reset();
-		Timer5Reset();
+//		Timer5Reset(); // TODO: Is this reset warranted?
 
 		//check all IC-buffers for overflow
 		IC_overflow_check();
