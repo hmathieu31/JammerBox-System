@@ -7,10 +7,6 @@ usart_message = "!"
 print("Opening port...")
 ser = Serial("/dev/ttyS0", 9600)    #Open port with baud rate
 print("Port opened!")
-received_data = ser.read()              #read serial port
-sleep(0.03)
-data_left = ser.inWaiting()             #check for remaining byte
-received_data += ser.read(data_left)
 #print (received_data)                   #print received data
 
 testName  = sys.argv[1]
@@ -35,3 +31,8 @@ usart_message+="%"
 print(usart_message)
 
 ser.write(usart_message)   
+
+received_data = ser.read()              #read serial port
+sleep(0.03)
+data_left = ser.inWaiting()             #check for remaining byte
+received_data += ser.read(data_left)
