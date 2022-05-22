@@ -21,17 +21,17 @@
 
 	void TIM2Init(void); 
 
-	// ## Timer6 Init **Prescaler: 8; CAM_PER/CRK_TOOTH_PER(start-value)**
+	// ## Timer3 Init **Prescaler: 8; CAM_PER/CRK_TOOTH_PER(start-value)**
 
-	void TIM3Init(void);
+	void Timer3Init(void);
 
-	// ## Timer7 Init **Prescaler: 8; CAM_PER/CRK_TOOTH_PER(pulse duration)**
+	// ## Timer4 Init **Prescaler: 8; CAM_PER/CRK_TOOTH_PER(pulse duration)**
 
-	void TIM4Init(void);
+	void Timer4Init(void);
 
 	// ## Timer8 Init **Prescaler: 64; CRK_RUN_OUT/CAM_delay**
 
-	void SystickInit(void);
+	void SysTickInit(void);
 	//## Timer2Reset **Prescaler: 64; CRK Synchronization; tooth time** 
 
 	void TIM1Reset(void);

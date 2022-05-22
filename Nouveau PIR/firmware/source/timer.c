@@ -12,6 +12,8 @@
 	#include "timer.h"
 	#include <stm32f10x.h>
 	#include <stm32f10x_tim.h>
+	#include "Tim5.h"
+
 
 
 // ### Variables ###
@@ -61,6 +63,9 @@
 	// ## Timer2 Init **Prescaler: 64; CRK Synchronization; tooth time** 
 	void TIM1Init(void){
 
+		if (tim5_Counting){
+        	tim5_CounterOverflow++;
+    	}
 		// Aim: resolution of < 2 �s;
 		// FCPU with PLL = 73,7 MHz
 		// Fcy: 36,85 MHz
@@ -106,7 +111,7 @@
 	}
 	
 	// ## Timer6 Init **CAM_PER/CRK_TOOTH_PER(start-value)//CRK_SHO_LEVEL pulse duration**
-	void TIM3Init(void)
+	void Timer3Init(void)
 	{
 		// Aim: Timer ticks < 1 �s
 		// FCPU with PLL = 73,7 MHz
@@ -127,8 +132,8 @@
 		TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE); // Enable Timer3 interrupt
 	}
 
-	// ## Timer7 Init **Prescaler: 8; CAM_PER/CRK_TOOTH_PER(pulse duration)**
-	void TIM4Init(void)
+	// ## Timer4 Init **Prescaler: 8; CAM_PER/CRK_TOOTH_PER(pulse duration)**
+	void Timer4Init(void)
 	{
 		// Aim: Timer ticks < 1 �s
 		// FCPU with PLL = 73,7 MHz
@@ -149,8 +154,8 @@
 		TIM_ITConfig(TIM4, TIM_IT_Update, ENABLE); // Enable Timer4 interrupt
 	}
 
-	// ## Timer8 Init **Prescaler: 64; CRK_RUN_OUT/CAM_delay**
-	void SystickInit(void)
+	// ## SysTick Timer Init **Prescaler: 64; CRK_RUN_OUT/CAM_delay**
+	void SysTickInit(void)
 	{
 		// FCPU with PLL = 73,7 MHz
 		// Fcy: 36,85 MHz
