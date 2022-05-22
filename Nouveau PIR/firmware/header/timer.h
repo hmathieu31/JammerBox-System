@@ -21,11 +21,11 @@
 
 	void TIM2Init(void); 
 
-	// ## Timer6 Init **Prescaler: 8; CAM_PER/CRK_TOOTH_PER(start-value)**
+	// ## Timer3 Init **Prescaler: 8; CAM_PER/CRK_TOOTH_PER(start-value)**
 
 	void Timer3Init(void);
 
-	// ## Timer7 Init **Prescaler: 8; CAM_PER/CRK_TOOTH_PER(pulse duration)**
+	// ## Timer4 Init **Prescaler: 8; CAM_PER/CRK_TOOTH_PER(pulse duration)**
 
 	void Timer4Init(void);
 
