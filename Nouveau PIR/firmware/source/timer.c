@@ -111,7 +111,7 @@
 	}
 	
 	// ## Timer6 Init **CAM_PER/CRK_TOOTH_PER(start-value)//CRK_SHO_LEVEL pulse duration**
-	void TIM3Init(void)
+	void Timer3Init(void)
 	{
 		// Aim: Timer ticks < 1 �s
 		// FCPU with PLL = 73,7 MHz
@@ -133,7 +133,7 @@
 	}
 
 	// ## Timer7 Init **Prescaler: 8; CAM_PER/CRK_TOOTH_PER(pulse duration)**
-	void TIM4Init(void)
+	void Timer4Init(void)
 	{
 		// Aim: Timer ticks < 1 �s
 		// FCPU with PLL = 73,7 MHz

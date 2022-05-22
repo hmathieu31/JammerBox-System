@@ -300,9 +300,9 @@ int main(void)
 
     TIM2Init();
 
-    TIM3Init();
+    Timer3Init();
 
-    TIM4Init();
+    Timer4Init();
 
     SystickInit();
 

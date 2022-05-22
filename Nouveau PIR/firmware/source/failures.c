@@ -527,8 +527,8 @@
 			TIM_SetCounter(TIM4, 0); // disable and reset the timer
 		}
 
-        Timer6Init(); //TODO: #75 Refactor name of function
-        Timer7Init(); //TODO: Refactor name of function
+        Timer3Init();
+        Timer4Init();
 		counter_CAM_PER[0] = 0;
         counter_CAM_PER[1] = 0;
 	}
@@ -1077,7 +1077,7 @@ void SEG_ADP_ER_LIM_reset(void){
     failure_active = false;
     failure_passed = false;
     failure_waiting = false;
-    Timer7Init();   //TODO: Refactor the name
+    Timer4Init();   //TODO: Refactor the name
     Timer8Init();   //TODO: Refactor the name
     timer_Counter_SEG_ADP_ER_LIM = 0;
 }    
@@ -1092,7 +1092,7 @@ void Output_CRK_pulse_duration(void){
 
 //## CRK_PLS_ORNG_reset
 void CRK_pulse_duration_reset(void){
-    Timer7Init();   //TODO: Refactor the name
+    Timer4Init();   //TODO: Refactor the name
     failure_active = false;
 } 
 
