@@ -33,7 +33,4 @@ print(usart_message)
 ser.write(usart_message.encode())   
 
 received_data = ser.read()              #read serial port
-sleep(0.03)
-data_left = ser.inWaiting()             #check for remaining byte
-received_data += ser.read(data_left)
 print (received_data)
