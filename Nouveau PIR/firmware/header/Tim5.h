@@ -19,6 +19,6 @@ void Tim5_Stop(void);
 
 void Tim5_Reset(void);
 
-int Tim5_GetTicks(void);
+int Tim5_GetCounter(void);
 
 #endif

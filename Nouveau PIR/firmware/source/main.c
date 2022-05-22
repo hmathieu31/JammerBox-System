@@ -7,18 +7,20 @@
 /*****************************************************************************/
 
 // ### Basic includes ###
-#include "config.h"
-#include "stdbool.h"
-#include "stdlib.h"
+#include <stdbool.h>
+#include <string.h>
+#include <stdlib.h>
+
+// ### Hardware specific includes ###
 #include "stm32f10x.h"
 #include "stm32f10x_exti.h"
 #include "stm32f10x_gpio.h"
 #include "stm32f10x_tim.h"
 #include "stm32f10x_usart.h"
 #include "stm32f10x_exti.h"
-#include "string.h"
 
-// ### Programm includes ###
+// ### Program includes ###
+#include "config.h"
 #include "failures.h"
 #include "ic.h"
 #include "port_config.h"
@@ -26,6 +28,7 @@
 #include "system_configuration.h"
 #include "timer.h"
 #include "uart.h"
+#include "Tim5.h"
 
 // ### Definitions ###
 
@@ -319,8 +322,10 @@ int main(void)
     EXTI13Init();
 
     PORT_A_Config();
+	
     PORT_B_Config();
-    Uart2Init();
+	
+	Usart1Init();
 
     GPIO_ResetBits(GPIOA,3);
     // ## Main loop ##
