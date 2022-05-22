@@ -915,6 +915,9 @@
 		failure_set = false;
 		SysTick->CTRL &= ~SysTick_CTRL_ENABLE; // disable SysTick
 		SysTick->VAL = (2^24)-1;  //clear systick counter
+        Tim5_Stop();
+        Tim5_Reset();
+
 		//TODO: #78 There is a deactivation + reset of former timer4 (new software implemented timer) to implement here
         number_processing_edges_CAM_delay[0] = 0;
         number_processing_edges_CAM_delay[1] = 0;
