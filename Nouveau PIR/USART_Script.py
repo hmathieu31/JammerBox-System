@@ -5,7 +5,7 @@ from time import sleep
 print(sys.argv)
 usart_message = "!"
 print("Opening port...")
-ser = Serial("/dev/ttyS0", 9600)    #Open port with baud rate
+ser = Serial("/dev/ttyS0", 9600,timeout=0)    #Open port with baud rate
 print("Port opened!")
 #                   #print received data
 
