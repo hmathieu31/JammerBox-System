@@ -31,7 +31,7 @@
 
 	// ## Timer8 Init **Prescaler: 64; CRK_RUN_OUT/CAM_delay**
 
-	void SystickInit(void);
+	void SysTickInit(void);
 	//## Timer2Reset **Prescaler: 64; CRK Synchronization; tooth time** 
 
 	void TIM1Reset(void);

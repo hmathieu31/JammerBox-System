@@ -697,7 +697,7 @@
 			if(((double)Tim5_GetTicks()/former_teeth_time)*revolution_CRK >= (revolution_CRK/2.0))
 			{
                 if(cam_id == 0){
-                    if (GPIO_ReadInputDataBit(GPIOA, 5) == 1)
+                    if (GPIO_ReadInputDataBit(GPIOA, 5) == 1)   //TODO: #82 Double check wheter GPIOA 5 and 6 are IN or OUT
                         {
                         GPIO_ResetBits(GPIOA, 5);
                         }
@@ -1050,7 +1050,7 @@ void Output_CRK_GAP_NOT_DET(void){
 void CRK_GAP_NOT_DET_reset(void){
     failure_active_CAM_blank_out = false;
     failure_active = false;      
-    Timer8Init(); //TODO: Refactor the name
+    SysTickInit(); //TODO: Refactor the name
 }    
 
 //## Output_SEG_ADP_ER_LIM
@@ -1103,7 +1103,7 @@ void SEG_ADP_ER_LIM_reset(void){
     failure_passed = false;
     failure_waiting = false;
     Timer4Init();   //TODO: Refactor the name
-    Timer8Init();   //TODO: Refactor the name
+    SysTickInit();   //TODO: Refactor the name
     timer_Counter_SEG_ADP_ER_LIM = 0;
 }    
 

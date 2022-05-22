@@ -304,7 +304,7 @@ int main(void)
 
     Timer4Init();
 
-    SystickInit();
+    SysTickInit();
 
     EXTI8Init();
 

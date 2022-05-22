@@ -155,7 +155,7 @@
 	}
 
 	// ## Timer8 Init **Prescaler: 64; CRK_RUN_OUT/CAM_delay**
-	void SystickInit(void)
+	void SysTickInit(void)
 	{
 		// FCPU with PLL = 73,7 MHz
 		// Fcy: 36,85 MHz
