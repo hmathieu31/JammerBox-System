@@ -540,7 +540,7 @@
 	{	
 		if(CRK_signal == false)
 		{
-			TIM_Cmd(TIM3, ENABLE);//Enable timer 6 (notre timer 1)
+			TIM_Cmd(TIM3, ENABLE);//Enable timer3 (formerly Timer6 on microchip)
 		}
 	}
 
@@ -608,10 +608,24 @@
 						else if(CAM_signal[cam_id] == true && failure_active == false)
 						{
                             if(cam_id == 0){
-                                HAL_GPIO_TogglePin(GPIOA, 5); //Toggle GPIOA5
+                                //Toggle GPIOA5
+                                if (GPIO_ReadOutputDataBit(GPIOA, 5) == 0)
+                                {
+                                    GPIO_SetBits(GPIOA, 5);
+                                } else
+                                {
+                                    GPIO_ResetBits(GPIOA, 5);
+                                }
+                                
                             }else if(cam_id == 1){
-                               HAL_GPIO_TogglePin(GPIOA, 6); //Toggle GPIOA6
-                               //TODO: #76 HAL and stdlib cannot be used together. Either implement a toggle function or use HAL everywhere.
+                               //Toggle GPIOA6
+                                if (GPIO_ReadOutputDataBit(GPIOA, 6) == 0)
+                                {
+                                    GPIO_SetBits(GPIOA, 6);
+                                } else
+                                {
+                                    GPIO_ResetBits(GPIOA, 6);
+                                }
                             }
 						}
 						break;	
@@ -638,11 +652,23 @@
 						else if(CAM_signal[cam_id] == false && failure_active == false)
 						{
                             if(cam_id == 0){
-                                HAL_GPIO_TogglePin(GPIOA, 5);
-                               //TODO: HAL and stdlib cannot be used together. Either implement a toggle function or use HAL everywhere.
+                                // Toggle GPIO5
+                                if (GPIO_ReadOutputDataBit(GPIOA, 5) == 0)
+                                {
+                                    GPIO_SetBits(GPIOA, 5);
+                                } else
+                                {
+                                    GPIO_ResetBits(GPIOA, 5);
+                                }
                             }else if(cam_id == 1){
-                                HAL_GPIO_TogglePin(GPIOA, 6);
-                               //TODO: HAL and stdlib cannot be used together. Either implement a toggle function or use HAL everywhere.
+                                // Toggle GPIO6
+                                if (GPIO_ReadOutputDataBit(GPIOA, 6) == 0)
+                                {
+                                    GPIO_SetBits(GPIOA, 6);
+                                } else
+                                {
+                                    GPIO_ResetBits(GPIOA, 6);
+                                }
                             }
 						}
 						break;	
@@ -668,7 +694,6 @@
 		{
 			double former_teeth_time; 
 			former_teeth_time = Former_teeth_time_calculation(T_TOOTH_RAW, teeth_count_CRK, number_miss_teeth);
-            // TODO #51 : Check If we can get rid of Timer 4 and by what we can replace it 
 			if(((double)Tim5_GetTicks()/former_teeth_time)*revolution_CRK >= (revolution_CRK/2.0))
 			{
                 if(cam_id == 0){
