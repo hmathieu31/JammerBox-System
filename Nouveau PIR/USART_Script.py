@@ -32,7 +32,7 @@ print(usart_message)
 
 ser.write(usart_message.encode())
 sleep(0.03)   
-databuffer = ser.in_waiting()
+databuffer = ser.in_waiting
 if databuffer>0:
     received_data = ser.read(size=64)              #read serial port
     print (received_data)
