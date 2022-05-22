@@ -918,7 +918,6 @@
         Tim5_Stop();
         Tim5_Reset();
 
-		//TODO: #78 There is a deactivation + reset of former timer4 (new software implemented timer) to implement here
         number_processing_edges_CAM_delay[0] = 0;
         number_processing_edges_CAM_delay[1] = 0;
 		timer_active_CAM_delay[0] = false;
