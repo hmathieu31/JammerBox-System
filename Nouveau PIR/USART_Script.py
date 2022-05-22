@@ -30,7 +30,8 @@ for i in range(2,len(sys.argv)):
 usart_message+="%"
 print(usart_message)
 
+ser.write(usart_message.encode())
+sleep(0.03)   
 received_data = ser.readline()              #read serial port
-ser.write(usart_message.encode())   
 
 print (received_data)
