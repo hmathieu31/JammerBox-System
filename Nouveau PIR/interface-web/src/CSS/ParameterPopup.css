@@ -7,11 +7,13 @@ p {
 }
 
 .frame-5 {
-    padding: 14% 5rem;
-    /* background: url(../../public/BackgroundImage.png), linear-gradient(0deg, rgba(255, 255, 255, 1), rgba(255, 255, 255, 1)) fixed;
-    */
-    background: linear-gradient(144deg, #AF40FF, #5B42F3 50%, #00DDEB) 50% 50%;
-    background-size: cover !important;
+    background: url(../../public/BackgroundImage.png), linear-gradient(0deg, rgba(255, 255, 255, 1), rgba(255, 255, 255, 1)) fixed;
+    padding: 20% 10rem;
+    box-sizing: border-box;
+    background-size: 100% 100%;
+    width: 100%;
+    min-width: 20em;
+    height: 100%;
 }
 
 .flex-col-hstart-vstart {
@@ -37,13 +39,15 @@ p {
 
 .test-configuration {
     box-sizing: border-box;
-    background-color: #5B42F3;
+    background: linear-gradient(to bottom right, #EF4765, #FF9A5A);
     width: 100%;
     min-width: 50%;
     box-shadow: 10px 10px 14px 1px rgb(0 0 0 / 20%);
     border: 0;
     border-radius: 8px;
 }
+
+
 
 .group-917 {
     height: 100%;

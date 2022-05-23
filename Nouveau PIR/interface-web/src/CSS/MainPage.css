@@ -34,10 +34,13 @@ p {
 }
 
 .frame-1 {
-    padding: 10% 1rem;
-
     background: url(../../public/BackgroundImage.png), linear-gradient(0deg, rgba(255, 255, 255, 1), rgba(255, 255, 255, 1)) fixed;
-
+    padding: 20% 10rem;
+    box-sizing: border-box;
+    background-size: 100% 100%;
+    width: 100%;
+    min-width: 20em;
+    height: 100%;
 
     /*background: linear-gradient(144deg, #AF40FF, #5B42F3 50%, #00DDEB) 50% 50%;
     */
@@ -53,7 +56,7 @@ p {
     font-size: 6em;
     font-family: Arial, sans-serif;
     font-weight: 700;
-    color: white;
+    color: lightyellow;
     text-align: center;
     word-wrap: break-word;
     padding: 3%;
@@ -68,9 +71,10 @@ p {
     0px 0px 3px rgba(0, 0, 0, .2);
 }
 
+
 .group-6 {
     align-items: center;
-    background-color: #AF40FF;
+    background: linear-gradient(to bottom right, #EF4765, #FF9A5A);
     border: 0;
     border-radius: 8px;
     box-shadow: 10px 10px 14px 1px rgb(0 0 0 / 20%);
@@ -92,7 +96,6 @@ p {
     transition: all 250ms;
     margin: 10px;
 }
-
 
 .group-6:hover {
     transform: scale(1.05);
