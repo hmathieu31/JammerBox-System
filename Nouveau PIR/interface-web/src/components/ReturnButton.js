@@ -1,3 +1,4 @@
+import React from "react";
 import "../CSS/ReturnButton.css";
 import { useNavigate } from "react-router-dom";
 
@@ -9,7 +10,7 @@ function ReturnButton() {
 
   return (
     <div className="flex-col-hstart-vstart topleft">
-      <input
+      <button
         className="arrow-circle-up"
         type="submit"
         value=""
