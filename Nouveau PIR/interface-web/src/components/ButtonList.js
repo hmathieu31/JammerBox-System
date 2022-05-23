@@ -118,7 +118,7 @@ export default class ButtonList extends React.Component {
 
   makeButton = (data, index) => {
     return (
-      <div key={index}>
+      <div className="button-list-item" key={index}>
         <Modal
           isOpen={this.state.showModal}
           className="frame-5"
@@ -148,6 +148,6 @@ export default class ButtonList extends React.Component {
     );
   };
   render() {
-    return <div>{this.Buttons.map(this.makeButton)}</div>;
+    return <div className="button-list-div"> {this.Buttons.map(this.makeButton)}</div>;
   }
 }

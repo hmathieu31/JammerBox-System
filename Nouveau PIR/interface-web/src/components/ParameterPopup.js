@@ -46,10 +46,10 @@ export default class ParameterPopup extends React.Component {
               )}
             </div>
             <div className="group-786 flex-row">
-              <button onClick={handleOpenClose} className="group-6">
+              <button onClick={handleOpenClose} className="group-6-cancel">
                 <p className="txt-637 flex-hcenter">Cancel</p>
               </button>
-              <button onClick={this.props.handleRun} className="group-6">
+              <button onClick={this.props.handleRun} className="group-6-run">
                 <p className="txt-637 flex-hcenter">Run Test</p>
               </button>
             </div>
