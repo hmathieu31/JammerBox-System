@@ -16,10 +16,22 @@
 	void PORT_A_Config(void)
 	{	
 		GPIO_InitTypeDef GPIOA_Struct;
-		GPIO_StructInit(&GPIOA_Struct);
 		GPIOA_Struct.GPIO_Pin=GPIO_Pin_All;
 		GPIOA_Struct.GPIO_Speed=GPIO_Speed_2MHz;
-		GPIOA_Struct.GPIO_Mode=GPIO_Mode_Out_PP;			
+		GPIOA_Struct.GPIO_Mode=GPIO_Mode_Out_PP;
+		GPIO_StructInit(&GPIOA_Struct);
+
+		GPIO_InitTypeDef USART_TX_Struct;
+		USART_TX_Struct.GPIO_Pin = GPIO_Pin_9;
+		USART_TX_Struct.GPIO_Speed=GPIO_Speed_2MHz;
+		USART_TX_Struct.GPIO_Mode=GPIO_Mode_AF_PP;
+		GPIO_StructInit(&USART_TX_Struct);
+
+		GPIO_InitTypeDef USART_RX_Struct;
+		USART_RX_Struct.GPIO_Pin = GPIO_Pin_10;
+		USART_RX_Struct.GPIO_Speed=GPIO_Speed_2MHz;
+		USART_RX_Struct.GPIO_Mode=GPIO_Mode_AIN;
+		GPIO_StructInit(&USART_RX_Struct);
 	}
 	
 	void PORT_B_Config(void)
