@@ -35,7 +35,7 @@
 //** CAM_delay **
 #define edges_beetween_shift_CAM_delay_definition 6
 
-// ### Globas variables ###
+// ### Global variables ###
 
 //***************** CRK ********************
 //** User config **
@@ -712,59 +712,6 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM7_IRQHandler(void)
 /*****************************************************************************/
 /*****************************************************************************/
 
-//## Systick Interrupt
-void __attribute__((__interrupt__, no_auto_psv)) SysTick_Handler (void)
-{
-
-    if (failure_identify == 'i')
-    { // CRK_GAP_NOT_DET
-        timer_Counter_CRK_GAP_NOT_DET++;
-        switch (timer_Counter_CRK_GAP_NOT_DET)
-        {
-        case 1: {
-            GPIO_ResetBits(GPIOA, 4);
-
-            if (sensortype_CRK == 'c')
-            {
-                //§ PR8 = 0x001D;   // 29 * 1.73us = 50.1us
-                SysTick_Config(3600); //? 72MHz*50us
-            }
-            else if (sensortype_CRK == 'h')
-            {
-                SysTick_Config((T_TOOTH_RAW / 2) - 1);
-            }
-            else
-            {
-                SysTick_Config(1);
-            }
-            break;
-        }
-        case 2: {
-            GPIO_SetBits(GPIOA, 4);
-
-            SysTick->CTRL &= ~SysTick_CTRL_ENABLE;
-
-            timer_Counter_CRK_GAP_NOT_DET = 0;
-            failure_active = false;
-            break;
-        }
-        default: {
-            GPIO_SetBits(GPIOA, 4);
-
-            SysTick->CTRL &= ~SysTick_CTRL_ENABLE;
-            timer_Counter_CRK_GAP_NOT_DET = 0;
-            failure_active = false;
-            break;
-        }
-        }
-    }
-    else if (failure_identify == 'j') // SEG_ADP_ER_LIM
-    {
-        Output_CRK_no_failure();
-        SEG_ADP_ER_LIM_reset();
-    }
-    SysTick->VAL = (2^24)-1;  //clear systick count
-}
 //## UART Receive Interrupt
 
 void __attribute__((__interrupt__, no_auto_psv)) USART1_IRQHandler(void)
