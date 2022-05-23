@@ -28,7 +28,6 @@ export default function Configuration() {
 
   const onButtonClickUpload = () => {
     inputFile.current.click();
-    alert.show("Configuration uploaded");
   };
 
   const onButtonClickConf = (conf) => {
@@ -59,25 +58,24 @@ export default function Configuration() {
           };
         }
         sendData(jsonData);
-        alert.show("Configuration succesfully uploaded!")
+        alert.show("Configuration succesfull!");
       }
     };
   };
-  
+
   const onButtonClickRstConf = (conf) => {
     var jsonData;
     return () => {
       if (conf === "RESETCRK") {
         jsonData = { Config: "RESETCRK" };
-      }
-      else if (conf === "RESETCAM") {
+      } else if (conf === "RESETCAM") {
         jsonData = { Config: "RESETCAM" };
       }
-    sendData(jsonData); 
-    alert.show("Configuration succesfully reseted!")
+      sendData(jsonData);
+      alert.show("Configuration succesfully reseted!");
     };
-  }
-  
+  };
+
   const handleFileRead = () => {
     const content = fileReader.result;
     const configs = Object.entries(JSON.parse(content));
@@ -97,6 +95,7 @@ export default function Configuration() {
       fileReader.onloadend = handleFileRead;
       fileReader.readAsText(file);
       console.log(inputFileS);
+      alert.show("Configuration file successfully uploaded!");
     } else {
       alert.show("Oh look, an alert!");
     }
@@ -108,44 +107,47 @@ export default function Configuration() {
         <p className="txt-271 flex-hcenter">Configuration</p>
         {ReturnButton()}
         <div className="configuration-list">
-        <button className="group-6 txt-733" onClick={onButtonClickUpload}>
-          UPLOAD CONFIGS
-        </button>
-        <div>
-          <p className="txt-271">CRK</p>
-        </div>
-        <button className="group-6 txt-733" onClick={onButtonClickConf("CRK")}>
-          CONFIG CRK
-        </button>
-        <button
-          className="group-6 txt-733"
-          onClick={onButtonClickRstConf("RESETCAM")}
-        >
-          RESET CRK CONFIG
-        </button>
-        <input
-          id="myInput"
-          type="file"
-          style={{ display: "none" }}
-          ref={inputFile}
-          onChange={onChangeFile}
-          accept=".json"
-        />
-        <div>
-          <p className="txt-271">CAM</p>
+          <button className="group-6 txt-733" onClick={onButtonClickUpload}>
+            UPLOAD CONFIGS
+          </button>
+          <div>
+            <p className="txt-271">CRK</p>
+          </div>
           <button
             className="group-6 txt-733"
-            onClick={onButtonClickConf("CAM")}
+            onClick={onButtonClickConf("CRK")}
           >
-            CONFIG CAM
+            CONFIG CRK
           </button>
           <button
             className="group-6 txt-733"
             onClick={onButtonClickRstConf("RESETCAM")}
           >
-            RESET CAM CONFIG
+            RESET CRK CONFIG
           </button>
-        </div>
+          <input
+            id="myInput"
+            type="file"
+            style={{ display: "none" }}
+            ref={inputFile}
+            onChange={onChangeFile}
+            accept=".json"
+          />
+          <div>
+            <p className="txt-271">CAM</p>
+            <button
+              className="group-6 txt-733"
+              onClick={onButtonClickConf("CAM")}
+            >
+              CONFIG CAM
+            </button>
+            <button
+              className="group-6 txt-733"
+              onClick={onButtonClickRstConf("RESETCAM")}
+            >
+              RESET CAM CONFIG
+            </button>
+          </div>
         </div>
       </div>
     </>
