@@ -1,3 +1,6 @@
 .POPOSList {
-  margin: 0 auto;
+  display: grid;
+  align-items: center;
+  justify-content: center;
+
 }

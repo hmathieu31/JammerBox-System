@@ -1,0 +1,17 @@
+@startuml
+
+package jbox {
+  class FakeJammerBox {
+    Config read_config()
+    void send(string)
+    void recv()
+
+    void print(data, stream)
+  }
+
+  class Config {
+  }
+}
+
+FakeJammerBox -- Config
+@enduml

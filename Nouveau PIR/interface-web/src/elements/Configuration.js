@@ -78,7 +78,7 @@ export default function Configuration() {
     };
   }
   
-  const handleFileRead = (e) => {
+  const handleFileRead = () => {
     const content = fileReader.result;
     const configs = Object.entries(JSON.parse(content));
     const configDict = Object.assign(
@@ -107,6 +107,7 @@ export default function Configuration() {
       <div className="frame-1">
         <p className="txt-271 flex-hcenter">Configuration</p>
         {ReturnButton()}
+        <div className="configuration-list">
         <button className="group-6 txt-733" onClick={onButtonClickUpload}>
           UPLOAD CONFIGS
         </button>
@@ -144,6 +145,7 @@ export default function Configuration() {
           >
             RESET CAM CONFIG
           </button>
+        </div>
         </div>
       </div>
     </>

@@ -17,15 +17,31 @@ p {
 }
 
 .group-13 {
-  padding: 1em 1em 1em 1em;
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(to bottom right, #EF4765, #FF9A5A);
+  border: 0;
+  border-radius: 8px;
+  box-shadow: 10px 10px 14px 1px rgb(0 0 0 / 20%);
   box-sizing: border-box;
-  background-color: rgba(106, 88, 177, 0.922);
-  width: 556px;
-  height: 120px;
+  color: #FFFFFF;
+  font-family: Arial, sans-serif;
+  font-size: 20px;
+  line-height: 1em;
+  max-width: 100%;
+  min-width: 400px;
+  padding: 19px 24px;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  transition: all 250ms;
+  margin: 10px;
 }
 
 .group-814 {
-  height: 72%;
+  height: 100%;
 }
 
 .group-17 {
@@ -67,15 +83,26 @@ p {
 }
 
 .rectangle-19 {
-  background-color: rgba(225, 18, 18, 1);
-  width: 300px;
+  background-color: #FF9A5A;
+  width: min-content;
+  border-radius: 8px;
   height: 30px;
-  border-radius: 11px;
   align-items: center;
   display: flex;
+  text-transform: lowercase;
+  font-variant: small-caps;
 }
 
 .replay {
   width: 64px;
   height: 70px;
+}
+
+.reload_symbol{
+  cursor: pointer;
+  transition: all 250ms;
+}
+
+.reload_symbol:hover {
+  transform: scale(1.05);
 }

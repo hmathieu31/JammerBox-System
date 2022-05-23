@@ -4,15 +4,31 @@ import "../CSS/ParameterPopup.css";
 import ParameterPopup from "./ParameterPopup";
 import React from "react";
 import Modal from "react-modal";
-import { Provider as AlertProvider } from "react-alert";
-import AlertTemplate from "react-alert-template-basic";
 
-const options = {
-  position: "bottom center",
-  timeout: 5000,
-  offset: "30px",
-  transition: "scale",
-};
+class ButtonAttributes {
+  constructor(name, hasparam, paramsTab, IsSelect) {
+    this.hasParam = hasparam;
+    this.testName = name;
+    this.params = paramsTab;
+    this.isSelect = IsSelect;
+  }
+
+  getHasParam() {
+    return this.hasParam;
+  }
+
+  getParams() {
+    return this.params;
+  }
+
+  getTestName() {
+    return this.testName;
+  }
+
+  getIsSelect() {
+    return this.isSelect;
+  }
+}
 
 export default class ButtonList extends React.Component {
   constructor() {
@@ -24,6 +40,20 @@ export default class ButtonList extends React.Component {
       isSelect: false,
       valueSelect: null,
     };
+    this.Buttons = [
+      new ButtonAttributes("CRK SHORT CIRCUIT", true, "Output Signal", true),
+      new ButtonAttributes("CAM SHORT CIRCUIT", true, "Output Signal", true),
+      new ButtonAttributes("CRK SPK", false, null, false),
+      new ButtonAttributes("CRK RUN OUT", true, "Angle", false),
+      new ButtonAttributes("CRK TOOTH OFF", true, "Teeth off", false),
+      new ButtonAttributes("CRK GAP NOT DET", false, null, false),
+      new ButtonAttributes("CRK SEG ADP ERR LIM", true, "Angle", false),
+      new ButtonAttributes("CRK PULSE DURATION", true, "Duration", false),
+      new ButtonAttributes("CRK POSN ENG STST", true, "Teeth Off", false),
+      new ButtonAttributes("CAM DELAY", true, "°CRK", false),
+      new ButtonAttributes("CAM SPK", false, null, false),
+      new ButtonAttributes("CAM PAT ERR", false, null, false),
+    ];
   }
 
   handleOpenClose(data) {
@@ -45,25 +75,20 @@ export default class ButtonList extends React.Component {
   };
 
   sendData = (jsonData) => {
-    fetch("http://172.20.10.9:8080/run", {
+    fetch("http://192.168.1.92:8080/run", {
       method: "POST",
       mode: "cors",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify(jsonData),
-    }).then(
-      (data) => {
-        console.log(data.status);
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    }).then(() => {
+      console.log("Success with running test");
+    });
   };
 
   runTest = () => {
     var jsonData = {
-      TestName: this.state.testName,
-      TestParameter: this.state?.testParam,
+      TestName: this.state.testName.replace(/\s/g, ""),
+      TestParameter: this.state?.testParam.replace(/\s/g, ""),
       TestValue: this.state.valueSelect,
     };
 
@@ -74,11 +99,7 @@ export default class ButtonList extends React.Component {
 
     this.setState({
       showModal: false,
-      valueSelect: null,
     });
-
-    console.log("Value after sending test parameters");
-    console.log(this.valueSelect);
   };
 
   directRunTest = (data) => {
@@ -97,24 +118,21 @@ export default class ButtonList extends React.Component {
 
   makeButton = (data, index) => {
     return (
-      <div key={index}>
+      <div className="button-list-item" key={index}>
         <Modal
           isOpen={this.state.showModal}
           className="frame-5"
           ariaHideApp={false}
           key={index}
         >
-          <AlertProvider template={AlertTemplate} {...options}>
-            <ParameterPopup
-              handleOpenClose={this.handleOpenClose(data)}
-              handleRun={this.runTest}
-              handleChange={this.changeData}
-              testName={this.state.testName}
-              testParam={this.state.testParam}
-              isSelect={this.state.isSelect}
-              valueSelected={this.state.valueSelect}
-            />
-          </AlertProvider>
+          <ParameterPopup
+            handleOpenClose={this.handleOpenClose(data)}
+            handleRun={this.runTest}
+            handleChange={this.changeData}
+            testName={this.state.testName}
+            testParam={this.state.testParam}
+            isSelect={this.state.isSelect}
+          />
         </Modal>
         <button
           onClick={
@@ -130,6 +148,6 @@ export default class ButtonList extends React.Component {
     );
   };
   render() {
-    return <div>{this.props.buttonList.map(this.makeButton)}</div>;
+    return <div className="button-list-div"> {this.Buttons.map(this.makeButton)}</div>;
   }
 }
