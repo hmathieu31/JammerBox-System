@@ -3,7 +3,7 @@
 /* Programm        :  UART		                                             */
 /* Controller      :  dsPIC33F                                               */
 /* Latest change   :  31.08.2020                                             */
-/* Author          :  Grégoire Chabin/Christian Ringlstetter/Thomas Pichler  */
+/* Author          :  Grï¿½goire Chabin/Christian Ringlstetter/Thomas Pichler  */
 /*****************************************************************************/
 
 #ifndef _UART_H_
@@ -21,7 +21,7 @@
 
 	//### UART Send Function ###
 	
-	void UART_send(char);
+	void USART_send(char);
 
 	//### UART Send Configuration Status Function ###
 	

@@ -6,8 +6,18 @@ import reportWebVitals from "./components/reportWebVitals";
 import MainPage from "./elements/MainPage.js";
 import SynthesizeTests from "./elements/SynthesizeTests.js";
 import UnderConstruction from "./elements/TestsHistorics";
+import Configuration from "./elements/Configuration";
+import TestResult from "./elements/TestResult";
+import { Provider as AlertProvider } from "react-alert";
+import AlertTemplate from "react-alert-template-basic";
 
 const rootElement = document.getElementById("root");
+const options = {
+  position: "bottom center",
+  timeout: 5000,
+  offset: "30px",
+  transition: "scale",
+};
 
 ReactDOM.render(
   <div>
@@ -16,6 +26,21 @@ ReactDOM.render(
         <Route exact path="/" element={<MainPage />} />
         <Route exact path="/synthesize_tests" element={<SynthesizeTests />} />
         <Route exact path="/tests_historics" element={<UnderConstruction />} />
+        <Route
+          exact
+          path="/configuration"
+          element={
+            <AlertProvider template={AlertTemplate} {...options}>
+              <Configuration />
+            </AlertProvider>
+          }
+        />
+        {/* Testing test result */}
+        <Route
+          exact
+          path="/test_result"
+          element={<TestResult name="Testing" />}
+        />
       </Routes>
     </BrowserRouter>
   </div>,

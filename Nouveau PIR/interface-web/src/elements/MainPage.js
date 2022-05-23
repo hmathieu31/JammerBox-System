@@ -13,6 +13,10 @@ function MainPage() {
     navigate("/tests_historics");
   };
 
+  let Configuration_selection = () => {
+    navigate("/configuration");
+  };
+
   return (
     <>
       <div className="frame-1">
@@ -21,6 +25,9 @@ function MainPage() {
           <div className="flex-col">
             <button className="group-6" onClick={Test_selection}>
               <p className="txt-733 flex-hcenter">Synthesize tests</p>
+            </button>
+            <button className="group-6" onClick={Configuration_selection}>
+              <p className="txt-733 flex-hcenter">Configuration</p>
             </button>
             <button className="group-6" onClick={History_selection}>
               <p className="txt-733 flex-hcenter">Test historics</p>
