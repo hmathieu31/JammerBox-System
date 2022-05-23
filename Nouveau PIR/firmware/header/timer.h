@@ -12,7 +12,7 @@
 // ### Functions ###
 
 	// Set period of Systick timer
-	float Systick_SetPeriod(float);
+	void Systick_SetPeriod(float);
 	// ## Timer2 Init **Prescaler: 64; CRK Synchronization; tooth time** 
 
 	void TIM1Init(void);

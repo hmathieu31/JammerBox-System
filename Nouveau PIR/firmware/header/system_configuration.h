@@ -11,19 +11,22 @@
 
 //### CRK Configuration Function ###	
 
-	void CRK_configuration(void);
+void CRK_configuration(void);
 
 //### CAM_CRK Configuration Function ###
 
-	void CAM_CRK_configuration(void);
+void CAM_CRK_configuration(void);
 
 //### CAM Configuration Function ###
 
-	void CAM_configuration(void);
+void CAM_configuration(void);
 
 //### Input Signal Observation ###
 
-	void Input_signal_observe(bool);
+void Input_signal_observe( bool);
+
+//### Configuration of Clock Trees for all peripherals ###
+void Config_clock_tree(void);
 
 #endif
 /*****************************************************************************/

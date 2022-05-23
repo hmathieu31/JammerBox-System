@@ -241,7 +241,7 @@
 						USART_send(message[6]);
 		
 						//Reset actual failure scenarios
-						Failure_synch_reset(failure_identify);
+						failure_synch_reset(failure_identify);
 	
 						edge_position_counter_CAM[0] = 0;
 						edge_validation_counter_CAM[0] = 0;
@@ -662,9 +662,6 @@
         CRK_CAM_synch[1] = false;
         teeth_count_overall=0;
 
-		//Reset failure secenarios
-		Failure_reset(); //!Wasn't implemented in old PIR
-
 		//Output signal level treatment
 		output_level_setting = false;
 
@@ -706,9 +703,6 @@
 		CRK_synch_temp = false;
         teeth_count_overall=0;
 
-		//Reset failure secenarios
-		Failure_reset();
-
 		//Output signal level treatment
 		output_level_setting = false;
 
@@ -746,9 +740,6 @@
 		}
 
 		CRK_CAM_synch[camId] = false;
-
-		//Reset failure secenarios
-		Failure_reset();
 
 		//Output signal level treatment
 		output_level_setting = false;
