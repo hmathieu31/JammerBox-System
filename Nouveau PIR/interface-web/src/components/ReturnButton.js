@@ -10,7 +10,7 @@ function ReturnButton() {
 
   return (
     <div className="flex-col-hstart-vstart topleft">
-      <input
+      <button
         className="arrow-circle-up"
         type="submit"
         value=""

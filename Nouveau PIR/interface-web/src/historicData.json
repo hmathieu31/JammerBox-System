@@ -11,9 +11,27 @@
     "Tests 2" : 
     {
       "id": 2,
-      "test_name": "CRK RUN OUT",
-      "date": "13/05/22",
-      "parametre": "Angle = 5",
+      "test_name": "CAM SHORT CIRCUIT",
+      "date": "16/05/22",
+      "parametre": "Output Signal = Battery",
+      "result": "failure"  
+    },
+    
+    "Tests 3" : 
+    {
+      "id": 3,
+      "test_name": "CRK PULSE DURATION",
+      "date": "16/05/22",
+      "parametre": "Duration = 10",
+      "result": "success"  
+    },
+
+    "Tests 4" : 
+    {
+      "id": 4,
+      "test_name": "CRK GAP NOT DET",
+      "date": "16/05/22",
+      "parametre": "None",
       "result": "success"  
     } 
 }
