@@ -16,6 +16,7 @@
 	#include "uart.h"
 	#include "failures.h"
 	#include "stm32f10x_tim.h"
+	#include "Tim5.h"
 
 // ### Variables ###
 
@@ -597,8 +598,7 @@
 	{
         TIM1Reset();
 		TIM2Reset();
-//		Timer4Reset(); 	// TODO: Either these functions are to be removed or they must be implemented in the source file.
-//		Timer5Reset();
+		Tim5_Reset();
 
 		//check all IC-buffers for overflow
 		IC_overflow_check();
