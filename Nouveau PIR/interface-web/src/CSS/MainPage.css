@@ -34,12 +34,13 @@ p {
 }
 
 .frame-1 {
-    padding: 21% 15rem;
-    /* background: url(../../public/BackgroundImage.png), linear-gradient(0deg, rgba(255, 255, 255, 1), rgba(255, 255, 255, 1)) fixed;
+    padding: 10% 1rem;
+
+    background: url(../../public/BackgroundImage.png), linear-gradient(0deg, rgba(255, 255, 255, 1), rgba(255, 255, 255, 1)) fixed;
+
+
+    /*background: linear-gradient(144deg, #AF40FF, #5B42F3 50%, #00DDEB) 50% 50%;
     */
-
-    background: linear-gradient(144deg, #AF40FF, #5B42F3 50%, #00DDEB) 50% 50%;
-
 }
 
 .group-19 {
@@ -127,6 +128,12 @@ p {
 
 .button-list-item {
     display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.configuration-list {
+    display: grid;
     align-items: center;
     justify-content: center;
 }
