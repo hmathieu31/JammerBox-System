@@ -41,15 +41,20 @@ export default class ButtonList extends React.Component {
       mode: "cors",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify(jsonData),
-    }).then(() => {
-      console.log("Success with running test");
-    });
+    }).then(
+      (data) => {
+        console.log(data.status);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   };
 
   runTest = () => {
     var jsonData = {
-      TestName: this.state.testName.replace(/\s/g, ""),
-      TestParameter: this.state?.testParam.replace(/\s/g, ""),
+      TestName: this.state.testName,
+      TestParameter: this.state?.testParam,
       TestValue: this.state.valueSelect,
     };
 
