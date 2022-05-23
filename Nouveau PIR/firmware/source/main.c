@@ -502,68 +502,31 @@ void __attribute__((__interrupt__, no_auto_psv)) EXTI4_15_IRQHANDLER()
 }
 
 
-//## Timer 1 Interrupt: Communication validation
+//## Timer 1 Interrupt CRK tooth time (previously timer2)
 
 void __attribute__((__interrupt__, no_auto_psv)) TIM1_IRQHandler(void)
-{
-    if (communication_active == true)
-    {
-        USART_send(message[11]);
-
-        if (communication_validation == true)
-        {
-            if (communication_ready == true)
-            {
-                communication_ready = false;
-            }
-            else
-            {
-                failure_identify = '0';
-                configuration_complete = false;
-                CRK_config = false;
-                CAM_config = false;
-                communication_active = false;
-                communication_validation = false;               
-                TIM_Cmd(TIM1, DISABLE); //Stop timer1
-                TIM_SetCounter(TIM1, 0);
-                Stalling_detection();
-            }
-        }
-
-        if (communication_active == true)
-        {
-            communication_validation = !communication_validation;
-        }
-    }
-
-     TIM_ClearFlag(TIM1, TIM_FLAG_Update); // Clear Timer1 Interrupt Flag
-}
-
-//## Timer 2 Interrupt CRK tooth time
-
-void __attribute__((__interrupt__, no_auto_psv)) TIM2_IRQHandler(void)
 {
 
     // all overflows between the events
     timer_overflow_CRK++;
 
-    TIM_ClearFlag(TIM2, TIM_FLAG_Update);
+    TIM_ClearFlag(TIM1, TIM_FLAG_Update);
 }
 
-//## Timer 3 Interrupt CAM tooth time
+//## Timer 2 Interrupt CAM tooth time (previously timer3)
 
-void __attribute__((__interrupt__, no_auto_psv)) TIM3_IRQHandler(void)
+void __attribute__((__interrupt__, no_auto_psv)) TIM2_IRQHandler(void)
 {
 
     // all overflows between the events
     // test
     timer_overflow_CAM++;
 
-    TIM_ClearFlag(TIM3, TIM_FLAG_Update);
+    TIM_ClearFlag(TIM2, TIM_FLAG_Update);
 }
-//## Timer 6 Interrupt: CAM_PER - start value
+//## Timer 3 Interrupt: CAM_PER - start value
 
-void __attribute__((__interrupt__, no_auto_psv)) TIM6_IRQHandler(void)
+void __attribute__((__interrupt__, no_auto_psv)) TIM3_IRQHandler(void)
 {
 
     if (failure_identify == '5')
@@ -619,9 +582,9 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM6_IRQHandler(void)
     TIM_ClearFlag(TIM3, TIM_FLAG_Update); // Clear Timer6 Interrupt Flag
 }
 
-//## Timer 7 Interrupt: CAM_PER - pulse duration
+//## Timer 4 Interrupt: CAM_PER - pulse duration
 
-void __attribute__((__interrupt__, no_auto_psv)) TIM7_IRQHandler(void)
+void __attribute__((__interrupt__, no_auto_psv)) TIM4_IRQHandler(void)
 {
 
     if (failure_identify == '5') // CAM_PER --> Cam_Spk
@@ -817,13 +780,6 @@ void __attribute__((__interrupt__, no_auto_psv)) USART1_IRQHandler(void)
     USART_ReceiveData(USART1);
 }
 
-//## Default Interrupt
-
-void __attribute__((__interrupt__, no_auto_psv)) _DefaultInterrupt(void)
-{
-    while (1)
-        ;
-}
 
 /*****************************************************************************/
 /*****************************************************************************/
