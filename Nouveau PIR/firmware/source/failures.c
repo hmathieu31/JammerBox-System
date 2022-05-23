@@ -18,7 +18,6 @@
     #include "stm32f10x_tim.h"
 
 // ### Program includes ###
-    #include "config.h"
 	#include "failures.h"
 	#include "timer.h"
     #include "synchronization.h"
