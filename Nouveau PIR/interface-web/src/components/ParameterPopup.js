@@ -1,6 +1,9 @@
 import React from "react";
+import { withAlert } from "react-alert";
+import { show } from "react-modal/lib/helpers/ariaAppHider";
 
-export default class ParameterPopup extends React.Component {
+class ParameterPopup extends React.Component {
+
   options = [
     {
       label: "Ground",
@@ -12,8 +15,16 @@ export default class ParameterPopup extends React.Component {
     },
   ];
 
+  invalidParameterSel = (func) => {
+    return () => {
+      this.props.alert.show(func);
+    }
+
+  }
+
   render() {
     const { handleOpenClose } = this.props;
+    const alert = this.props.alert;
     return (
       <div className="test-configuration flex-col-hstart-vstart clip-contents">
         <div className="group-917 flex-col-hcenter">
@@ -49,7 +60,11 @@ export default class ParameterPopup extends React.Component {
               <button onClick={handleOpenClose} className="group-6">
                 <p className="txt-637 flex-hcenter">Cancel</p>
               </button>
-              <button onClick={this.props.handleRun} className="group-6">
+              <button onClick={(this.props.valueSelected === null || this.props.valueSelected == 0) ?
+                this.invalidParameterSel("Invalid Parameter") :
+                this.props.handleRun 
+                } 
+                className="group-6">
                 <p className="txt-637 flex-hcenter">Run Test</p>
               </button>
             </div>
@@ -59,3 +74,5 @@ export default class ParameterPopup extends React.Component {
     );
   }
 }
+
+export default withAlert()(ParameterPopup)
