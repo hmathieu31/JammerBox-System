@@ -74,7 +74,11 @@ export default class ButtonList extends React.Component {
 
     this.setState({
       showModal: false,
+      valueSelect: null,
     });
+
+    console.log("Value after sending test parameters");
+    console.log(this.valueSelect);
   };
 
   directRunTest = (data) => {
@@ -108,6 +112,7 @@ export default class ButtonList extends React.Component {
               testName={this.state.testName}
               testParam={this.state.testParam}
               isSelect={this.state.isSelect}
+              valueSelected={this.state.valueSelect}
             />
           </AlertProvider>
         </Modal>
