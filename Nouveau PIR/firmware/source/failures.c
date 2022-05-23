@@ -159,7 +159,7 @@
 //### Functions ###
 
 //## Output Function CRK
-	void Output_CRK(char failure_ident)  //processed at each CRK edge
+	void output_CRK(char failure_ident)  //processed at each CRK edge
 	{
 		switch(failure_ident)
 		{
@@ -177,12 +177,12 @@
 				}
 			case '4': //CRK_RUN_OUT
 				{
-					Output_CRK_RUN_OUT();
+					output_CRK_RUN_OUT();
 					break; 
 				}
 			case '6': //CRK_TOOTH_PER
 				{
-					Output_CRK_TOOTH_PER();
+					output_CRK_TOOTH_PER();
 					
 					break; 
 				}
@@ -224,32 +224,32 @@
 				}         
             case 'h': //CRK_TOOTH_OFF
 				{
-					Output_CRK_TOOTH_OFF();
+					output_CRK_TOOTH_OFF();
 					break;
 				}
             case 'i': //CRK_GAP_NOT_DET
 				{
-                    Output_CRK_GAP_NOT_DET(); 
+                    output_CRK_GAP_NOT_DET(); 
 					break;
 				}  
             case 'j': //SEG_ADP_ER_LIM
 				{
-                    Output_SEG_ADP_ER_LIM();
+                    output_SEG_ADP_ER_LIM();
 					break;
 				}   
             case 'k': //CRK_pulse_duration
 				{
-                    Output_CRK_pulse_duration();
+                    output_CRK_pulse_duration();
 					break;
 				}  
             case 'l': //POSN_ENG_STST
 				{
-                    Output_POSN_ENG_STST();
+                    output_POSN_ENG_STST();
 					break;
 				}     
             case 'm': //SC_CAM_CRK
 				{
-                    Output_SC_CAM_CRK(active_cam_failure);
+                    output_SC_CAM_CRK(active_cam_failure);
 					break; 
 				}   
 			default: 
@@ -258,7 +258,7 @@
 	}
 	
 //## Output Function CAM
-	void Output_CAM(char failure_ident, int cam_id)
+	void output_CAM(char failure_ident, int cam_id)
 	{
         if ((cam_id == active_cam_failure) || active_cam_failure == 2 )
         {
@@ -266,38 +266,38 @@
             {
                 case '0': //NO_FAILURE
                     {
-                        Output_CAM_no_failure(cam_id); //no failure to be put out on CAM 
+                        output_CAM_no_failure(cam_id); //no failure to be put out on CAM 
                         break; 
                     }	
                 case '1': //CRK_NO_SIG
                     {	
-                        Output_CAM_no_failure(cam_id); //no failure to be put out on CAM 
+                        output_CAM_no_failure(cam_id); //no failure to be put out on CAM 
                         break; 
                     }
                 case '2': //CAM_NO_SIG
                     {
-                        Output_CAM_no_failure(cam_id);
+                        output_CAM_no_failure(cam_id);
                         break; 
                     }
                 case '3': //CRK/CAM_NO_SIG
                     {
-                        Output_CAM_no_failure(cam_id);
+                        output_CAM_no_failure(cam_id);
                         break; 
                     }
                 case '4': //CRK_RUN_OUT
                     {
-                        Output_CAM_no_failure(cam_id); //no failure to be put out on CAM 
+                        output_CAM_no_failure(cam_id); //no failure to be put out on CAM 
                         break; 
                     }
                 case '5': //CAM_PER
                     { 		
-                        Output_CAM_no_failure(cam_id);
-                        Output_CAM_PER(cam_id);
+                        output_CAM_no_failure(cam_id);
+                        output_CAM_PER(cam_id);
                         break; 
                     }
                 case '6': //CRK_TOOTH_PER
                     {
-                        Output_CAM_no_failure(cam_id); //no failure to be put out on CAM 
+                        output_CAM_no_failure(cam_id); //no failure to be put out on CAM 
                         break; 
                     }
                 case '7': //
@@ -306,7 +306,7 @@
                     }
                 case '8': //CAM_PAT_ERR
                     {				
-                        Output_CAM_PAT_ERR(cam_id);
+                        output_CAM_PAT_ERR(cam_id);
                         break;
                     }
                 case '9': //CAM_SYN_CRK
@@ -320,42 +320,42 @@
                     }
                 case 'b': //CRK_SHO_LEVEL
                     {				
-                        Output_CAM_no_failure(cam_id); //no failure to be put out on CAM 
+                        output_CAM_no_failure(cam_id); //no failure to be put out on CAM 
                         break;
                     }
                 case 'f': //CRK_TOOTH_NR
                     {
-                        Output_CAM_no_failure(cam_id); //no failure to be put out on CAM 
+                        output_CAM_no_failure(cam_id); //no failure to be put out on CAM 
                         break; 
                     }
                 case 'h': //CRK_TOOTH_OFF
                     {
-                        Output_CAM_no_failure(cam_id);
+                        output_CAM_no_failure(cam_id);
                         break;
                     }
                 case 'i': //CRK_Gap_Not_Det
                     {
-                        Output_CAM_no_failure(cam_id);
+                        output_CAM_no_failure(cam_id);
                         break;
                     } 
                 case 'j': //SEG_ADP_ER_LIM
                     {
-                        Output_CAM_no_failure(cam_id);
+                        output_CAM_no_failure(cam_id);
                         break;
                     }  
                 case 'k': //CRK_pulse_duration
                     {
-                        Output_CAM_no_failure(cam_id);
+                        output_CAM_no_failure(cam_id);
                         break;
                     }  
                 case 'l': //POSN_ENG_STST
                     {
-                        Output_CAM_no_failure(cam_id);
+                        output_CAM_no_failure(cam_id);
                         break;
                     }          
                 case 'm': //SC_CAM_CRK
                     {
-                        Output_SC_CAM_CRK(cam_id);
+                        output_SC_CAM_CRK(cam_id);
                         break;
                     }
                 default: 
@@ -365,7 +365,7 @@
         }
         else
         {         
-            Output_CAM_no_failure(cam_id); //no failure to be put out on CAM 
+            output_CAM_no_failure(cam_id); //no failure to be put out on CAM 
         }
 	}
 
@@ -375,7 +375,7 @@
      * This simply consists in reproducing the CRK signal as is.
      *
      */
-	void Output_CRK_no_failure(void)
+	void output_CRK_no_failure(void)
 	{		
 		if(CRK_signal == true)
 		{
@@ -389,7 +389,7 @@
 
 
 //## Output_CAM no Failure Function
-	void Output_CAM_no_failure(int cam_id) 
+	void output_CAM_no_failure(int cam_id) 
 	{
 		if(CAM_signal[cam_id] == true)
 		{
@@ -413,7 +413,7 @@
 
 
 //### Output CRK: RUN_OUT ###
-	void Output_CRK_RUN_OUT(void)
+	void output_CRK_RUN_OUT(void)
 	{
         if(CRK_signal == true)
         {
@@ -451,7 +451,7 @@
                     failure_passed = false;
             }
             teeth_counter_CRK_RUN_OUT = 1;
-            Output_CRK_no_failure();
+            output_CRK_no_failure();
         }
         else
         {
@@ -462,7 +462,7 @@
                failure_active = true; 
             }
             else{}
-            Output_CRK_no_failure();
+            output_CRK_no_failure();
         }
 	}
 
@@ -476,7 +476,7 @@
 
 
 //## Output CAM: CAM_PER
-	void Output_CAM_PER(int cam_id)
+	void output_CAM_PER(int cam_id)
 	{
 		if(active_edges_CAM_PER == 'b')
 		{
@@ -537,7 +537,7 @@
 
 
 //## Output CRK: CRK_TOOTH_PER
-	void Output_CRK_TOOTH_PER(void)
+	void output_CRK_TOOTH_PER(void)
 	{	
 		if(CRK_signal == false)
 		{
@@ -582,7 +582,7 @@
 						}
 						else
 						{
-							Output_CAM_no_failure(cam_id);
+							output_CAM_no_failure(cam_id);
 						}
 
 						break;		
@@ -603,7 +603,7 @@
 							}
 							else
 							{
-								Output_CAM_no_failure(cam_id);
+								output_CAM_no_failure(cam_id);
 							}					
 						}
 						else if(CAM_signal[cam_id] == true && failure_active == false)
@@ -647,7 +647,7 @@
 							}
 							else
 							{
-								Output_CAM_no_failure(cam_id);
+								output_CAM_no_failure(cam_id);
 							}
 						}
 						else if(CAM_signal[cam_id] == false && failure_active == false)
@@ -676,14 +676,14 @@
 					}
 				default:
 					{
-						Output_CAM_no_failure(cam_id);
+						output_CAM_no_failure(cam_id);
 						break;	
 					}
 			}	
 		}
 		else
 		{
-			Output_CAM_no_failure(cam_id);
+			output_CAM_no_failure(cam_id);
 		}
 	}
 
@@ -694,7 +694,7 @@
 		if(tim5_Counting)
 		{
 			double former_teeth_time; 
-			former_teeth_time = Former_teeth_time_calculation(T_TOOTH_RAW, teeth_count_CRK, number_miss_teeth);
+			former_teeth_time = former_teeth_time_calculation(T_TOOTH_RAW, teeth_count_CRK, number_miss_teeth);
 			if(((double)Tim5_GetCounter()/former_teeth_time)*revolution_CRK >= (revolution_CRK/2.0))
 			{
                 if(cam_id == 0){
@@ -727,7 +727,7 @@
 			interrupt_check_CAM_delay[cam_id] = false;
 			
 			double former_teeth_time; 
-			former_teeth_time = Former_teeth_time_calculation(T_TOOTH_RAW, teeth_count_CRK, number_miss_teeth);
+			former_teeth_time = former_teeth_time_calculation(T_TOOTH_RAW, teeth_count_CRK, number_miss_teeth);
 
 			if(((double)SysTick->VAL/former_teeth_time) * revolution_CRK >= (delay_angle_CAM_delay * delay_factor_CAM_delay))
 			{
@@ -770,7 +770,7 @@
 			int count = 0;
 
 			double former_teeth_time; 
-			former_teeth_time = Former_teeth_time_calculation(T_TOOTH_RAW, teeth_count_CRK, number_miss_teeth);
+			former_teeth_time = former_teeth_time_calculation(T_TOOTH_RAW, teeth_count_CRK, number_miss_teeth);
 
 			for(i = 0; i < edges_beetween_shift_CAM_delay; i++)
 			{
@@ -862,7 +862,7 @@
 				i = 0;
 			
 				double former_teeth_time; 
-				former_teeth_time = Former_teeth_time_calculation_output(T_TOOTH_RAW, teeth_count_CRK, number_miss_teeth);
+				former_teeth_time = former_teeth_time_calculation_output(T_TOOTH_RAW, teeth_count_CRK, number_miss_teeth);
 
 				for(i = 0; i < edges_beetween_shift_CAM_delay; i++)
 				{
@@ -945,7 +945,7 @@
 
 
 //##Output_CRK_TOOTH_OFF
-void Output_CRK_TOOTH_OFF(void){
+void output_CRK_TOOTH_OFF(void){
     
     number_teeth_between_tooth_off = number_teeth_between_gaps / number_tooth_off;
 
@@ -997,7 +997,7 @@ void Output_CRK_TOOTH_OFF(void){
             }
             else
             {
-                Output_CRK_no_failure();
+                output_CRK_no_failure();
             }
  
         }
@@ -1014,7 +1014,7 @@ void CRK_TOOTH_OFF_reset(void)
 }
 
 //##Output_CRK_GAP_NOT_DET
-void Output_CRK_GAP_NOT_DET(void){
+void output_CRK_GAP_NOT_DET(void){
     
     if(CRK_signal == true)
     {
@@ -1034,7 +1034,7 @@ void Output_CRK_GAP_NOT_DET(void){
     }
     else if(CRK_synch == true)
     {
-        Output_CRK_no_failure();  
+        output_CRK_no_failure();  
         
         if((teeth_counter_CRK_GAP_NOT_DET == number_teeth_between_gaps ) && failure_active == false)
         {
@@ -1057,7 +1057,7 @@ void CRK_GAP_NOT_DET_reset(void){
 }    
 
 //## Output_SEG_ADP_ER_LIM
-void Output_SEG_ADP_ER_LIM(void){
+void output_SEG_ADP_ER_LIM(void){
     if(CRK_signal == true)
     {
         if(teeth_count_CRK != number_teeth_between_gaps)
@@ -1088,7 +1088,7 @@ void Output_SEG_ADP_ER_LIM(void){
         }
     }
     else{
-        Output_CRK_no_failure();   
+        output_CRK_no_failure();   
     }
     
     if ( teeth_counter_SEG_ADP_ER_LIM == (( (720 / (number_segments_CRK * revolution_CRK) )  + (first_seg_angle / revolution_CRK )+ (int)(tdc_to_gap / revolution_CRK) + 1)))
@@ -1111,7 +1111,7 @@ void SEG_ADP_ER_LIM_reset(void){
 }    
 
 //## Output_CRK_pulse_duration
-void Output_CRK_pulse_duration(void){
+void output_CRK_pulse_duration(void){
     if(CRK_signal == false){
         TIM_Cmd(TIM4, ENABLE); //start the timer4 (formerly TIM7 on microchip)
         GPIO_ResetBits(GPIOG, 4); 
@@ -1125,7 +1125,7 @@ void CRK_pulse_duration_reset(void){
 } 
 
 //## Output_POSN_ENG_STST
-void Output_POSN_ENG_STST(void){
+void output_POSN_ENG_STST(void){
     
     if((CRK_signal == false) && (failure_active == true)){
         counter_POSN_ENG_STST ++; // counte the teeth'
@@ -1138,7 +1138,7 @@ void Output_POSN_ENG_STST(void){
         }
     }
     else if (failure_active == false){
-    Output_CRK_no_failure();
+    output_CRK_no_failure();
     }
 }
 
@@ -1150,7 +1150,7 @@ void POSN_ENG_STST_reset(void){
     
  //## Output_CAM_PAT_ERR    
     
-void Output_CAM_PAT_ERR(int cam_id){
+void output_CAM_PAT_ERR(int cam_id){
     switch(active_CAM_edges[cam_id])
 	{
         case 'b':
@@ -1180,7 +1180,7 @@ void Output_CAM_PAT_ERR(int cam_id){
             }
             else
             {
-                Output_CAM_no_failure(cam_id);
+                output_CAM_no_failure(cam_id);
             }
             break;
         }
@@ -1201,7 +1201,7 @@ void Output_CAM_PAT_ERR(int cam_id){
                 }
                 else
                 {
-                    Output_CAM_no_failure(cam_id);
+                    output_CAM_no_failure(cam_id);
                 }
             }             
             break;
@@ -1223,7 +1223,7 @@ void Output_CAM_PAT_ERR(int cam_id){
                 }
                 else
                 {
-                    Output_CAM_no_failure(cam_id);
+                    output_CAM_no_failure(cam_id);
                 }
             }    
             break;
@@ -1236,13 +1236,13 @@ void Output_CAM_PAT_ERR(int cam_id){
 void CAM_PAT_ERR_reset(){
     active_CAM_edges_counter[0] = 0; // reset counter for CAM1
     active_CAM_edges_counter[1] = 0; // reset counter for CAM2
-    Output_CAM_no_failure(0); // reset CAM1
-    Output_CAM_no_failure(1); // reset CAM2
+    output_CAM_no_failure(0); // reset CAM1
+    output_CAM_no_failure(1); // reset CAM2
 }
 
 
 //## Output_SC_CAM_CRK
-void Output_SC_CAM_CRK(int cam_id){
+void output_SC_CAM_CRK(int cam_id){
     
     if(failure_active == true)
     {
@@ -1251,13 +1251,13 @@ void Output_SC_CAM_CRK(int cam_id){
             case(1): // CrkScg
             {   
                 GPIO_ResetBits(GPIOA, 4); 
-                Output_CAM_no_failure(cam_id); 
+                output_CAM_no_failure(cam_id); 
                 break;
             }
             case(2): // CrkScb
             {
                 GPIO_SetBits(GPIOA, 4);  
-                Output_CAM_no_failure(cam_id);
+                output_CAM_no_failure(cam_id);
                 break;
             }
             case(3): // CamScg
@@ -1268,7 +1268,7 @@ void Output_SC_CAM_CRK(int cam_id){
                 else{
                    GPIO_ResetBits(GPIOA, 6); 
                 }  
-                Output_CRK_no_failure();
+                output_CRK_no_failure();
                 break;
             }
             case(4): // CamScb
@@ -1279,28 +1279,28 @@ void Output_SC_CAM_CRK(int cam_id){
                 else{
                    GPIO_SetBits(GPIOA, 6);  
                 } 
-                Output_CRK_no_failure();
+                output_CRK_no_failure();
                 break;
             }                                    
         }
     }
     else if (failure_active == false){
-    Output_CRK_no_failure();
-    Output_CAM_no_failure(cam_id);
+    output_CRK_no_failure();
+    output_CAM_no_failure(cam_id);
     }
 }
 
 //## POSN_ENG_STST_LOSS_reset
 void SC_CAM_CRK_reset(void){
     failure_active = false;
-    Output_CRK_no_failure();
-    Output_CAM_no_failure(0); // reset CAM1
-    Output_CAM_no_failure(1); // reset CAM2
+    output_CRK_no_failure();
+    output_CAM_no_failure(0); // reset CAM1
+    output_CAM_no_failure(1); // reset CAM2
 }
 
 
 //### Failure Processing ###
-	void Failure_processing(char failure_ident)
+	void failure_processing(char failure_ident)
 	{
 		switch(failure_ident)
 		{
@@ -1386,14 +1386,8 @@ void SC_CAM_CRK_reset(void){
 		}
 	}
 
-
-//### Failure Reset ###
-	void Failure_reset(void)
-	{
-   	}
-
 //### Failure Synchronization Reset ###
-	void Failure_synch_reset(char failure_ident)
+	void failure_synch_reset(char failure_ident)
 	{
 		switch(failure_ident)
 		{	
@@ -1422,7 +1416,7 @@ void SC_CAM_CRK_reset(void){
 	}
 
 //### Former teeth time calculation ###
-	double Former_teeth_time_calculation(long t_tooth, unsigned int teeth_count, int numb_miss_teeth)
+	double former_teeth_time_calculation(long t_tooth, unsigned int teeth_count, int numb_miss_teeth)
 	{
 		double form_teeth_time;
 		
@@ -1437,7 +1431,7 @@ void SC_CAM_CRK_reset(void){
 	}
 
 //### Former teeth time calculation output ###
-	double Former_teeth_time_calculation_output(long t_tooth, unsigned int teeth_count, int numb_miss_teeth)
+	double former_teeth_time_calculation_output(long t_tooth, unsigned int teeth_count, int numb_miss_teeth)
 	{
 		double form_teeth_time;
 		

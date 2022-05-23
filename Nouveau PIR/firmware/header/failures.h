@@ -11,23 +11,23 @@
 
 //### Output_CRK Function in case of no failure ###
 
-	void Output_CRK_no_failure(void);
+	void output_CRK_no_failure(void);
 
 //### Output_CAM Function in case of no failure ###
 
-	void Output_CAM_no_failure(int);
+	void output_CAM_no_failure(int);
 
 //### Output_CRK Function ###
 
-	void Output_CRK(char);
+	void output_CRK(char);
 
 //### Output_CAM Function ###
 
-	void Output_CAM(char ,int);
+	void output_CAM(char ,int);
 
 //### Failure Processing ###
 
-	void Failure_processing(char);
+	void failure_processing(char);
 
 //### CRK_RUN_OUT ###
 	
@@ -35,7 +35,7 @@
 
 //### Output CRK_RUN_OUT ###
  	
-	void Output_CRK_RUN_OUT(void);
+	void output_CRK_RUN_OUT(void);
 
 //### CRK_RUN_OUT_reset ###
 
@@ -43,7 +43,7 @@
 
 //## Output CAM: CAM_PER
 
-	void Output_CAM_PER(int);
+	void output_CAM_PER(int);
 
 //## CAM_PER_reset
 
@@ -51,7 +51,7 @@
 
 //## Output CRK: CAM_CRK_TOOTH_PER
 
-	void Output_CRK_TOOTH_PER(void);
+	void output_CRK_TOOTH_PER(void);
 
 //## CRK_TOOTH_PER
 
@@ -63,7 +63,7 @@
      
 //## Output_CRK_TOOTH_OFF
 
-    void Output_CRK_TOOTH_OFF(void);
+    void output_CRK_TOOTH_OFF(void);
 
 //## CRK_TOOTH_OFF_reset
     
@@ -72,7 +72,7 @@
     
 //## Output_CRK_GAP_NOT_DET
     
-    void Output_CRK_GAP_NOT_DET(void);
+    void output_CRK_GAP_NOT_DET(void);
 
 //## CRK_GAP_NOT_DET_reset
     
@@ -81,7 +81,7 @@
     
 //## Output_SEG_ADP_ER_LIM
     
-    void Output_SEG_ADP_ER_LIM(void);
+    void output_SEG_ADP_ER_LIM(void);
 
 //## SEG_ADP_ER_LIM_reset
     
@@ -90,7 +90,7 @@
     
 //## Output_CRK_PLS_ORNG
     
-    void Output_CRK_pulse_duration(void);
+    void output_CRK_pulse_duration(void);
 
 //## CRK_PLS_ORNG_reset
     
@@ -99,7 +99,7 @@
     
 //## Output_POSN_ENG_STST
     
-    void Output_POSN_ENG_STST(void);
+    void output_POSN_ENG_STST(void);
 
 //## POSN_ENG_STST_reset
     
@@ -107,7 +107,7 @@
     
 //## Output_SC_CAM_CRK
     
-    void Output_SC_CAM_CRK(int);
+    void output_SC_CAM_CRK(int);
 
 //## SC_CAM_CRK_reset
     
@@ -115,7 +115,7 @@
     
  //## Output_CAM_PAT_ERR    
     
-    void Output_CAM_PAT_ERR(int);
+    void output_CAM_PAT_ERR(int);
     
  //## CAM_PAT_ERR_reset   
     
@@ -140,19 +140,19 @@
 
 //### Failure Reset ###
 
-	void Failure_reset(void);
+	void failure_reset(void);
 
 //### Failure Synchronization Reset ###
 
-	void Failure_synch_reset(char);
+	void failure_synch_reset(char);
 
 //### Former teeth time calculation ###
 
-	double Former_teeth_time_calculation(long, unsigned int, int);
+	double former_teeth_time_calculation(long, unsigned int, int);
 
 //### Former teeth time calculation output ###
 
-	double Former_teeth_time_calculation_output(long, unsigned int, int);
+	double former_teeth_time_calculation_output(long, unsigned int, int);
 
 #endif
 /*****************************************************************************/

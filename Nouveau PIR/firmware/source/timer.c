@@ -25,7 +25,7 @@ extern unsigned long timer_overflow_CAM_REF_CRK;
 
 // ### Functions ###
 // Returns the computed value, 0 if impossible
-float Systick_SetPeriod(float Duration_us) {
+void Systick_SetPeriod(float Duration_us) {
     vu32 Nb_Reload;
     float Nb_Reload_Float;
     float Real_Duration_us;
@@ -55,8 +55,6 @@ float Systick_SetPeriod(float Duration_us) {
     }
 
     SysTick->LOAD = Nb_Reload;
-
-    return Real_Duration_us;
 }
 
 // ## Timer2 Init **Prescaler: 64; CRK Synchronization; tooth time**

@@ -333,7 +333,7 @@ int main(void)
         // failure processing
         if (configuration_complete)
         {
-            Failure_processing(failure_identify);
+            failure_processing(failure_identify);
         }
 
         // process the received message
@@ -388,7 +388,7 @@ int main(void)
 
 //## Capture Event rising edge --CRK--
 
-void __attribute__((__interrupt__, no_auto_psv)) EXTI4_15_IRQHANDLER()
+void EXTI4_15_IRQHANDLER()
 {
 
     if (EXTI_GetITStatus(EXTI_Line8) != RESET) // Capture Event rising edge --CRK--
@@ -397,16 +397,16 @@ void __attribute__((__interrupt__, no_auto_psv)) EXTI4_15_IRQHANDLER()
 
         if (failure_active == false) // Set CRK-output
         {
-            Output_CRK_no_failure();
+            output_CRK_no_failure();
         }
         else if (failure_identify != '1' && failure_identify != '4' && failure_identify != 'f' && failure_identify != 'b' && failure_identify != 'i' && failure_identify != 'j' && failure_identify != 'k' && failure_identify != 'l' && failure_identify != 'm')
         {
-            Output_CRK_no_failure();
+            output_CRK_no_failure();
         }
 
         low_time_CRK = IC1BUF; // Set actual low time of CRK signal
 
-        Output_CRK(failure_identify); // CRK Output
+        output_CRK(failure_identify); // CRK Output
         timer_overflow_CRK = 0;       // edge was detected, so no stalling
 
         EXTI_ClearITPendingBit(EXTI_Line8); // Clear IC1 Interrupt Flag
@@ -417,16 +417,16 @@ void __attribute__((__interrupt__, no_auto_psv)) EXTI4_15_IRQHANDLER()
 
         if (failure_active == false) // Set CRK-output
         {
-            Output_CRK_no_failure();
+            output_CRK_no_failure();
         }
         else if (failure_identify != '1' && failure_identify != '4' && failure_identify != 'f' && failure_identify != 'h' && failure_identify != 'i' && failure_identify != 'j' && failure_identify != 'k' && failure_identify != 'l' && failure_identify != 'm')
         {
-            Output_CRK_no_failure();
+            output_CRK_no_failure();
         }
 
         sync_CRK_preparation(); // CRK synchronisation preparation
 
-        Output_CRK(failure_identify); // CRK Output
+        output_CRK(failure_identify); // CRK Output
         if (configuration_complete == true)
         {
             sync_CRK(); // CRK synchronization
@@ -440,7 +440,7 @@ void __attribute__((__interrupt__, no_auto_psv)) EXTI4_15_IRQHANDLER()
 
         CAM_signal[0] = true; // Set actual signal level
 
-        Output_CAM(failure_identify, 0); // CAM1 Output
+        output_CAM(failure_identify, 0); // CAM1 Output
 
         if (configuration_complete == true)
         {
@@ -456,7 +456,7 @@ void __attribute__((__interrupt__, no_auto_psv)) EXTI4_15_IRQHANDLER()
 
         TIM2Reset();
 
-        Output_CAM(failure_identify, 0); // CAM1 Output
+        output_CAM(failure_identify, 0); // CAM1 Output
 
         if (configuration_complete == true)
         {
@@ -470,7 +470,7 @@ void __attribute__((__interrupt__, no_auto_psv)) EXTI4_15_IRQHANDLER()
     {                         //## Capture Event rising edge --CAM2--
         CAM_signal[1] = true; // Set actual signal level
 
-        Output_CAM(failure_identify, 1); // CAM2 Output
+        output_CAM(failure_identify, 1); // CAM2 Output
 
         if (configuration_complete == true)
         {
@@ -488,7 +488,7 @@ void __attribute__((__interrupt__, no_auto_psv)) EXTI4_15_IRQHANDLER()
 
             TIM2Reset();
 
-            Output_CAM(failure_identify, 1); // CAM2 Output
+            output_CAM(failure_identify, 1); // CAM2 Output
 
             if (configuration_complete == true)
             {
@@ -503,7 +503,7 @@ void __attribute__((__interrupt__, no_auto_psv)) EXTI4_15_IRQHANDLER()
 
 //## Timer 1 Interrupt CRK tooth time (previously timer2)
 
-void __attribute__((__interrupt__, no_auto_psv)) TIM1_IRQHandler(void)
+void TIM1_IRQHandler(void)
 {
 
     // all overflows between the events
@@ -514,7 +514,7 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM1_IRQHandler(void)
 
 //## Timer 2 Interrupt CAM tooth time (previously timer3)
 
-void __attribute__((__interrupt__, no_auto_psv)) TIM2_IRQHandler(void)
+void TIM2_IRQHandler(void)
 {
 
     // all overflows between the events
@@ -525,7 +525,7 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM2_IRQHandler(void)
 }
 //## Timer 3 Interrupt: CAM_PER - start value
 
-void __attribute__((__interrupt__, no_auto_psv)) TIM3_IRQHandler(void)
+void TIM3_IRQHandler(void)
 {
 
     if (failure_identify == '5')
@@ -583,7 +583,7 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM3_IRQHandler(void)
 
 //## Timer 4 Interrupt: CAM_PER - pulse duration
 
-void __attribute__((__interrupt__, no_auto_psv)) TIM4_IRQHandler(void)
+void TIM4_IRQHandler(void)
 {
 
     if (failure_identify == '5') // CAM_PER --> Cam_Spk
@@ -676,7 +676,7 @@ void __attribute__((__interrupt__, no_auto_psv)) TIM4_IRQHandler(void)
 
 //## UART Receive Interrupt
 
-void __attribute__((__interrupt__, no_auto_psv)) USART1_IRQHandler(void)
+void USART1_IRQHandler(void)
 {
     //? UART Receive
     in = USART_ReceiveData(USART1);
