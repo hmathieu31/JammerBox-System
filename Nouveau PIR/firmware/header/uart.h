@@ -13,7 +13,7 @@
 
 	// ## Uart2 Init ##
 
-	void Uart2Init(void);
+	void Usart1Init(void);
 
 	//### UART Receive Function ###
 
