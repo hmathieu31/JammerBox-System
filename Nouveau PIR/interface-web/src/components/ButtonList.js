@@ -22,21 +22,6 @@ export default class ButtonList extends React.Component {
       showModal: false,
       testName: "POLO",
     };
-
-    this.Buttons = [
-      "CRK SHORT CIRCUIT",
-      "CAM SHORT CIRCUIT",
-      "CRK SPK",
-      "CRK RUN OUT",
-      "CRK TOOTH OFF",
-      "CRK GAP NOT DET",
-      "CRK SEG ADP ERR LIM",
-      "CRK PULSE DURATION",
-      "CRK POSN ENG STST",
-      "CAM DELAY",
-      "CAM SPK",
-      "CAM PAT ERR",
-    ];
   }
 
   handleOpenClose(data) {
@@ -110,7 +95,25 @@ export default class ButtonList extends React.Component {
 
   makeButton = (data, index) => {
     return (
-      <div>
+      <div key={index}>
+        <Modal
+          isOpen={this.state.showModal}
+          className="frame-5"
+          ariaHideApp={false}
+          key={index}
+        >
+          <AlertProvider template={AlertTemplate} {...options}>
+            <ParameterPopup
+              handleOpenClose={this.handleOpenClose(data)}
+              handleRun={this.runTest}
+              handleChange={this.changeData}
+              testName={this.state.testName}
+              testParam={this.state.testParam}
+              isSelect={this.state.isSelect}
+              valueSelected={this.state.valueSelect}
+            />
+          </AlertProvider>
+        </Modal>
         <button
           key={this.Buttons.indexOf(data)}
           onClick={this.handleOpenClose}
@@ -132,6 +135,10 @@ export default class ButtonList extends React.Component {
     );
   }
   render() {
-    return <div>{this.Buttons.map(this.makeButton, this)}</div>;
+    return (
+      <div className="button-list-div">
+        {this.props.buttonList.map(this.makeButton)}
+      </div>
+    );
   }
 }
