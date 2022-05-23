@@ -31,7 +31,7 @@ float Systick_SetPeriod(float Duration_us) {
     float Real_Duration_us;
     float In_Freq;
 
-    In_Freq = (float)CLOCK_GetHCLK();
+    In_Freq = SystemCoreClock;
 
     Nb_Reload_Float = Duration_us * In_Freq / 1000000.0;
     Nb_Reload = (float)Nb_Reload_Float;
