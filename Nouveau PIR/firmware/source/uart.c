@@ -173,14 +173,12 @@ void Usart1Init(void) {
 
 
     //UART Transmit interrupt
-    NVIC_EnableIRQ(USART1_IRQn);
+    NVIC_EnableIRQ(USART1_IRQn);    
     NVIC_SetPriority(USART1_IRQn, 1); // Set priority of the USATR1 interrupt to 1
     USART_ClearITPendingBit(USART1, USART_IT_TXE);
     USART_ITConfig(USART1, USART_IT_TXE, ENABLE);
 
     //UART Receive interrupt
-    NVIC_EnableIRQ(USART1_IRQn);
-    NVIC_SetPriority(USART1_IRQn, 1);
     USART_ClearITPendingBit(USART1, USART_IT_RXNE);
     USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);
 
