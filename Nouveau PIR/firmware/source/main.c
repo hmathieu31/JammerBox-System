@@ -20,7 +20,6 @@
 #include "stm32f10x_exti.h"
 
 // ### Program includes ###
-#include "config.h"
 #include "failures.h"
 #include "ic.h"
 #include "port_config.h"
