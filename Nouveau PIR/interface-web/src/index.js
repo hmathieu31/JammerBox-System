@@ -5,7 +5,7 @@ import "./index.css";
 import reportWebVitals from "./components/reportWebVitals";
 import MainPage from "./elements/MainPage.js";
 import SynthesizeTests from "./elements/SynthesizeTests.js";
-import UnderConstruction from "./elements/TestsHistorics";
+import Test_historics from "./elements/TestsHistorics";
 import Configuration from "./elements/Configuration";
 import TestResult from "./elements/TestResult";
 import { Provider as AlertProvider } from "react-alert";
@@ -25,7 +25,7 @@ ReactDOM.render(
       <Routes>
         <Route exact path="/" element={<MainPage />} />
         <Route exact path="/synthesize_tests" element={<SynthesizeTests />} />
-        <Route exact path="/tests_historics" element={<UnderConstruction />} />
+        <Route exact path="/tests_historics" element={<Test_historics />} />
         <Route
           exact
           path="/configuration"

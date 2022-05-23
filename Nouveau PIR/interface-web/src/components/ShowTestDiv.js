@@ -5,7 +5,6 @@ import "../CSS/reloadSymbol.css";
 import React from "react";
 
 export default function POPOSSpace(props) {
-    // const { id, test_name, date, parametre, result } = props;
 
     const { id, test_name, date, parametre, result } = props;
 

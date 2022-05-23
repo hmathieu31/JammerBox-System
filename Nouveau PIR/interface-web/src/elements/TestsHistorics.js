@@ -4,7 +4,7 @@ import ReturnButton from "../components/ReturnButton.js";
 import Testing from "../components/TestList";
 import { useNavigate } from "react-router-dom";
 
-export default function UnderConstruction() {
+export default function Test_historics() {
   let navigate = useNavigate();
   return (
     <>
