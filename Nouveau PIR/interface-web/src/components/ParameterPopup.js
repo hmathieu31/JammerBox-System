@@ -1,6 +1,8 @@
 import React from "react";
+import { withAlert } from "react-alert";
 
-export default class ParameterPopup extends React.Component {
+class ParameterPopup extends React.Component {
+
   options = [
     {
       label: "Ground",
@@ -14,6 +16,7 @@ export default class ParameterPopup extends React.Component {
 
   render() {
     const { handleOpenClose } = this.props;
+    const alert = this.props.alert;
     return (
       <div className="test-configuration flex-col-hstart-vstart clip-contents">
         <div className="group-917 flex-col-hcenter">
@@ -46,7 +49,7 @@ export default class ParameterPopup extends React.Component {
               )}
             </div>
             <div className="group-786 flex-row">
-              <button onClick={handleOpenClose} className="group-6">
+              <button onClick={() => {alert.show("Cancel pressed")}} className="group-6">
                 <p className="txt-637 flex-hcenter">Cancel</p>
               </button>
               <button onClick={this.props.handleRun} className="group-6">
@@ -59,3 +62,5 @@ export default class ParameterPopup extends React.Component {
     );
   }
 }
+
+export default withAlert()(ParameterPopup)

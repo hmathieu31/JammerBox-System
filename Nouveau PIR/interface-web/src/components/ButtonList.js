@@ -4,6 +4,15 @@ import "../CSS/ParameterPopup.css";
 import ParameterPopup from "./ParameterPopup";
 import React from "react";
 import Modal from "react-modal";
+import { Provider as AlertProvider } from "react-alert";
+import AlertTemplate from "react-alert-template-basic";
+
+const options = {
+  position: "bottom center",
+  timeout: 5000,
+  offset: "30px",
+  transition: "scale",
+};
 
 export default class ButtonList extends React.Component {
   constructor() {
@@ -91,14 +100,16 @@ export default class ButtonList extends React.Component {
           ariaHideApp={false}
           key={index}
         >
-          <ParameterPopup
-            handleOpenClose={this.handleOpenClose(data)}
-            handleRun={this.runTest}
-            handleChange={this.changeData}
-            testName={this.state.testName}
-            testParam={this.state.testParam}
-            isSelect={this.state.isSelect}
-          />
+          <AlertProvider template={AlertTemplate} {...options}>
+            <ParameterPopup
+              handleOpenClose={this.handleOpenClose(data)}
+              handleRun={this.runTest}
+              handleChange={this.changeData}
+              testName={this.state.testName}
+              testParam={this.state.testParam}
+              isSelect={this.state.isSelect}
+            />
+          </AlertProvider>
         </Modal>
         <button
           onClick={
