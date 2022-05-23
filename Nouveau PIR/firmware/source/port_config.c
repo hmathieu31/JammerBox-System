@@ -36,11 +36,12 @@
 	
 	void PORT_B_Config(void)
 	{
+		// We use PORT B as Alternate Input for the EXTI handling
 		GPIO_InitTypeDef GPIOB_Struct;
-		GPIO_StructInit(&GPIOB_Struct);
 		GPIOB_Struct.GPIO_Pin=GPIO_Pin_All;
 		GPIOB_Struct.GPIO_Speed=GPIO_Speed_2MHz;
-		GPIOB_Struct.GPIO_Mode=GPIO_Mode_IN_FLOATING;
+		GPIOB_Struct.GPIO_Mode=GPIO_Mode_AIN;
+		GPIO_StructInit(&GPIOB_Struct);
 	}
 /*****************************************************************************/
 /*****************************************************************************/
