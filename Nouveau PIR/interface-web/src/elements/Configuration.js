@@ -56,16 +56,27 @@ export default function Configuration() {
             FilterTime: inputFileS["Cam0FilterInMicroSec"],
             CamEdges: inputFileS["Cam0EdgePos"],
           };
-        } else if (conf === "RESETCRK") {
-          jsonData = { Config: "RESETCRK" };
-        } else if (conf === "RESETCAM") {
-          jsonData = { Config: "RESETCAM" };
         }
         sendData(jsonData);
+        alert.show("Configuration succesfully uploaded!")
       }
     };
   };
-
+  
+  const onButtonClickRstConf = (conf) => {
+    var jsonData;
+    return () => {
+      if (conf === "RESETCRK") {
+        jsonData = { Config: "RESETCRK" };
+      }
+      else if (conf === "RESETCAM") {
+        jsonData = { Config: "RESETCAM" };
+      }
+    sendData(jsonData); 
+    alert.show("Configuration succesfully reseted!")
+    };
+  }
+  
   const handleFileRead = (e) => {
     const content = fileReader.result;
     const configs = Object.entries(JSON.parse(content));
@@ -106,7 +117,7 @@ export default function Configuration() {
         </button>
         <button
           className="group-6 txt-733"
-          onClick={onButtonClickConf("RESETCAM")}
+          onClick={onButtonClickRstConf("RESETCAM")}
         >
           RESET CRK CONFIG
         </button>
@@ -128,7 +139,7 @@ export default function Configuration() {
           </button>
           <button
             className="group-6 txt-733"
-            onClick={onButtonClickConf("RESETCAM")}
+            onClick={onButtonClickRstConf("RESETCAM")}
           >
             RESET CAM CONFIG
           </button>

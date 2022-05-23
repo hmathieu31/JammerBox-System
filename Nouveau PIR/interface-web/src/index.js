@@ -25,7 +25,7 @@ ReactDOM.render(
       <Routes>
         <Route exact path="/" element={<MainPage />} />
         <Route exact path="/synthesize_tests" element={<SynthesizeTests />} />
-        <Route exact path="/tests_historics" element={<UnderConstruction />} />
+        <Route exact path="/tests_historics" element={<Test_historics />} />
         <Route
           exact
           path="/configuration"
