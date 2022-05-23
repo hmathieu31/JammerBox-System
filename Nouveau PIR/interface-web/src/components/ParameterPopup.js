@@ -1,6 +1,5 @@
 import React from "react";
 import { withAlert } from "react-alert";
-import { show } from "react-modal/lib/helpers/ariaAppHider";
 
 class ParameterPopup extends React.Component {
   options = [
@@ -22,7 +21,6 @@ class ParameterPopup extends React.Component {
 
   render() {
     const { handleOpenClose } = this.props;
-    const alert = this.props.alert;
     return (
       <div className="test-configuration flex-col-hstart-vstart clip-contents">
         <div className="group-917 flex-col-hcenter">
