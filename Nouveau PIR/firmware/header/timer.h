@@ -15,22 +15,6 @@
 	void Systick_SetPeriod(float);
 	// ## Timer2 Init **Prescaler: 64; CRK Synchronization; tooth time** 
 
-	void TIM1Init(void);
-
-	// ## Timer3 Init **Prescaler: 256; CAM Synchronization; segment time** 
-
-	void TIM2Init(void); 
-
-	// ## Timer3 Init **Prescaler: 8; CAM_PER/CRK_TOOTH_PER(start-value)**
-
-	void Timer3Init(void);
-
-	// ## Timer4 Init **Prescaler: 8; CAM_PER/CRK_TOOTH_PER(pulse duration)**
-
-	void Timer4Init(void);
-
-	// ## Timer8 Init **Prescaler: 64; CRK_RUN_OUT/CAM_delay**
-
 	void SysTickInit(void);
 	//## Timer2Reset **Prescaler: 64; CRK Synchronization; tooth time** 
 
