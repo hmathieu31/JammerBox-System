@@ -11,10 +11,6 @@
 
 // ### Functions ###
 
-	// ## Uart2 Init ##
-
-	void Usart1Init(void);
-
 	//### UART Receive Function ###
 
 	void USART_receive(void);
