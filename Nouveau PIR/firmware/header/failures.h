@@ -1,23 +1,22 @@
 /**
  ******************************************************************************
  * @file    	  failures.h
+ * Project name	: STM32-Jammerbox
+ * Controller	: STM32F103RB
  * @brief   	  Implementation of all failures cases.
- * 				  Project name	: STM32-Jammerbox
- * 				  Controller	: STM32F103RB
- * @date		  May 24, 2022
+ * @date		  24.05.2022
  ******************************************************************************
- * @attention
- *
- * Copyright (c) 2022 STMicroelectronics.
- * All rights reserved.
- *
- * This software is licensed under terms that can be found in the LICENSE file
- * in the root directory of this software component.
- * If no LICENSE file comes with this software, it is provided AS-IS.
- *
- ******************************************************************************
- */
-
+  * @attention
+  *
+  * Copyright (c) 2022 STMicroelectronics.
+  * All rights reserved.
+  *
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
+  *
+  ******************************************************************************
+  */
 
 #ifndef INC_FAILURES_H_
 #define INC_FAILURES_H_
