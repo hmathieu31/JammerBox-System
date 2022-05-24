@@ -21,7 +21,7 @@
 
 // ### Program includes ###
 #include "failures.h"
-#include "ic.h"
+#include "exti.h"
 #include "port_config.h"
 #include "synchronization.h"
 #include "system_configuration.h"
@@ -406,7 +406,7 @@ void EXTI9_5_IRQHandler() {
         output_CRK(failure_identify); // CRK Output
         timer_overflow_CRK = 0;       // edge was detected, so no stalling
 
-        EXTI_ClearITPendingBit(EXTI_Line8); // Clear IC1 Interrupt Flag
+        EXTI_ClearITPendingBit(EXTI_Line8); // Clear EXTI8 Interrupt Flag
     }
     else if (EXTI_GetITStatus(EXTI_Line9) != RESET) //## Capture Event falling edge --CRK--
     {
@@ -430,7 +430,7 @@ void EXTI9_5_IRQHandler() {
         }
         timer_overflow_CRK = 0; // edge was detected, so no stalling
 
-        EXTI_ClearITPendingBit(EXTI_Line9); // Clear IC2 Interrupt Flag
+        EXTI_ClearITPendingBit(EXTI_Line9); // Clear EXTI9 Interrupt Flag
     }
 }
 
@@ -449,7 +449,7 @@ void EXTI15_10_IRQHandler()
         }
         timer_overflow_CAM = 0; // edge was detected, so no stalling
 
-        EXTI_ClearITPendingBit(EXTI_Line14); // Clear IC3 Interrupt Flag
+        EXTI_ClearITPendingBit(EXTI_Line14); // Clear EXTI14 Interrupt Flag
     }
     else if (EXTI_GetITStatus(EXTI_Line11) != RESET)
     {                          //## Capture Event falling edge --CAM1--
@@ -465,7 +465,7 @@ void EXTI15_10_IRQHandler()
         }
         timer_overflow_CAM = 0; // edge was detected, so no stalling
 
-        EXTI_ClearITPendingBit(EXTI_Line11); // Clear IC4 Interrupt Flag
+        EXTI_ClearITPendingBit(EXTI_Line11); // Clear EXTI11 Interrupt Flag
     }
     else if (EXTI_GetITStatus(EXTI_Line12) != RESET)
     {                         //## Capture Event rising edge --CAM2--
@@ -479,7 +479,7 @@ void EXTI15_10_IRQHandler()
         }
         timer_overflow_CAM = 0; // edge was detected, so no stalling
 
-        EXTI_ClearITPendingBit(EXTI_Line12); // Clear IC5 Interrupt Flag
+        EXTI_ClearITPendingBit(EXTI_Line12); // Clear EXTI12 Interrupt Flag
     }
     else if (EXTI_GetITStatus(EXTI_Line13) != RESET) //## Capture Event falling edge --CAM2--
     {
@@ -497,7 +497,7 @@ void EXTI15_10_IRQHandler()
             }
             timer_overflow_CAM = 0; // edge was detected, so no stalling
         }
-        EXTI_ClearITPendingBit(EXTI_Line13); // Clear IC5 Interrupt Flag
+        EXTI_ClearITPendingBit(EXTI_Line13); // Clear EXTI13 Interrupt Flag
     }
 }
 
