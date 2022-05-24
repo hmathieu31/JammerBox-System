@@ -18,7 +18,7 @@
 	void EXTI9Init(void);
 
 	// ## Input capture 3 Init  ** CAM1 ** falling edge 
-	void EXTI10Init(void);
+	void EXTI14Init(void);
 
 	// ## Input capture 4 Init  ** CAM1 ** rising edge
 	void EXTI11Init(void);
