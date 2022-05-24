@@ -57,15 +57,20 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define B1_Pin GPIO_PIN_13
-#define B1_GPIO_Port GPIOC
-#define B1_EXTI_IRQn EXTI15_10_IRQn
-#define USART_TX_Pin GPIO_PIN_2
-#define USART_TX_GPIO_Port GPIOA
-#define USART_RX_Pin GPIO_PIN_3
-#define USART_RX_GPIO_Port GPIOA
+#define CRK_synch_Pin GPIO_PIN_0
+#define CRK_synch_GPIO_Port GPIOA
+#define CRK_synch_temp_Pin GPIO_PIN_1
+#define CRK_synch_temp_GPIO_Port GPIOA
+#define first_CRK_synch_Pin GPIO_PIN_2
+#define first_CRK_synch_GPIO_Port GPIOA
+#define second_CRK_synch___CAM_Overflow___CRK_Overflow_Pin GPIO_PIN_3
+#define second_CRK_synch___CAM_Overflow___CRK_Overflow_GPIO_Port GPIOA
+#define CRK_TOOTH_PER___CRK_SHO_LEVEL___SEG_ADP_ER_LIM___CrkPlsOrng___CRK_GAP_NOT_DET_Pin GPIO_PIN_4
+#define CRK_TOOTH_PER___CRK_SHO_LEVEL___SEG_ADP_ER_LIM___CrkPlsOrng___CRK_GAP_NOT_DET_GPIO_Port GPIOA
 #define LD2_Pin GPIO_PIN_5
 #define LD2_GPIO_Port GPIOA
+#define CAM_PER_cam_spk_Pin GPIO_PIN_6
+#define CAM_PER_cam_spk_GPIO_Port GPIOA
 #define TMS_Pin GPIO_PIN_13
 #define TMS_GPIO_Port GPIOA
 #define TCK_Pin GPIO_PIN_14
