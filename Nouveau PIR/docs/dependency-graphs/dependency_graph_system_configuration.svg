@@ -1,61 +1,106 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="148px" preserveAspectRatio="none" style="width:226px;height:148px;background:#FFFFFF;" version="1.1" viewBox="0 0 226 148" width="226px" zoomAndPan="magnify"><defs><filter height="300%" id="fvr9t771980yc" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><rect fill="#FEFECE" filter="url(#fvr9t771980yc)" height="33.9688" style="stroke:#A80036;stroke-width:1.5;" width="120" x="7" y="101"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="106" x="14" y="114.1387">synchronization.c</text><line style="stroke:#A80036;stroke-width:1.5;" x1="8" x2="126" y1="118.9688" y2="118.9688"/><rect fill="#FEFECE" filter="url(#fvr9t771980yc)" height="33.9688" style="stroke:#A80036;stroke-width:1.5;" width="154" x="50" y="7"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="140" x="57" y="20.1387">system_configuration.c</text><line style="stroke:#A80036;stroke-width:1.5;" x1="51" x2="203" y1="24.9688" y2="24.9688"/><rect fill="#FEFECE" filter="url(#fvr9t771980yc)" height="33.9688" style="stroke:#A80036;stroke-width:1.5;" width="50" x="162" y="101"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="36" x="169" y="114.1387">uart.c</text><line style="stroke:#A80036;stroke-width:1.5;" x1="163" x2="211" y1="118.9688" y2="118.9688"/><!--MD5=[d7acc8ed4662e55bb2666ef4b314ae86]
-link system_configuration.c to synchronization.c--><path codeLine="29" d="M116.55,41.03 C106.54,56.37 91.4,79.58 80.49,96.31 " fill="none" id="system_configuration.c-to-synchronization.c" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="77.53,100.85,85.7957,95.4949,80.2605,96.6614,79.0939,91.1261,77.53,100.85" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[21e216edc282baf7296e63df6bb67690]
-link system_configuration.c to uart.c--><path codeLine="30" d="M137.45,41.03 C147.46,56.37 162.6,79.58 173.51,96.31 " fill="none" id="system_configuration.c-to-uart.c" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="176.47,100.85,174.9061,91.1261,173.7395,96.6614,168.2043,95.4949,176.47,100.85" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[d3816385c6e42675e18355f6c571a2b3]
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="148px" preserveAspectRatio="none" style="width:199px;height:148px;background:#FFFFFF;" version="1.1" viewBox="0 0 199 148" width="199px" zoomAndPan="magnify"><defs/><g><g id="elem_synchronization"><rect fill="#F1F1F1" height="37.6094" rx="3.5" ry="3.5" style="stroke:#181818;stroke-width:0.5;" width="112" x="7" y="105"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="98" x="14" y="121.5332">synchronization</text><line style="stroke:#181818;stroke-width:0.5;" x1="8" x2="118" y1="126.6094" y2="126.6094"/></g><g id="elem_system_configuration"><rect fill="#F1F1F1" height="37.6094" rx="3.5" ry="3.5" style="stroke:#181818;stroke-width:0.5;" width="148" x="44" y="7"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="134" x="51" y="23.5332">system_configuration</text><line style="stroke:#181818;stroke-width:0.5;" x1="45" x2="191" y1="28.6094" y2="28.6094"/></g><g id="elem_uart"><rect fill="#F1F1F1" height="37.6094" rx="3.5" ry="3.5" style="stroke:#181818;stroke-width:0.5;" width="39" x="154.5" y="105"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="25" x="161.5" y="121.5332">uart</text><line style="stroke:#181818;stroke-width:0.5;" x1="155.5" x2="192.5" y1="126.6094" y2="126.6094"/></g><!--MD5=[e9b1bcf0cb8e3e700e021e74dbcb1b80]
+link system_configuration to synchronization--><g id="link_system_configuration_synchronization"><path codeLine="5" d="M107.65,45.06 C98.72,60.65 85.77,83.25 76.12,100.11 " fill="none" id="system_configuration-to-synchronization" style="stroke:#454645;stroke-width:1.0;"/><polygon fill="#454645" points="73.49,104.7,81.4323,98.876,75.9738,100.3605,74.4892,94.902,73.49,104.7" style="stroke:#454645;stroke-width:1.0;"/></g><!--MD5=[26dbfbd88baae13524796c0afd5a0eb1]
+link system_configuration to uart--><g id="link_system_configuration_uart"><path codeLine="6" d="M128.53,45.06 C137.63,60.65 150.81,83.25 160.65,100.11 " fill="none" id="system_configuration-to-uart" style="stroke:#454645;stroke-width:1.0;"/><polygon fill="#454645" points="163.32,104.7,162.2584,94.9085,160.8086,100.3765,155.3407,98.9267,163.32,104.7" style="stroke:#454645;stroke-width:1.0;"/></g><!--MD5=[9d338b15bce4e0430e466ac9b43ebb8b]
 @startuml
-/'object main.c'/
-'object failures.c
-/'object ic.c
-object osc.c
-object port_config.c'/
-object synchronization.c
-object system_configuration.c
-'object timer.c
-object uart.c
-'object config.h
+!theme toy
+skinparam backgroundColor #ffffff
+object synchronization
+object system_configuration
+object uart
 
-/'main.c - -> config.h
-main.c - -> osc.c
-main.c - -> timer.c
-main.c - -> ic.c
-main.c - -> uart.c
-main.c - -> port_config.c
-main.c - -> system_configuration.c
-main.c - -> synchronization.c
-main.c - -> failures.c'/
-
-/'failures.c - -> timer.c
-failures.c - -> synchronization.c'/
-
-/'synchronization.c - -> timer.c
-synchronization.c - -> uart.c
-synchronization.c - -> failures.c'/
-
-system_configuration.c - -> synchronization.c
-system_configuration.c - -> uart.c
-
-/'uart.c - -> system_configuration.c
-uart.c - -> failures.c
-uart.c - -> timer.c'/
+system_configuration - -> synchronization
+system_configuration - -> uart
 @enduml
 
 @startuml
-object synchronization.c
-object system_configuration.c
-object uart.c
+skinparam BackgroundColor DDDDDD
+skinparam shadowing false
+skinparam RoundCorner 7
+skinparam ArrowColor 454645
+skinparam FontColor 454645
+skinparam SequenceLifeLineBorderColor 454645
+skinparam SequenceGroupHeaderFontColor 454645
+skinparam SequenceGroupFontColor 454645
+skinparam SequenceGroupBorderColor 454645
+skinparam SequenceGroupBorderThickness 1
 
+skinparam sequenceDivider {
+    BorderColor 454645
+    BorderThickness 1
+    FontColor 454645
+}
 
+skinparam participant {
+    BackgroundColor FF6F61
+    BorderColor 454645
+    FontColor White
+    BorderThickness 1.5
+}
 
+skinparam database {
+    BackgroundColor 98DDDE
+    BorderColor 454645
+    FontColor 454645
+}
 
-system_configuration.c - -> synchronization.c
-system_configuration.c - -> uart.c
+skinparam entity {
+    BackgroundColor FFDA29
+    BorderColor 454645
+    FontColor 454645
+}
 
+skinparam note {
+    BackgroundColor LightGreen
+    BorderColor 454645
+    FontColor 454645
+    BorderThickness 1
+}
+
+skinparam actor {
+    BackgroundColor 454645
+    BorderColor 454645
+    FontColor 454645
+}
+
+skinparam boundary {
+    BackgroundColor FFDA29
+    BorderColor 454645
+    FontColor 454645
+}
+
+skinparam control {
+    BackgroundColor FFDA29
+    BorderColor 454645
+    FontColor 454645
+}
+
+skinparam collections {
+    BackgroundColor FF6F61
+    BorderColor 454645
+    FontColor 454645
+    BorderThickness 1.5
+}
+
+skinparam queue {
+    BackgroundColor FF6F61
+    BorderColor 454645
+    FontColor FFF
+    BorderThickness 1.5
+}
+skinparam backgroundColor #ffffff
+object synchronization
+object system_configuration
+object uart
+
+system_configuration - -> synchronization
+system_configuration - -> uart
 @enduml
 
-PlantUML version 1.2022.1(Tue Feb 01 19:19:58 CET 2022)
+PlantUML version 1.2022.5(Sat Apr 30 12:55:52 CEST 2022)
 (GPL source distribution)
 Java Runtime: OpenJDK Runtime Environment
 JVM: OpenJDK 64-Bit Server VM
-Default Encoding: UTF-8
+Default Encoding: Cp1252
 Language: fr
 Country: FR
 --></g></svg>
