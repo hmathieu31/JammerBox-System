@@ -31,14 +31,14 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>Conf_src/Inc/failures.h</name>
-			<type>1</type>
-			<location>C:/Users/HMathieu/Repos/PIR/Nouveau PIR/firmware/header/failures.h</location>
+			<name>Conf_src/Inc</name>
+			<type>2</type>
+			<location>C:/Users/HMathieu/Repos/PIR/Nouveau PIR/firmware/header</location>
 		</link>
 		<link>
-			<name>Conf_src/Src/failures.c</name>
-			<type>1</type>
-			<location>C:/Users/HMathieu/Repos/PIR/Nouveau PIR/firmware/source/failures.c</location>
+			<name>Conf_src/Src</name>
+			<type>2</type>
+			<location>C:/Users/HMathieu/Repos/PIR/Nouveau PIR/firmware/source</location>
 		</link>
 	</linkedResources>
 </projectDescription>
