@@ -1,9 +1,9 @@
 /**
  ******************************************************************************
  * @file    	  failures.c
- * Project name	: STM32-Jammerbox
- * Controller	: STM32F103RB
  * @brief   	  Implementation of all failures cases.
+ * 				  Project name	: STM32-Jammerbox
+ * 				  Controller	: STM32F103RB
  * @date		  24.05.2022
  ******************************************************************************
  * @attention
