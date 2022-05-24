@@ -33,12 +33,12 @@
 		<link>
 			<name>Conf_src/Inc</name>
 			<type>2</type>
-			<location>C:/Users/HMathieu/Repos/PIR/Nouveau PIR/firmware/header</location>
+			<locationURI>PARENT-1-PROJECT_LOC/Nouveau%20Pir/firmware/header</locationURI>
 		</link>
 		<link>
 			<name>Conf_src/Src</name>
 			<type>2</type>
-			<location>C:/Users/HMathieu/Repos/PIR/Nouveau PIR/firmware/source</location>
+			<locationURI>PARENT-1-PROJECT_LOC/Nouveau%20Pir/firmware/source</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>
