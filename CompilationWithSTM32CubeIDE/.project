@@ -29,16 +29,4 @@
 		<nature>org.eclipse.cdt.managedbuilder.core.managedBuildNature</nature>
 		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>Conf_src/Inc/failures.h</name>
-			<type>1</type>
-			<location>C:/Users/HMathieu/Repos/PIR/Nouveau PIR/firmware/header/failures.h</location>
-		</link>
-		<link>
-			<name>Conf_src/Src/failures.c</name>
-			<type>1</type>
-			<location>C:/Users/HMathieu/Repos/PIR/Nouveau PIR/firmware/source/failures.c</location>
-		</link>
-	</linkedResources>
 </projectDescription>
