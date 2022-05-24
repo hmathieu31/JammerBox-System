@@ -386,10 +386,7 @@ int main(void)
 
 // ### Interrupt Functions ###
 
-//## Capture Event rising edge --CRK--
-
-void EXTI4_15_IRQHANDLER()
-{
+void EXTI9_5_IRQHandler(){
 
     if (EXTI_GetITStatus(EXTI_Line8) != RESET) // Capture Event rising edge --CRK--
     {
@@ -435,7 +432,14 @@ void EXTI4_15_IRQHANDLER()
 
         EXTI_ClearITPendingBit(EXTI_Line9); // Clear IC2 Interrupt Flag
     }
-    else if (EXTI_GetITStatus(EXTI_Line10) != RESET)
+
+}
+
+void EXTI15_10_IRQHandler()
+{
+
+    
+    if (EXTI_GetITStatus(EXTI_Line10) != RESET)
     { //## Capture Event rising edge --CAM1--
 
         CAM_signal[0] = true; // Set actual signal level
@@ -503,13 +507,39 @@ void EXTI4_15_IRQHANDLER()
 
 //## Timer 1 Interrupt CRK tooth time (previously timer2)
 
-void TIM1_IRQHandler(void)
+void __attribute__((__interrupt__, no_auto_psv)) TIM1_UP_IRQHandler(void)
 {
+    if (communication_active == true)
+    {
+        USART_send(message[11]);
 
-    // all overflows between the events
-    timer_overflow_CRK++;
+        if (communication_validation == true)
+        {
+            if (communication_ready == true)
+            {
+                communication_ready = false;
+            }
+            else
+            {
+                failure_identify = '0';
+                configuration_complete = false;
+                CRK_config = false;
+                CAM_config = false;
+                communication_active = false;
+                communication_validation = false;               
+                TIM_Cmd(TIM1, DISABLE); //Stop timer1
+                TIM_SetCounter(TIM1, 0);
+                Stalling_detection();
+            }
+        }
 
-    TIM_ClearFlag(TIM1, TIM_FLAG_Update);
+        if (communication_active == true)
+        {
+            communication_validation = !communication_validation;
+        }
+    }
+
+     TIM_ClearFlag(TIM1, TIM_FLAG_Update); // Clear Timer1 Interrupt Flag
 }
 
 //## Timer 2 Interrupt CAM tooth time (previously timer3)
