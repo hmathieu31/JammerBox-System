@@ -35,10 +35,10 @@
 	}
 
 	// ## Input capture 2 Init  ** CAM1 ** rising edge
-	void EXTI10Init(void){
+	void EXTI14Init(void){
 		EXTI_InitTypeDef EXTI_Struct;
 		EXTI_StructInit(&EXTI_Struct);
-		EXTI_Struct.EXTI_Line=EXTI_Line10;
+		EXTI_Struct.EXTI_Line=EXTI_Line14;
 		EXTI_Struct.EXTI_Mode=EXTI_Mode_Interrupt;
 		EXTI_Struct.EXTI_Trigger=EXTI_Trigger_Rising;
 		EXTI_Struct.EXTI_LineCmd=ENABLE;

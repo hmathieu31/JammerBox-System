@@ -312,7 +312,7 @@ int main(void)
 
     EXTI9Init();
 
-    EXTI10Init();
+    EXTI14Init();
 
     EXTI11Init();
 
@@ -436,7 +436,7 @@ void EXTI9_5_IRQHandler() {
 
 void EXTI15_10_IRQHandler()
 {
-    if (EXTI_GetITStatus(EXTI_Line10) != RESET)
+    if (EXTI_GetITStatus(EXTI_Line14) != RESET)
     { //## Capture Event rising edge --CAM1--
 
         CAM_signal[0] = true; // Set actual signal level
@@ -449,7 +449,7 @@ void EXTI15_10_IRQHandler()
         }
         timer_overflow_CAM = 0; // edge was detected, so no stalling
 
-        EXTI_ClearITPendingBit(EXTI_Line10); // Clear IC3 Interrupt Flag
+        EXTI_ClearITPendingBit(EXTI_Line14); // Clear IC3 Interrupt Flag
     }
     else if (EXTI_GetITStatus(EXTI_Line11) != RESET)
     {                          //## Capture Event falling edge --CAM1--
