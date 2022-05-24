@@ -386,11 +386,8 @@ int main(void)
 
 // ### Interrupt Functions ###
 
-//## Capture Event rising edge --CRK--
 
-void EXTI4_15_IRQHANDLER()
-{
-
+void EXTI9_5_IRQHandler() {
     if (EXTI_GetITStatus(EXTI_Line8) != RESET) // Capture Event rising edge --CRK--
     {
         CRK_signal = true; // Set actual signal level
@@ -435,7 +432,11 @@ void EXTI4_15_IRQHANDLER()
 
         EXTI_ClearITPendingBit(EXTI_Line9); // Clear IC2 Interrupt Flag
     }
-    else if (EXTI_GetITStatus(EXTI_Line10) != RESET)
+}
+
+void EXTI15_10_IRQHandler()
+{
+    if (EXTI_GetITStatus(EXTI_Line10) != RESET)
     { //## Capture Event rising edge --CAM1--
 
         CAM_signal[0] = true; // Set actual signal level
@@ -503,7 +504,7 @@ void EXTI4_15_IRQHANDLER()
 
 //## Timer 1 Interrupt CRK tooth time (previously timer2)
 
-void TIM1_IRQHandler(void)
+void TIM1_UP_IRQHandler(void)
 {
 
     // all overflows between the events
