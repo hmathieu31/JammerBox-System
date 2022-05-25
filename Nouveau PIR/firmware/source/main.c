@@ -557,14 +557,14 @@ void TIM3_IRQHandler(void)
 	if (failure_identify == '5')
 	{ // CAM_PER //?CAM_PER is the error identified by '5'
 
-		if (GPIO_ReadInputDataBit(GPIOA, 5) == 1)
-		{
-			GPIO_ResetBits(GPIOA, 5);
-		}
-		else
-		{
-			GPIO_SetBits(GPIOA, 5);
-		};
+        if (GPIO_ReadInputDataBit(GPIOA, 11) == 1)
+        {
+            GPIO_ResetBits(GPIOA, 11);
+        }
+        else
+        {
+            GPIO_SetBits(GPIOA, 11);
+        };
 
 		counter_CAM_PER[0]++; //? Number of times we lost CAM with timer 6 ?
 		if (counter_CAM_PER[0] == 2)

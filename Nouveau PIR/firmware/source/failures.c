@@ -377,13 +377,13 @@ void output_CRK_no_failure(void) {
 void output_CAM_no_failure(int cam_id) {
     if (CAM_signal[cam_id] == true) {
         if (cam_id == 0) {
-            GPIO_SetBits(GPIOA, 5);
+            GPIO_SetBits(GPIOA, 11);
         } else {
             GPIO_SetBits(GPIOA, 6);
         }
     } else {
         if (cam_id == 0) {
-            GPIO_ResetBits(GPIOA, 5);
+            GPIO_ResetBits(GPIOA, 11);
         } else {
             GPIO_ResetBits(GPIOA, 6);
         }
@@ -541,11 +541,11 @@ void Output_CAM_delay(int cam_id) {
                     }
                 } else if (CAM_signal[cam_id] == true && failure_active == false) {
                     if (cam_id == 0) {
-                        // Toggle GPIOA5
-                        if (GPIO_ReadOutputDataBit(GPIOA, 5) == 0) {
-                            GPIO_SetBits(GPIOA, 5);
+                        // Toggle GPIOA11
+                        if (GPIO_ReadOutputDataBit(GPIOA, 11) == 0) {
+                            GPIO_SetBits(GPIOA, 11);
                         } else {
-                            GPIO_ResetBits(GPIOA, 5);
+                            GPIO_ResetBits(GPIOA, 11);
                         }
 
                     } else if (cam_id == 1) {
@@ -574,10 +574,10 @@ void Output_CAM_delay(int cam_id) {
                 } else if (CAM_signal[cam_id] == false && failure_active == false) {
                     if (cam_id == 0) {
                         // Toggle GPIO5
-                        if (GPIO_ReadOutputDataBit(GPIOA, 5) == 0) {
-                            GPIO_SetBits(GPIOA, 5);
+                        if (GPIO_ReadOutputDataBit(GPIOA, 11) == 0) {
+                            GPIO_SetBits(GPIOA, 11);
                         } else {
-                            GPIO_ResetBits(GPIOA, 5);
+                            GPIO_ResetBits(GPIOA, 11);
                         }
                     } else if (cam_id == 1) {
                         // Toggle GPIO6
@@ -608,11 +608,11 @@ void CAM_delay(int cam_id) {
                                                           teeth_count_CRK, number_miss_teeth);
         if (((double)Tim5_GetCounter() / former_teeth_time) * revolution_CRK >= (revolution_CRK / 2.0)) {
             if (cam_id == 0) {
-                if (GPIO_ReadInputDataBit(GPIOA, 5) == 1)  // TODO: #82 Double check wheter GPIOA 5 and 6 are IN or OUT
+                if (GPIO_ReadInputDataBit(GPIOA, 11) == 1)  // TODO: #82 Double check wheter GPIOA 5 and GPIOA11 are IN or OUT
                 {
-                    GPIO_ResetBits(GPIOA, 5);
+                    GPIO_ResetBits(GPIOA, 11);
                 } else {
-                    GPIO_SetBits(GPIOA, 5);
+                    GPIO_SetBits(GPIOA, 11);
                 }
             } else if (cam_id == 1) {
                 if (GPIO_ReadInputDataBit(GPIOA, 6) == 1) {
@@ -640,10 +640,10 @@ void CAM_delay(int cam_id) {
 
             if (interrupt_check_CAM_delay[cam_id] == false) {
                 if (cam_id == 0) {
-                    if (GPIO_ReadInputDataBit(GPIOA, 5) == 1) {
-                        GPIO_ResetBits(GPIOA, 5);
+                    if (GPIO_ReadInputDataBit(GPIOA, 11) == 1) {
+                        GPIO_ResetBits(GPIOA, 11);
                     } else {
-                        GPIO_SetBits(GPIOA, 5);
+                        GPIO_SetBits(GPIOA, 11);
                     };
                 } else if (cam_id == 1) {
                     if (GPIO_ReadInputDataBit(GPIOA, 6) == 1) {
@@ -678,10 +678,10 @@ void CAM_delay(int cam_id) {
                     angle_to_edge_CAM_delay[cam_id][i] = 0;
                     number_processing_edges_CAM_delay[cam_id]--;
                     if (cam_id == 0) {
-                        if (GPIO_ReadInputDataBit(GPIOA, 5) == 1) {
-                            GPIO_ResetBits(GPIOA, 5);
+                        if (GPIO_ReadInputDataBit(GPIOA, 11) == 1) {
+                            GPIO_ResetBits(GPIOA, 11);
                         } else {
-                            GPIO_SetBits(GPIOA, 5);
+                            GPIO_SetBits(GPIOA, 11);
                         };
                     } else if (cam_id == 1) {
                         if (GPIO_ReadInputDataBit(GPIOA, 6) == 1) {
@@ -972,13 +972,13 @@ void output_CAM_PAT_ERR(int cam_id) {
             if (active_CAM_edges_counter[cam_id] >= 7) {  // after an abitrary number of CAM edges skip the next falling edge to generate the failure
                 if (CAM_signal[cam_id] == false) {
                     if (cam_id == 0) {
-                        GPIO_SetBits(GPIOA, 5);
+                        GPIO_SetBits(GPIOA, 11);
                     } else {
                         GPIO_SetBits(GPIOA, 6);
                     }
                 } else if (CAM_signal[cam_id] == true) {
                     if (cam_id == 0) {
-                        GPIO_ResetBits(GPIOA, 5);
+                        GPIO_ResetBits(GPIOA, 11);
                     } else {
                         GPIO_ResetBits(GPIOA, 6);
                     }
@@ -995,7 +995,7 @@ void output_CAM_PAT_ERR(int cam_id) {
                 if (active_CAM_edges_counter[cam_id] >= 7) {  // after an abitrary number of CAM edges skip this edge in output to generate the failure
                     active_CAM_edges_counter[cam_id] = 0;
                     if (cam_id == 0) {
-                        GPIO_SetBits(GPIOA, 5);
+                        GPIO_SetBits(GPIOA, 11);
                     } else {
                         GPIO_SetBits(GPIOA, 6);
                     }
@@ -1011,7 +1011,7 @@ void output_CAM_PAT_ERR(int cam_id) {
                 if (active_CAM_edges_counter[cam_id] >= 7) {  // after an abitrary number of CAM edges skip this edge in output to generate the failure
                     active_CAM_edges_counter[cam_id] = 0;
                     if (cam_id == 0) {
-                        GPIO_ResetBits(GPIOA, 5);
+                        GPIO_ResetBits(GPIOA, 11);
                     } else {
                         GPIO_ResetBits(GPIOA, 6);
                     }
@@ -1052,7 +1052,7 @@ void output_SC_CAM_CRK(int cam_id) {
             case (3):  // CamScg
             {
                 if (cam_id == 0) {
-                    GPIO_ResetBits(GPIOA, 5);
+                    GPIO_ResetBits(GPIOA, 11);
                 } else {
                     GPIO_ResetBits(GPIOA, 6);
                 }
@@ -1062,7 +1062,7 @@ void output_SC_CAM_CRK(int cam_id) {
             case (4):  // CamScb
             {
                 if (cam_id == 0) {
-                    GPIO_SetBits(GPIOA, 5);
+                    GPIO_SetBits(GPIOA, 11);
                 } else {
                     GPIO_SetBits(GPIOA, 6);
                 }
