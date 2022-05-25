@@ -26,7 +26,7 @@
 #include "synchronization.h"
 #include "system_configuration.h"
 #include "timer.h"
-#include "uart.h"
+#include "usart.h"
 #include "Tim5.h"
 
 // ### Definitions ###
@@ -266,7 +266,7 @@ unsigned int active_CAM_edges_counter[2] =
 //** SC_CAM_CRK **
 unsigned int sc_type_SC_CAM_CRK = 0;
 
-//***************** UART ********************
+//***************** USART ********************
 //** Receive **
 int char_counter = 0;
 int data_counter = 0;
@@ -375,9 +375,8 @@ int main1(void)
 			GPIO_SetBits(GPIOA, 3);
 		}
 
-		// send failure configuration status
-		UART_send_failure_configuration_status(failure_identify,
-				failure_configured, failure_configured_CAM_blank_out);
+        // send failure configuration status
+        USART_send_failure_configuration_status(failure_identify, failure_configured, failure_configured_CAM_blank_out);
 
 		// check input signal level and set corresponding output level
 		Input_signal_observe(output_level_setting);

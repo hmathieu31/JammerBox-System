@@ -13,7 +13,7 @@
   #include "stm32f10x_gpio.h"
 // ### Programm includes ###
 	#include "synchronization.h"
-	#include "uart.h"
+	#include "usart.h"
 			
 
 // ### Variables ###
@@ -51,7 +51,7 @@
 	extern char active_CAM_edges[2];
     extern int number_of_CAM;
 
-	//UART-Send 
+	//USART-Send 
 	extern char message[];
 
 //### Functions ###

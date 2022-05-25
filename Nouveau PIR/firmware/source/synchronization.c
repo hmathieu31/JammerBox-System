@@ -13,7 +13,7 @@
 
 // ### Programm includes ###
 	#include "timer.h"
-	#include "uart.h"
+	#include "usart.h"
 	#include "failures.h"
 	#include "stm32f10x_tim.h"
 	#include "Tim5.h"
@@ -99,7 +99,7 @@
     extern int teeth_count_overall;
 
 	
-	//***************** UART-Send **************
+	//***************** USART-Send **************
 	extern char message[];
 
 	//***************** Failure Reset values ***
