@@ -41,6 +41,7 @@ int TIM_Soft_TicksCounted = 0;
 /* Private functions --------------------------------------------------------*/
 
 // Returns the computed value, 0 if impossible
+// TODO: #129 Check if operations on SysTick indeed is allowed
 void Systick_SetPeriod(float Duration_us)
 {
 	vu32 Nb_Reload;
