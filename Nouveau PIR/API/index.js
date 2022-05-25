@@ -42,10 +42,10 @@ app.post("/run", (req, res) => {
 
     try {
       runPythonScript([param1.replace(/\s/g, ""), param3]);
-      testResult = "success";
+      testResult = "test runned successfully";
       res.status(200).json();
     } catch (e) {
-      testResult = "failed";
+      testResult = "failed to run test";
       res.status(400).send("An error occured : ", e);
     }
     var json;
@@ -128,6 +128,16 @@ app.post("/config", (req, res) => {
       res.status(400).send(e);
       console.log(e);
     }
+  }
+});
+
+app.put("/record", (req, res) => {
+  try {
+    runPythonScript(["RECORD"]);
+    res.status(200).json();
+  } catch (e) {
+    res.status(400).send(e);
+    console.log(e);
   }
 });
 
