@@ -55,7 +55,7 @@ export default class ButtonList extends React.Component {
         console.log(data.status);
       },
       (error) => {
-        console.log(error);
+        console.log("Did not send data!");
       }
     );
   };

@@ -3,6 +3,7 @@ import "../components/ReturnButton.js";
 import ReturnButton from "../components/ReturnButton.js";
 import React, { useState } from "react";
 import { useAlert } from "react-alert";
+import RecordSignal from "../components/RecordSignal.js";
 
 export default function Configuration() {
   const [inputFileS, setInputFile] = useState(null);
@@ -148,6 +149,7 @@ export default function Configuration() {
               RESET CAM CONFIG
             </button>
           </div>
+          <RecordSignal />
         </div>
       </div>
     </>
