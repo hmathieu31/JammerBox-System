@@ -1,6 +1,6 @@
 /*****************************************************************************/
 /* Projectname     :  ENSD-Jammer                                            */
-/* Programm        :  UART		                                             */
+/* Programm        :  USART		                                             */
 /* Controller      :  dsPIC33F                                               */
 /* Latest change   :  31.08.2020                                             */
 /* Author          :  Gr�goire Chabin/Christian Ringlstetter/Thomas Pichler  */
@@ -19,7 +19,7 @@
 #include "system_configuration.h"
 #include "failures.h"
 #include "timer.h"
-#include "uart.h"
+#include "usart.h"
 
 // ### Variables ###
 
@@ -139,7 +139,59 @@ extern bool communication_ready;
 
 // ### Functions ###
 
-//## UART Receive Function
+// ## Usart1 Init ##
+
+void Usart1Init(void) {
+    USART_InitTypeDef USART_InitStructure;
+    USART_ClockInitTypeDef USART_ClockInitStructure;
+
+    /*  * Baud rate: 9600 Bauds
+        * Word length = 8 Bits
+        * One Stop Bit
+        * Even parity
+        * Hardware flow control disabled (RTS and CTS signals)
+        * Receive and transmit enabled
+        */
+    USART_StructInit(&USART_InitStructure); // Initializes the USART_InitStructure to default values
+    USART_InitStructure.USART_Parity = USART_Parity_Even;
+
+    USART_ClockStructInit(&USART_ClockInitStructure); // Initializes the USART_ClockInitStructure to default values
+    USART_ClockInitStructure.USART_Clock = USART_Clock_Enable;
+
+    USART_IrDACmd(USART1, DISABLE); // Disable the IRDA mode
+    USART_HalfDuplexCmd(USART1, DISABLE); // Disable the half-duplex mode
+
+
+
+    // U2STAbits.UTXISEL1 = 0; //Bit15 Int when Char is transferred (1/2 config!)
+    // U2STAbits.UTXINV = 0; //Bit14 N/A, IRDA config
+    // U2STAbits.UTXISEL0 = 0; //Bit13 Other half of Bit15
+    // U2STAbits.UTXBRK = 0; //Bit11 Disabled
+    // U2STAbits.UTXEN = 0; //Bit10 TX pins controlled by periph
+    // U2STAbits.URXISEL = 0b00; //Bits6,7 Int. on character recieved
+    // U2STAbits.ADDEN = 0; //Bit5 Address Detect Disabled
+
+
+    //USART Transmit interrupt
+    NVIC_EnableIRQ(USART1_IRQn);    
+    NVIC_SetPriority(USART1_IRQn, 1); // Set priority of the USATR1 interrupt to 1
+    USART_ClearITPendingBit(USART1, USART_IT_TXE);
+    USART_ITConfig(USART1, USART_IT_TXE, ENABLE);
+
+    //USART Receive interrupt
+    USART_ClearITPendingBit(USART1, USART_IT_RXNE);
+    USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);
+
+
+    // turn on USART
+    USART_ClockInit(USART1, &USART_ClockInitStructure);
+    USART_Init(USART1, &USART_InitStructure);
+    USART_Cmd(USART1, ENABLE);
+}
+
+
+
+//## USART Receive Function
 //? Called whenever a character is received on the USART1
 void USART_receive(void) {
 
@@ -339,7 +391,7 @@ void USART_receive(void) {
                             tdc_to_gap > 360.0 || number_teeth_CRK <= 0 || number_miss_teeth <= 0 ||
                             number_gap <= 0 || tdc_to_gap <= 0 || first_seg_angle <= 0 ||
                             number_cylinder <= 0 || (sensortype_CRK != 'c' && sensortype_CRK != 'h')) {
-                        UART_COM_error();
+                        USART_COM_error();
                     }
 
                     //configure CRK if no communication error is present
@@ -349,7 +401,7 @@ void USART_receive(void) {
 
 
                 } else {
-                    UART_COM_error();
+                    USART_COM_error();
                 }
             }
             // Delete temporary character arrays
@@ -371,7 +423,7 @@ void USART_receive(void) {
                         number_active_edges_CAM[cam_setup_counter] <= 0 || 
                         CAM_edges[cam_setup_counter][0] <= 0) 
                     {
-                        UART_COM_error();
+                        USART_COM_error();
                     }
                     
                     cam_setup_counter ++;
@@ -381,7 +433,7 @@ void USART_receive(void) {
                         CAM_configuration();
                     }
                 } else {
-                    UART_COM_error();
+                    USART_COM_error();
                 }
             }
 
@@ -402,7 +454,7 @@ void USART_receive(void) {
                 //CRK_CAM_synch[1] = false;
                 CRK_synch_temp = false;
             } else {
-                UART_COM_error();
+                USART_COM_error();
             }
 
             // Delete temporary character arrays
@@ -424,7 +476,7 @@ void USART_receive(void) {
                 //CRK_CAM_synch[1] = false;
                 CRK_synch_temp = false;
             } else {
-                UART_COM_error();
+                USART_COM_error();
             }
 
             // Delete temporary character arrays
@@ -439,7 +491,7 @@ void USART_receive(void) {
                 active_cam_failure = atoi(temp_chars_1);
 
             } else {
-                UART_COM_error();
+                USART_COM_error();
             }
             break;
         }
@@ -463,7 +515,7 @@ void USART_receive(void) {
                 CRK_RUN_OUT_reset();
             }
             else {
-                UART_COM_error();
+                USART_COM_error();
             }
 
             // Delete temporary character arrays
@@ -485,7 +537,7 @@ void USART_receive(void) {
                 CAM_PER_reset();
                 
             } else {
-                UART_COM_error();
+                USART_COM_error();
             }
 
             // Delete temporary character arrays
@@ -505,7 +557,7 @@ void USART_receive(void) {
 
                 CRK_TOOTH_PER_reset();
             } else {
-                UART_COM_error();
+                USART_COM_error();
             }
 
             // Delete temporary character arrays
@@ -528,7 +580,7 @@ void USART_receive(void) {
                 failure_identify = '0';             
                 CAM_PAT_ERR_reset();
             } else {
-                UART_COM_error();
+                USART_COM_error();
             }
 
             // Delete temporary character arrays
@@ -549,7 +601,7 @@ void USART_receive(void) {
                 failure_identify = '0';
                 CAM_delay_reset();
             } else {
-                UART_COM_error();
+                USART_COM_error();
             }
 
             // Delete temporary character arrays
@@ -585,7 +637,7 @@ void USART_receive(void) {
                 CRK_TOOTH_OFF_reset();
             }
             else {
-                UART_COM_error();
+                USART_COM_error();
             }
 
             // Delete temporary character arrays
@@ -605,7 +657,7 @@ void USART_receive(void) {
                 CRK_GAP_NOT_DET_reset();
             }
             else {
-                UART_COM_error();
+                USART_COM_error();
             }
 
             // Delete temporary character arrays
@@ -625,7 +677,7 @@ void USART_receive(void) {
                 SEG_ADP_ER_LIM_reset();
             }
             else {
-                UART_COM_error();
+                USART_COM_error();
             }
 
             // Delete temporary character arrays
@@ -647,7 +699,7 @@ void USART_receive(void) {
                 CRK_pulse_duration_reset();
             }
             else {
-                UART_COM_error();
+                USART_COM_error();
             }
 
             // Delete temporary character arrays
@@ -668,7 +720,7 @@ void USART_receive(void) {
                 POSN_ENG_STST_reset();
             }
             else {
-                UART_COM_error();
+                USART_COM_error();
             }
 
             // Delete temporary character arrays
@@ -688,7 +740,7 @@ void USART_receive(void) {
                 SC_CAM_CRK_reset();
             }
             else {
-                UART_COM_error();
+                USART_COM_error();
             }
 
             // Delete temporary character arrays
@@ -710,7 +762,7 @@ void USART_receive(void) {
                     communication_ready = true;
                 }
             } else {
-                UART_COM_error();
+                USART_COM_error();
             }
 
             Reset_temp_arrays();
@@ -721,7 +773,7 @@ void USART_receive(void) {
         default:
         {
             if (com_error == false) {
-                UART_COM_error();
+                USART_COM_error();
             }
 
             break;
@@ -751,9 +803,9 @@ void USART_send(char message) {
 }
 
 
-//## UART COM Error Function
+//## USART COM Error Function
 
-void UART_COM_error(void) {
+void USART_COM_error(void) {
     if (com_error == false) {
         com_error = true;
 
@@ -770,9 +822,9 @@ void UART_COM_error(void) {
     }
 }
 
-//## UART Send Failure Configuration Status Function
+//## USART Send Failure Configuration Status Function
 
-void UART_send_failure_configuration_status(char failure_ident, bool failure_conf, bool failure_conf_CAM_blank_out) {
+void USART_send_failure_configuration_status(char failure_ident, bool failure_conf, bool failure_conf_CAM_blank_out) {
     if ((failure_ident == '0' || failure_ident == '2') && failure_conf == true) {
         USART_send(message[8]);
         failure_configured = false;
@@ -790,7 +842,7 @@ void UART_send_failure_configuration_status(char failure_ident, bool failure_con
     }
 }
 
-//## UART Reset temporary char-arrays
+//## USART Reset temporary char-arrays
 
 void Reset_temp_arrays(void) {
     temp_chars_1[0] = '\0';

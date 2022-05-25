@@ -1,35 +1,39 @@
 /*****************************************************************************/
 /* Projectname     :  ENSD-Jammer                                            */
-/* Programm        :  UART		                                             */
+/* Programm        :  USART		                                             */
 /* Controller      :  dsPIC33F                                               */
 /* Latest change   :  31.08.2020                                             */
 /* Author          :  Gr�goire Chabin/Christian Ringlstetter/Thomas Pichler  */
 /*****************************************************************************/
 
-#ifndef _UART_H_
-#define _UART_H_
+#ifndef _USART_H_
+#define _USART_H_
 
 // ### Functions ###
 
-	//### UART Receive Function ###
+	// ## Usart1 Init ##
+
+	void Usart1Init(void);
+
+	//### USART Receive Function ###
 
 	void USART_receive(void);
 
-	//### UART Send Function ###
+	//### USART Send Function ###
 	
 	void USART_send(char);
 
-	//### UART Send Configuration Status Function ###
+	//### USART Send Configuration Status Function ###
 	
-	void UART_send_failure_configuration_status(char, bool, bool);
+	void USART_send_failure_configuration_status(char, bool, bool);
 
-	//## UART Reset temporary char-arrays
+	//## USART Reset temporary char-arrays
 
 	void Reset_temp_arrays(void);
 
-	//## UART COM Error Function
+	//## USART COM Error Function
 
-	void UART_COM_error(void);
+	void USART_COM_error(void);
 	
 #endif
 /*****************************************************************************/
