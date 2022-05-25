@@ -529,8 +529,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 
 //## Timer 1 Interrupt CRK tooth time (previously timer2)
 
-void TIM1_UP_IRQHandler(void)
-{
+void TIM1_UP_IRQHandler(void) {
 
 // all overflows between the events
 	timer_overflow_CRK++;
@@ -540,8 +539,7 @@ void TIM1_UP_IRQHandler(void)
 
 //## Timer 2 Interrupt CAM tooth time (previously timer3)
 
-void TIM2_IRQHandler(void)
-{
+void TIM2_IRQHandler(void) {
 
 // all overflows between the events
 // test
@@ -551,8 +549,7 @@ void TIM2_IRQHandler(void)
 }
 //## Timer 3 Interrupt: CAM_PER - start value
 
-void TIM3_IRQHandler(void)
-{
+void TIM3_IRQHandler(void) {
 
 	if (failure_identify == '5')
 	{ // CAM_PER //?CAM_PER is the error identified by '5'
@@ -609,8 +606,7 @@ void TIM3_IRQHandler(void)
 
 //## Timer 4 Interrupt: CAM_PER - pulse duration
 
-void TIM4_IRQHandler(void)
-{
+void TIM4_IRQHandler(void) {
 
 	if (failure_identify == '5') // CAM_PER --> Cam_Spk
 	{
