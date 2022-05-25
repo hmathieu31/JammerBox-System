@@ -527,9 +527,29 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 	}
 }
 
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+	if (*htim == htim1)
+	{
+		TIM1_PeriodElapsedCallback()
+	}
+	if (*htim == htim2)
+	{
+		TIM2_PeriodElapsedCallback();
+	}
+	if (*htim == htim3)
+	{
+		TIM3_PeriodElapsedCallback();
+	}
+	if (*htim == htim4)
+	{
+		TIM4_PeriodElapsedCallback();
+	}
+}
+
 //## Timer 1 Interrupt CRK tooth time (previously timer2)
 
-void TIM1_UP_IRQHandler(void)
+void TIM1_PeriodElapsedCallback(void)
 {
 
 // all overflows between the events
@@ -540,7 +560,7 @@ void TIM1_UP_IRQHandler(void)
 
 //## Timer 2 Interrupt CAM tooth time (previously timer3)
 
-void TIM2_IRQHandler(void)
+void TIM2_PeriodElapsedCallback(void)
 {
 
 // all overflows between the events
@@ -551,7 +571,7 @@ void TIM2_IRQHandler(void)
 }
 //## Timer 3 Interrupt: CAM_PER - start value
 
-void TIM3_IRQHandler(void)
+void TIM3_PeriodElapsedCallback(void)
 {
 
 	if (failure_identify == '5')
@@ -609,7 +629,7 @@ void TIM3_IRQHandler(void)
 
 //## Timer 4 Interrupt: CAM_PER - pulse duration
 
-void TIM4_IRQHandler(void)
+void TIM4_PeriodElapsedCallback(void)
 {
 
 	if (failure_identify == '5') // CAM_PER --> Cam_Spk
