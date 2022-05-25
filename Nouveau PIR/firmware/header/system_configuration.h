@@ -1,10 +1,22 @@
-/*****************************************************************************/
-/* Projectname     :  ENSD-Jammer                                            */
-/* Programm        :  System configuration                                   */
-/* Controller      :  dsPIC33F                                               */
-/* Latest change   :  18.09.2012                                             */
-/* Author          :  Christian Ringlstetter/Thomas Pichler                  */
-/*****************************************************************************/
+/**
+ ******************************************************************************
+ * @file    	  system_configuration.h
+ * @brief   	  Configuration of the system for the input signals
+ * 				  Project name	: STM32-Jammerbox
+ * 				  Controller	: STM32F103RB
+ * @date		  25 May 2022
+ ******************************************************************************
+ * @attention
+ *
+ * All rights reserved.
+ *
+ * This software is licensed under terms that can be found in the LICENSE file
+ * in the root directory of this software component.
+ * If no LICENSE file comes with this software, it is provided AS-IS.
+ *
+ ******************************************************************************
+ */
+
 
 #ifndef _SYSTEM_CONFIGURATION_H_
 #define _SYSTEM_CONFIGURATION_H_
