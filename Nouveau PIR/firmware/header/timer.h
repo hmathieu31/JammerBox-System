@@ -1,41 +1,49 @@
-/*****************************************************************************/
-/* Projectname     :  ENSD-Jammer                                            */
-/* Programm        :  Timer                                                  */
-/* Controller      :  dsPIC33F                                               */
-/* Latest change   :  18.09.2012                                             */
-/* Author          :  Christian Ringlstetter/Thomas Pichler                  */
-/*****************************************************************************/
+/**
+ ******************************************************************************
+ * @file    	  timer.h
+ * @brief   	  Timer management functions and implementation of the software
+ * 				  timer.
+ * 				  Project name	: STM32-Jammerbox
+ * 				  Controller	: STM32F103RB
+ * @date		  25 May 2022
+ ******************************************************************************
+ * @attention
+ *
+ * All rights reserved.
+ *
+ * This software is licensed under terms that can be found in the LICENSE file
+ * in the root directory of this software component.
+ * If no LICENSE file comes with this software, it is provided AS-IS.
+ *
+ ******************************************************************************
+ */
 
 #ifndef _TIMER_H_
 #define _TIMER_H_
 
-// ### Functions ###
+/* External variables --------------------------------------------------------*/
+extern int TIM_Soft_CounterOverflow;
+extern int TIM_Soft_Counting;
 
-	// Set period of Systick timer
-	void Systick_SetPeriod(float);
-	// ## Timer2 Init **Prescaler: 64; CRK Synchronization; tooth time** 
+/* Private functions ---------------------------------------------------------*/
 
-	void SysTickInit(void);
-	//## Timer2Reset **Prescaler: 64; CRK Synchronization; tooth time** 
+// Set period of Systick timer
+void Systick_SetPeriod(float);
+// ## Timer2 Init **Prescaler: 64; CRK Synchronization; tooth time**
 
-	void TIM1Reset(void);
+void SysTickInit(void);
 
-	//## Timer3Reset **Prescaler: 256; CAM Synchronization; segment time** 
+void TIM1_Reset(void);
 
-	void TIM2Reset(void); 
+void TIM2_Reset(void);
 
-	//## Timer4Reset **Prescaler: 64; CRK_NO_SIG/CAM_delay** 
+void TIM_Software_Start(void);
 
-	void Timer4Reset(void);
+void TIM_Software_Stop(void);
 
-	//## Timer5Reset **CAM Prescaler: 256; CAM_NO_SIG** 
+void TIM_Software_Reset(void);
 
-	void Timer5Reset(void);
-
-	//## Timer9Reset **Prescaler: 64; CAM_delay** 
-
-	void Timer9Reset(void);
+int TIM_Software_GetCounter(void);
 
 #endif
-/*****************************************************************************/
-/*****************************************************************************/
+
