@@ -192,15 +192,15 @@
 			}
 	
 			// Check CAM input signal level
-			if(GPIO_ReadInputDataBit(GPIOB,14) != GPIO_ReadInputDataBit(GPIOA,5))
+			if(GPIO_ReadInputDataBit(GPIOB,14) != GPIO_ReadInputDataBit(GPIOA,11))
 			{
-				if (GPIO_ReadInputDataBit(GPIOA, 5) == 1)
+				if (GPIO_ReadInputDataBit(GPIOA, 11) == 1)
                         {
-                        GPIO_ResetBits(GPIOA, 5);
+                        GPIO_ResetBits(GPIOA, 11);
                         }
                     else
                         {
-                         GPIO_SetBits(GPIOA, 5);
+                         GPIO_SetBits(GPIOA, 11);
                         };
 			}
             
