@@ -77,6 +77,8 @@ export default class ButtonList extends React.Component {
       valueSelect: null,
     });
 
+    this.props.navigate("/test_results");
+
     console.log("Value after sending test parameters");
     console.log(this.valueSelect);
   };
@@ -89,9 +91,11 @@ export default class ButtonList extends React.Component {
         TestValue: "",
       };
       this.sendData(jsonData);
-      setTimeout(() => {
-        this.props.navigate("/");
-      }, 2000);
+
+      this.props.navigate("/test_results");
+      // setTimeout(() => {
+      //   this.props.navigate("/test_results");
+      // }, 500);
     };
   };
 

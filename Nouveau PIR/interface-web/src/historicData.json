@@ -1,4 +1,6 @@
 {
+  "numberOfTests": 3,
+
   "Test 1": {
     "id": 1,
     "test_name": "CRK SHORT CIRCUIT",

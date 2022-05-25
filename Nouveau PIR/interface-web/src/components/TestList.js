@@ -11,17 +11,19 @@ export default function Testing() {
   //console.log(Object.entries(jsonData));
 
   const spaces = Object.entries(jsonData).map((obj) => {
-    var newObj = obj[1];
-    console.log(newObj.id);
-    return (
-      <POPOSSpace
-        id={newObj.id}
-        test_name={newObj.test_name}
-        date={newObj.date}
-        parametre={newObj.parametre}
-        result={newObj.result}
-      />
-    );
+    var newObj = obj;
+    if(newObj[0] != "numberOfTests"){
+      console.log(newObj[1].id);
+      return (
+        <POPOSSpace
+          id={newObj[1].id}
+          test_name={newObj[1].test_name}
+          date={newObj[1].date}
+          parametre={newObj[1].parametre}
+          result={newObj[1].result}
+        />
+      );
+    }
   });
 
   return <div className="POPOSList">{spaces}</div>;
