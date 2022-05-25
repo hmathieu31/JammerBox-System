@@ -25,12 +25,9 @@
 #include "usart.h"
 #include "gpio.h"
 
-ar/* ## Hardware specific includes ## */
-#include "stm32f1xx_hal_gpio.h"
-
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "stm32f1xx_hal_gpio.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
