@@ -718,60 +718,61 @@ void TIM4_PeriodElapsedCallback(void)
 
 	TIM_ClearFlag(TIM4, TIM_FLAG_Update);
 }
-/*****************************************************************************/
-/*****************************************************************************/
 
-//## UART Receive Interrupt
-void USART1_IRQHandler(void)
+// ### USART Receive Callback function ###
+void HAL_USART_RxCpltCallback(USART_HandleTypeDef *husart)
 {
-//? UART Receive
-	in = USART_ReceiveData(USART1);
-
-//? PERR : parity error status bit 1 if error detected 0 i no error detected
-	if (USART_GetFlagStatus(USART1, USART_FLAG_PE) == SET
-			|| USART_GetFlagStatus(USART1, USART_FLAG_FE == SET))
+	if (*husart == husart1)
 	{
-		UART_COM_error(); //? FERR : Framing Error Status bit 1 if error detected 0 if no error detected
+		//? UART Receive
+		in = USART_ReceiveData(USART1);
 
-		//? OERR : Receive Buffer Overrun Error Status bit  1 = Receive buffer has overflowed
-	}
-	else if (USART_GetFlagStatus(USART1, USART_FLAG_ORE) == SET)
-	{
-		UART_COM_error(); //? 0 = Receive buffer has not overflowed. Clearing a previously set OERR bit (1 → 0 transition) will reset
-
-		//? the receiver buffer and the UxRSR to the empty state
-		USART_ReceiveData(USART1);
-	}
-	else
-	{
-		char_counter++;
-
-		if (com_error == false && receiving == true && in != end_char)
+		//? PERR : parity error status bit 1 if error detected 0 i no error detected
+		if (USART_GetFlagStatus(USART1, USART_FLAG_PE) == SET
+				|| USART_GetFlagStatus(USART1, USART_FLAG_FE == SET))
 		{
-			input_chars[char_counter - 2] = in; // write received char in array
+			UART_COM_error(); //? FERR : Framing Error Status bit 1 if error detected 0 if no error detected
+
+			//? OERR : Receive Buffer Overrun Error Status bit  1 = Receive buffer has overflowed
 		}
-		else if (com_error == false && in == end_char && receiving == true
-				&& char_counter > 2)
+		else if (USART_GetFlagStatus(USART1, USART_FLAG_ORE) == SET)
 		{
-			input_chars[char_counter - 2] = '\0'; // set length of array
+			UART_COM_error(); //? 0 = Receive buffer has not overflowed. Clearing a previously set OERR bit (1 → 0 transition) will reset
 
-			char_counter = 0;        // reset counter value
-			receiving = false;    // reset label that indicates receiving status
-			message_received = true; // set label that indicates succesfully received message
-		}
-		else if (in == start_char && char_counter == 1)
-		{
-
-			USART_SendData(USART1, message[13]);
-			receiving = true;  // set label that indicates receiving status
-			com_error = false; // reset COM error, due to received start char
+			//? the receiver buffer and the UxRSR to the empty state
+			USART_ReceiveData(USART1);
 		}
 		else
 		{
-			UART_COM_error(); // send failure message
+			char_counter++;
+
+			if (com_error == false && receiving == true && in != end_char)
+			{
+				input_chars[char_counter - 2] = in; // write received char in array
+			}
+			else if (com_error == false && in == end_char && receiving == true
+					&& char_counter > 2)
+			{
+				input_chars[char_counter - 2] = '\0'; // set length of array
+
+				char_counter = 0;        // reset counter value
+				receiving = false; // reset label that indicates receiving status
+				message_received = true; // set label that indicates succesfully received message
+			}
+			else if (in == start_char && char_counter == 1)
+			{
+
+				USART_SendData(USART1, message[13]);
+				receiving = true;  // set label that indicates receiving status
+				com_error = false; // reset COM error, due to received start char
+			}
+			else
+			{
+				UART_COM_error(); // send failure message
+			}
 		}
+		USART_ReceiveData(USART1);
 	}
-	USART_ReceiveData(USART1);
 }
 
 /*****************************************************************************/
