@@ -28,6 +28,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "stm32f1xx_hal_gpio.h"
+
+#include "synchronization.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
