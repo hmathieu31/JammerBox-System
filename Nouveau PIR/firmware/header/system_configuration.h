@@ -17,9 +17,12 @@
  ******************************************************************************
  */
 
-
 #ifndef _SYSTEM_CONFIGURATION_H_
 #define _SYSTEM_CONFIGURATION_H_
+
+/* Private includes --------------------------------------------------------*/
+// ### Standard includes ###
+#include <stdbool.h>
 
 //### CRK Configuration Function ###	
 
@@ -35,7 +38,7 @@ void CAM_configuration(void);
 
 //### Input Signal Observation ###
 
-void Input_signal_observe( bool);
+void Input_signal_observe(bool output_set);
 
 //### Configuration of Clock Trees for all peripherals ###
 void Config_clock_tree(void);

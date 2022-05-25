@@ -17,15 +17,18 @@
  ******************************************************************************
  */
 
-/* Private includes -----------------------------------*/
+/* Private includes ----------------------------------------------------------*/
 #include "system_configuration.h"
 // ### Basic includes ###
 #include <stdbool.h>
 
 // Hardware specific includes
+#include "main.h"
+#include "gpio.h"
+
 #include "stm32f1xx_hal_gpio.h"
 
-// ### Programm includes ###
+// ### Program includes ###
 #include "synchronization.h"
 #include "usart.h"
 
@@ -193,66 +196,47 @@ void Input_signal_observe(bool output_set)
 	if (!output_set)
 	{
 		// Check CRK input signal level
-		if (GPIO_ReadInputDataBit(GPIOB, 8) != GPIO_ReadInputDataBit(GPIOA, 4))
+		if (HAL_GPIO_ReadPin(GPIOB, 8) != HAL_GPIO_ReadPin(GPIOA, 4))
 		{
-			// Check CRK input signal level
-			if(HAL_GPIO_ReadPin(GPIOB,8) != HAL_GPIO_ReadPin(GPIOA,4))
+			if (HAL_GPIO_ReadPin(GPIOA, 4) == GPIO_PIN_SET)
 			{
-				if (HAL_GPIO_ReadPin(GPIOA, 4) == 1)
-                        {
-                        GPIO_ResetBits(GPIOA, 4);
-                        }
-                    else
-                        {
-                         GPIO_SetBits(GPIOA, 4);
-                        };
+				HAL_GPIO_WritePin(GPIOA, 4, GPIO_PIN_RESET);
 			}
 	
 			// Check CAM input signal level
 			if(HAL_GPIO_ReadPin(GPIOB,14) != HAL_GPIO_ReadPin(GPIOA,11))
 			{
-				if (HAL_GPIO_ReadPin(GPIOA, 11) == 1)
-                        {
-                        GPIO_ResetBits(GPIOA, 11);
-                        }
-                    else
-                        {
-                         GPIO_SetBits(GPIOA, 11);
-                        };
+				HAL_GPIO_WritePin(GPIOA, 4, GPIO_PIN_SET);
+			};
+		}
+
+		// Check CAM input signal level
+		if (HAL_GPIO_ReadPin(GPIOB, 14) != HAL_GPIO_ReadPin(GPIOA, 11))
+		{
+			if (HAL_GPIO_ReadPin(GPIOA, 11) == GPIO_PIN_SET)
+			{
+				HAL_GPIO_WritePin(GPIOA, 11, GPIO_PIN_RESET);
 			}
             
             if(HAL_GPIO_ReadPin(GPIOB,12) != HAL_GPIO_ReadPin(GPIOA,6))
 			{
-				if (HAL_GPIO_ReadPin(GPIOA, 6) == 1)
-                        {
-                        GPIO_ResetBits(GPIOA, 6);
-                        }
-                    else
-                        {
-                         GPIO_SetBits(GPIOA, 6);
-                        };	
+				HAL_GPIO_WritePin(GPIOA, 11, GPIO_PIN_SET);
+			};
+		}
+
+		if (HAL_GPIO_ReadPin(GPIOB, 12) != HAL_GPIO_ReadPin(GPIOA, 6))
+		{
+			if (HAL_GPIO_ReadPin(GPIOA, 6) == GPIO_PIN_SET)
+			{
+				HAL_GPIO_WritePin(GPIOA, 6, GPIO_PIN_RESET);
 			}
 			else
 			{
-				GPIO_SetBits(GPIOA, 6);
+				HAL_GPIO_WritePin(GPIOA, 6, GPIO_PIN_SET);
 			};
 		}
 
 		output_level_setting = true;
 	}
 }
-/************************************************************************/
-/************************************************************************/
-// Activation of all clock trees for all used peripherals
-void Config_clock_tree(void)
-{
-	// USART1 GPIO A9 et A10 si on utilise les gpios
-	RCC->APB2ENR |= RCC_APB2ENR_TIM1EN;
-	RCC->APB1ENR |= RCC_APB1ENR_TIM2EN;
-	RCC->APB1ENR |= RCC_APB1ENR_TIM3EN;
-	RCC->APB1ENR |= RCC_APB1ENR_TIM4EN;
-	RCC->APB2ENR |= RCC_APB2ENR_USART1EN;
-	RCC->APB2ENR |= RCC_APB2ENR_IOPAEN;
-	RCC->APB2ENR |= RCC_APB2ENR_IOPBEN;
-	RCC->APB2ENR |= RCC_APB2ENR_AFIOEN;
-}
+
