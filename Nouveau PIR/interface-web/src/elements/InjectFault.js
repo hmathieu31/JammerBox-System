@@ -7,7 +7,7 @@ import ButtonAttributes from "../components/ButtonAttributes";
 import { Provider as AlertProvider } from "react-alert";
 import AlertTemplate from "../components/alertTemplate";
 
-export default function SynthesizeTests() {
+export default function InjectFault() {
   let navigate = useNavigate();
   
   const options = {

@@ -3,7 +3,7 @@ import "../components/ReturnButton.js";
 import ReturnButton from "../components/ReturnButton.js";
 import React, { useState } from "react";
 import { useAlert } from "react-alert";
-import RaspiProp from "../RaspiProp.json";
+import RecordSignal from "../components/RecordSignal.js";
 
 export default function Configuration() {
   const [inputFileS, setInputFile] = useState(null);
@@ -12,7 +12,7 @@ export default function Configuration() {
   let fileReader;
 
   const sendData = (jsonData) => {
-    fetch("http://" + RaspiProp["IP_ADDRESS"] + ":8080/config", {
+    fetch("http://localhost:8080/config", {
       method: "POST",
       mode: "cors",
       headers: { "Content-type": "application/json" },
@@ -60,7 +60,7 @@ export default function Configuration() {
           };
         }
         sendData(jsonData);
-        alert.show("Configuration successfully uploaded!");
+        alert.show("Configuration successfully uploaded!")
       }
     };
   };
@@ -73,8 +73,8 @@ export default function Configuration() {
       } else if (conf === "RESETCAM") {
         jsonData = { Config: "RESETCAM" };
       }
-      sendData(jsonData);
-      alert.show("Configuration successfully reset!");
+    sendData(jsonData); 
+    alert.show("Configuration successfully reset!")
     };
   };
 
@@ -119,13 +119,13 @@ export default function Configuration() {
             <button
               className="group-6 txt-733"
               onClick={onButtonClickConf("CRK")}
-            >
+              >
               CONFIG CRK
             </button>
             <button
               className="group-6 txt-733"
               onClick={onButtonClickRstConf("RESETCAM")}
-            >
+              >
               RESET CRK CONFIG
             </button>
             <input
@@ -135,7 +135,7 @@ export default function Configuration() {
               ref={inputFile}
               onChange={onChangeFile}
               accept=".json"
-            />
+              />
           </div>
           <div className="flex-center">
             <p className="txt-271">CAM</p>

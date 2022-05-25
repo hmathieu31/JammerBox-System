@@ -7,7 +7,6 @@ import Modal from "react-modal";
 import { Provider as AlertProvider } from "react-alert";
 import AlertTemplate from "../components/alertTemplate";
 import { withAlert } from "react-alert";
-import RaspiProp from "../RaspiProp.json";
 
 const options = {
   position: "bottom center",
@@ -22,7 +21,10 @@ class ButtonList extends React.Component {
     super();
     this.state = {
       showModal: false,
-      testName: "POLO",
+      testName: "",
+      testParam: "",
+      isSelect: false,
+      valueSelect: null,
     };
   }
 
@@ -45,8 +47,7 @@ class ButtonList extends React.Component {
   };
 
   sendData = (jsonData) => {
-    console.log(jsonData);
-    fetch("http://" + RaspiProp["IP_ADDRESS"] + ":8080/run", {
+    fetch("http://localhost:8080/run", {
       method: "POST",
       mode: "cors",
       headers: { "Content-type": "application/json" },
@@ -118,25 +119,18 @@ class ButtonList extends React.Component {
           </AlertProvider>
         </Modal>
         <button
-          key={this.Buttons.indexOf(data)}
-          onClick={this.handleOpenClose}
+          onClick={
+            data.getHasParam()
+              ? this.handleOpenClose(data)
+              : this.directRunTest(data)
+          }
           className="group-6 txt-733"
         >
-          <AlertProvider template={AlertTemplate} {...options}>
-            <ParameterPopup
-              handleOpenClose={this.handleOpenClose(data)}
-              handleRun={this.runTest}
-              handleChange={this.changeData}
-              testName={this.state.testName}
-              testParam={this.state.testParam}
-              isSelect={this.state.isSelect}
-              valueSelected={this.state.valueSelect}
-            />
-          </AlertProvider>
-        </Modal>
+          {data.getTestName()}
+        </button>
       </div>
     );
-  }
+  };
   render() {
     return (
       <div className="button-list-div">

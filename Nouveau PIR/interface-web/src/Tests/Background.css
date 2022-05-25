@@ -16,6 +16,7 @@ p {
 }
 
 .frame-1 {
+
   background: url(../../public/BackgroundImage.png),
     linear-gradient(0deg, rgba(255, 255, 255, 1), rgba(255, 255, 255, 1));
   background-size: 100% 100%;

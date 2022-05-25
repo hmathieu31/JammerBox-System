@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import "../CSS/MainPage.css";
 import { useNavigate } from "react-router-dom";
 import RecordSignal from "../components/RecordSignal";
@@ -24,13 +25,13 @@ function MainPage() {
           <p className="txt-271 flex-hcenter">PIR Interface</p>
           <div className="flex-col">
             <button className="group-6" onClick={Test_selection}>
-              <p className="txt-733 flex-hcenter">Inject fault</p>
+              <p className="txt-733 flex-hcenter">Inject Fault</p>
             </button>
             <button className="group-6" onClick={Configuration_selection}>
               <p className="txt-733 flex-hcenter">Configuration</p>
             </button>
             <button className="group-6" onClick={History_selection}>
-              <p className="txt-733 flex-hcenter">Test historics</p>
+              <p className="txt-733 flex-hcenter">Faults Injection Logs</p>
             </button>
             <RecordSignal />
           </div>
