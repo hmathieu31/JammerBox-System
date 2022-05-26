@@ -25,12 +25,16 @@
 
 /* Hardware includes ---------------------------------------------------------*/
 #include "stm32f1xx_hal.h"
+#include "stm32f1xx_ll_tim.h"
+#include "stm32f1xx_hal_tim.h"
+
 
 /* Program includes ----------------------------------------------------------*/
 #include "failures.h"
+#include "tim.h"
 
 /* Variables -----------------------------------------------------------------*/
-
+s
 extern bool CRK_signal;
 extern bool CAM_signal[2];
 
@@ -155,8 +159,8 @@ extern unsigned int active_CAM_edges_counter[2];
 extern unsigned int sc_type_SC_CAM_CRK;
 
 // TIM5 variables
-extern int TIM_Soft_Counting;
-extern int TIM_Soft_CounterOverflow;
+extern int tim5_Counting;
+extern int tim5_CounterOverflow;
 
 /* Public functions -------------------------------------------------------- */
 
@@ -367,9 +371,9 @@ void output_CAM(char failure_ident, int cam_id) {
  */
 void output_CRK_no_failure(void) {
     if (CRK_signal == true) {
-        GPIO_SetBits(GPIOA, 6);
+        HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, GPIO_PIN_SET);
     } else {
-        GPIO_ResetBits(GPIOA, 6);
+        HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, GPIO_PIN_RESET);
     }
 }
 
@@ -377,15 +381,15 @@ void output_CRK_no_failure(void) {
 void output_CAM_no_failure(int cam_id) {
     if (CAM_signal[cam_id] == true) {
         if (cam_id == 0) {
-            GPIO_SetBits(GPIOA, 11);
+            HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_SET);
         } else {
-            GPIO_SetBits(GPIOA, 6);
+            HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, GPIO_PIN_SET);
         }
     } else {
         if (cam_id == 0) {
-            GPIO_ResetBits(GPIOA, 11);
+            HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_RESET);
         } else {
-            GPIO_ResetBits(GPIOA, 6);
+            HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, GPIO_PIN_RESET);
         }
     }
 }
@@ -406,9 +410,9 @@ void output_CRK_RUN_OUT(void) {
             failure_passed = true;
         } else {  // if failure is active
             if (sc_type_CRK_RUN_OUT == 'g') {
-                GPIO_ResetBits(GPIOA, 4);  // set CRK as low
+                HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_RESET);  // set CRK as low
             } else if (sc_type_CRK_RUN_OUT == 'b') {
-                GPIO_SetBits(GPIOA, 4);  // set CRK as hight
+                HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);  // set CRK as hight
             }
         }
     } else if (failure_passed == true) {  // once the failure finished have a normal output
@@ -437,33 +441,27 @@ void CRK_RUN_OUT_reset(void) {
 void output_CAM_PER(int cam_id) {
     if (active_edges_CAM_PER == 'b') {
         if (cam_id == 0) {          // For CAM1
-            TIM_Cmd(TIM3, ENABLE);  // Enable Timer3 (formerly Timer6 on microchip)
-            TIM_SetAutoreload(TIM3,
-                              (filter_time_CAM[cam_id] / 2.0 - 5) / microsecond_per_timer_tick_CAM_PER__CRK_TOOTH_PER);
+            HAL_TIM_Base_Stop(&htim3); // Enable Timer3 (formerly Timer6 on microchip)
+            __HAL_TIM_SET_AUTORELOAD(&htim3, (filter_time_CAM[cam_id] / 2.0 - 5) / microsecond_per_timer_tick_CAM_PER__CRK_TOOTH_PER);
         } else {                    // For CAM2
-            TIM_Cmd(TIM4, ENABLE);  // Enable Timer4 (formerly Timer7 on microchip)
-            TIM_SetAutoreload(TIM4,
-                              (filter_time_CAM[cam_id] / 2.0 - 5) / microsecond_per_timer_tick_CAM_PER__CRK_TOOTH_PER);
+            HAL_TIM_Base_Stop(&htim4);  // Enable Timer4 (formerly Timer7 on microchip)
+            __HAL_TIM_SET_AUTORELOAD(&htim4, (filter_time_CAM[cam_id] / 2.0 - 5) / microsecond_per_timer_tick_CAM_PER__CRK_TOOTH_PER);
         }
     } else if (active_edges_CAM_PER == 'f' && CAM_signal[cam_id] == false) {
         if (cam_id == 0) {          // For CAM1
-            TIM_Cmd(TIM3, ENABLE);  // Enable Timer3 (formerly Timer6 on microchip)
-            TIM_SetAutoreload(TIM3,
-                              (filter_time_CAM[cam_id] / 2.0 - 5) / microsecond_per_timer_tick_CAM_PER__CRK_TOOTH_PER);
+            HAL_TIM_Base_Stop(&htim3);  // Enable Timer3 (formerly Timer6 on microchip)
+            __HAL_TIM_SET_AUTORELOAD(&htim3, (filter_time_CAM[cam_id] / 2.0 - 5) / microsecond_per_timer_tick_CAM_PER__CRK_TOOTH_PER);
         } else {                    // For CAM2
-            TIM_Cmd(TIM4, ENABLE);  // Enable Timer4 (formerly Timer7 on microchip)
-            TIM_SetAutoreload(TIM4,
-                              (filter_time_CAM[cam_id] / 2.0 - 5) / microsecond_per_timer_tick_CAM_PER__CRK_TOOTH_PER);
+            HAL_TIM_Base_Stop(&htim4);  // Enable Timer4 (formerly Timer7 on microchip)
+            __HAL_TIM_SET_AUTORELOAD(&htim4, (filter_time_CAM[cam_id] / 2.0 - 5) / microsecond_per_timer_tick_CAM_PER__CRK_TOOTH_PER);
         }
     } else if (active_edges_CAM_PER == 'r' && CAM_signal[cam_id] == true) {
         if (cam_id == 0) {          // For CAM1
-            TIM_Cmd(TIM3, ENABLE);  // Enable Timer3 (formerly Timer6 on microchip)
-            TIM_SetAutoreload(TIM3,
-                              (filter_time_CAM[cam_id] / 2.0 - 5) / microsecond_per_timer_tick_CAM_PER__CRK_TOOTH_PER);
+            HAL_TIM_Base_Stop(&htim3);   // Enable Timer3 (formerly Timer6 on microchip)
+            __HAL_TIM_SET_AUTORELOAD(&htim3, (filter_time_CAM[cam_id] / 2.0 - 5) / microsecond_per_timer_tick_CAM_PER__CRK_TOOTH_PER);
         } else {                    // For CAM2
-            TIM_Cmd(TIM4, ENABLE);  // Enable Timer4 (formerly Timer7 on microchip)
-            TIM_SetAutoreload(TIM4,
-                              (filter_time_CAM[cam_id] / 2.0 - 5) / microsecond_per_timer_tick_CAM_PER__CRK_TOOTH_PER);
+            HAL_TIM_Base_Stop(&htim4); // Enable Timer4 (formerly Timer7 on microchip)
+            __HAL_TIM_SET_AUTORELOAD(&htim4, (filter_time_CAM[cam_id] / 2.0 - 5) / microsecond_per_timer_tick_CAM_PER__CRK_TOOTH_PER);
         }
     }
 }
@@ -491,7 +489,7 @@ void CAM_PER_reset(void) {
 //## Output CRK: CRK_TOOTH_PER
 void output_CRK_TOOTH_PER(void) {
     if (CRK_signal == false) {
-        TIM_Cmd(TIM3, ENABLE);  // Enable timer3 (formerly Timer6 on microchip)
+        HAL_TIM_Base_Start(&htim3); // Enable timer3 (formerly Timer6 on microchip)     
     }
 }
 
@@ -499,14 +497,15 @@ void output_CRK_TOOTH_PER(void) {
 void CRK_TOOTH_PER_reset(void) {
     if (TIM3->CR1 & TIM_CR1_CEN)  // if timer3 is enabled
     {
-        TIM_Cmd(TIM3, DISABLE);
-        TIM_SetCounter(TIM3, 0);  // disable and reset the timer
+        HAL_TIM_Base_Stop(&htim3);
+        __HAL_TIM_SET_COUNTER(&htim3,0);// disable and reset the timer
+
     }
 
     if (TIM4->CR1 & TIM_CR1_CEN)  // if timer4 is enabled
     {
-        TIM_Cmd(TIM4, DISABLE);
-        TIM_SetCounter(TIM4, 0);  // disable and reset the timer
+        HAL_TIM_Base_Stop(&htim4);
+        __HAL_TIM_SET_COUNTER(&htim4,0);  // disable and reset the timer
     }
 
     failure_set = false;
@@ -543,17 +542,17 @@ void Output_CAM_delay(int cam_id) {
                     if (cam_id == 0) {
                         // Toggle GPIOA11
                         if (GPIO_ReadOutputDataBit(GPIOA, 11) == 0) {
-                            GPIO_SetBits(GPIOA, 11);
+                            HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_SET);
                         } else {
-                            GPIO_ResetBits(GPIOA, 11);
+                            HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_RESET);
                         }
 
                     } else if (cam_id == 1) {
                         // Toggle GPIOA6
                         if (GPIO_ReadOutputDataBit(GPIOA, 6) == 0) {
-                            GPIO_SetBits(GPIOA, 6);
+                            HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, GPIO_PIN_SET);
                         } else {
-                            GPIO_ResetBits(GPIOA, 6);
+                            HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, GPIO_PIN_RESET);
                         }
                     }
                 }
@@ -575,16 +574,16 @@ void Output_CAM_delay(int cam_id) {
                     if (cam_id == 0) {
                         // Toggle GPIO5
                         if (GPIO_ReadOutputDataBit(GPIOA, 11) == 0) {
-                            GPIO_SetBits(GPIOA, 11);
+                            HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_SET);
                         } else {
-                            GPIO_ResetBits(GPIOA, 11);
+                            HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_RESET);
                         }
                     } else if (cam_id == 1) {
                         // Toggle GPIO6
                         if (GPIO_ReadOutputDataBit(GPIOA, 6) == 0) {
-                            GPIO_SetBits(GPIOA, 6);
+                            HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, GPIO_PIN_SET);
                         } else {
-                            GPIO_ResetBits(GPIOA, 6);
+                            HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, GPIO_PIN_RESET);
                         }
                     }
                 }
@@ -602,27 +601,27 @@ void Output_CAM_delay(int cam_id) {
 
 //## CAM_delay: CAM_TOOTH_OFF / CAM_REF_CRK / CAM_SYN / CAM_SYN_CRK
 void CAM_delay(int cam_id) {
-    if (TIM_Soft_Counting) {
+    if (tim5_Counting) {
         double former_teeth_time;
         former_teeth_time = former_teeth_time_calculation(T_TOOTH_RAW,
                                                           teeth_count_CRK, number_miss_teeth);
-        if (((double)TIM_Soft_GetCounter() / former_teeth_time) * revolution_CRK >= (revolution_CRK / 2.0)) {
+        if (((double)Tim5_GetCounter() / former_teeth_time) * revolution_CRK >= (revolution_CRK / 2.0)) {
             if (cam_id == 0) {
                 if (GPIO_ReadInputDataBit(GPIOA, 11) == 1)  // TODO: #82 Double check wheter GPIOA 5 and GPIOA11 are IN or OUT
                 {
-                    GPIO_ResetBits(GPIOA, 11);
+                    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_RESET);
                 } else {
-                    GPIO_SetBits(GPIOA, 11);
+                    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_SET);
                 }
             } else if (cam_id == 1) {
                 if (GPIO_ReadInputDataBit(GPIOA, 6) == 1) {
-                    GPIO_ResetBits(GPIOA, 6);
+                    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, GPIO_PIN_RESET);
                 } else {
-                    GPIO_SetBits(GPIOA, 6);
+                    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, GPIO_PIN_SET);
                 }
             }
-            TIM_Soft_Stop();
-            TIM_Soft_Reset();
+            Tim5_Stop();
+            Tim5_Reset();
         }
     }
 
@@ -641,15 +640,15 @@ void CAM_delay(int cam_id) {
             if (interrupt_check_CAM_delay[cam_id] == false) {
                 if (cam_id == 0) {
                     if (GPIO_ReadInputDataBit(GPIOA, 11) == 1) {
-                        GPIO_ResetBits(GPIOA, 11);
+                        HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_RESET);
                     } else {
-                        GPIO_SetBits(GPIOA, 11);
+                        HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_SET);
                     };
                 } else if (cam_id == 1) {
                     if (GPIO_ReadInputDataBit(GPIOA, 6) == 1) {
-                        GPIO_ResetBits(GPIOA, 6);
+                        HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, GPIO_PIN_RESET);
                     } else {
-                        GPIO_SetBits(GPIOA, 6);
+                        HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, GPIO_PIN_SET);
                     };
                 }
 
@@ -672,27 +671,27 @@ void CAM_delay(int cam_id) {
             }
 
             if (shift_counter_CAM_delay[cam_id][i] != 0) {
-                if (angle_to_edge_CAM_delay[cam_id][i] + ((double)(shift_counter_CAM_delay[cam_id][i] - 1) + ((double)(TIM_Soft_GetCounter() + timer_overflow_CRK * (unsigned long)(TIM2->ARR))) / former_teeth_time) * revolution_CRK >= (delay_angle_CAM_delay * delay_factor_CAM_delay))  // Aurait été plus propre avec un getAutoreload
+                if (angle_to_edge_CAM_delay[cam_id][i] + ((double)(shift_counter_CAM_delay[cam_id][i] - 1) + ((double)(Tim5_GetCounter() + timer_overflow_CRK * (unsigned long)(TIM2->ARR))) / former_teeth_time) * revolution_CRK >= (delay_angle_CAM_delay * delay_factor_CAM_delay))  // Aurait été plus propre avec un getAutoreload
                 {
                     shift_counter_CAM_delay[cam_id][i] = 0;
                     angle_to_edge_CAM_delay[cam_id][i] = 0;
                     number_processing_edges_CAM_delay[cam_id]--;
                     if (cam_id == 0) {
                         if (GPIO_ReadInputDataBit(GPIOA, 11) == 1) {
-                            GPIO_ResetBits(GPIOA, 11);
+                            HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_RESET);
                         } else {
-                            GPIO_SetBits(GPIOA, 11);
+                            HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_SET);
                         };
                     } else if (cam_id == 1) {
                         if (GPIO_ReadInputDataBit(GPIOA, 6) == 1) {
-                            GPIO_ResetBits(GPIOA, 6);
+                            HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, GPIO_PIN_RESET);
                         } else {
-                            GPIO_SetBits(GPIOA, 6);
+                            HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, GPIO_PIN_SET);
                         };
                     }
 
                     if (active_CAM_edges[cam_id] == 'r' || active_CAM_edges[cam_id] == 'f') {
-                        TIM_Soft_Start();
+                        Tim5_Start();
                     }
 
                     break;
@@ -781,8 +780,8 @@ void CAM_delay_reset(void) {
     failure_set = false;
     SysTick->CTRL &= ~SysTick_CTRL_ENABLE;  // disable SysTick
     SysTick->VAL = (2 ^ 24) - 1;            // clear systick counter
-    TIM_Soft_Stop();
-    TIM_Soft_Reset();
+    Tim5_Stop();
+    Tim5_Reset();
 
     number_processing_edges_CAM_delay[0] = 0;
     number_processing_edges_CAM_delay[1] = 0;
@@ -827,7 +826,7 @@ void output_CRK_TOOTH_OFF(void) {
     if (failure_active == true) {
         if (CRK_signal == false) {  // if failure active and the Crk is set to 0 set Crk output at 1 to miss a tooth
             failure_passed = true;
-            GPIO_SetBits(GPIOA, 4);
+            HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
         } else if (failure_passed == true) {  // a tooth has been skiped
             failure_passed = false;
             failure_active = false;
@@ -866,7 +865,7 @@ void output_CRK_GAP_NOT_DET(void) {
     }
 
     if (CRK_synch == false) {
-        GPIO_SetBits(GPIOA, 4);
+        HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
     } else if (CRK_synch == true) {
         output_CRK_no_failure();
 
@@ -898,12 +897,12 @@ void output_SEG_ADP_ER_LIM(void) {
     }
 
     if ((failure_active == true) && (CRK_signal == false)) {  // on the falling edge of the CRK start the delay timer
-        TIM_Cmd(TIM4, ENABLE);
-        GPIO_SetBits(GPIOA, 4);
+        ___HAL_TIM_ENABLE(&htim4);
+        HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
     } else if ((failure_active == true) && (CRK_signal == true)) {
         if (failure_passed == true) {  // if failure on the falling edge of the CRK is already set
-            GPIO_ResetBits(GPIOA, 4);
-            TIM_Cmd(TIM4, ENABLE);
+            HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_RESET);
+            ___HAL_TIM_ENABLE(&htim4);
         } else {  // if failure on the falling edge of the CRK is still not set, this happens a lot on lower frquency
             failure_waiting = true;
         }
@@ -913,7 +912,7 @@ void output_SEG_ADP_ER_LIM(void) {
 
     if (teeth_counter_SEG_ADP_ER_LIM == (((720 / (number_segments_CRK * revolution_CRK)) + (first_seg_angle / revolution_CRK) + (int)(tdc_to_gap / revolution_CRK) + 1))) {  // if we are one tooth befor the end of the first segment
         double delayTimer = crk_delay_SEG_ADP_ER_LIM * (T_TOOTH_RAW / revolution_CRK);
-        TIM_SetAutoreload(TIM4, 18 * ((delayTimer * 8) + 1) - 1);  // PR7 =  delayTimer * 8;
+        __HAL_TIM_SET_AUTORELOAD(&htim4, 18 * ((delayTimer * 8) + 1) - 1); // PR7 =  delayTimer * 8
         // set de delay for the timer, times 8 because the timer 7 has a prescale of 1:8 and T_TOOTH_RAW has 1:64
         failure_active = true;
     }
@@ -932,8 +931,8 @@ void SEG_ADP_ER_LIM_reset(void) {
 //## Output_CRK_pulse_duration
 void output_CRK_pulse_duration(void) {
     if (CRK_signal == false) {
-        TIM_Cmd(TIM4, ENABLE);  // start the timer4 (formerly TIM7 on microchip)
-        GPIO_ResetBits(GPIOG, 4);
+        ___HAL_TIM_ENABLE(&htim4); // start the timer4 (formerly TIM7 on microchip)
+        HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET);
     }
 }
 
@@ -947,7 +946,7 @@ void CRK_pulse_duration_reset(void) {
 void output_POSN_ENG_STST(void) {
     if ((CRK_signal == false) && (failure_active == true)) {
         counter_POSN_ENG_STST++;  // counte the teeth'
-        GPIO_SetBits(GPIOA, 4);   // skip the tooth
+        HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);   // skip the tooth
 
         if (counter_POSN_ENG_STST >= crk_teeth_off_POSN_ENG_STST) {  // if number of teeth skip is done stop failure
             failure_active = false;
@@ -972,15 +971,15 @@ void output_CAM_PAT_ERR(int cam_id) {
             if (active_CAM_edges_counter[cam_id] >= 7) {  // after an abitrary number of CAM edges skip the next falling edge to generate the failure
                 if (CAM_signal[cam_id] == false) {
                     if (cam_id == 0) {
-                        GPIO_SetBits(GPIOA, 11);
+                        HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_SET);
                     } else {
-                        GPIO_SetBits(GPIOA, 6);
+                        HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, GPIO_PIN_SET);
                     }
                 } else if (CAM_signal[cam_id] == true) {
                     if (cam_id == 0) {
-                        GPIO_ResetBits(GPIOA, 11);
+                        HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_RESET);
                     } else {
-                        GPIO_ResetBits(GPIOA, 6);
+                        HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, GPIO_PIN_RESET);
                     }
                 }
                 active_CAM_edges_counter[cam_id] = 0;
@@ -995,9 +994,9 @@ void output_CAM_PAT_ERR(int cam_id) {
                 if (active_CAM_edges_counter[cam_id] >= 7) {  // after an abitrary number of CAM edges skip this edge in output to generate the failure
                     active_CAM_edges_counter[cam_id] = 0;
                     if (cam_id == 0) {
-                        GPIO_SetBits(GPIOA, 11);
+                        HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_SET);
                     } else {
-                        GPIO_SetBits(GPIOA, 6);
+                        HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, GPIO_PIN_SET);
                     }
                 } else {
                     output_CAM_no_failure(cam_id);
@@ -1011,9 +1010,9 @@ void output_CAM_PAT_ERR(int cam_id) {
                 if (active_CAM_edges_counter[cam_id] >= 7) {  // after an abitrary number of CAM edges skip this edge in output to generate the failure
                     active_CAM_edges_counter[cam_id] = 0;
                     if (cam_id == 0) {
-                        GPIO_ResetBits(GPIOA, 11);
+                        HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_RESET);
                     } else {
-                        GPIO_ResetBits(GPIOA, 6);
+                        HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, GPIO_PIN_RESET);
                     }
                 } else {
                     output_CAM_no_failure(cam_id);
@@ -1039,22 +1038,22 @@ void output_SC_CAM_CRK(int cam_id) {
         switch (sc_type_SC_CAM_CRK) {
             case (1):  // CrkScg
             {
-                GPIO_ResetBits(GPIOA, 4);
+                HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_RESET);
                 output_CAM_no_failure(cam_id);
                 break;
             }
             case (2):  // CrkScb
             {
-                GPIO_SetBits(GPIOA, 4);
+                HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
                 output_CAM_no_failure(cam_id);
                 break;
             }
             case (3):  // CamScg
             {
                 if (cam_id == 0) {
-                    GPIO_ResetBits(GPIOA, 11);
+                    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_RESET);
                 } else {
-                    GPIO_ResetBits(GPIOA, 6);
+                    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, GPIO_PIN_RESET);
                 }
                 output_CRK_no_failure();
                 break;
@@ -1062,9 +1061,9 @@ void output_SC_CAM_CRK(int cam_id) {
             case (4):  // CamScb
             {
                 if (cam_id == 0) {
-                    GPIO_SetBits(GPIOA, 11);
+                    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_SET);
                 } else {
-                    GPIO_SetBits(GPIOA, 6);
+                    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, GPIO_PIN_SET);
                 }
                 output_CRK_no_failure();
                 break;
