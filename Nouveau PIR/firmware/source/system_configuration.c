@@ -179,9 +179,9 @@
 		if(!output_set)
 		{
 			// Check CRK input signal level
-			if(GPIO_ReadInputDataBit(GPIOB,8) != GPIO_ReadInputDataBit(GPIOA,4))
+			if(HAL_GPIO_ReadPin(GPIOB,8) != HAL_GPIO_ReadPin(GPIOA,4))
 			{
-				if (GPIO_ReadInputDataBit(GPIOA, 4) == 1)
+				if (HAL_GPIO_ReadPin(GPIOA, 4) == 1)
                         {
                         GPIO_ResetBits(GPIOA, 4);
                         }
@@ -192,9 +192,9 @@
 			}
 	
 			// Check CAM input signal level
-			if(GPIO_ReadInputDataBit(GPIOB,14) != GPIO_ReadInputDataBit(GPIOA,11))
+			if(HAL_GPIO_ReadPin(GPIOB,14) != HAL_GPIO_ReadPin(GPIOA,11))
 			{
-				if (GPIO_ReadInputDataBit(GPIOA, 11) == 1)
+				if (HAL_GPIO_ReadPin(GPIOA, 11) == 1)
                         {
                         GPIO_ResetBits(GPIOA, 11);
                         }
@@ -204,9 +204,9 @@
                         };
 			}
             
-            if(GPIO_ReadInputDataBit(GPIOB,12) != GPIO_ReadInputDataBit(GPIOA,6))
+            if(HAL_GPIO_ReadPin(GPIOB,12) != HAL_GPIO_ReadPin(GPIOA,6))
 			{
-				if (GPIO_ReadInputDataBit(GPIOA, 6) == 1)
+				if (HAL_GPIO_ReadPin(GPIOA, 6) == 1)
                         {
                         GPIO_ResetBits(GPIOA, 6);
                         }
