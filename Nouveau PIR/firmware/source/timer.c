@@ -28,6 +28,9 @@
 #include "stm32f1xx_hal.h"
 #include "stm32f1xx_hal_tim.h"
 
+#include "main.h"
+#include "tim.h"
+
 #include "stm32f1xx_ll_tim.h"
 
 // ## Enable use of Low Level Drivers (needed to reset manually the counter) */
