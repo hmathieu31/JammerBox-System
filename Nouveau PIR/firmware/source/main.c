@@ -12,22 +12,30 @@
 #include <stdlib.h>
 
 // ### Hardware specific includes ###
-#include "stm32f10x.h"
-#include "stm32f10x_exti.h"
-#include "stm32f10x_gpio.h"
-#include "stm32f10x_tim.h"
-#include "stm32f10x_usart.h"
-#include "stm32f10x_exti.h"
+//#include "stm32f10x_exti.h"
+//#include "stm32f10x_gpio.h"	
+//#include "stm32f10x_tim.h"
+//#include "stm32f10x_usart.h"
+#include "stm32f1xx_hal_conf.h"
+
+#include "stm32f1xx_hal.h"
+#include "stm32f1xx_hal_tim.h"
+#include "stm32f1xx_hal_usart.h"
+#include "stm32f1xx_hal_gpio.h"
+
 
 // ### Program includes ###
 #include "failures.h"
-#include "exti.h"
-#include "port_config.h"
+//#include "exti.h"
+//#include "port_config.h"
 #include "synchronization.h"
 #include "system_configuration.h"
 #include "timer.h"
 #include "usart.h"
 #include "Tim5.h"
+#include "tim.h"
+#include "gpio.h"
+#include "main.h"
 
 // ### Definitions ###
 
@@ -344,10 +352,11 @@ int main1(void)
 
 	Usart1Init();
 
-	GPIO_ResetBits(GPIOA, 3);
+	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, GPIO_PIN_RESET);
+
 	// ## Main loop ##
 	while (1)
-	{
+	{	
 		// failure processing
 		if (configuration_complete)
 		{
@@ -365,14 +374,14 @@ int main1(void)
 		{
 			// Stalling_detection();
 			Stalling_detection_CRK();
-			GPIO_SetBits(GPIOA, 3);
+			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, GPIO_PIN_SET);
 		}
 		// reset all values when CAM stalling is detected //was not here before
 		if ((timer_overflow_CAM > 5))
 		{
 			Stalling_detection_CAM(0);
 			Stalling_detection_CAM(1);
-			GPIO_SetBits(GPIOA, 3);
+			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, GPIO_PIN_SET);
 		}
 
         // send failure configuration status
@@ -382,30 +391,30 @@ int main1(void)
 		Input_signal_observe(output_level_setting);
 		if (CRK_synch)
 		{
-			GPIO_SetBits(GPIOA, 0);
-			GPIO_ResetBits(GPIOA, 2);
+			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_SET);
+			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_2, GPIO_PIN_RESET);
 		}
 		else
 		{
-			GPIO_ResetBits(GPIOA, 0);
+			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_RESET);
 		}
 
 		if (CRK_synch_temp)
 		{
-			GPIO_SetBits(GPIOA, 1);
+			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_1, GPIO_PIN_SET);
 		}
 		else
 		{
-			GPIO_ResetBits(GPIOA, 1);
+			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_1, GPIO_PIN_RESET);
 		}
 
 		if (CRK_synch)
 		{
-			GPIO_SetBits(GPIOA, 3);
+			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, GPIO_PIN_SET);
 		}
 		else
 		{
-			GPIO_ResetBits(GPIOA, 3);
+			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, GPIO_PIN_RESET);
 		}
 	};
 }
@@ -528,19 +537,19 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-	if (*htim == htim1)
+	if (htim == &htim1)
 	{
-		TIM1_PeriodElapsedCallback()
+		TIM1_PeriodElapsedCallback();
 	}
-	if (*htim == htim2)
+	if (htim == &htim2)
 	{
 		TIM2_PeriodElapsedCallback();
 	}
-	if (*htim == htim3)
+	if (htim == &htim3)
 	{
 		TIM3_PeriodElapsedCallback();
 	}
-	if (*htim == htim4)
+	if (htim == &htim4)
 	{
 		TIM4_PeriodElapsedCallback();
 	}
@@ -551,22 +560,19 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 void TIM1_PeriodElapsedCallback(void)
 {
 
-// all overflows between the events
+	// all overflows between the events
 	timer_overflow_CRK++;
-
-	TIM_ClearFlag(TIM1, TIM_FLAG_Update);
+	//Interrupt flag autoclears
 }
 
 //## Timer 2 Interrupt CAM tooth time (previously timer3)
 
 void TIM2_PeriodElapsedCallback(void)
 {
-
 // all overflows between the events
 // test
 	timer_overflow_CAM++;
-
-	TIM_ClearFlag(TIM2, TIM_FLAG_Update);
+	//Interrupt flag autoclears
 }
 //## Timer 3 Interrupt: CAM_PER - start value
 
@@ -576,22 +582,22 @@ void TIM3_PeriodElapsedCallback(void)
 	if (failure_identify == '5')
 	{ // CAM_PER //?CAM_PER is the error identified by '5'
 
-        if (GPIO_ReadInputDataBit(GPIOA, 11) == 1)
-        {
-            GPIO_ResetBits(GPIOA, 11);
+        if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_11) == 1)
+        { 
+			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_RESET);
         }
         else
         {
-            GPIO_SetBits(GPIOA, 11);
+            HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_SET);
         };
 
 		counter_CAM_PER[0]++; //? Number of times we lost CAM with timer 6 ?
 		if (counter_CAM_PER[0] == 2)
 		{
-			TIM_Cmd(TIM3, DISABLE);
+			HAL_TIM_Base_Stop(&htim3);
 			counter_CAM_PER[0] = 0; //? Reset timer 6 CAM lost counter
 		}
-		TIM_SetCounter(TIM3, 0); // reset the timers counter
+		__HAL_TIM_SET_COUNTER(&htim3, 0); // reset the timers counter
 	}
 	else if (failure_identify == '6')
 	{ // CRK_TOOTH_PER
@@ -601,29 +607,30 @@ void TIM3_PeriodElapsedCallback(void)
 		//? Le mieux est d'avoir PSC le plus petit possible
 		//? Mais ARR doit pas dépasser (2^16)-1 = 65535
 		//? 72Mhz*PSC+1*ARR+1
-		TIM_SetAutoreload(TIM4, 1439); //? Define ARR value 20us*72Mhz = 1440 (PSC=0 pour TIM7)
 
-		TIM_Cmd(TIM4, ENABLE);
+		__HAL_TIM_SET_AUTORELOAD(&htim4,1439); //? Define ARR value 20us*72Mhz = 1440 (PSC=0 pour TIM7)
+		
+		HAL_TIM_Base_Stop(&htim4);
 
-		if (GPIO_ReadInputDataBit(GPIOA, 4) == 1)
-		{
-			GPIO_ResetBits(GPIOA, 4);
-		}
-		else
-		{
-			GPIO_SetBits(GPIOA, 4);
-		};
+		if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_4) == 1)
+        { 
+			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET);
+        }
+        else
+        {
+            HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
+        }
 
-		TIM_Cmd(TIM3, DISABLE);
+		HAL_TIM_Base_Stop(&htim3);
 	}
 	else if (failure_identify == 'b')
 	{ // CRK_SHO_LEVEL
 
-		GPIO_SetBits(GPIOA, 4);
+		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
 
-		TIM_Cmd(TIM3, DISABLE);
+		HAL_TIM_Base_Stop(&htim3);
 	}
-	TIM_ClearFlag(TIM3, TIM_FLAG_Update); // Clear Timer6 Interrupt Flag
+	//Interrupt flag autoclears
 }
 
 //## Timer 4 Interrupt: CAM_PER - pulse duration
@@ -633,37 +640,38 @@ void TIM4_PeriodElapsedCallback(void)
 
 	if (failure_identify == '5') // CAM_PER --> Cam_Spk
 	{
-		if (GPIO_ReadInputDataBit(GPIOA, 6) == 1)
-		{
-			GPIO_ResetBits(GPIOA, 6);
-		}
-		else
-		{
-			GPIO_SetBits(GPIOA, 6);
-		};
+		if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_6) == 1)
+        { 
+			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, GPIO_PIN_RESET);
+        }
+        else
+        {
+            HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, GPIO_PIN_SET);
+        }
 
 		counter_CAM_PER[1]++; // Number of times we lost CAM with timer 7
 		if (counter_CAM_PER[1] == 2)
 		{
 
-			TIM_Cmd(TIM4, DISABLE);
+			HAL_TIM_Base_Stop(&htim4);
 
 			counter_CAM_PER[1] = 0; // Reset timer 7 CAM counter
 		}
-		TIM_SetCounter(TIM4, 0);
+
+		__HAL_TIM_SET_COUNTER(&htim4,0);
 	}
 	else if (failure_identify == '6') // CRK_TOOTH_PER
 	{
-		if (GPIO_ReadInputDataBit(GPIOA, 4) == 1)
-		{
-			GPIO_ResetBits(GPIOA, 4);
-		}
-		else
-		{
-			GPIO_SetBits(GPIOA, 4);
-		};
+		if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_4) == 1)
+        { 
+			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET);
+        }
+        else
+        {
+            HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
+        }
 
-		TIM_Cmd(TIM4, DISABLE);
+		HAL_TIM_Base_Stop(&htim4);
 	}
 	else if (failure_identify == 'j')
 	{ // SEG_ADP_ER_LIM
@@ -673,7 +681,7 @@ void TIM4_PeriodElapsedCallback(void)
 		{
 		case 1:
 		{ // failure for the falling edge
-			GPIO_ResetBits(GPIOA, 4);
+			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET);
 			if (failure_waiting == true)
 			{ // if the rising edge has already happen
 				if (sensortype_CRK == 'c') // sensor is cpdd
@@ -702,26 +710,26 @@ void TIM4_PeriodElapsedCallback(void)
 			break;
 		}
 		}
-		TIM_Cmd(TIM4, DISABLE);
+		HAL_TIM_Base_Stop(&htim4);
 	}
 	else if (failure_identify == 'k') // CrkPlsOrng
 	{
-		GPIO_SetBits(GPIOA, 4);
+		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
 
-		TIM_Cmd(TIM4, DISABLE);
+		HAL_TIM_Base_Stop(&htim4);
 	}
 	else
 	{
-		TIM_Cmd(TIM4, DISABLE);
+		HAL_TIM_Base_Stop(&htim4);
 	} //? Stop timer 7
 
-	TIM_ClearFlag(TIM4, TIM_FLAG_Update);
+	//Interrupt flag autoclears
 }
 
 // ### USART Receive Callback function ###
 void HAL_USART_RxCpltCallback(USART_HandleTypeDef *husart)
 {
-	if (*husart == husart1)
+	if (husart == &husart1)
 	{
 		//? UART Receive
 		in = USART_ReceiveData(USART1);
