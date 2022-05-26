@@ -588,21 +588,22 @@ void TIM3_PeriodElapsedCallback(void)
 		if (counter_CAM_PER[0] == 2)
 		{
 			HAL_TIM_Base_Stop(&htim3);
-			counter_CAM_PER[0] = 0; //? Reset timer 6 CAM lost counter
+			counter_CAM_PER[0] = 0; // Reset timer 6 CAM lost counter
 		}
-		__HAL_TIM_SET_COUNTER(&htim3, 0); // reset the timers counter
+		__HAL_TIM_SET_COUNTER(&htim3, 0); // reset the timers counter 
+		// TODO: implement in timer module
 	}
 	else if (failure_identify == '6')
 	{ // CRK_TOOTH_PER
 
 		// Load the period value 20us  here
-		//? Période du timer = Période_Horloge * (PSC+1) * (ARR+1)
-		//? Le mieux est d'avoir PSC le plus petit possible
-		//? Mais ARR doit pas dépasser (2^16)-1 = 65535
-		//? 72Mhz*PSC+1*ARR+1
+		// Timer period = Clock_Period * (PSC+1) * (ARR+1)
+		// ideally we want the lowest possible PSC
+		// But ARR must not exceed (2^16)-1 = 65535
+		// 72Mhz*PSC+1*ARR+1
 
-		__HAL_TIM_SET_AUTORELOAD(&htim4,1439); //? Define ARR value 20us*72Mhz = 1440 (PSC=0 pour TIM7)
-		
+		__HAL_TIM_SET_AUTORELOAD(&htim4,1439); // Define ARR value 20us*72Mhz = 1440 (PSC=0 pour TIM7)
+												//TODO: replace with call to timer module			
 		HAL_TIM_Base_Stop(&htim4);
 
 		if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_4) == 1)
@@ -650,7 +651,7 @@ void TIM4_PeriodElapsedCallback(void)
 			counter_CAM_PER[1] = 0; // Reset timer 7 CAM counter
 		}
 
-		__HAL_TIM_SET_COUNTER(&htim4,0);
+		__HAL_TIM_SET_COUNTER(&htim4,0); //TODO: replace with call to timer module
 	}
 	else if (failure_identify == '6') // CRK_TOOTH_PER
 	{
@@ -678,7 +679,7 @@ void TIM4_PeriodElapsedCallback(void)
 			{ // if the rising edge has already happen
 				if (sensortype_CRK == 'c') // sensor is cpdd
 				{
-					SysTick_Config(3600); //? 72MHz*50us=3600
+					SysTick_Config(3600); // 72MHz*50us=3600
 				}
 				else if (sensortype_CRK == 'h')
 				{ // all the others
@@ -698,7 +699,7 @@ void TIM4_PeriodElapsedCallback(void)
 		}
 		case 2:
 		{                           // failure for the rising edge
-			SEG_ADP_ER_LIM_reset(); //?SEG_... failure_inactive, passed and waiting =false, init timer 7 & 8, SEG_...error counter reset
+			SEG_ADP_ER_LIM_reset(); //SEG_... failure_inactive, passed and waiting =false, init timer 7 & 8, SEG_...error counter reset
 			break;
 		}
 		}
@@ -718,13 +719,13 @@ void TIM4_PeriodElapsedCallback(void)
 
 // ### USART Receive Callback function ###
 void HAL_USART_RxCpltCallback(USART_HandleTypeDef *husart)
-{
+{	//TODO: replace with call to USART module HAL
 	if (husart == &husart1)
 	{
-		//? UART Receive
+		// UART Receive
 		in = USART_ReceiveData(USART1);
 
-		//? PERR : parity error status bit 1 if error detected 0 i no error detected
+		// PERR : parity error status bit 1 if error detected 0 i no error detected
 		if (USART_GetFlagStatus(USART1, USART_FLAG_PE) == SET
 				|| USART_GetFlagStatus(USART1, USART_FLAG_FE == SET))
 		{
