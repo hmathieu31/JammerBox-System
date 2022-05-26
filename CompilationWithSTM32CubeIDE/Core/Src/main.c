@@ -30,8 +30,10 @@
 // ### Standard includes ###
 #include <stdbool.h>
 //#include "stm32f1xx_hal_gpio.h"
-#include "stm32f1xx_hal_gpio.h"
 
+// ### Software includes ###
+#include "failures.h"
+#include "timer.h"
 // ### Program includes ###
 #include "system_configuration.h"
 
@@ -334,7 +336,10 @@ char message[14] =
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
-
+void TIM1_PeriodElapsedCallback(void);
+void TIM2_PeriodElapsedCallback(void);
+void TIM3_PeriodElapsedCallback(void);
+void TIM4_PeriodElapsedCallback(void);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -615,8 +620,8 @@ void TIM4_PeriodElapsedCallback(void)
 					SysTick_Config(1);
 				}
 
-				// Start timer 8
-				SysTick->CTRL |= SysTick_CTRL_ENABLE; //TODO: Check these systick commands
+				// Start timer systick
+				HAL_ResumeTick();
 			}
 			failure_passed = true;
 			break;
