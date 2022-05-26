@@ -155,8 +155,8 @@ extern unsigned int active_CAM_edges_counter[2];
 extern unsigned int sc_type_SC_CAM_CRK;
 
 // TIM5 variables
-extern int tim5_Counting;
-extern int tim5_CounterOverflow;
+extern int TIM_Soft_Counting;
+extern int TIM_Soft_CounterOverflow;
 
 /* Public functions -------------------------------------------------------- */
 
@@ -602,11 +602,11 @@ void Output_CAM_delay(int cam_id) {
 
 //## CAM_delay: CAM_TOOTH_OFF / CAM_REF_CRK / CAM_SYN / CAM_SYN_CRK
 void CAM_delay(int cam_id) {
-    if (tim5_Counting) {
+    if (TIM_Soft_Counting) {
         double former_teeth_time;
         former_teeth_time = former_teeth_time_calculation(T_TOOTH_RAW,
                                                           teeth_count_CRK, number_miss_teeth);
-        if (((double)Tim5_GetCounter() / former_teeth_time) * revolution_CRK >= (revolution_CRK / 2.0)) {
+        if (((double)TIM_Soft_GetCounter() / former_teeth_time) * revolution_CRK >= (revolution_CRK / 2.0)) {
             if (cam_id == 0) {
                 if (GPIO_ReadInputDataBit(GPIOA, 11) == 1)  // TODO: #82 Double check wheter GPIOA 5 and GPIOA11 are IN or OUT
                 {
@@ -621,8 +621,8 @@ void CAM_delay(int cam_id) {
                     GPIO_SetBits(GPIOA, 6);
                 }
             }
-            Tim5_Stop();
-            Tim5_Reset();
+            TIM_Soft_Stop();
+            TIM_Soft_Reset();
         }
     }
 
@@ -672,7 +672,7 @@ void CAM_delay(int cam_id) {
             }
 
             if (shift_counter_CAM_delay[cam_id][i] != 0) {
-                if (angle_to_edge_CAM_delay[cam_id][i] + ((double)(shift_counter_CAM_delay[cam_id][i] - 1) + ((double)(Tim5_GetCounter() + timer_overflow_CRK * (unsigned long)(TIM2->ARR))) / former_teeth_time) * revolution_CRK >= (delay_angle_CAM_delay * delay_factor_CAM_delay))  // Aurait été plus propre avec un getAutoreload
+                if (angle_to_edge_CAM_delay[cam_id][i] + ((double)(shift_counter_CAM_delay[cam_id][i] - 1) + ((double)(TIM_Soft_GetCounter() + timer_overflow_CRK * (unsigned long)(TIM2->ARR))) / former_teeth_time) * revolution_CRK >= (delay_angle_CAM_delay * delay_factor_CAM_delay))  // Aurait été plus propre avec un getAutoreload
                 {
                     shift_counter_CAM_delay[cam_id][i] = 0;
                     angle_to_edge_CAM_delay[cam_id][i] = 0;
@@ -692,7 +692,7 @@ void CAM_delay(int cam_id) {
                     }
 
                     if (active_CAM_edges[cam_id] == 'r' || active_CAM_edges[cam_id] == 'f') {
-                        Tim5_Start();
+                        TIM_Soft_Start();
                     }
 
                     break;
@@ -781,8 +781,8 @@ void CAM_delay_reset(void) {
     failure_set = false;
     SysTick->CTRL &= ~SysTick_CTRL_ENABLE;  // disable SysTick
     SysTick->VAL = (2 ^ 24) - 1;            // clear systick counter
-    Tim5_Stop();
-    Tim5_Reset();
+    TIM_Soft_Stop();
+    TIM_Soft_Reset();
 
     number_processing_edges_CAM_delay[0] = 0;
     number_processing_edges_CAM_delay[1] = 0;

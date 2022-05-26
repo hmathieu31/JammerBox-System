@@ -133,7 +133,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 	{
 		CAM_signal[0] = false;	// Set actual signal level
 
-		TIM2Reset();
+		TIM2_Reset();
 
 		output_CAM(failure_identify, 0);	// CAM1 Output
 
@@ -163,7 +163,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 		{
 			CAM_signal[1] = false; // Set actual signal level
 
-			TIM2Reset();
+			TIM2_Reset();
 
 			output_CAM(failure_identify, 1); // CAM2 Output
 
