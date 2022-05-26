@@ -27,7 +27,6 @@
 #include "system_configuration.h"
 #include "timer.h"
 #include "usart.h"
-#include "Tim5.h"
 #include "tim.h"
 #include "gpio.h"
 #include "main.h"
@@ -411,7 +410,7 @@ int main1(void)
 		{
 			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, GPIO_PIN_RESET);
 		}
-	};
+	}
 }
 
 // ### EXTI Callback functions ###
@@ -590,8 +589,7 @@ void TIM3_PeriodElapsedCallback(void)
 			HAL_TIM_Base_Stop(&htim3);
 			counter_CAM_PER[0] = 0; // Reset timer 6 CAM lost counter
 		}
-		__HAL_TIM_SET_COUNTER(&htim3, 0); // reset the timers counter 
-		// TODO: implement in timer module
+		__HAL_TIM_SET_COUNTER(&htim3, 0); // reset the timers counter
 	}
 	else if (failure_identify == '6')
 	{ // CRK_TOOTH_PER
@@ -603,7 +601,7 @@ void TIM3_PeriodElapsedCallback(void)
 		// 72Mhz*PSC+1*ARR+1
 
 		__HAL_TIM_SET_AUTORELOAD(&htim4,1439); // Define ARR value 20us*72Mhz = 1440 (PSC=0 pour TIM7)
-												//TODO: replace with call to timer module			
+
 		HAL_TIM_Base_Stop(&htim4);
 
 		if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_4) == 1)
@@ -651,7 +649,7 @@ void TIM4_PeriodElapsedCallback(void)
 			counter_CAM_PER[1] = 0; // Reset timer 7 CAM counter
 		}
 
-		__HAL_TIM_SET_COUNTER(&htim4,0); //TODO: replace with call to timer module
+		__HAL_TIM_SET_COUNTER(&htim4,0);
 	}
 	else if (failure_identify == '6') // CRK_TOOTH_PER
 	{
@@ -692,7 +690,7 @@ void TIM4_PeriodElapsedCallback(void)
 				}
 
 				// Start timer 8
-				SysTick->CTRL |= SysTick_CTRL_ENABLE;
+				SysTick->CTRL |= SysTick_CTRL_ENABLE; //TODO: Check these systick commands
 			}
 			failure_passed = true;
 			break;
