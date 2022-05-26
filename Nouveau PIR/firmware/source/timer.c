@@ -24,6 +24,8 @@
 #include "stm32f1xx_hal.h"
 #include "stm32f1xx_hal_tim.h"
 
+#include "stm32f1xx_ll_tim.h"
+
 /* External variables -------------------------------------------------------*/
 extern unsigned long timer_overflow_CRK;
 extern unsigned long timer_overflow_CAM;
