@@ -34,7 +34,7 @@
 #include "tim.h"
 
 /* Variables -----------------------------------------------------------------*/
-s
+
 extern bool CRK_signal;
 extern bool CAM_signal[2];
 
@@ -468,20 +468,20 @@ void output_CAM_PER(int cam_id) {
 
 //## CAM_PER_reset
 void CAM_PER_reset(void) {
-    if (TIM3->CR1 & TIM_CR1_CEN)  // if timer3 is enabled
+    if (HAL_TIM_Base_GetState(&htim3) == HAL_TIM_STATE_BUSY)  // if TIM3 is busy
     {
-        TIM_Cmd(TIM3, DISABLE);
-        TIM_SetCounter(TIM3, 0);  // disable and reset the timer
+        HAL_TIM_Base_Stop_IT(&htim3);
+        __HAL_TIM_SET_COUNTER(&htim3, 0);  // disable and reset the timer
     }
 
-    if (TIM4->CR1 & TIM_CR1_CEN)  // if timer4 is enabled
+    if (HAL_TIM_Base_GetState(&htim3) == HAL_TIM_STATE_BUSY)  // if timer4 is enabled
     {
-        TIM_Cmd(TIM4, DISABLE);
-        TIM_SetCounter(TIM4, 0);  // disable and reset the timer
+        HAL_TIM_Base_Stop_IT(&htim4);
+        __HAL_TIM_SET_COUNTER(&htim4, 0);  // disable and reset the timer
     }
 
-    Timer3Init();
-    Timer4Init();
+	MX_TIM3_Init();
+	MX_TIM4_Init();
     counter_CAM_PER[0] = 0;
     counter_CAM_PER[1] = 0;
 }
@@ -495,14 +495,14 @@ void output_CRK_TOOTH_PER(void) {
 
 //## CRK_TOOTH_PER_reset
 void CRK_TOOTH_PER_reset(void) {
-    if (TIM3->CR1 & TIM_CR1_CEN)  // if timer3 is enabled
+    if (HAL_TIM_Base_GetState(&htim3) == HAL_TIM_STATE_BUSY)  // if timer3 is enabled
     {
         HAL_TIM_Base_Stop(&htim3);
         __HAL_TIM_SET_COUNTER(&htim3,0);// disable and reset the timer
 
     }
 
-    if (TIM4->CR1 & TIM_CR1_CEN)  // if timer4 is enabled
+    if (HAL_TIM_Base_GetState(&htim4) == HAL_TIM_STATE_BUSY)  // if timer4 is enabled
     {
         HAL_TIM_Base_Stop(&htim4);
         __HAL_TIM_SET_COUNTER(&htim4,0);  // disable and reset the timer
@@ -518,7 +518,7 @@ void Output_CAM_delay(int cam_id) {
         switch (active_CAM_edges[cam_id]) {
             case ('b'): {
                 if (engine_start == true) {
-                    SysTick->CTRL |= SysTick_CTRL_ENABLE;  // Enable the SysTick (formerly Timer8 on microchip) till the first falling CRK_edge
+                    HAL_ResumeTick();  // Enable the SysTick (formerly Timer8 on microchip) till the first falling CRK_edge
                     timer_active_CAM_delay[cam_id] = true;
                 } else {
                     output_CAM_no_failure(cam_id);
@@ -529,7 +529,7 @@ void Output_CAM_delay(int cam_id) {
             case ('f'): {
                 if (CAM_signal[cam_id] == false) {
                     if (engine_start == true) {
-                        SysTick->CTRL |= SysTick_CTRL_ENABLE;  // Enable the SysTick (formerly Timer8 on microchip) till the first falling CRK_edge
+                        HAL_ResumeTick();  // Enable the SysTick (formerly Timer8 on microchip) till the first falling CRK_edge
                         timer_active_CAM_delay[cam_id] = true;
 
                         if (failure_active == false) {
@@ -541,7 +541,7 @@ void Output_CAM_delay(int cam_id) {
                 } else if (CAM_signal[cam_id] == true && failure_active == false) {
                     if (cam_id == 0) {
                         // Toggle GPIOA11
-                        if (GPIO_ReadOutputDataBit(GPIOA, 11) == 0) {
+                        if (HAL_GPIO_ReadPin(GPIOA, 11) == GPIO_PIN_RESET) {
                             HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_SET);
                         } else {
                             HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_RESET);
@@ -549,7 +549,7 @@ void Output_CAM_delay(int cam_id) {
 
                     } else if (cam_id == 1) {
                         // Toggle GPIOA6
-                        if (GPIO_ReadOutputDataBit(GPIOA, 6) == 0) {
+                        if (HAL_GPIO_ReadPin(GPIOA, 6) == GPIO_PIN_RESET) {
                             HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, GPIO_PIN_SET);
                         } else {
                             HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, GPIO_PIN_RESET);
@@ -561,7 +561,7 @@ void Output_CAM_delay(int cam_id) {
             case ('r'): {
                 if (CAM_signal[cam_id] == true) {
                     if (engine_start == true) {
-                        SysTick->CTRL |= SysTick_CTRL_ENABLE;  // Enable the SysTick (formerly Timer8 on microchip) till the first falling CRK_edge
+                        HAL_ResumeTick();  // Enable the SysTick (formerly Timer8 on microchip) till the first falling CRK_edge
                         timer_active_CAM_delay[cam_id] = true;
 
                         if (failure_active == false) {
@@ -573,14 +573,14 @@ void Output_CAM_delay(int cam_id) {
                 } else if (CAM_signal[cam_id] == false && failure_active == false) {
                     if (cam_id == 0) {
                         // Toggle GPIO5
-                        if (GPIO_ReadOutputDataBit(GPIOA, 11) == 0) {
+                        if (HAL_GPIO_ReadPin(GPIOA, 11) == GPIO_PIN_RESET) {
                             HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_SET);
                         } else {
                             HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_RESET);
                         }
                     } else if (cam_id == 1) {
                         // Toggle GPIO6
-                        if (GPIO_ReadOutputDataBit(GPIOA, 6) == 0) {
+                        if (HAL_GPIO_ReadPin(GPIOA, 6) == GPIO_PIN_RESET) {
                             HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, GPIO_PIN_SET);
                         } else {
                             HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, GPIO_PIN_RESET);
@@ -607,14 +607,14 @@ void CAM_delay(int cam_id) {
                                                           teeth_count_CRK, number_miss_teeth);
         if (((double)Tim5_GetCounter() / former_teeth_time) * revolution_CRK >= (revolution_CRK / 2.0)) {
             if (cam_id == 0) {
-                if (GPIO_ReadInputDataBit(GPIOA, 11) == 1)  // TODO: #82 Double check wheter GPIOA 5 and GPIOA11 are IN or OUT
+                if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_11) == GPIO_PIN_SET)
                 {
                     HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_RESET);
                 } else {
                     HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_SET);
                 }
             } else if (cam_id == 1) {
-                if (GPIO_ReadInputDataBit(GPIOA, 6) == 1) {
+                if (HAL_GPIO_ReadPin(GPIOA, 6) == GPIO_PIN_SET) {
                     HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, GPIO_PIN_RESET);
                 } else {
                     HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, GPIO_PIN_SET);
@@ -632,20 +632,20 @@ void CAM_delay(int cam_id) {
         former_teeth_time = former_teeth_time_calculation(T_TOOTH_RAW,
                                                           teeth_count_CRK, number_miss_teeth);
 
-        if (((double)SysTick->VAL / former_teeth_time) * revolution_CRK >= (delay_angle_CAM_delay * delay_factor_CAM_delay)) {
-            SysTick->CTRL &= ~SysTick_CTRL_ENABLE;
-            SysTick->VAL = (2 ^ 24) - 1;
+        if (((double)HAL_GetTick() / former_teeth_time) * revolution_CRK >= (delay_angle_CAM_delay * delay_factor_CAM_delay)) {
+            HAL_ResumeTick();
+            uwtick = (2 ^ 24) - 1;  //TODO: Handle systick here
             timer_active_CAM_delay[cam_id] = false;
 
             if (interrupt_check_CAM_delay[cam_id] == false) {
                 if (cam_id == 0) {
-                    if (GPIO_ReadInputDataBit(GPIOA, 11) == 1) {
+                    if (HAL_GPIO_ReadPin(GPIOA, 11) == GPIO_PIN_RESET) {
                         HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_RESET);
                     } else {
                         HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_SET);
                     };
                 } else if (cam_id == 1) {
-                    if (GPIO_ReadInputDataBit(GPIOA, 6) == 1) {
+                    if (HAL_GPIO_ReadPin(GPIOA, 6) == GPIO_PIN_RESET) {
                         HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, GPIO_PIN_RESET);
                     } else {
                         HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, GPIO_PIN_SET);
@@ -653,7 +653,7 @@ void CAM_delay(int cam_id) {
                 }
 
                 if (active_CAM_edges[cam_id] == 'r' || active_CAM_edges[cam_id] == 'f') {
-                    SysTick->CTRL |= SysTick_CTRL_ENABLE;
+                    HAL_ResumeTick();
                 }
             }
         }
@@ -677,13 +677,13 @@ void CAM_delay(int cam_id) {
                     angle_to_edge_CAM_delay[cam_id][i] = 0;
                     number_processing_edges_CAM_delay[cam_id]--;
                     if (cam_id == 0) {
-                        if (GPIO_ReadInputDataBit(GPIOA, 11) == 1) {
+                        if (HAL_GPIO_ReadPin(GPIOA, 11) == GPIO_PIN_RESET) {
                             HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_RESET);
                         } else {
                             HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_SET);
                         };
                     } else if (cam_id == 1) {
-                        if (GPIO_ReadInputDataBit(GPIOA, 6) == 1) {
+                        if (HAL_GPIO_ReadPin(GPIOA, 6) == GPIO_PIN_RESET) {
                             HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, GPIO_PIN_RESET);
                         } else {
                             HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, GPIO_PIN_SET);
@@ -742,8 +742,8 @@ void CAM_delay_counter(int cam_id) {
                 if (shift_counter_CAM_delay[cam_id][i] == 0) {
                     shift_counter_CAM_delay[cam_id][i] = 1;
                     angle_to_edge_CAM_delay[cam_id][i] =
-                        ((double)(SysTick->VAL) / former_teeth_time) * revolution_CRK;
-                    SysTick->CTRL &= ~SysTick_CTRL_ENABLE;
+                        ((double)(HAL_GetTick()) / former_teeth_time) * revolution_CRK;
+                    HAL_SuspendTick(); //TODO: Systick
                     SysTick->VAL = (2 ^ 24) - 1;
                     timer_active_CAM_delay[cam_id] = false;
                     number_processing_edges_CAM_delay[cam_id]++;
@@ -778,7 +778,7 @@ void CAM_delay_counter(int cam_id) {
 void CAM_delay_reset(void) {
     failure_active = false;
     failure_set = false;
-    SysTick->CTRL &= ~SysTick_CTRL_ENABLE;  // disable SysTick
+    HAL_SuspendTick();  // disable SysTick
     SysTick->VAL = (2 ^ 24) - 1;            // clear systick counter
     Tim5_Stop();
     Tim5_Reset();
@@ -874,7 +874,7 @@ void output_CRK_GAP_NOT_DET(void) {
             SysTick_SetPeriod(T_TOOTH_RAW * 1.5);  // to be in the midle of the gap
 
         } else if ((failure_active == true) && (CRK_signal == true)) {
-            SysTick->CTRL |= SysTick_CTRL_ENABLE;
+            HAL_ResumeTick();
         }
     }
 }
@@ -897,12 +897,12 @@ void output_SEG_ADP_ER_LIM(void) {
     }
 
     if ((failure_active == true) && (CRK_signal == false)) {  // on the falling edge of the CRK start the delay timer
-        ___HAL_TIM_ENABLE(&htim4);
+        HAL_TIM_Base_Start(&htim4);
         HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
     } else if ((failure_active == true) && (CRK_signal == true)) {
         if (failure_passed == true) {  // if failure on the falling edge of the CRK is already set
             HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_RESET);
-            ___HAL_TIM_ENABLE(&htim4);
+            HAL_TIM_Base_Start(&htim4);
         } else {  // if failure on the falling edge of the CRK is still not set, this happens a lot on lower frquency
             failure_waiting = true;
         }
@@ -931,14 +931,14 @@ void SEG_ADP_ER_LIM_reset(void) {
 //## Output_CRK_pulse_duration
 void output_CRK_pulse_duration(void) {
     if (CRK_signal == false) {
-        ___HAL_TIM_ENABLE(&htim4); // start the timer4 (formerly TIM7 on microchip)
+        HAL_TIM_Base_Start(&htim4); // start the timer4 (formerly TIM7 on microchip)
         HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET);
     }
 }
 
 //## CRK_PLS_ORNG_reset
 void CRK_pulse_duration_reset(void) {
-    Timer4Init();
+    MX_TIM3_Init();
     failure_active = false;
 }
 
