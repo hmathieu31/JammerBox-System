@@ -12,10 +12,6 @@
 #include <stdlib.h>
 
 // ### Hardware specific includes ###
-//#include "stm32f10x_exti.h"
-//#include "stm32f10x_gpio.h"	
-//#include "stm32f10x_tim.h"
-//#include "stm32f10x_usart.h"
 #include "stm32f1xx_hal_conf.h"
 
 #include "stm32f1xx_hal.h"
@@ -26,8 +22,7 @@
 
 // ### Program includes ###
 #include "failures.h"
-//#include "exti.h"
-//#include "port_config.h"
+
 #include "synchronization.h"
 #include "system_configuration.h"
 #include "timer.h"
@@ -562,7 +557,6 @@ void TIM1_PeriodElapsedCallback(void)
 
 	// all overflows between the events
 	timer_overflow_CRK++;
-	//Interrupt flag autoclears
 }
 
 //## Timer 2 Interrupt CAM tooth time (previously timer3)
@@ -572,7 +566,6 @@ void TIM2_PeriodElapsedCallback(void)
 // all overflows between the events
 // test
 	timer_overflow_CAM++;
-	//Interrupt flag autoclears
 }
 //## Timer 3 Interrupt: CAM_PER - start value
 
@@ -580,7 +573,7 @@ void TIM3_PeriodElapsedCallback(void)
 {
 
 	if (failure_identify == '5')
-	{ // CAM_PER //?CAM_PER is the error identified by '5'
+	{ // CAM_PER: error identified by '5'
 
         if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_11) == 1)
         { 
@@ -589,9 +582,9 @@ void TIM3_PeriodElapsedCallback(void)
         else
         {
             HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_SET);
-        };
+        }
 
-		counter_CAM_PER[0]++; //? Number of times we lost CAM with timer 6 ?
+		counter_CAM_PER[0]++; // Number of times we lost CAM with timer 6
 		if (counter_CAM_PER[0] == 2)
 		{
 			HAL_TIM_Base_Stop(&htim3);
@@ -630,7 +623,6 @@ void TIM3_PeriodElapsedCallback(void)
 
 		HAL_TIM_Base_Stop(&htim3);
 	}
-	//Interrupt flag autoclears
 }
 
 //## Timer 4 Interrupt: CAM_PER - pulse duration
@@ -721,9 +713,7 @@ void TIM4_PeriodElapsedCallback(void)
 	else
 	{
 		HAL_TIM_Base_Stop(&htim4);
-	} //? Stop timer 7
 
-	//Interrupt flag autoclears
 }
 
 // ### USART Receive Callback function ###
@@ -781,6 +771,3 @@ void HAL_USART_RxCpltCallback(USART_HandleTypeDef *husart)
 		USART_ReceiveData(USART1);
 	}
 }
-
-/*****************************************************************************/
-/*****************************************************************************/
