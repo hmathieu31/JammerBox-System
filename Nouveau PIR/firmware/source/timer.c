@@ -107,7 +107,7 @@ void SysTickInit(void)
 void TIM1_Reset(void)
 {
 	HAL_TIM_Base_Stop_IT(&htim1);
-	 __HAL_TIM_SET_COUNTER(TIM1, 0); // Reset TIM1 counter value
+	 __HAL_TIM_SET_COUNTER(&htim1, 0); // Reset TIM1 counter value
 	HAL_TIM_Base_Start_IT(&htim1);
 	timer_overflow_CRK = 0;
 }
@@ -116,7 +116,7 @@ void TIM1_Reset(void)
 void TIM2_Reset(void)
 {
 	HAL_TIM_Base_Stop_IT(&htim2);
-	 __HAL_TIM_SET_COUNTER(TIM2, 0); // Reset TIM2 counter value
+	 __HAL_TIM_SET_COUNTER(&htim2, 0); // Reset TIM2 counter value
 	HAL_TIM_Base_Start_IT(&htim2);
 	timer_overflow_CAM = 0;
 }
@@ -125,7 +125,7 @@ void TIM_Soft_Start(void)
 {
 	if (TIM_Soft_Counting == false)
 	{
-		TIM_Soft_StartTick =  __HAL_TIM_GET_COUNTER	(TIM1); // TIM1 is used as based
+		TIM_Soft_StartTick =  __HAL_TIM_GET_COUNTER	(&htim1); // TIM1 is used as based
 													  // for the software-encoded timer
 		TIM_Soft_Counting = 1;
 	}
@@ -136,10 +136,10 @@ void TIM_Soft_Stop(void)
 	if (TIM_Soft_Counting)
 	{
 		TIM_Soft_Counting = 0;
-		TIM_Soft_StopTick =  __HAL_TIM_GET_COUNTER(TIM1);
+		TIM_Soft_StopTick =  __HAL_TIM_GET_COUNTER(&htim1);
 		TIM_Soft_TicksCounted += ((TIM_Soft_StopTick - TIM_Soft_StartTick)
-				+ TIM_Soft_CounterOverflow *  __HAL_TIM_GET_AUTORELOAD(TIM1))
-				% __HAL_TIM_GET_AUTORELOAD(TIM1);
+				+ TIM_Soft_CounterOverflow *  __HAL_TIM_GET_AUTORELOAD(&htim1))
+				% __HAL_TIM_GET_AUTORELOAD(&htim1);
 		TIM_Soft_CounterOverflow = 0;
 	}
 }
@@ -156,9 +156,9 @@ int TIM_Soft_GetCounter(void)
 {
 	if (TIM_Soft_Counting)
 	{
-		return ((__HAL_TIM_GET_COUNTER(TIM1) - TIM_Soft_StartTick)
-				+ TIM_Soft_CounterOverflow * __HAL_TIM_GET_AUTORELOAD(TIM1))
-				% __HAL_TIM_GET_AUTORELOAD(TIM1);
+		return ((__HAL_TIM_GET_COUNTER(&htim1) - TIM_Soft_StartTick)
+				+ TIM_Soft_CounterOverflow * __HAL_TIM_GET_AUTORELOAD(&htim1))
+				% __HAL_TIM_GET_AUTORELOAD(&htim1);
 	}
 	else
 	{
