@@ -20,11 +20,18 @@
 
 /* Private includes ---------------------------------------------------------*/
 #include "timer.h"
+
+// ### Standard includes ###
+#include <stdbool.h>
+
 // ### Hardware includes ###
 #include "stm32f1xx_hal.h"
 #include "stm32f1xx_hal_tim.h"
 
 #include "stm32f1xx_ll_tim.h"
+
+// ## Enable use of Low Level Drivers (needed to reset manually the counter) */
+#define USE_FULL_LL_DRIVER
 
 /* External variables -------------------------------------------------------*/
 extern unsigned long timer_overflow_CRK;
@@ -98,25 +105,27 @@ void SysTickInit(void)
 //## Timer2Reset **Prescaler: 64; CRK Synchronization; tooth time**
 void TIM1_Reset(void)
 {
-	TIM_SetCounter(TIM1, 0);  // Reset Timer2 sur l'ancien PIR, TIM1 pour nous
+	HAL_TIM_Base_Stop_IT(&htim1);
+	LL_TIM_SetCounter(TIM1, 0); // Reset TIM1 counter value
+	HAL_TIM_Base_Start_IT(&htim1);
 	timer_overflow_CRK = 0;
 }
 
 //## TIM2_Reset **Prescaler: 256; CAM Synchronization; segment time**
 void TIM2_Reset(void)
 {
-	TIM_SetCounter(TIM2, 0);  // Reset Timer3
+	HAL_TIM_Base_Stop_IT(&htim2);
+	LL_TIM_SetCounter(TIM2, 0); // Reset TIM2 counter value
+	HAL_TIM_Base_Start_IT(&htim2);
 	timer_overflow_CAM = 0;
 }
 
 void TIM_Soft_Start(void)
 {
-	if (TIM_Soft_Counting)
+	if (TIM_Soft_Counting == false)
 	{
-	} //Dont do anything
-	else
-	{
-		TIM_Soft_StartTick = TIM_GetCounter(TIM1);
+		TIM_Soft_StartTick = LL_TIM_GetCounter(TIM1); // TIM1 is used as based
+													  // for the software-encoded timer
 		TIM_Soft_Counting = 1;
 	}
 }
@@ -126,9 +135,10 @@ void TIM_Soft_Stop(void)
 	if (TIM_Soft_Counting)
 	{
 		TIM_Soft_Counting = 0;
-		TIM_Soft_StopTick = TIM1->CNT;
+		TIM_Soft_StopTick = LL_TIM_GetCounter(TIM1);
 		TIM_Soft_TicksCounted += ((TIM_Soft_StopTick - TIM_Soft_StartTick)
-				+ TIM_Soft_CounterOverflow * (TIM1->ARR)) % TIM1->ARR;
+				+ TIM_Soft_CounterOverflow * LL_TIM_GetAutoReload(TIM1))
+				% LL_TIM_GetAutoReload(TIM1);
 		TIM_Soft_CounterOverflow = 0;
 	}
 }
@@ -145,8 +155,9 @@ int TIM_Soft_GetCounter(void)
 {
 	if (TIM_Soft_Counting)
 	{
-		return ((TIM1->CNT - TIM_Soft_StartTick)
-				+ TIM_Soft_CounterOverflow * (TIM1->ARR)) % TIM1->ARR;
+		return ((LL_TIM_GetCounter(TIM1) - TIM_Soft_StartTick)
+				+ TIM_Soft_CounterOverflow * LL_TIM_GetAutoReload(TIM1))
+				% LL_TIM_GetAutoReload(TIM1);
 	}
 	else
 	{

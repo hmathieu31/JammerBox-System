@@ -29,7 +29,6 @@ extern int TIM_Soft_Counting;
 
 // Set period of Systick timer
 void Systick_SetPeriod(float);
-// ## Timer2 Init **Prescaler: 64; CRK Synchronization; tooth time**
 
 void SysTickInit(void);
 
