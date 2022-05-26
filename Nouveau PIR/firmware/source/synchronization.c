@@ -1,21 +1,37 @@
-/*****************************************************************************/
-/* Projectname     :  ENSD-Jammer                                            */
-/* Programm        :  Sychronization	                                     */
-/* Controller      :  dsPIC33F                                               */
-/* Latest change   :  18.09.2012                                             */
-/* Author          :  Christian Ringlstetter/Thomas Pichler                  */
-/*****************************************************************************/
+/**
+ ******************************************************************************
+ * @file    	  synchronization.c
+ * @brief		  Implements the synchronisation of signals on the STM32
+ * 				  Project name	: STM32-Jammerbox
+ * 				  Controller	: STM32F103RB
+ * @date		  May 25, 2022
+ ******************************************************************************
+ * @attention
+ *
+ * All rights reserved.
+ *
+ * This software is licensed under terms that can be found in the LICENSE file
+ * in the root directory of this software component.
+ * If no LICENSE file comes with this software, it is provided AS-IS.
+ *
+ ******************************************************************************
+ */
 
-// ### Basic includes ###
-	#include "stdbool.h"
+/* Private includes ----------------------------------------------------------*/
 	#include "synchronization.h"
-//#include "math.h"
+// ### Basic includes ###
+	#include <stdbool.h>
 
-// ### Programm includes ###
+// ### Hardware specific includes ###
+	#include "tim.h"
+	
+	#include "stm32f1xx_hal.h"
+	#include "stm32f1xx_hal_tim.h"
+
+// ### Program includes ###
 	#include "timer.h"
 	#include "usart.h"
 	#include "failures.h"
-	#include "stm32f10x_tim.h"
 	#include "Tim5.h"
 
 // ### Variables ###
@@ -714,8 +730,7 @@
 	void Stalling_detection_CAM(int camId)
 	{
 		TIM2_Reset();
-//		Timer5Reset(); // TODO: Is this reset warranted?
-
+    //Timer5Reset(); // TODO: Is this reset warranted?
 		//check all IC-buffers for overflow
 		IC_overflow_check();
 
@@ -756,7 +771,7 @@
 		T_TOOTH_RAW = IC2BUF;
 
 		//Calculate tooth time
-		T_TOOTH_RAW = T_TOOTH_RAW + timer_overflow_CRK * TIM2->ARR;
+		T_TOOTH_RAW = T_TOOTH_RAW + timer_overflow_CRK * htim2.Init.Period;
        
         //test
         if(delay_off == true)
@@ -795,9 +810,9 @@
 	void gap_to_edge_calculation(void)
 	{
 		//calculate angles between reference gap and CAM-edges when synchronization is not yet done PR2: Timer periode value, TMR2 TMR counter at that moment
-		gap_to_edge = (((double)teeth_count_CAM_CRK_synch - 1.0) + (double)(((unsigned long)(TIM_GetCounter(TIM2)) + timer_overflow_CRK*TIM2->ARR)/T_TOOTH_RAW))*revolution_CRK; 
+		gap_to_edge = (((double)teeth_count_CAM_CRK_synch - 1.0) + (double)(((unsigned long)(TIM_GetCounter(htim2.Init.Period)) + timer_overflow_CRK*htim2.Init.Period->ARR)/T_TOOTH_RAW))*revolution_CRK; 
 							
-		gap_to_edge_ahead = (((double)teeth_count_CAM_CRK_synch_ahead - 1.0) + (double)(((unsigned long)(TIM_GetCounter(TIM2)) + timer_overflow_CRK*TIM2->ARR)/T_TOOTH_RAW))*revolution_CRK;
+		gap_to_edge_ahead = (((double)teeth_count_CAM_CRK_synch_ahead - 1.0) + (double)(((unsigned long)(TIM_GetCounter(htim2.Init.Period)) + timer_overflow_CRK*htim2.Init.Period->ARR)/T_TOOTH_RAW))*revolution_CRK;
 	}
 
 // ## Reset CAM_CRK_synch
