@@ -37,8 +37,7 @@
 #include "failures.h"
 #include "timer.h"
 
-
-// ### Variables ###
+/* External variables --------------------------------------------------------*/
 
 //** Receive **
 extern int char_counter;
@@ -154,63 +153,11 @@ extern bool communication_active;
 extern bool communication_ready;
 
 
-// ### Functions ###
-
-// ## Usart1 Init ##
-
-void Usart1Init(void) {
-    USART_InitTypeDef USART_InitStructure;
-    USART_ClockInitTypeDef USART_ClockInitStructure;
-
-    /*  * Baud rate: 9600 Bauds
-        * Word length = 8 Bits
-        * One Stop Bit
-        * Even parity
-        * Hardware flow control disabled (RTS and CTS signals)
-        * Receive and transmit enabled
-        */
-    USART_StructInit(&USART_InitStructure); // Initializes the USART_InitStructure to default values
-    USART_InitStructure.USART_Parity = USART_Parity_Even;
-
-    USART_ClockStructInit(&USART_ClockInitStructure); // Initializes the USART_ClockInitStructure to default values
-    USART_ClockInitStructure.USART_Clock = USART_Clock_Enable;
-
-    USART_IrDACmd(USART1, DISABLE); // Disable the IRDA mode
-    USART_HalfDuplexCmd(USART1, DISABLE); // Disable the half-duplex mode
-
-
-
-    // U2STAbits.UTXISEL1 = 0; //Bit15 Int when Char is transferred (1/2 config!)
-    // U2STAbits.UTXINV = 0; //Bit14 N/A, IRDA config
-    // U2STAbits.UTXISEL0 = 0; //Bit13 Other half of Bit15
-    // U2STAbits.UTXBRK = 0; //Bit11 Disabled
-    // U2STAbits.UTXEN = 0; //Bit10 TX pins controlled by periph
-    // U2STAbits.URXISEL = 0b00; //Bits6,7 Int. on character recieved
-    // U2STAbits.ADDEN = 0; //Bit5 Address Detect Disabled
-
-
-    //USART Transmit interrupt
-    NVIC_EnableIRQ(USART1_IRQn);    
-    NVIC_SetPriority(USART1_IRQn, 1); // Set priority of the USATR1 interrupt to 1
-    USART_ClearITPendingBit(USART1, USART_IT_TXE);
-    USART_ITConfig(USART1, USART_IT_TXE, ENABLE);
-
-    //USART Receive interrupt
-    USART_ClearITPendingBit(USART1, USART_IT_RXNE);
-    USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);
-
-
-    // turn on USART
-    USART_ClockInit(USART1, &USART_ClockInitStructure);
-    USART_Init(USART1, &USART_InitStructure);
-    USART_Cmd(USART1, ENABLE);
-}
-
-
+/* Public functions ----------------------------------------------------------*/
 
 //## USART Receive Function
 //? Called whenever a character is received on the USART1
-void USART_receive(void) {
+void USART_ProcessMessage(void) {
 
 
     data_counter = 0; //Set data counter to 0

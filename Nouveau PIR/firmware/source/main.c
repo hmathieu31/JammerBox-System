@@ -360,7 +360,7 @@ int main1(void)
 		// process the received message
 		if (message_received == true && com_error == false)
 		{
-			USART_receive();
+			USART_ProcessMessage();
 		}
 
 		// reset all values when CRK stalling is detected
@@ -721,7 +721,7 @@ void HAL_USART_RxCpltCallback(USART_HandleTypeDef *husart)
 	if (husart == &husart1)
 	{
 		// UART Receive
-		in = USART_ReceiveData(USART1);
+		in = USART_ProcessMessage(USART1);
 
 		// PERR : parity error status bit 1 if error detected 0 i no error detected
 		if (USART_GetFlagStatus(USART1, USART_FLAG_PE) == SET
@@ -736,7 +736,7 @@ void HAL_USART_RxCpltCallback(USART_HandleTypeDef *husart)
 			UART_COM_error(); //? 0 = Receive buffer has not overflowed. Clearing a previously set OERR bit (1 → 0 transition) will reset
 
 			//? the receiver buffer and the UxRSR to the empty state
-			USART_ReceiveData(USART1);
+			USART_ProcessMessage(USART1);
 		}
 		else
 		{
@@ -766,6 +766,6 @@ void HAL_USART_RxCpltCallback(USART_HandleTypeDef *husart)
 				UART_COM_error(); // send failure message
 			}
 		}
-		USART_ReceiveData(USART1);
+		USART_ProcessMessage(USART1);
 	}
 }

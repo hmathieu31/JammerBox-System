@@ -29,7 +29,7 @@
 
 	//### USART Receive Function ###
 
-	void USART_receive(void);
+	void USART_ProcessMessage(void);
 
 	//### USART Send Configuration Status Function ###
 	

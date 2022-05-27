@@ -702,7 +702,7 @@ int main(void)
 		// process the received message
 		if (message_received == true && com_error == false)
 		{
-			USART_receive();
+			USART_ProcessMessage();
 		}
 
 		// reset all values when CRK stalling is detected
