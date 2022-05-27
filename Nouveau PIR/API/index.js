@@ -131,6 +131,10 @@ app.post("/config", (req, res) => {
   }
 });
 
+app.put("/record", (req, res) => {
+  //TODO
+});
+
 app.listen(8080, () => {
   console.log("Serveur à l'écoute");
 });

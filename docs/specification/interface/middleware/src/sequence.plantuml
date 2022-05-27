@@ -1,0 +1,68 @@
+@startuml
+scale 1.5
+
+participant UI
+participant Middleware
+participant USB_VCP
+
+UI -> Middleware : Demande d'envoi d'un test
+activate UI
+activate Middleware
+Middleware -> USB_VCP : Envoi d'une requête
+activate USB_VCP
+USB_VCP --> Middleware  : Réception de données
+deactivate USB_VCP
+Middleware --> UI  : Affichage du résultat
+deactivate Middleware
+deactivate UI
+
+... ...
+
+UI -> Middleware : Demande d'enregistrement d'un test sur la carte SD
+activate UI
+activate Middleware
+Middleware -> USB_VCP : Envoi d'une requête
+activate USB_VCP
+USB_VCP --> Middleware  : Réception de données
+deactivate USB_VCP
+Middleware --> UI
+deactivate Middleware
+deactivate UI
+
+... ...
+
+UI -> Middleware : Demande de changement de la configuration de la Jammer Box
+activate UI
+activate Middleware
+Middleware -> USB_VCP : Envoi d'une requête
+activate USB_VCP
+USB_VCP --> Middleware  : Réception de données
+deactivate USB_VCP
+Middleware --> UI
+deactivate Middleware
+deactivate UI
+
+... ...
+
+UI -> Middleware : Demande la liste des tests enregistrés sur la carte SD
+activate UI
+activate Middleware
+Middleware -> USB_VCP : Envoi d'une requête
+activate USB_VCP
+USB_VCP --> Middleware  : Réception de données
+deactivate USB_VCP
+Middleware --> UI  : Affichage de la liste
+deactivate Middleware
+UI -> Middleware : Demande de récupération d'un test enregistrés sur la carte SD 
+activate Middleware
+Middleware -> USB_VCP : Envoi d'une requête
+activate USB_VCP
+USB_VCP --> Middleware  : Réception de données
+deactivate USB_VCP
+Middleware --> UI  : Récupération du test
+deactivate Middleware
+deactivate UI
+
+
+
+@enduml

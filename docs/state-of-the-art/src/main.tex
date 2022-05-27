@@ -1,0 +1,102 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage[table]{xcolor}
+\definecolor{Gray}{gray}{0.85}
+
+\usepackage{biblatex}
+% adds a references file
+\addbibresource{bibliography.bib}
+% subtitle
+\usepackage{titling}
+\newcommand{\subtitle}[1]{
+  \posttitle{
+    \par\end{center}
+\begin{center}\large#1\end{center}
+    \vskip0.5em}
+}
+% images
+\usepackage{graphicx}
+% header
+\usepackage{fancyhdr}
+\fancypagestyle{plain}{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[L]{
+    \includegraphics[height=1cm, keepaspectratio]{images/insa.pdf}
+}
+\fancyhead[R]{
+    \includegraphics[height=1cm, keepaspectratio]{images/continental.pdf}
+}
+% tables
+\usepackage{tabularx}
+% title
+\usepackage{titling}
+% abstract
+\usepackage{abstract}
+\renewcommand{\abstractnamefont}{\normalfont\Large\bfseries}
+% diagrams
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+\tikzset{
+% Define standard arrow tip
+>=stealth'
+}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+\pagenumbering{gobble}
+
+
+\title{
+State of the Art \\
+\textbf{Software Testing for Automotive}
+}
+\preauthor{
+\begin{center}
+    \today
+\end{center}
+}
+\author{}
+\postauthor{}
+\predate{}
+\date{}
+\postdate{
+\hspace{1em}
+\begin{center}
+    \begin{tabularx}{\textwidth} { 
+       >{\raggedright\arraybackslash}X 
+       >{\raggedright\arraybackslash}X  }
+    \multicolumn{1}{c}{\bfseries Students} & \multicolumn{1}{c}{\bfseries Tutors} \\
+     \\
+     \begin{tabular}{l l}
+         \footnotesize{AMARI} & \footnotesize{Youssef} \\
+         \footnotesize{ARRONDELLE} & \footnotesize{Hugo} \\
+         \footnotesize{BAH} & \footnotesize{Thierno Amadou} \\
+         \footnotesize{BENSIALI} & \footnotesize{Adrien} \\
+         \footnotesize{CALMETTES} & \footnotesize{Pierre} \\
+         \footnotesize{CHAINE} & \footnotesize{Clément} \\
+         \footnotesize{FRAGONAS} & \footnotesize{Fabrice}
+     \end{tabular}
+     &
+     \begin{tabular}{l l}
+        \footnotesize{AURIOL} & \footnotesize{Guillaume} \\
+        \footnotesize{NICOMETTE} & \footnotesize{Vincent}   \\
+        & \\
+        & \\
+        & \\
+        & \\
+        & 
+     \end{tabular}
+    \end{tabularx}
+\end{center}
+}
+
+
+\begin{document}
+\input{content/content.tex}
+\end{document}

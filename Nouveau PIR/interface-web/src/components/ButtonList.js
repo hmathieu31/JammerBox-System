@@ -56,7 +56,7 @@ class ButtonList extends React.Component {
         console.log(data.status);
       },
       (error) => {
-        console.log(error);
+        console.log("Did not send data!");
       }
     );
   };
@@ -132,7 +132,11 @@ class ButtonList extends React.Component {
   };
   render() {
     const alert = this.props.alert;
-    return <div>{this.props.buttonList.map(this.makeButton)}</div>;
+    return (
+      <div className="button-list-div">
+        {this.props.buttonList.map(this.makeButton)}
+      </div>
+    );
   }
 }
 

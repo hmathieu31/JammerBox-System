@@ -1,0 +1,38 @@
+@startuml
+scale 1.5
+left to right direction
+skinparam packageStyle rectangle
+actor "Interface graphique" as a
+actor "Jammer Box" as b
+package Middleware {
+  (Envoyer des requêtes à la Jammer Box) as f1
+  (Recevoir des données depuis la Jammer Box) as f2
+  (Spécifier un test) as f3
+  (Récupérer le résultat d'un test) as f8
+  (Rejouer un test) as f4
+  (Enregistrer un test sur la carte SD) as f5
+  (Lister les tests enregistrés sur la carte SD) as f9
+  (Récupérer un test depuis la carte SD) as f6
+  (Envoyer la configuration de la Jammer Box) as f7
+
+  a -- f3
+  a -- f4
+  a -- f5
+  a -- f6
+  a -- f7
+  a -- f8
+  a -- f9
+
+  f3 -- f1
+  f4 -- f1
+  f5 -- f1
+  f6 -- f2
+  f7 -- f1
+  f8 -- f2
+  f9 -- f1
+  f9 -- f2
+
+  f1 -- b
+  f2 -- b
+}
+@enduml
