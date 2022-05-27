@@ -24,12 +24,11 @@
 #include <string.h>
 
 /* Hardware includes ---------------------------------------------------------*/
-#include "stm32f1xx_hal.h"
-
+#include "tim.h"
 
 /* Program includes ----------------------------------------------------------*/
 #include "failures.h"
-#include "tim.h"
+#include "timer.h"
 
 /* Variables -----------------------------------------------------------------*/
 
@@ -921,7 +920,7 @@ void SEG_ADP_ER_LIM_reset(void) {
     failure_active = false;
     failure_passed = false;
     failure_waiting = false;
-    Timer4Init();
+    MX_TIM4_Init();
     SysTickInit();
     timer_Counter_SEG_ADP_ER_LIM = 0;
 }

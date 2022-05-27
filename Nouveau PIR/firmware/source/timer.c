@@ -25,14 +25,8 @@
 #include <stdbool.h>
 
 // ### Hardware includes ###
-#include "stm32f1xx_hal.h"
-#include "stm32f1xx_hal_tim.h"
-
-#include "main.h"
 #include "tim.h"
 
-// ## Enable use of Low Level Drivers (needed to reset manually the counter) */
-#define USE_FULL_LL_DRIVER
 
 /* External variables -------------------------------------------------------*/
 extern unsigned long timer_overflow_CRK;

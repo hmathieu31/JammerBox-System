@@ -748,7 +748,7 @@ void TIM4_PeriodElapsedCallback(void)
 			}
 			else if (in == start_char && char_counter == 1)
 			{
-				HAL_USART_Transmit_IT(&husart1, message[13], 1);
+				HAL_USART_Transmit_IT(&husart1, &((uint8_t)message[13]), 1);
 				receiving = true;  // set label that indicates receiving status
 				com_error = false; // reset COM error, due to received start char
 			}
