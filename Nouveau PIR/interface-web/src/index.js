@@ -8,7 +8,7 @@ import SynthesizeTests from "./elements/SynthesizeTests.js";
 import Test_historics from "./elements/TestsHistorics";
 import Configuration from "./elements/Configuration";
 import { Provider as AlertProvider } from "react-alert";
-import AlertTemplate from "react-alert-template-basic";
+import AlertTemplate from "./components/alertTemplate";
 import "./CSS/alerts.css";
 
 const rootElement = document.getElementById("root");
@@ -39,7 +39,6 @@ ReactDOM.render(
             </AlertProvider>
           }
         />
-        {/* Testing test result */}
       </Routes>
     </BrowserRouter>
   </div>,
