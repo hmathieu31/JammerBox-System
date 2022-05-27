@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import "../CSS/MainPage.css";
 import { useNavigate } from "react-router-dom";
+import RecordSignal from "../components/RecordSignal";
 
 function MainPage() {
   let navigate = useNavigate();
@@ -32,6 +33,7 @@ function MainPage() {
             <button className="group-6" onClick={History_selection}>
               <p className="txt-733 flex-hcenter">Faults Injection Logs</p>
             </button>
+            <RecordSignal />
           </div>
         </div>
       </div>

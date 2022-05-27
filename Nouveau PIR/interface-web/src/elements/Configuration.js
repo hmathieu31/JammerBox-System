@@ -150,7 +150,6 @@ export default function Configuration() {
               RESET CAM CONFIG
             </button>
           </div>
-          <RecordSignal />
         </div>
       </div>
     </>
