@@ -56,16 +56,14 @@ class ParameterPopup extends React.Component {
               <button onClick={handleOpenClose} className="group-6-cancel">
                 <p className="txt-637 flex-hcenter">Cancel</p>
               </button>
-              <button
-                onClick={
-                  this.props.valueSelected === null ||
-                  this.props.valueSelected == 0
-                    ? this.invalidParameterSel("Invalid Parameter")
-                    : this.props.handleRun
-                }
-                className="group-6-run"
-              >
-                <p className="txt-637 flex-hcenter">Run Test</p>
+              <button 
+                onClick={(this.props.valueSelected === null 
+                  || this.props.valueSelected == 0) ?
+                  this.invalidParameterSel("Invalid Parameter") :
+                  this.props.handleRun 
+                } 
+                className="group-6">
+                <p className="txt-637 flex-hcenter">Start jamming</p>
               </button>
             </div>
           </div>

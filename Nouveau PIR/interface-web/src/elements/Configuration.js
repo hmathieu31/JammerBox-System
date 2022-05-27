@@ -29,6 +29,7 @@ export default function Configuration() {
 
   const onButtonClickUpload = () => {
     inputFile.current.click();
+    //alert.show("Configuration uploaded");
   };
 
   const onButtonClickConf = (conf) => {
@@ -59,7 +60,7 @@ export default function Configuration() {
           };
         }
         sendData(jsonData);
-        alert.show("Configuration succesfull!");
+        alert.show("Configuration successfully uploaded!")
       }
     };
   };
@@ -72,8 +73,8 @@ export default function Configuration() {
       } else if (conf === "RESETCAM") {
         jsonData = { Config: "RESETCAM" };
       }
-      sendData(jsonData);
-      alert.show("Configuration succesfully reseted!");
+    sendData(jsonData); 
+    alert.show("Configuration successfully reset!")
     };
   };
 

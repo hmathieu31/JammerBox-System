@@ -12,7 +12,7 @@ export default function Testing() {
 
   const spaces = Object.entries(jsonData).map((obj) => {
     var newObj = obj[1];
-    console.log(newObj.id);
+      
     return (
       <POPOSSpace
         id={newObj.id}
@@ -22,7 +22,8 @@ export default function Testing() {
         result={newObj.result}
       />
     );
-  });
+  }
+  );
 
   return <div className="POPOSList">{spaces}</div>;
 }
