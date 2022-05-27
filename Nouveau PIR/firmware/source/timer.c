@@ -23,9 +23,12 @@
 
 // ### Standard includes ###
 #include <stdbool.h>
+#include <stdint.h>
 
 // ### Hardware includes ###
 #include "tim.h"
+
+#define SYSTICK_US_PERIOD 120000
 
 
 /* External variables -------------------------------------------------------*/
@@ -158,4 +161,18 @@ int TIM_Soft_GetCounter(void)
 	{
 		return TIM_Soft_TicksCounted;
 	}
+}
+
+// Returns a timestamp in microseconds
+static inline uint32_t GetTimestamp() {
+    uint32_t nb_of_periods;
+    uint32_t val;
+    uint32_t load;
+
+	nb_of_periods = HAL_GetTick();
+	val = SysTick->VAL;
+	load = SysTick->LOAD;
+
+    // Do not factorize for precision purposes
+    return nb_of_periods * SYSTICK_US_PERIOD + (load + 1 - val) * SYSTICK_US_PERIOD / (load + 1);
 }
