@@ -805,8 +805,8 @@ void USART_ProcessMessage(void)
 				communication_ready = true;
 
 				HAL_TIM_Base_Stop_IT(&htim1);
-
-				HAL_USART_Transmit_IT(&husart1, (uint8_t*)&message[11], 1);
+				uint8_t msg11 = message[11];
+				HAL_USART_Transmit_IT(&husart1, &msg11, 1);
 			}
 			else
 			{
@@ -840,7 +840,8 @@ void USART_ProcessMessage(void)
 	message_received = false;
 
 	//communication receive status
-	HAL_USART_Transmit_IT(&husart1, (uint8_t*)&message[12], 1);
+	uint8_t msg_communication_receive_ready = message[12];
+	HAL_USART_Transmit_IT(&husart1, &msg_communication_receive_ready, 1);
 }
 
 //## USART COM Error Function
@@ -860,7 +861,8 @@ void USART_COM_error(void)
 		message_received = false;
 
 		//communication error treatment
-		HAL_USART_Transmit_IT(&husart1, (uint8_t*)&message[0], 1);
+		uint8_t msg_COM_error = message[0];
+		HAL_USART_Transmit_IT(&husart1, &msg_COM_error, 1);
 	}
 }
 
@@ -871,26 +873,30 @@ void USART_send_failure_configuration_status(char failure_ident,
 {
 	if ((failure_ident == '0' || failure_ident == '2') && failure_conf == true)
 	{
-		HAL_USART_Transmit_IT(&husart1, (uint8_t*)&message[8], 1);
+		uint8_t msg_failure_passive = message[8];
+		HAL_USART_Transmit_IT(&husart1, &msg_failure_passive, 1);
 		failure_configured = false;
 	}
 	else if ((failure_ident != '0' && failure_ident != '2')
 			&& failure_conf == false)
 	{
-		HAL_USART_Transmit_IT(&husart1, (uint8_t*)&message[7], 1);
+		uint8_t msg_failure_active = message[7];
+		HAL_USART_Transmit_IT(&husart1, &msg_failure_active, 1);
 		failure_configured = true;
 	}
 
 	if ((failure_ident != '2' && failure_ident != '3')
 			&& failure_conf_CAM_blank_out == true)
 	{
-		HAL_USART_Transmit_IT(&husart1, (uint8_t*)&message[10], 1);
+		uint8_t msg_failure_cam_blank_out_passive = message[10];
+		HAL_USART_Transmit_IT(&husart1, &msg_failure_cam_blank_out_passive, 1);
 		failure_configured_CAM_blank_out = false;
 	}
 	else if ((failure_ident == '2' || failure_ident == '3')
 			&& failure_conf_CAM_blank_out == false)
 	{
-		HAL_USART_Transmit_IT(&husart1, (uint8_t*)&message[9], 1);
+		uint8_t msg_failure_cam_blank_out_active = message[9];
+		HAL_USART_Transmit_IT(&husart1, &msg_failure_cam_blank_out_active, 1);
 		failure_configured_CAM_blank_out = true;
 	}
 }

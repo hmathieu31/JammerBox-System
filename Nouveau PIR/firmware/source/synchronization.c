@@ -25,9 +25,6 @@
 // ### Hardware specific includes ###
 #include "tim.h"
 
-#include "stm32f1xx_hal.h"
-#include "stm32f1xx_hal_tim.h"
-#include "stm32f1xx_hal_usart.h"
 #include "usart.h"
 
 // ### Program includes ###
@@ -242,13 +239,15 @@ void sync_CRK(void)
                     CRK_synch_temp = false;
 
                     // Send CRK-sycnhronization status
-                    HAL_USART_Transmit_IT(&husart1, &((uint8_t)message[4]), 1);
+                    uint8_t msg_CRK_synchronisation_lost = message[4];
+                    HAL_USART_Transmit_IT(&husart1, &msg_CRK_synchronisation_lost, 1);
 
                     CRK_CAM_synch[0] = false;
                     CRK_CAM_synch[1] = false;
 
                     // Send CRK_CAM-sycnhronization status
-                    HAL_USART_Transmit_IT(&husart1, &((uint8_t)message[6]), 1);
+                    uint8_t msg_CAM_CRK_synchronisation_lost = message[6];
+                    HAL_USART_Transmit_IT(&husart1, &msg_CAM_CRK_synchronisation_lost , 1);
 
                     // Reset actual failure scenarios
                     failure_synch_reset(failure_identify);
@@ -294,7 +293,8 @@ void sync_CRK(void)
                     CRK_synch = true;
 
                     // Send CRK-sycnhronization status
-                    HAL_USART_Transmit_IT(&husart1, &((uint8_t)message[3]), 1);
+                    uint8_t msg_CRK_synchronisation_ready = message[3];
+                    HAL_USART_Transmit_IT(&husart1, &msg_CRK_synchronisation_ready, 1);
                 }
                 else
                 {
@@ -644,17 +644,20 @@ void Stalling_detection(void)
     // Reset CRK and CAM_CRK synchronization
     if (CRK_synch == true)
     {
-        HAL_USART_Transmit_IT(&husart1, &((uint8_t)message[4]), 1);  // CRK synchronization lost
+        uint8_t CRK_synchronisation_lost = message[4];
+        HAL_USART_Transmit_IT(&husart1, &CRK_synchronisation_lost, 1);  // CRK synchronization lost
 
     }
 
     if (CRK_CAM_synch[0] == true)
     {
-         HAL_USART_Transmit_IT(&husart1, &((uint8_t)message[6]), 1); // CAM_CRK synchronization lost
+        uint8_t CAM_CRK_synchronisation_lost = message[6];
+         HAL_USART_Transmit_IT(&husart1, &CAM_CRK_synchronisation_lost, 1); // CAM_CRK synchronization lost
     }
     if (CRK_CAM_synch[1] == true)
     {
-         HAL_USART_Transmit_IT(&husart1, &((uint8_t)message[6]), 1); // CAM_CRK synchronization lost
+        uint8_t CAM_CRK_synchronisation_lost = message[6];
+         HAL_USART_Transmit_IT(&husart1, &CAM_CRK_synchronisation_lost, 1); // CAM_CRK synchronization lost
     }
 
     CRK_synch = false;
@@ -697,7 +700,8 @@ void Stalling_detection_CRK(void)
     // Reset CRK and CAM_CRK synchronization
     if (CRK_synch == true)
     {
-         HAL_USART_Transmit_IT(&husart1, &((uint8_t)message[4]), 1); // CRK synchronization lost
+        uint8_t CRK_synchronisation_lost = message[4];
+         HAL_USART_Transmit_IT(&husart1, &CRK_synchronisation_lost, 1); // CRK synchronization lost
     }
 
     CRK_synch = false;
@@ -736,7 +740,8 @@ void Stalling_detection_CAM(int camId)
 
     if (CRK_CAM_synch[camId] == true)
     {
-         HAL_USART_Transmit_IT(&husart1, &((uint8_t)message[6]), 1);// CAM_CRK synchronization lost
+        uint8_t CAM_CRK_synchronisation_lost = message[6];
+         HAL_USART_Transmit_IT(&husart1, &CAM_CRK_synchronisation_lost, 1); // CAM_CRK synchronization lost
     }
 
     CRK_CAM_synch[camId] = false;
@@ -827,8 +832,8 @@ void CAM_CRK_synch_set(int camId)
     CRK_CAM_synch[camId] = true;
 
     // Send CRK_CAM-sycnhronization status
-     HAL_USART_Transmit_IT(&husart1, &((uint8_t)message[6]), 1);
-
+    uint8_t CRK_CAM_synchronisation_lost = message[6];
+     HAL_USART_Transmit_IT(&husart1, &CRK_CAM_synchronisation_lost, 1); // CRK_CAM synchronization lost
     CAM_CRK_synch_status = false;
     CAM_CRK_synch_status_ahead = false;
     shift_counter_CRK = 0;
