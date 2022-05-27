@@ -155,10 +155,7 @@ extern bool communication_ready;
 
 /* Public functions ----------------------------------------------------------*/
 
-//## USART Receive Function
-//? Called whenever a character is received on the USART1
 void USART_ProcessMessage(void) {
-
 
     data_counter = 0; //Set data counter to 0
 
@@ -808,6 +805,3 @@ void Reset_temp_arrays(void) {
     temp_chars_9[0] = '\0';
     temp_chars_10[0] = '\0';
 }
-
-/*****************************************************************************/
-/*****************************************************************************/
