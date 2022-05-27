@@ -7,7 +7,6 @@ import MainPage from "./elements/MainPage.js";
 import SynthesizeTests from "./elements/SynthesizeTests.js";
 import Test_historics from "./elements/TestsHistorics";
 import Configuration from "./elements/Configuration";
-import TestResult from "./elements/TestResult";
 import { Provider as AlertProvider } from "react-alert";
 import AlertTemplate from "react-alert-template-basic";
 import "./CSS/alerts.css";
@@ -41,7 +40,6 @@ ReactDOM.render(
           }
         />
         {/* Testing test result */}
-        <Route exact path="/test_results" element={<TestResult/>} />
       </Routes>
     </BrowserRouter>
   </div>,
