@@ -131,6 +131,7 @@ app.post("/config", (req, res) => {
   }
 });
 
+//Recording signals call
 app.put("/record", (req, res) => {
   try {
     runPythonScript(["RECORD"]);
@@ -139,6 +140,22 @@ app.put("/record", (req, res) => {
     res.status(400).send(e);
     console.log(e);
   }
+});
+
+app.get("/getlog", (req, res) => {
+  try {
+    const historicJson = require(historicPath);
+    res.status(200).json(historicJson);
+  } catch (e) {
+    res.status(404).send(e);
+  }
+});
+
+app.delete("/deleteLog", (req, res) => {
+  fs.writeFile(historicPath, JSON.stringify({}), function (err) {
+    if (err) throw err;
+    console.log('The "data to append" was appended to file!');
+  });
 });
 
 app.listen(8080, () => {
