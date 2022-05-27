@@ -65,7 +65,7 @@ class ParameterPopup extends React.Component {
                 this.props.handleRun 
                 } 
                 className="group-6">
-                <p className="txt-637 flex-hcenter">Run Test</p>
+                <p className="txt-637 flex-hcenter">Start jamming</p>
               </button>
             </div>
           </div>

@@ -4,9 +4,20 @@ import ReturnButton from "../components/ReturnButton.js";
 import ButtonList from "../components/ButtonList";
 import { useNavigate } from "react-router-dom";
 import ButtonAttributes from "../components/ButtonAttributes";
+import { Provider as AlertProvider } from "react-alert";
+import AlertTemplate from "../components/alertTemplate";
 
 export default function SynthesizeTests() {
   let navigate = useNavigate();
+  
+  const options = {
+    position: "bottom center",
+    timeout: 5000,
+    offset: "30px",
+    transition: "scale",
+    type: "success"
+  };
+
   let Buttons = [
     new ButtonAttributes("CRK SHORT CIRCUIT", true, "Output Signal", true),
     new ButtonAttributes("CAM SHORT CIRCUIT", true, "Output Signal", true),
@@ -24,10 +35,12 @@ export default function SynthesizeTests() {
   return (
     <>
       <div className="frame-1">
-        <p className="txt-271 flex-hcenter">Synthesize Tests</p>
+        <p className="txt-271 flex-hcenter">Inject fault</p>
         {ReturnButton()}
         <div>
-          <ButtonList navigate={navigate} buttonList={Buttons} />
+          <AlertProvider template={AlertTemplate} {...options}>
+            <ButtonList navigate={navigate} buttonList={Buttons} />
+          </AlertProvider>
         </div>
       </div>
     </>

@@ -4,7 +4,7 @@ import { Routes, Route, BrowserRouter } from "react-router-dom";
 import "./index.css";
 import reportWebVitals from "./components/reportWebVitals";
 import MainPage from "./elements/MainPage.js";
-import SynthesizeTests from "./elements/SynthesizeTests.js";
+import InjectFault from "./elements/InjectFault.js";
 import Test_historics from "./elements/TestsHistorics";
 import Configuration from "./elements/Configuration";
 import { Provider as AlertProvider } from "react-alert";
@@ -28,7 +28,7 @@ ReactDOM.render(
     <BrowserRouter>
       <Routes>
         <Route exact path="/" element={<MainPage />} />
-        <Route exact path="/synthesize_tests" element={<SynthesizeTests />} />
+        <Route exact path="/synthesize_tests" element={<InjectFault />} />
         <Route exact path="/tests_historics" element={<Test_historics />} />
         <Route
           exact

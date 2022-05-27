@@ -28,7 +28,7 @@ export default function Configuration() {
 
   const onButtonClickUpload = () => {
     inputFile.current.click();
-    alert.show("Configuration uploaded");
+    //alert.show("Configuration uploaded");
   };
 
   const onButtonClickConf = (conf) => {
