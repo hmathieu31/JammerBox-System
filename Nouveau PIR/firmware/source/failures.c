@@ -25,8 +25,6 @@
 
 /* Hardware includes ---------------------------------------------------------*/
 #include "stm32f1xx_hal.h"
-#include "stm32f1xx_ll_tim.h"
-#include "stm32f1xx_hal_tim.h"
 
 
 /* Program includes ----------------------------------------------------------*/

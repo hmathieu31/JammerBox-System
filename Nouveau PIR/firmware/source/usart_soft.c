@@ -12,14 +12,12 @@
 #include <stdlib.h>
 
 // ### Hardware specific includes ###
-#include "stm32f10x.h"
-#include "stm32f10x_usart.h"
 
 // ### Program includes ###
+#include "usart_soft.h"
 #include "system_configuration.h"
 #include "failures.h"
 #include "timer.h"
-#include "usart.h"
 
 // ### Variables ###
 

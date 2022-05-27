@@ -34,9 +34,8 @@
 // ### Software includes ###
 #include "failures.h"
 #include "timer.h"
-// ### Program includes ###
 #include "system_configuration.h"
-
+//#include "usart_soft.h"
 #include "synchronization.h"
 /* USER CODE END Includes */
 
