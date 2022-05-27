@@ -5,7 +5,7 @@ from time import sleep
 print(sys.argv)
 usart_message = "!"
 print("Opening port...")
-ser = Serial("/dev/ttyS0", 9600,timeout=0.5)    #Open port with baud rate
+#ser = Serial("/dev/ttyS0", 9600,timeout=0.5)    #Open port with baud rate
 print("Port opened!")
 #                   #print received data
 
@@ -22,6 +22,7 @@ elif testName == "CRKTOOTHOFF":message_identifier="h"
 elif testName == "CRKGAPNOTDET":message_identifier="i"
 elif testName == "CRKPOSNENGSTST":message_identifier="l"
 elif testName == "CRKSEGADPERRLIM":message_identifier="j"
+elif testName == "RECORD":message_identifier="d"
 usart_message+=message_identifier
 
 for i in range(2,len(sys.argv)):
@@ -30,11 +31,11 @@ for i in range(2,len(sys.argv)):
 usart_message+="%"
 print(usart_message)
 
-ser.write(usart_message.encode())
+'''ser.write(usart_message.encode())
 sleep(0.03)   
 databuffer = ser.in_waiting
 if databuffer>0:
     received_data = ser.read(size=64)              #read serial port
     print (received_data)
 else:
-    print("No data to read")
+    print("No data to read")'''

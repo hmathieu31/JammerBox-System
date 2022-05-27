@@ -1,5 +1,4 @@
 import React, { useContext, useState } from "react";
-import RecordingState from "../Context/RecordingState";
 import "../CSS/RecordSignal.css";
 
 function RecordSignal() {
@@ -10,6 +9,19 @@ function RecordSignal() {
   const recordToggle = () => {
     setRecord(!recording);
     localStorage.setItem("recording", JSON.stringify(!recording));
+    fetch("http://localhost:8080/record", {
+      method: "PUT",
+      mode: "cors",
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify({}),
+    }).then(
+      (data) => {
+        console.log(data.status);
+      },
+      (error) => {
+        console.log("Did not send data!");
+      }
+    );
   };
 
   return (
