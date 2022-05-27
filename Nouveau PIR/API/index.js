@@ -7,7 +7,11 @@ const { spawn } = require("child_process");
 const { PythonShell } = require("python-shell");
 const fs = require("fs");
 
-const allowedOrigins = ["http://localhost:3000", "http://192.168.1.92:3000"];
+const allowedOrigins = [
+  "http://localhost:3000",
+  "http://192.168.1.92:3000",
+  "http://172.20.10.9:3000",
+];
 const historicPath = "../interface-web/src/historicData.json";
 
 app.use(
