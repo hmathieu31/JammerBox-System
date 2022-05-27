@@ -757,8 +757,7 @@ void HAL_USART_RxCpltCallback(USART_HandleTypeDef *husart)
 			}
 			else if (in == start_char && char_counter == 1)
 			{
-
-				USART_SendData(USART1, message[13]);
+				HAL_USART_Transmit_IT(&husart1, message[13], 1);
 				receiving = true;  // set label that indicates receiving status
 				com_error = false; // reset COM error, due to received start char
 			}
