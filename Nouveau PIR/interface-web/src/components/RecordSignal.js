@@ -1,18 +1,21 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import RecordingState from "../Context/RecordingState";
 import "../CSS/RecordSignal.css";
 
 function RecordSignal() {
-  const [recording, setRecord] = useState(false);
+  const [recording, setRecord] = useState(
+    JSON.parse(localStorage.getItem("recording"))
+  );
 
   const recordToggle = () => {
-    console.log(recording);
     setRecord(!recording);
+    localStorage.setItem("recording", JSON.stringify(!recording));
   };
 
   return (
     <div className="flex-col-hstart-vstart">
       <button
-        className="arrow-circle-up group-6 txt-733"
+        className="group-6 txt-733"
         type="submit"
         value=""
         onClick={recordToggle}

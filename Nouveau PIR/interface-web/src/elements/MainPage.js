@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import "../CSS/MainPage.css";
 import { useNavigate } from "react-router-dom";
+import RecordSignal from "../components/RecordSignal";
+import RecordingState from "../Context/RecordingState";
 
 function MainPage() {
   let navigate = useNavigate();
+
+  const [recordState, setRecordState] = useState(false);
 
   let Test_selection = () => {
     navigate("/synthesize_tests");
@@ -32,6 +36,9 @@ function MainPage() {
             <button className="group-6" onClick={History_selection}>
               <p className="txt-733 flex-hcenter">Test historics</p>
             </button>
+            <RecordingState.Provider value={[recordState, setRecordState]}>
+              <RecordSignal />
+            </RecordingState.Provider>
           </div>
         </div>
       </div>
