@@ -35,7 +35,7 @@
 #include "failures.h"
 #include "timer.h"
 #include "system_configuration.h"
-//#include "usart_soft.h"
+#include "usart_soft.h"
 #include "synchronization.h"
 /* USER CODE END Includes */
 

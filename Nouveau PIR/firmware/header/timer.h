@@ -36,13 +36,13 @@ void TIM1_Reset(void);
 
 void TIM2_Reset(void);
 
-void TIM_Software_Start(void);
+void TIM_Soft_Start(void);
 
-void TIM_Software_Stop(void);
+void TIM_Soft_Stop(void);
 
-void TIM_Software_Reset(void);
+void TIM_Soft_Reset(void);
 
-int TIM_Software_GetCounter(void);
+int TIM_Soft_GetCounter(void);
 
 #endif
 
