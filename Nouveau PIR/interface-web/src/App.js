@@ -3,7 +3,7 @@ import InjectFault from "./elements/InjectFault.js";
 import FaultsInjectionLogs from "./elements/FaultsInjectionLogs";
 import Configuration from "./elements/Configuration";
 import { Provider as AlertProvider } from "react-alert";
-import AlertTemplate from "react-alert-template-basic";
+import AlertTemplate from "./components/alertTemplate";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import React, { useState } from "react";
 
