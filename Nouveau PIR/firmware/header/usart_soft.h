@@ -19,10 +19,6 @@
 
 	void USART_receive(void);
 
-	//### USART Send Function ###
-	
-	void USART_send(char);
-
 	//### USART Send Configuration Status Function ###
 	
 	void USART_send_failure_configuration_status(char, bool, bool);

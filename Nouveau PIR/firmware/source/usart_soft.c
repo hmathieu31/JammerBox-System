@@ -13,11 +13,18 @@
 
 // ### Hardware specific includes ###
 
+#include "stm32f1xx_hal_usart.h"
+#include "stm32f1xx_hal_tim.h"
+
+#include "usart.h"
+#include "tim.h"
+
 // ### Program includes ###
 #include "usart_soft.h"
 #include "system_configuration.h"
 #include "failures.h"
 #include "timer.h"
+
 
 // ### Variables ###
 
@@ -547,7 +554,7 @@ void USART_receive(void) {
         case ('9'): // CRK_TOOTH_PER(START or STOP)
         {
             if (data_counter == 1 && temp_chars_1[0] == 'B') {
-               TIM_SetAutoreload(TIM3,17);
+               __HAL_TIM_SET_AUTORELOAD(&htim3, 17);
                 failure_identify = '6';
 
             } else if (data_counter == 1 && temp_chars_1[0] == 'S') {
@@ -688,7 +695,7 @@ void USART_receive(void) {
         {
             if (data_counter == 2 && temp_chars_1[0] == 'B') {
                 crk_pulse_duration_CRK_PLS_ORNG = atof(temp_chars_2);
-                TIM_SetAutoreload(TIM4, 18 * (( crk_pulse_duration_CRK_PLS_ORNG / 0.217)+1) - 1); 
+                __HAL_TIM_SET_AUTORELOAD(&htim4, 18 * (( crk_pulse_duration_CRK_PLS_ORNG / 0.217)+1) - 1 );
                 failure_identify = 'k';
                 failure_active = true;
 
@@ -753,9 +760,9 @@ void USART_receive(void) {
                     communication_active = true;
                     communication_ready = true;
 
-                    TIM_Cmd(TIM1, ENABLE);
+                    HAL_TIM_Base_Stop_IT(&htim1);
 
-                    USART_send(message[11]);
+                     HAL_USART_Transmit_IT(&husart1, message[11], 1);
                 } else {
                     communication_ready = true;
                 }
@@ -784,21 +791,9 @@ void USART_receive(void) {
     message_received = false;
 
     //communication receive status
-    USART_send(message[12]);
+     HAL_USART_Transmit_IT(&husart1, message[12], 1);
 }
 
-
-
-
-/**
- * @brief Function used to send a message via USART.
- * In practice, simply calls the USART_send function from the stm32 standard library
- *
- * @param message 
- */
-void USART_send(char message) {
-    USART_SendData(USART1, message);
-}
 
 
 //## USART COM Error Function
@@ -816,7 +811,7 @@ void USART_COM_error(void) {
         message_received = false;
 
         //communication error treatment
-        USART_SendData(USART1,message[0]);
+         HAL_USART_Transmit_IT(&husart1, message[0], 1);
     }
 }
 
@@ -824,18 +819,18 @@ void USART_COM_error(void) {
 
 void USART_send_failure_configuration_status(char failure_ident, bool failure_conf, bool failure_conf_CAM_blank_out) {
     if ((failure_ident == '0' || failure_ident == '2') && failure_conf == true) {
-        USART_send(message[8]);
+         HAL_USART_Transmit_IT(&husart1, message[8], 1);
         failure_configured = false;
     } else if ((failure_ident != '0' && failure_ident != '2') && failure_conf == false) {
-        USART_send(message[7]);
+         HAL_USART_Transmit_IT(&husart1, message[7], 1);
         failure_configured = true;
     }
 
     if ((failure_ident != '2' && failure_ident != '3') && failure_conf_CAM_blank_out == true) {
-        USART_send(message[10]);
+         HAL_USART_Transmit_IT(&husart1, message[10], 1);
         failure_configured_CAM_blank_out = false;
     } else if ((failure_ident == '2' || failure_ident == '3') && failure_conf_CAM_blank_out == false) {
-        USART_send(message[9]);
+         HAL_USART_Transmit_IT(&husart1, message[9], 1);
         failure_configured_CAM_blank_out = true;
     }
 }
