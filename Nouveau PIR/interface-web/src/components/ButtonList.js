@@ -6,6 +6,7 @@ import React from "react";
 import Modal from "react-modal";
 import { Provider as AlertProvider } from "react-alert";
 import AlertTemplate from "react-alert-template-basic";
+import { withAlert } from "react-alert";
 
 const options = {
   position: "bottom center",
@@ -14,7 +15,7 @@ const options = {
   transition: "scale",
 };
 
-export default class ButtonList extends React.Component {
+class ButtonList extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -77,6 +78,8 @@ export default class ButtonList extends React.Component {
       valueSelect: null,
     });
 
+    this.props.alert.show("Jamming successfully started")
+
     console.log("Value after sending test parameters");
     console.log(this.valueSelect);
   };
@@ -89,9 +92,7 @@ export default class ButtonList extends React.Component {
         TestValue: "",
       };
       this.sendData(jsonData);
-      setTimeout(() => {
-        this.props.navigate("/");
-      }, 2000);
+      this.props.alert.show("Jamming successfully started")
     };
   };
 
@@ -130,6 +131,7 @@ export default class ButtonList extends React.Component {
     );
   };
   render() {
+    const alert = this.props.alert;
     return (
       <div className="button-list-div">
         {this.props.buttonList.map(this.makeButton)}
@@ -137,3 +139,6 @@ export default class ButtonList extends React.Component {
     );
   }
 }
+
+
+export default withAlert()(ButtonList)

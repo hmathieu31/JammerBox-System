@@ -4,12 +4,12 @@ import { Routes, Route, BrowserRouter } from "react-router-dom";
 import "./index.css";
 import reportWebVitals from "./components/reportWebVitals";
 import MainPage from "./elements/MainPage.js";
-import SynthesizeTests from "./elements/SynthesizeTests.js";
-import Test_historics from "./elements/TestsHistorics";
+import InjectFault from "./elements/InjectFault.js";
+import FaultsInjectionLogs from "./elements/FaultsInjectionLogs";
 import Configuration from "./elements/Configuration";
-import TestResult from "./elements/TestResult";
 import { Provider as AlertProvider } from "react-alert";
-import AlertTemplate from "react-alert-template-basic";
+import AlertTemplate from "./components/alertTemplate";
+import "./CSS/alerts.css";
 
 const rootElement = document.getElementById("root");
 const options = {
@@ -19,13 +19,17 @@ const options = {
   transition: "scale",
 };
 
+// const AlertTemplate = ({message}) => (
+//   <div className="alert red-bg">{message}</div>
+// );
+
 ReactDOM.render(
   <div>
     <BrowserRouter>
       <Routes>
         <Route exact path="/" element={<MainPage />} />
-        <Route exact path="/synthesize_tests" element={<SynthesizeTests />} />
-        <Route exact path="/tests_historics" element={<Test_historics />} />
+        <Route exact path="/synthesize_tests" element={<InjectFault />} />
+        <Route exact path="/tests_historics" element={<FaultsInjectionLogs />} />
         <Route
           exact
           path="/configuration"
@@ -34,12 +38,6 @@ ReactDOM.render(
               <Configuration />
             </AlertProvider>
           }
-        />
-        {/* Testing test result */}
-        <Route
-          exact
-          path="/test_result"
-          element={<TestResult name="Testing" />}
         />
       </Routes>
     </BrowserRouter>
