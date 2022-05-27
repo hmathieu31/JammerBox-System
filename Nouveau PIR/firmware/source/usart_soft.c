@@ -1,10 +1,22 @@
-/*****************************************************************************/
-/* Projectname     :  ENSD-Jammer                                            */
-/* Programm        :  USART		                                             */
-/* Controller      :  dsPIC33F                                               */
-/* Latest change   :  31.08.2020                                             */
-/* Author          :  Gr�goire Chabin/Christian Ringlstetter/Thomas Pichler  */
-/*****************************************************************************/
+/**
+ ******************************************************************************
+ * @file    	  usart_soft.c
+ * @brief   	  Functions to use the USART specific to the Jammerbox Project
+ * 				  Project name	: STM32-Jammerbox
+ * 				  Controller	: STM32F103RB
+ * @date		  May 27, 2022
+ ******************************************************************************
+ * @attention
+ *
+ * All rights reserved.
+ *
+ * This software is licensed under terms that can be found in the LICENSE file
+ * in the root directory of this software component.
+ * If no LICENSE file comes with this software, it is provided AS-IS.
+ *
+ ******************************************************************************
+ */
+
 
 // ### Basic includes ###
 #include <stdbool.h>
