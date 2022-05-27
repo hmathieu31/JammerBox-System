@@ -1,9 +1,7 @@
-const usb = require("usb");
 const express = require("express");
 const app = express();
 const bp = require("body-parser");
 const cors = require("cors");
-const { spawn } = require("child_process");
 const { PythonShell } = require("python-shell");
 const fs = require("fs");
 
@@ -14,6 +12,7 @@ const allowedOrigins = [
 ];
 const historicPath = "../interface-web/src/historicData.json";
 
+//Configuring CORS
 app.use(
   cors({
     origin: function (origin, callback) {
@@ -31,6 +30,7 @@ app.use(
 app.use(bp.json());
 app.use(bp.urlencoded({ extended: true }));
 
+//Call for running test
 app.post("/run", (req, res) => {
   if (req.body === undefined) {
     res.status(404).send("Body not defined");
@@ -42,7 +42,7 @@ app.post("/run", (req, res) => {
 
     try {
       runPythonScript([param1.replace(/\s/g, ""), param3]);
-      testResult = "test runned successfully";
+      testResult = "test ran successfully";
       res.status(200).json();
     } catch (e) {
       testResult = "failed to run test";
@@ -62,7 +62,8 @@ app.post("/run", (req, res) => {
           (date.getMonth() + 1) +
           "/" +
           date.getFullYear(),
-        parametre: param2 + " = " + param3,
+        parametreType: param2,
+        parametreValue: param3,
         result: testResult,
       };
       fs.writeFile(historicPath, JSON.stringify(json), function (err) {
@@ -73,6 +74,7 @@ app.post("/run", (req, res) => {
   }
 });
 
+//Call for configuring CAM or CRK signals
 app.post("/config", (req, res) => {
   if (req.body === undefined) {
     res.status(404).send("Body not defined");
@@ -131,6 +133,7 @@ app.post("/config", (req, res) => {
   }
 });
 
+//Recording signals call
 app.put("/record", (req, res) => {
   try {
     runPythonScript(["RECORD"]);
@@ -139,6 +142,27 @@ app.put("/record", (req, res) => {
     res.status(400).send(e);
     console.log(e);
   }
+});
+
+//Call for fetching tests historic log
+app.get("/getlog", (req, res) => {
+  try {
+    fs.readFile(historicPath, function (err, data) {
+      historicJson = JSON.parse(data);
+      console.log(historicJson);
+      res.status(200).json(historicJson);
+    });
+  } catch (e) {
+    res.status(404).send(e);
+  }
+});
+
+//Call for deleting the log completely
+app.delete("/deleteLog", (req, res) => {
+  fs.writeFile(historicPath, JSON.stringify({}), function (err) {
+    if (err) throw err;
+    console.log("Deleted log successfully");
+  });
 });
 
 app.listen(8080, () => {
