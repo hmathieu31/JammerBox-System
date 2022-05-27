@@ -7,7 +7,7 @@ import ButtonAttributes from "../components/ButtonAttributes";
 import { Provider as AlertProvider } from "react-alert";
 import AlertTemplate from "../components/alertTemplate";
 
-export default function SynthesizeTests() {
+export default function InjectFault() {
   let navigate = useNavigate();
   
   const options = {
@@ -35,7 +35,7 @@ export default function SynthesizeTests() {
   return (
     <>
       <div className="frame-1">
-        <p className="txt-271 flex-hcenter">Inject fault</p>
+        <p className="txt-271 flex-hcenter">Inject Fault</p>
         {ReturnButton()}
         <div>
           <AlertProvider template={AlertTemplate} {...options}>

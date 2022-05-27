@@ -59,7 +59,7 @@ export default function Configuration() {
           };
         }
         sendData(jsonData);
-        alert.show("Configuration succesfully uploaded!")
+        alert.show("Configuration successfully uploaded!")
       }
     };
   };
@@ -74,7 +74,7 @@ export default function Configuration() {
         jsonData = { Config: "RESETCAM" };
       }
     sendData(jsonData); 
-    alert.show("Configuration succesfully reseted!")
+    alert.show("Configuration successfully reset!")
     };
   }
   

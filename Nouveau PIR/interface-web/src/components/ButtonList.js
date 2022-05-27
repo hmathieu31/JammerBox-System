@@ -78,7 +78,7 @@ class ButtonList extends React.Component {
       valueSelect: null,
     });
 
-    this.props.alert.show("Jamming started successfully")
+    this.props.alert.show("Jamming successfully started")
 
     console.log("Value after sending test parameters");
     console.log(this.valueSelect);
@@ -92,7 +92,7 @@ class ButtonList extends React.Component {
         TestValue: "",
       };
       this.sendData(jsonData);
-      this.props.alert.show("Jamming started successfully")
+      this.props.alert.show("Jamming successfully started")
     };
   };
 
