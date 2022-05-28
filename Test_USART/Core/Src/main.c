@@ -91,7 +91,7 @@ int main(void)
   MX_USART2_UART_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
-	HAL_UART_Transmit(&huart2, "inn", 4, 1000);
+	HAL_UART_Transmit(&huart1, "inn", 4, 1000);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -101,9 +101,9 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 		uint8_t buffer[4];
-		switch (HAL_UART_Receive(&huart2, &buffer, 4, 1000)) {
+		switch (HAL_UART_Receive(&huart1, &buffer, 4, 1000)) {
 		case HAL_OK:
-			HAL_UART_Transmit(&huart2, &buffer, 4, 1000);
+			HAL_UART_Transmit(&huart1, &buffer, 4, 1000);
 			break;
 		case HAL_ERROR:
 			Error_Handler();
@@ -112,8 +112,6 @@ int main(void)
 			break;
 		case HAL_TIMEOUT:
 			break;
-		default:
-			HAL_UART_Transmit(&huart2, "toto", 5, 1000);
 		}
 
 	}
