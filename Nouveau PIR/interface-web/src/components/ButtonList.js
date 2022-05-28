@@ -46,7 +46,7 @@ class ButtonList extends React.Component {
   };
 
   sendData = (jsonData) => {
-    fetch("http://172.20.10.9:8080/run", {
+    fetch("http://localhost:8080/run", {
       method: "POST",
       mode: "cors",
       headers: { "Content-type": "application/json" },
@@ -78,7 +78,7 @@ class ButtonList extends React.Component {
       valueSelect: null,
     });
 
-    this.props.alert.show("Jamming successfully started")
+    this.props.alert.show("Jamming successfully started");
 
     console.log("Value after sending test parameters");
     console.log(this.valueSelect);
@@ -92,7 +92,7 @@ class ButtonList extends React.Component {
         TestValue: "",
       };
       this.sendData(jsonData);
-      this.props.alert.show("Jamming successfully started")
+      this.props.alert.show("Jamming successfully started");
     };
   };
 
@@ -140,5 +140,4 @@ class ButtonList extends React.Component {
   }
 }
 
-
-export default withAlert()(ButtonList)
+export default withAlert()(ButtonList);
