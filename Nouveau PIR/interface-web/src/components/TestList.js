@@ -5,22 +5,32 @@ import React, { useEffect, useState } from "react";
 import POPOSSpace from "./ShowTestDiv";
 
 export default function Testing() {
-  const [jsonData, setJsonData] = useState({});
+  const [jsonData, setJsonData] = useState(
+    JSON.parse(localStorage.getItem("testlog"))
+  );
 
   useEffect(() => {
-    fetch("http://localhost:8080/getLog", {
-      method: "GET",
-      mode: "cors",
-      headers: { "Content-type": "application/json" },
-    }).then((data) => {
-      data.json().then((jsondata) => {
-        console.log(jsondata);
-      });
-      setJsonData(data.json());
-    });
-  });
+    const id = setInterval(
+      () =>
+        fetch("http://localhost:8080/getLog", {
+          method: "GET",
+          mode: "cors",
+          headers: { "Content-type": "application/json" },
+        }).then((data) => {
+          data.json().then((jsondata) => {
+            console.log(jsondata);
+            localStorage.setItem("testlog", JSON.stringify(jsondata));
+            setJsonData(jsondata);
+          });
+        }),
+      1500
+    );
+    return () => clearInterval(id);
+  }, []);
 
-  const spaces = Object.entries(jsonData).map((obj) => {
+  const spaces = Object.entries(
+    jsonData == null || jsonData == undefined ? "l" : jsonData
+  ).map((obj) => {
     var newObj = obj[1];
 
     return (

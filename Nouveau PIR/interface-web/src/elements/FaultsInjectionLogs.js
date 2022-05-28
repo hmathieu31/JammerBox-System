@@ -27,9 +27,11 @@ export default function FaultsInjectionLogs() {
         <div className="group-19">
           <p className="txt-271 flex-hcenter">Faults Injection Logs</p>
         </div>
-        <button onClick={deleteHistory} className="group-6 txt-733">
-          DELETE HISTORY
-        </button>
+        <div style={{ justifyContent: "center", alignContent: "center" }}>
+          <button onClick={deleteHistory} className="group-6 txt-733">
+            DELETE HISTORY
+          </button>
+        </div>
         <div>
           <Testing />
         </div>
