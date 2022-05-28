@@ -35,7 +35,7 @@ export default function InjectFault() {
   return (
     <>
       <div className="frame-1">
-        <p className="txt-271 flex-hcenter">Inject Fault</p>
+        <p className="txt-272 flex-hcenter">Inject Fault</p>
         {ReturnButton()}
         <div>
           <AlertProvider template={AlertTemplate} {...options}>

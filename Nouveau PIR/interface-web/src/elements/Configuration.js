@@ -108,34 +108,36 @@ export default function Configuration() {
       <div className="frame-1">
         <p className="txt-271 flex-hcenter">Configuration</p>
         {ReturnButton()}
-        <div className="configuration-list">
+        <div className="upload-button flex-hcenter">
           <button className="group-6 txt-733" onClick={onButtonClickUpload}>
             UPLOAD CONFIGS
           </button>
-          <div>
+        </div>
+        <div className="configuration-list">
+          <div className="flex-center">
             <p className="txt-271">CRK</p>
+            <button
+              className="group-6 txt-733"
+              onClick={onButtonClickConf("CRK")}
+              >
+              CONFIG CRK
+            </button>
+            <button
+              className="group-6 txt-733"
+              onClick={onButtonClickRstConf("RESETCAM")}
+              >
+              RESET CRK CONFIG
+            </button>
+            <input
+              id="myInput"
+              type="file"
+              style={{ display: "none" }}
+              ref={inputFile}
+              onChange={onChangeFile}
+              accept=".json"
+              />
           </div>
-          <button
-            className="group-6 txt-733"
-            onClick={onButtonClickConf("CRK")}
-          >
-            CONFIG CRK
-          </button>
-          <button
-            className="group-6 txt-733"
-            onClick={onButtonClickRstConf("RESETCAM")}
-          >
-            RESET CRK CONFIG
-          </button>
-          <input
-            id="myInput"
-            type="file"
-            style={{ display: "none" }}
-            ref={inputFile}
-            onChange={onChangeFile}
-            accept=".json"
-          />
-          <div>
+          <div className="flex-center">
             <p className="txt-271">CAM</p>
             <button
               className="group-6 txt-733"
