@@ -1,0 +1,1839 @@
+\hypertarget{failures_8c}{}\doxysection{Nouveau PIR/firmware/source/failures.c File Reference}
+\label{failures_8c}\index{Nouveau PIR/firmware/source/failures.c@{Nouveau PIR/firmware/source/failures.c}}
+{\ttfamily \#include \char`\"{}stdbool.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}failures.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}stm32f10x.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}stm32f10x\+\_\+gpio.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}stm32f10x\+\_\+tim.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}timer.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}synchronization.\+h\char`\"{}}\newline
+Include dependency graph for failures.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{failures_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{failures_8c_a440cfd86084b45c9b92dd2ab0c845eb2}{Output\+\_\+\+CRK}} (char failure\+\_\+ident)
+\item 
+void \mbox{\hyperlink{failures_8c_a6860c587b4f4392d32023e84e5e0dcfc}{Output\+\_\+\+CAM}} (char failure\+\_\+ident, int cam\+\_\+id)
+\item 
+void \mbox{\hyperlink{failures_8c_a3484fce8f4223ea262d178cbea751f06}{Output\+\_\+\+CRK\+\_\+no\+\_\+failure}} (void)
+\item 
+void \mbox{\hyperlink{failures_8c_a0556928e41411f2cac11ec82fc8d8ccb}{Output\+\_\+\+CAM\+\_\+no\+\_\+failure}} (int cam\+\_\+id)
+\item 
+void \mbox{\hyperlink{failures_8c_a497fcda22de215e3e57f4ba889f23675}{Output\+\_\+\+CRK\+\_\+\+RUN\+\_\+\+OUT}} (void)
+\item 
+void \mbox{\hyperlink{failures_8c_aae7f39efa073aa6122e590548bf2539d}{CRK\+\_\+\+RUN\+\_\+\+OUT\+\_\+reset}} (void)
+\item 
+void \mbox{\hyperlink{failures_8c_aa7a19058315d33f9c47e8628e709d5d4}{Output\+\_\+\+CAM\+\_\+\+PER}} (int cam\+\_\+id)
+\item 
+void \mbox{\hyperlink{failures_8c_a7739e18fdabcefcde3ee26001bd58edc}{CAM\+\_\+\+PER\+\_\+reset}} (void)
+\item 
+void \mbox{\hyperlink{failures_8c_ae920b63749813032dfd845247a8ee9bd}{Output\+\_\+\+CRK\+\_\+\+TOOTH\+\_\+\+PER}} (void)
+\item 
+void \mbox{\hyperlink{failures_8c_a0d2b84537acea4ac18ccc2fa5fdf8005}{CRK\+\_\+\+TOOTH\+\_\+\+PER\+\_\+reset}} (void)
+\item 
+void \mbox{\hyperlink{failures_8c_ab7a96c89fdff7f9c191ac8724f21dd59}{Output\+\_\+\+CAM\+\_\+delay}} (int cam\+\_\+id)
+\item 
+void \mbox{\hyperlink{failures_8c_ade42031293947ccd593f610346d343a9}{CAM\+\_\+delay}} (int cam\+\_\+id)
+\item 
+void \mbox{\hyperlink{failures_8c_af07c1aaf230fb87af99aa7ef5816decb}{CAM\+\_\+delay\+\_\+counter}} (int cam\+\_\+id)
+\item 
+void \mbox{\hyperlink{failures_8c_ab03c344f7040d93549b7a6fc4816b61b}{CAM\+\_\+delay\+\_\+reset}} (void)
+\item 
+void \mbox{\hyperlink{failures_8c_ae262fe3c8a33d712da32a37e77fbd065}{Output\+\_\+\+CRK\+\_\+\+TOOTH\+\_\+\+OFF}} (void)
+\item 
+void \mbox{\hyperlink{failures_8c_a71bedb574bc5fbc3fd230d3a67fa0742}{CRK\+\_\+\+TOOTH\+\_\+\+OFF\+\_\+reset}} (void)
+\item 
+void \mbox{\hyperlink{failures_8c_a09b976185e7e818b4324aee696332f9a}{Output\+\_\+\+CRK\+\_\+\+GAP\+\_\+\+NOT\+\_\+\+DET}} (void)
+\item 
+void \mbox{\hyperlink{failures_8c_a7a130c71bb4f8b503445fa58eeea5f1c}{CRK\+\_\+\+GAP\+\_\+\+NOT\+\_\+\+DET\+\_\+reset}} (void)
+\item 
+void \mbox{\hyperlink{failures_8c_aeb3f2f2e16c2bb9e70db27b7e132a754}{Output\+\_\+\+SEG\+\_\+\+ADP\+\_\+\+ER\+\_\+\+LIM}} (void)
+\item 
+void \mbox{\hyperlink{failures_8c_a9b4c0604e27a0e274bb04bf3d34b22d6}{SEG\+\_\+\+ADP\+\_\+\+ER\+\_\+\+LIM\+\_\+reset}} (void)
+\item 
+void \mbox{\hyperlink{failures_8c_ad459ce1c26c453348a480e21725663b0}{Output\+\_\+\+CRK\+\_\+pulse\+\_\+duration}} (void)
+\item 
+void \mbox{\hyperlink{failures_8c_ab58329ba2cc19b5be493a8a632f996f9}{CRK\+\_\+pulse\+\_\+duration\+\_\+reset}} (void)
+\item 
+void \mbox{\hyperlink{failures_8c_ad206b129f04322b488059719a3757196}{Output\+\_\+\+POSN\+\_\+\+ENG\+\_\+\+STST}} (void)
+\item 
+void \mbox{\hyperlink{failures_8c_ac2f8acabc9f03c44dbd82b7a84ca6ea1}{POSN\+\_\+\+ENG\+\_\+\+STST\+\_\+reset}} (void)
+\item 
+void \mbox{\hyperlink{failures_8c_ab67a5788e21fda86360207c9df71f75a}{Output\+\_\+\+CAM\+\_\+\+PAT\+\_\+\+ERR}} (int cam\+\_\+id)
+\item 
+void \mbox{\hyperlink{failures_8c_a30f15834dbe25caba85572e172b9bc77}{CAM\+\_\+\+PAT\+\_\+\+ERR\+\_\+reset}} ()
+\item 
+void \mbox{\hyperlink{failures_8c_a682f1aff804ad2665cb73cb7aa0bb324}{Output\+\_\+\+SC\+\_\+\+CAM\+\_\+\+CRK}} (int cam\+\_\+id)
+\item 
+void \mbox{\hyperlink{failures_8c_af5a37ba4948cbb330017428e9863281e}{SC\+\_\+\+CAM\+\_\+\+CRK\+\_\+reset}} (void)
+\item 
+void \mbox{\hyperlink{failures_8c_a124dbbcadfb06406cf91d1201bb05c68}{Failure\+\_\+processing}} (char failure\+\_\+ident)
+\item 
+void \mbox{\hyperlink{failures_8c_a494682d906c6e4e666f46a15c2aed5eb}{Failure\+\_\+reset}} (void)
+\item 
+void \mbox{\hyperlink{failures_8c_a155e0b42be698fd658fea6a0dbb8608b}{Failure\+\_\+synch\+\_\+reset}} (char failure\+\_\+ident)
+\item 
+double \mbox{\hyperlink{failures_8c_a3714f6c2b6cf52e7944ee9352143e105}{Former\+\_\+teeth\+\_\+time\+\_\+calculation}} (long t\+\_\+tooth, unsigned int teeth\+\_\+count, int numb\+\_\+miss\+\_\+teeth)
+\item 
+double \mbox{\hyperlink{failures_8c_acb639aa52e59059a33fa47ad4e7a9dc6}{Former\+\_\+teeth\+\_\+time\+\_\+calculation\+\_\+output}} (long t\+\_\+tooth, unsigned int teeth\+\_\+count, int numb\+\_\+miss\+\_\+teeth)
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{failures_8c_a66d1dc17c3815ec543259ff6cd358896}{CRK\+\_\+signal}}
+\item 
+bool \mbox{\hyperlink{failures_8c_a4846863c93975e5d88fbd9b4ecc57d20}{CAM\+\_\+signal}} \mbox{[}2\mbox{]}
+\item 
+unsigned long \mbox{\hyperlink{failures_8c_aa697468758fbf1b546cd67c827d8dd84}{timer\+\_\+overflow\+\_\+\+CRK}}
+\item 
+unsigned long \mbox{\hyperlink{failures_8c_a8bc6e99e5b5b1814027ef2f4c2524e8f}{T\+\_\+\+TOOTH\+\_\+\+RAW}}
+\item 
+unsigned int \mbox{\hyperlink{failures_8c_ac15826e516583ca9efd204606ba7083c}{teeth\+\_\+count\+\_\+\+CAM\+\_\+\+CRK\+\_\+synch}}
+\item 
+unsigned int \mbox{\hyperlink{failures_8c_a4bbd4ffdc69f028b74e8af0c54dd9ee0}{teeth\+\_\+count\+\_\+\+CAM\+\_\+\+CRK\+\_\+synch\+\_\+ahead}}
+\item 
+unsigned int \mbox{\hyperlink{failures_8c_ab187efc17c279156d2fbe40791bd1182}{teeth\+\_\+count\+\_\+\+CRK}}
+\item 
+unsigned int \mbox{\hyperlink{failures_8c_ab040cae3d9ae46728a9af9db655c014e}{number\+\_\+real\+\_\+teeth}}
+\item 
+unsigned int \mbox{\hyperlink{failures_8c_a05e75142d685997ef05acf36e45a356a}{number\+\_\+teeth\+\_\+between\+\_\+gaps}}
+\item 
+unsigned int \mbox{\hyperlink{failures_8c_a896b3f467a176975dc687f95f1a1367e}{number\+\_\+segments\+\_\+\+CRK}}
+\item 
+unsigned int \mbox{\hyperlink{failures_8c_a912fe456cc42c18b47eae6de3e35c4f8}{first\+\_\+seg\+\_\+start\+\_\+tooth}}
+\item 
+int \mbox{\hyperlink{failures_8c_afe64a7b02b07021acd3f4e7d30195fe2}{number\+\_\+teeth\+\_\+\+CRK}}
+\item 
+int \mbox{\hyperlink{failures_8c_af9b6adca0c1aa5a6ba1da07c6f4e1588}{number\+\_\+gap}}
+\item 
+int \mbox{\hyperlink{failures_8c_ac953f0c0d545347b98a28a5f7e1ea15c}{number\+\_\+miss\+\_\+teeth}}
+\item 
+int \mbox{\hyperlink{failures_8c_aaca9f30a09d8f0badb85553cb2f4a225}{number\+\_\+teeth\+\_\+\+CAM}}
+\item 
+double \mbox{\hyperlink{failures_8c_a2522b63ff5828da052d1c8b3ee9c157c}{tdc\+\_\+to\+\_\+gap}}
+\item 
+double \mbox{\hyperlink{failures_8c_a30aee154f6067d411dbf4839fdc3cc93}{first\+\_\+seg\+\_\+angle}}
+\item 
+double \mbox{\hyperlink{failures_8c_af3c32be62d5f2307cc01a316c01ba3dc}{revolution\+\_\+\+CRK}}
+\item 
+bool \mbox{\hyperlink{failures_8c_a7aeb1a0c2ff915edcc0973978f0dc21c}{engine\+\_\+start}}
+\item 
+bool \mbox{\hyperlink{failures_8c_a7727b0a0a81b3a64c19a0e84fd498c5b}{CRK\+\_\+synch}}
+\item 
+bool \mbox{\hyperlink{failures_8c_af965503ff7c7adb887f502384215a402}{CRK\+\_\+\+CAM\+\_\+synch}}
+\item 
+bool \mbox{\hyperlink{failures_8c_a734dd27ee07083ae6985cc7e642de6e7}{CAM\+\_\+\+CRK\+\_\+synch\+\_\+ahead}} \mbox{[}2\mbox{]}
+\item 
+char \mbox{\hyperlink{failures_8c_a1ab47ef12d9fd5a0a0c37354af662f7d}{active\+\_\+\+CAM\+\_\+edges}} \mbox{[}2\mbox{]}
+\item 
+int \mbox{\hyperlink{failures_8c_a9979f80ab833421bad2e664b9f7d91d4}{teeth\+\_\+count\+\_\+overall}}
+\item 
+double \mbox{\hyperlink{failures_8c_ae78fc7b1baf9c329b60166be6b88b85c}{filter\+\_\+time\+\_\+\+CAM}} \mbox{[}2\mbox{]}
+\item 
+unsigned long \mbox{\hyperlink{failures_8c_ab2fec6547dc914b855112ea2d069e652}{timer\+\_\+overflow\+\_\+\+CRK\+\_\+failure}}
+\item 
+unsigned long \mbox{\hyperlink{failures_8c_aa7f0f8e777321cf47da5f0dd59c5be94}{timer\+\_\+overflow\+\_\+\+CAM\+\_\+failure}}
+\item 
+unsigned long \mbox{\hyperlink{failures_8c_a7ccd9723b2e11820cc395d0b16931872}{timer\+\_\+overflow\+\_\+\+CAM\+\_\+\+REF\+\_\+\+CRK}}
+\item 
+char \mbox{\hyperlink{failures_8c_a906f58f9fb2ce60131ecacd1d649d6a1}{failure\+\_\+identify}}
+\item 
+int \mbox{\hyperlink{failures_8c_a98358735d6113042210027fe829762de}{active\+\_\+cam\+\_\+failure}}
+\item 
+bool \mbox{\hyperlink{failures_8c_aa009bc0b69bbb38154e60d1428ffc33c}{failure\+\_\+active}}
+\item 
+bool \mbox{\hyperlink{failures_8c_ae1dbfa52ababd302f93dbe4fd0620f8f}{failure\+\_\+active\+\_\+\+CAM\+\_\+blank\+\_\+out}}
+\item 
+bool \mbox{\hyperlink{failures_8c_a9efd1f4caf11e1037604fb6f4b42ed31}{failure\+\_\+set}}
+\item 
+bool \mbox{\hyperlink{failures_8c_a36381716e95bbb3090a24ba5260bf35d}{failure\+\_\+passed}}
+\item 
+bool \mbox{\hyperlink{failures_8c_ae1abad2ed2b92b6b82254dc4debca57a}{failure\+\_\+waiting}}
+\item 
+char \mbox{\hyperlink{failures_8c_ad09cc41f983fa5c4f93b335e55684b81}{sc\+\_\+type\+\_\+\+CRK\+\_\+\+RUN\+\_\+\+OUT}}
+\item 
+unsigned int \mbox{\hyperlink{failures_8c_a39121f24b916d4e2ea6e7f897bafe4a8}{teeth\+\_\+counter\+\_\+\+CRK\+\_\+\+RUN\+\_\+\+OUT}}
+\item 
+unsigned int \mbox{\hyperlink{failures_8c_a706090098ba2e12ba5bd608552f126d5}{angle\+\_\+to\+\_\+start\+\_\+failure\+\_\+\+CRK\+\_\+\+RUN\+\_\+\+OUT}}
+\item 
+unsigned int \mbox{\hyperlink{failures_8c_ad90c6afa3ef6d8897b04b50f9161bd3a}{failure\+\_\+period\+\_\+\+CRK\+\_\+\+RUN\+\_\+\+OUT}}
+\item 
+unsigned int \mbox{\hyperlink{failures_8c_aeab62b1deec35fe68ca4b720e3435984}{counter\+\_\+\+TDC0}}
+\item 
+int \mbox{\hyperlink{failures_8c_ac6eafc14bbf628d09f0aea91c943dc44}{period\+\_\+counter\+\_\+\+CRK\+\_\+\+RUN\+\_\+\+OUT}}
+\item 
+double \mbox{\hyperlink{failures_8c_a8156941efe0dcd826307b446f3ef48f1}{difference\+\_\+to\+\_\+edge\+\_\+\+TDC0}}
+\item 
+double \mbox{\hyperlink{failures_8c_a89493411d9fa567844ffb6a621d46967}{difference\+\_\+to\+\_\+edge\+\_\+failure\+\_\+start}}
+\item 
+bool \mbox{\hyperlink{failures_8c_af75c8735a41240c5a884f5024743c4c2}{detected\+\_\+\+TDC0}}
+\item 
+bool \mbox{\hyperlink{failures_8c_a77556040fb54d335bacaf15336a82d29}{counter\+\_\+ready}}
+\item 
+bool \mbox{\hyperlink{failures_8c_a5deea399d9689d2e2e0b3b3831462c5d}{counter\+\_\+reset}}
+\item 
+bool \mbox{\hyperlink{failures_8c_a15ef7a57549da0cf7802f16dbd26487f}{TDC\+\_\+on\+\_\+edge}}
+\item 
+bool \mbox{\hyperlink{failures_8c_a1c7e64943d24c04093dce025db73714d}{start\+\_\+on\+\_\+edge\+\_\+\+CRK\+\_\+\+RUN\+\_\+\+OUT}}
+\item 
+unsigned int \mbox{\hyperlink{failures_8c_a70548cc19cb8197d69bde4da728a470a}{number\+\_\+edges\+\_\+\+CAM\+\_\+\+PER}}
+\item 
+unsigned int \mbox{\hyperlink{failures_8c_aaa021fc02b2a585f7a62ec97bbee6d5e}{counter\+\_\+\+CAM\+\_\+\+PER}} \mbox{[}2\mbox{]}
+\item 
+double \mbox{\hyperlink{failures_8c_aa62fd33093aac3979c77d8ac47195785}{microsecond\+\_\+per\+\_\+timer\+\_\+tick\+\_\+\+CAM\+\_\+\+PER\+\_\+\+\_\+\+CRK\+\_\+\+TOOTH\+\_\+\+PER}}
+\item 
+bool \mbox{\hyperlink{failures_8c_a5107102b653d5cd439b1f861bd600f14}{all\+\_\+active\+\_\+edges\+\_\+\+CAM\+\_\+\+PER}}
+\item 
+char \mbox{\hyperlink{failures_8c_a1aeabc5ac5f6b29223d857aceb659320}{active\+\_\+edges\+\_\+\+CAM\+\_\+\+PER}}
+\item 
+unsigned int \mbox{\hyperlink{failures_8c_aa92e684341d20dd78cbbf8a8d98b1899}{start\+\_\+tooth\+\_\+\+CRK\+\_\+\+TOOTH\+\_\+\+PER}}
+\item 
+unsigned int \mbox{\hyperlink{failures_8c_a6d79ff75c0424017b90b2039f2f5aeaa}{number\+\_\+pulses\+\_\+\+CRK\+\_\+\+TOOTH\+\_\+\+PER}}
+\item 
+unsigned int \mbox{\hyperlink{failures_8c_a658a74de9ab44e3ad4b459d557dac9d7}{engine\+\_\+revolutions\+\_\+\+CRK\+\_\+\+TOOTH\+\_\+\+PER}}
+\item 
+unsigned int \mbox{\hyperlink{failures_8c_a2068dfcf9f70475272677ad2446d6cdf}{teeth\+\_\+counter\+\_\+\+CRK\+\_\+\+TOOTH\+\_\+\+PER}}
+\item 
+unsigned int \mbox{\hyperlink{failures_8c_ae00db4a9603885a19a44080bdb2331d9}{revolution\+\_\+counter\+\_\+\+CRK\+\_\+\+TOOTH\+\_\+\+PER}}
+\item 
+long double const \mbox{\hyperlink{failures_8c_ab673b177757a7a75f938fa6debada427}{milli\+\_\+second\+\_\+per\+\_\+timer\+\_\+tick\+\_\+\+CRK}}
+\item 
+double \mbox{\hyperlink{failures_8c_addba43fee255dd630dc49630cd23655d}{mycrosecond\+\_\+per\+\_\+timer\+\_\+tick\+\_\+\+CAM\+\_\+\+PER\+\_\+\+\_\+\+CRK\+\_\+\+TOOTH\+\_\+\+PER}}
+\item 
+double \mbox{\hyperlink{failures_8c_a0241a57f40777392b40aebc8ea433d2c}{calculation\+\_\+factor\+\_\+\+CRK\+\_\+\+TOOTH\+\_\+\+PER}}
+\item 
+unsigned int \mbox{\hyperlink{failures_8c_ab28b6d5505e18cd397139cfa75aa3912}{number\+\_\+processing\+\_\+edges\+\_\+\+CAM\+\_\+delay}} \mbox{[}2\mbox{]}
+\item 
+unsigned int \mbox{\hyperlink{failures_8c_ae9953e9e08afe49f7e2a4b4daee5332b}{shift\+\_\+counter\+\_\+\+CAM\+\_\+delay}} \mbox{[}2\mbox{]}\mbox{[}6\mbox{]}
+\item 
+const int \mbox{\hyperlink{failures_8c_aeb8d44ce914f7ffc964e78ab44c14735}{edges\+\_\+beetween\+\_\+shift\+\_\+\+CAM\+\_\+delay}}
+\item 
+double \mbox{\hyperlink{failures_8c_a2a6666ba3f9fa015610de05c735552ac}{angle\+\_\+to\+\_\+edge\+\_\+\+CAM\+\_\+delay}} \mbox{[}2\mbox{]}\mbox{[}6\mbox{]}
+\item 
+double \mbox{\hyperlink{failures_8c_a7488bc4243e7ba92ade85f9186db2793}{delay\+\_\+angle\+\_\+\+CAM\+\_\+delay}}
+\item 
+double \mbox{\hyperlink{failures_8c_af4fb580f228912ecc709426087150786}{delay\+\_\+factor\+\_\+\+CAM\+\_\+delay}}
+\item 
+bool \mbox{\hyperlink{failures_8c_ac73a776a47669561214b6ad84a70e641}{timer\+\_\+active\+\_\+\+CAM\+\_\+delay}} \mbox{[}2\mbox{]}
+\item 
+bool \mbox{\hyperlink{failures_8c_a1ffeb87120d45d392916acb155ef3879}{interrupt\+\_\+check\+\_\+\+CAM\+\_\+delay}} \mbox{[}2\mbox{]}
+\item 
+unsigned int \mbox{\hyperlink{failures_8c_a831028f10615ac593b739d4731a43060}{delay\+\_\+counter\+\_\+\+CAM\+\_\+\+REF\+\_\+\+CRK}}
+\item 
+long double \mbox{\hyperlink{failures_8c_af17a3a4176170c04e909c2cffab83a3e}{angle\+\_\+time\+\_\+to\+\_\+start\+\_\+failure\+\_\+\+CAM\+\_\+\+REF\+\_\+\+CRK}}
+\item 
+double \mbox{\hyperlink{failures_8c_a874e6e147c885cc35f55b3d8bc18ceb8}{difference\+\_\+to\+\_\+edge\+\_\+failure\+\_\+start\+\_\+\+CAM\+\_\+\+REF\+\_\+\+CRK}}
+\item 
+char \mbox{\hyperlink{failures_8c_a97ace91c5a574a12275e24d4b4bd02be}{delay\+\_\+type\+\_\+\+CAM\+\_\+\+REF\+\_\+\+CRK}}
+\item 
+unsigned int \mbox{\hyperlink{failures_8c_a42368ade50de18ac6efb5e231ba284ab}{number\+\_\+tooth\+\_\+off}}
+\item 
+unsigned int \mbox{\hyperlink{failures_8c_ab06ff1f3f9aa8e15f049ad90eb229aec}{number\+\_\+teeth\+\_\+between\+\_\+tooth\+\_\+off}}
+\item 
+unsigned int \mbox{\hyperlink{failures_8c_a590ad1bd7a49f0ea3fb90f8e24997bb1}{teeth\+\_\+counter\+\_\+\+CRK\+\_\+\+TOOTH\+\_\+\+OFF}}
+\item 
+unsigned int \mbox{\hyperlink{failures_8c_af2b350cad5f904241be3cd72267e8cd4}{counter\+\_\+tooth\+\_\+off}}
+\item 
+unsigned int \mbox{\hyperlink{failures_8c_adb0348602102ca6255e00dd691cfa53c}{counter\+\_\+gap\+\_\+left\+\_\+\+CRK\+\_\+\+TOOTH\+\_\+\+OFF}}
+\item 
+unsigned int \mbox{\hyperlink{failures_8c_a0afd59a7cbe5941cd4735019f3431de4}{teeth\+\_\+counter\+\_\+\+CRK\+\_\+\+GAP\+\_\+\+NOT\+\_\+\+DET}}
+\item 
+unsigned int \mbox{\hyperlink{failures_8c_a0efa411b2fc4c7948d45abd03d6264a0}{timer\+\_\+\+Counter\+\_\+\+CRK\+\_\+\+GAP\+\_\+\+NOT\+\_\+\+DET}}
+\item 
+unsigned int \mbox{\hyperlink{failures_8c_ae22dd0b559e11e340eacb7e5acea6269}{teeth\+\_\+counter\+\_\+\+SEG\+\_\+\+ADP\+\_\+\+ER\+\_\+\+LIM}}
+\item 
+unsigned int \mbox{\hyperlink{failures_8c_aebc1cf24310f46e5fd32d36c9b93edb5}{timer\+\_\+\+Counter\+\_\+\+SEG\+\_\+\+ADP\+\_\+\+ER\+\_\+\+LIM}}
+\item 
+double \mbox{\hyperlink{failures_8c_aeaf45155613124740bc925868c135034}{crk\+\_\+delay\+\_\+\+SEG\+\_\+\+ADP\+\_\+\+ER\+\_\+\+LIM}}
+\item 
+double \mbox{\hyperlink{failures_8c_ad60977ee83061906ebaf1f0c40ea504c}{crk\+\_\+pulse\+\_\+duration\+\_\+\+CRK\+\_\+\+PLS\+\_\+\+ORNG}}
+\item 
+unsigned int \mbox{\hyperlink{failures_8c_a21b65a4cdebaef539c0958653e7115da}{crk\+\_\+teeth\+\_\+off\+\_\+\+POSN\+\_\+\+ENG\+\_\+\+STST}}
+\item 
+unsigned int \mbox{\hyperlink{failures_8c_af4e125ce632016b07d28f6ac94a33643}{counter\+\_\+\+POSN\+\_\+\+ENG\+\_\+\+STST}}
+\item 
+unsigned int \mbox{\hyperlink{failures_8c_ad7903904908b0166e54d513591340b4c}{active\+\_\+\+CAM\+\_\+edges\+\_\+counter}} \mbox{[}2\mbox{]}
+\item 
+unsigned int \mbox{\hyperlink{failures_8c_a4337a7e2ea5f37681e9765a379c42831}{sc\+\_\+type\+\_\+\+SC\+\_\+\+CAM\+\_\+\+CRK}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{failures_8c_ade42031293947ccd593f610346d343a9}\label{failures_8c_ade42031293947ccd593f610346d343a9}} 
+\index{failures.c@{failures.c}!CAM\_delay@{CAM\_delay}}
+\index{CAM\_delay@{CAM\_delay}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{CAM\_delay()}{CAM\_delay()}}
+{\footnotesize\ttfamily void CAM\+\_\+delay (\begin{DoxyParamCaption}\item[{int}]{cam\+\_\+id }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{failures_8c_source_l00650}{650}} of file \mbox{\hyperlink{failures_8c_source}{failures.\+c}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=333pt]{failures_8c_ade42031293947ccd593f610346d343a9_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{failures_8c_ade42031293947ccd593f610346d343a9_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{failures_8c_af07c1aaf230fb87af99aa7ef5816decb}\label{failures_8c_af07c1aaf230fb87af99aa7ef5816decb}} 
+\index{failures.c@{failures.c}!CAM\_delay\_counter@{CAM\_delay\_counter}}
+\index{CAM\_delay\_counter@{CAM\_delay\_counter}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{CAM\_delay\_counter()}{CAM\_delay\_counter()}}
+{\footnotesize\ttfamily void CAM\+\_\+delay\+\_\+counter (\begin{DoxyParamCaption}\item[{int}]{cam\+\_\+id }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{failures_8c_source_l00742}{742}} of file \mbox{\hyperlink{failures_8c_source}{failures.\+c}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{failures_8c_af07c1aaf230fb87af99aa7ef5816decb_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{failures_8c_af07c1aaf230fb87af99aa7ef5816decb_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{failures_8c_ab03c344f7040d93549b7a6fc4816b61b}\label{failures_8c_ab03c344f7040d93549b7a6fc4816b61b}} 
+\index{failures.c@{failures.c}!CAM\_delay\_reset@{CAM\_delay\_reset}}
+\index{CAM\_delay\_reset@{CAM\_delay\_reset}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{CAM\_delay\_reset()}{CAM\_delay\_reset()}}
+{\footnotesize\ttfamily void CAM\+\_\+delay\+\_\+reset (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{failures_8c_source_l00830}{830}} of file \mbox{\hyperlink{failures_8c_source}{failures.\+c}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=281pt]{failures_8c_ab03c344f7040d93549b7a6fc4816b61b_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{failures_8c_ab03c344f7040d93549b7a6fc4816b61b_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{failures_8c_a30f15834dbe25caba85572e172b9bc77}\label{failures_8c_a30f15834dbe25caba85572e172b9bc77}} 
+\index{failures.c@{failures.c}!CAM\_PAT\_ERR\_reset@{CAM\_PAT\_ERR\_reset}}
+\index{CAM\_PAT\_ERR\_reset@{CAM\_PAT\_ERR\_reset}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{CAM\_PAT\_ERR\_reset()}{CAM\_PAT\_ERR\_reset()}}
+{\footnotesize\ttfamily void CAM\+\_\+\+PAT\+\_\+\+ERR\+\_\+reset (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{failures_8c_source_l01156}{1156}} of file \mbox{\hyperlink{failures_8c_source}{failures.\+c}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{failures_8c_a30f15834dbe25caba85572e172b9bc77_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{failures_8c_a30f15834dbe25caba85572e172b9bc77_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{failures_8c_a7739e18fdabcefcde3ee26001bd58edc}\label{failures_8c_a7739e18fdabcefcde3ee26001bd58edc}} 
+\index{failures.c@{failures.c}!CAM\_PER\_reset@{CAM\_PER\_reset}}
+\index{CAM\_PER\_reset@{CAM\_PER\_reset}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{CAM\_PER\_reset()}{CAM\_PER\_reset()}}
+{\footnotesize\ttfamily void CAM\+\_\+\+PER\+\_\+reset (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{failures_8c_source_l00502}{502}} of file \mbox{\hyperlink{failures_8c_source}{failures.\+c}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=266pt]{failures_8c_a7739e18fdabcefcde3ee26001bd58edc_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{failures_8c_a7739e18fdabcefcde3ee26001bd58edc_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{failures_8c_a7a130c71bb4f8b503445fa58eeea5f1c}\label{failures_8c_a7a130c71bb4f8b503445fa58eeea5f1c}} 
+\index{failures.c@{failures.c}!CRK\_GAP\_NOT\_DET\_reset@{CRK\_GAP\_NOT\_DET\_reset}}
+\index{CRK\_GAP\_NOT\_DET\_reset@{CRK\_GAP\_NOT\_DET\_reset}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{CRK\_GAP\_NOT\_DET\_reset()}{CRK\_GAP\_NOT\_DET\_reset()}}
+{\footnotesize\ttfamily void CRK\+\_\+\+GAP\+\_\+\+NOT\+\_\+\+DET\+\_\+reset (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{failures_8c_source_l00971}{971}} of file \mbox{\hyperlink{failures_8c_source}{failures.\+c}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=314pt]{failures_8c_a7a130c71bb4f8b503445fa58eeea5f1c_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{failures_8c_a7a130c71bb4f8b503445fa58eeea5f1c_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{failures_8c_ab58329ba2cc19b5be493a8a632f996f9}\label{failures_8c_ab58329ba2cc19b5be493a8a632f996f9}} 
+\index{failures.c@{failures.c}!CRK\_pulse\_duration\_reset@{CRK\_pulse\_duration\_reset}}
+\index{CRK\_pulse\_duration\_reset@{CRK\_pulse\_duration\_reset}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{CRK\_pulse\_duration\_reset()}{CRK\_pulse\_duration\_reset()}}
+{\footnotesize\ttfamily void CRK\+\_\+pulse\+\_\+duration\+\_\+reset (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{failures_8c_source_l01042}{1042}} of file \mbox{\hyperlink{failures_8c_source}{failures.\+c}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=280pt]{failures_8c_ab58329ba2cc19b5be493a8a632f996f9_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{failures_8c_ab58329ba2cc19b5be493a8a632f996f9_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{failures_8c_aae7f39efa073aa6122e590548bf2539d}\label{failures_8c_aae7f39efa073aa6122e590548bf2539d}} 
+\index{failures.c@{failures.c}!CRK\_RUN\_OUT\_reset@{CRK\_RUN\_OUT\_reset}}
+\index{CRK\_RUN\_OUT\_reset@{CRK\_RUN\_OUT\_reset}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{CRK\_RUN\_OUT\_reset()}{CRK\_RUN\_OUT\_reset()}}
+{\footnotesize\ttfamily void CRK\+\_\+\+RUN\+\_\+\+OUT\+\_\+reset (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{failures_8c_source_l00455}{455}} of file \mbox{\hyperlink{failures_8c_source}{failures.\+c}}.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{failures_8c_aae7f39efa073aa6122e590548bf2539d_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{failures_8c_a71bedb574bc5fbc3fd230d3a67fa0742}\label{failures_8c_a71bedb574bc5fbc3fd230d3a67fa0742}} 
+\index{failures.c@{failures.c}!CRK\_TOOTH\_OFF\_reset@{CRK\_TOOTH\_OFF\_reset}}
+\index{CRK\_TOOTH\_OFF\_reset@{CRK\_TOOTH\_OFF\_reset}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{CRK\_TOOTH\_OFF\_reset()}{CRK\_TOOTH\_OFF\_reset()}}
+{\footnotesize\ttfamily void CRK\+\_\+\+TOOTH\+\_\+\+OFF\+\_\+reset (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{failures_8c_source_l00928}{928}} of file \mbox{\hyperlink{failures_8c_source}{failures.\+c}}.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{failures_8c_a71bedb574bc5fbc3fd230d3a67fa0742_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{failures_8c_a0d2b84537acea4ac18ccc2fa5fdf8005}\label{failures_8c_a0d2b84537acea4ac18ccc2fa5fdf8005}} 
+\index{failures.c@{failures.c}!CRK\_TOOTH\_PER\_reset@{CRK\_TOOTH\_PER\_reset}}
+\index{CRK\_TOOTH\_PER\_reset@{CRK\_TOOTH\_PER\_reset}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{CRK\_TOOTH\_PER\_reset()}{CRK\_TOOTH\_PER\_reset()}}
+{\footnotesize\ttfamily void CRK\+\_\+\+TOOTH\+\_\+\+PER\+\_\+reset (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{failures_8c_source_l00535}{535}} of file \mbox{\hyperlink{failures_8c_source}{failures.\+c}}.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{failures_8c_a0d2b84537acea4ac18ccc2fa5fdf8005_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{failures_8c_a124dbbcadfb06406cf91d1201bb05c68}\label{failures_8c_a124dbbcadfb06406cf91d1201bb05c68}} 
+\index{failures.c@{failures.c}!Failure\_processing@{Failure\_processing}}
+\index{Failure\_processing@{Failure\_processing}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{Failure\_processing()}{Failure\_processing()}}
+{\footnotesize\ttfamily void Failure\+\_\+processing (\begin{DoxyParamCaption}\item[{char}]{failure\+\_\+ident }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{failures_8c_source_l01223}{1223}} of file \mbox{\hyperlink{failures_8c_source}{failures.\+c}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{failures_8c_a124dbbcadfb06406cf91d1201bb05c68_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=252pt]{failures_8c_a124dbbcadfb06406cf91d1201bb05c68_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{failures_8c_a494682d906c6e4e666f46a15c2aed5eb}\label{failures_8c_a494682d906c6e4e666f46a15c2aed5eb}} 
+\index{failures.c@{failures.c}!Failure\_reset@{Failure\_reset}}
+\index{Failure\_reset@{Failure\_reset}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{Failure\_reset()}{Failure\_reset()}}
+{\footnotesize\ttfamily void Failure\+\_\+reset (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{failures_8c_source_l01311}{1311}} of file \mbox{\hyperlink{failures_8c_source}{failures.\+c}}.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{failures_8c_a494682d906c6e4e666f46a15c2aed5eb_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{failures_8c_a155e0b42be698fd658fea6a0dbb8608b}\label{failures_8c_a155e0b42be698fd658fea6a0dbb8608b}} 
+\index{failures.c@{failures.c}!Failure\_synch\_reset@{Failure\_synch\_reset}}
+\index{Failure\_synch\_reset@{Failure\_synch\_reset}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{Failure\_synch\_reset()}{Failure\_synch\_reset()}}
+{\footnotesize\ttfamily void Failure\+\_\+synch\+\_\+reset (\begin{DoxyParamCaption}\item[{char}]{failure\+\_\+ident }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{failures_8c_source_l01316}{1316}} of file \mbox{\hyperlink{failures_8c_source}{failures.\+c}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{failures_8c_a155e0b42be698fd658fea6a0dbb8608b_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=283pt]{failures_8c_a155e0b42be698fd658fea6a0dbb8608b_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{failures_8c_a3714f6c2b6cf52e7944ee9352143e105}\label{failures_8c_a3714f6c2b6cf52e7944ee9352143e105}} 
+\index{failures.c@{failures.c}!Former\_teeth\_time\_calculation@{Former\_teeth\_time\_calculation}}
+\index{Former\_teeth\_time\_calculation@{Former\_teeth\_time\_calculation}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{Former\_teeth\_time\_calculation()}{Former\_teeth\_time\_calculation()}}
+{\footnotesize\ttfamily double Former\+\_\+teeth\+\_\+time\+\_\+calculation (\begin{DoxyParamCaption}\item[{long}]{t\+\_\+tooth,  }\item[{unsigned int}]{teeth\+\_\+count,  }\item[{int}]{numb\+\_\+miss\+\_\+teeth }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{failures_8c_source_l01345}{1345}} of file \mbox{\hyperlink{failures_8c_source}{failures.\+c}}.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{failures_8c_a3714f6c2b6cf52e7944ee9352143e105_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{failures_8c_acb639aa52e59059a33fa47ad4e7a9dc6}\label{failures_8c_acb639aa52e59059a33fa47ad4e7a9dc6}} 
+\index{failures.c@{failures.c}!Former\_teeth\_time\_calculation\_output@{Former\_teeth\_time\_calculation\_output}}
+\index{Former\_teeth\_time\_calculation\_output@{Former\_teeth\_time\_calculation\_output}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{Former\_teeth\_time\_calculation\_output()}{Former\_teeth\_time\_calculation\_output()}}
+{\footnotesize\ttfamily double Former\+\_\+teeth\+\_\+time\+\_\+calculation\+\_\+output (\begin{DoxyParamCaption}\item[{long}]{t\+\_\+tooth,  }\item[{unsigned int}]{teeth\+\_\+count,  }\item[{int}]{numb\+\_\+miss\+\_\+teeth }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{failures_8c_source_l01360}{1360}} of file \mbox{\hyperlink{failures_8c_source}{failures.\+c}}.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{failures_8c_acb639aa52e59059a33fa47ad4e7a9dc6_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{failures_8c_a6860c587b4f4392d32023e84e5e0dcfc}\label{failures_8c_a6860c587b4f4392d32023e84e5e0dcfc}} 
+\index{failures.c@{failures.c}!Output\_CAM@{Output\_CAM}}
+\index{Output\_CAM@{Output\_CAM}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{Output\_CAM()}{Output\_CAM()}}
+{\footnotesize\ttfamily void Output\+\_\+\+CAM (\begin{DoxyParamCaption}\item[{char}]{failure\+\_\+ident,  }\item[{int}]{cam\+\_\+id }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{failures_8c_source_l00251}{251}} of file \mbox{\hyperlink{failures_8c_source}{failures.\+c}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{failures_8c_a6860c587b4f4392d32023e84e5e0dcfc_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{failures_8c_ab7a96c89fdff7f9c191ac8724f21dd59}\label{failures_8c_ab7a96c89fdff7f9c191ac8724f21dd59}} 
+\index{failures.c@{failures.c}!Output\_CAM\_delay@{Output\_CAM\_delay}}
+\index{Output\_CAM\_delay@{Output\_CAM\_delay}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{Output\_CAM\_delay()}{Output\_CAM\_delay()}}
+{\footnotesize\ttfamily void Output\+\_\+\+CAM\+\_\+delay (\begin{DoxyParamCaption}\item[{int}]{cam\+\_\+id }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{failures_8c_source_l00555}{555}} of file \mbox{\hyperlink{failures_8c_source}{failures.\+c}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=336pt]{failures_8c_ab7a96c89fdff7f9c191ac8724f21dd59_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=290pt]{failures_8c_ab7a96c89fdff7f9c191ac8724f21dd59_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{failures_8c_a0556928e41411f2cac11ec82fc8d8ccb}\label{failures_8c_a0556928e41411f2cac11ec82fc8d8ccb}} 
+\index{failures.c@{failures.c}!Output\_CAM\_no\_failure@{Output\_CAM\_no\_failure}}
+\index{Output\_CAM\_no\_failure@{Output\_CAM\_no\_failure}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{Output\_CAM\_no\_failure()}{Output\_CAM\_no\_failure()}}
+{\footnotesize\ttfamily void Output\+\_\+\+CAM\+\_\+no\+\_\+failure (\begin{DoxyParamCaption}\item[{int}]{cam\+\_\+id }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{failures_8c_source_l00377}{377}} of file \mbox{\hyperlink{failures_8c_source}{failures.\+c}}.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{failures_8c_a0556928e41411f2cac11ec82fc8d8ccb_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{failures_8c_ab67a5788e21fda86360207c9df71f75a}\label{failures_8c_ab67a5788e21fda86360207c9df71f75a}} 
+\index{failures.c@{failures.c}!Output\_CAM\_PAT\_ERR@{Output\_CAM\_PAT\_ERR}}
+\index{Output\_CAM\_PAT\_ERR@{Output\_CAM\_PAT\_ERR}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{Output\_CAM\_PAT\_ERR()}{Output\_CAM\_PAT\_ERR()}}
+{\footnotesize\ttfamily void Output\+\_\+\+CAM\+\_\+\+PAT\+\_\+\+ERR (\begin{DoxyParamCaption}\item[{int}]{cam\+\_\+id }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{failures_8c_source_l01073}{1073}} of file \mbox{\hyperlink{failures_8c_source}{failures.\+c}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{failures_8c_ab67a5788e21fda86360207c9df71f75a_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=311pt]{failures_8c_ab67a5788e21fda86360207c9df71f75a_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{failures_8c_aa7a19058315d33f9c47e8628e709d5d4}\label{failures_8c_aa7a19058315d33f9c47e8628e709d5d4}} 
+\index{failures.c@{failures.c}!Output\_CAM\_PER@{Output\_CAM\_PER}}
+\index{Output\_CAM\_PER@{Output\_CAM\_PER}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{Output\_CAM\_PER()}{Output\_CAM\_PER()}}
+{\footnotesize\ttfamily void Output\+\_\+\+CAM\+\_\+\+PER (\begin{DoxyParamCaption}\item[{int}]{cam\+\_\+id }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{failures_8c_source_l00464}{464}} of file \mbox{\hyperlink{failures_8c_source}{failures.\+c}}.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=287pt]{failures_8c_aa7a19058315d33f9c47e8628e709d5d4_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{failures_8c_a440cfd86084b45c9b92dd2ab0c845eb2}\label{failures_8c_a440cfd86084b45c9b92dd2ab0c845eb2}} 
+\index{failures.c@{failures.c}!Output\_CRK@{Output\_CRK}}
+\index{Output\_CRK@{Output\_CRK}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{Output\_CRK()}{Output\_CRK()}}
+{\footnotesize\ttfamily void Output\+\_\+\+CRK (\begin{DoxyParamCaption}\item[{char}]{failure\+\_\+ident }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{failures_8c_source_l00152}{152}} of file \mbox{\hyperlink{failures_8c_source}{failures.\+c}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{failures_8c_a440cfd86084b45c9b92dd2ab0c845eb2_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=260pt]{failures_8c_a440cfd86084b45c9b92dd2ab0c845eb2_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{failures_8c_a09b976185e7e818b4324aee696332f9a}\label{failures_8c_a09b976185e7e818b4324aee696332f9a}} 
+\index{failures.c@{failures.c}!Output\_CRK\_GAP\_NOT\_DET@{Output\_CRK\_GAP\_NOT\_DET}}
+\index{Output\_CRK\_GAP\_NOT\_DET@{Output\_CRK\_GAP\_NOT\_DET}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{Output\_CRK\_GAP\_NOT\_DET()}{Output\_CRK\_GAP\_NOT\_DET()}}
+{\footnotesize\ttfamily void Output\+\_\+\+CRK\+\_\+\+GAP\+\_\+\+NOT\+\_\+\+DET (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{failures_8c_source_l00935}{935}} of file \mbox{\hyperlink{failures_8c_source}{failures.\+c}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{failures_8c_a09b976185e7e818b4324aee696332f9a_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{failures_8c_a09b976185e7e818b4324aee696332f9a_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{failures_8c_a3484fce8f4223ea262d178cbea751f06}\label{failures_8c_a3484fce8f4223ea262d178cbea751f06}} 
+\index{failures.c@{failures.c}!Output\_CRK\_no\_failure@{Output\_CRK\_no\_failure}}
+\index{Output\_CRK\_no\_failure@{Output\_CRK\_no\_failure}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{Output\_CRK\_no\_failure()}{Output\_CRK\_no\_failure()}}
+{\footnotesize\ttfamily void Output\+\_\+\+CRK\+\_\+no\+\_\+failure (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{failures_8c_source_l00363}{363}} of file \mbox{\hyperlink{failures_8c_source}{failures.\+c}}.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{failures_8c_a3484fce8f4223ea262d178cbea751f06_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{failures_8c_ad459ce1c26c453348a480e21725663b0}\label{failures_8c_ad459ce1c26c453348a480e21725663b0}} 
+\index{failures.c@{failures.c}!Output\_CRK\_pulse\_duration@{Output\_CRK\_pulse\_duration}}
+\index{Output\_CRK\_pulse\_duration@{Output\_CRK\_pulse\_duration}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{Output\_CRK\_pulse\_duration()}{Output\_CRK\_pulse\_duration()}}
+{\footnotesize\ttfamily void Output\+\_\+\+CRK\+\_\+pulse\+\_\+duration (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{failures_8c_source_l01033}{1033}} of file \mbox{\hyperlink{failures_8c_source}{failures.\+c}}.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{failures_8c_ad459ce1c26c453348a480e21725663b0_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{failures_8c_a497fcda22de215e3e57f4ba889f23675}\label{failures_8c_a497fcda22de215e3e57f4ba889f23675}} 
+\index{failures.c@{failures.c}!Output\_CRK\_RUN\_OUT@{Output\_CRK\_RUN\_OUT}}
+\index{Output\_CRK\_RUN\_OUT@{Output\_CRK\_RUN\_OUT}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{Output\_CRK\_RUN\_OUT()}{Output\_CRK\_RUN\_OUT()}}
+{\footnotesize\ttfamily void Output\+\_\+\+CRK\+\_\+\+RUN\+\_\+\+OUT (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{failures_8c_source_l00401}{401}} of file \mbox{\hyperlink{failures_8c_source}{failures.\+c}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{failures_8c_a497fcda22de215e3e57f4ba889f23675_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{failures_8c_a497fcda22de215e3e57f4ba889f23675_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{failures_8c_ae262fe3c8a33d712da32a37e77fbd065}\label{failures_8c_ae262fe3c8a33d712da32a37e77fbd065}} 
+\index{failures.c@{failures.c}!Output\_CRK\_TOOTH\_OFF@{Output\_CRK\_TOOTH\_OFF}}
+\index{Output\_CRK\_TOOTH\_OFF@{Output\_CRK\_TOOTH\_OFF}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{Output\_CRK\_TOOTH\_OFF()}{Output\_CRK\_TOOTH\_OFF()}}
+{\footnotesize\ttfamily void Output\+\_\+\+CRK\+\_\+\+TOOTH\+\_\+\+OFF (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{failures_8c_source_l00866}{866}} of file \mbox{\hyperlink{failures_8c_source}{failures.\+c}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{failures_8c_ae262fe3c8a33d712da32a37e77fbd065_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{failures_8c_ae262fe3c8a33d712da32a37e77fbd065_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{failures_8c_ae920b63749813032dfd845247a8ee9bd}\label{failures_8c_ae920b63749813032dfd845247a8ee9bd}} 
+\index{failures.c@{failures.c}!Output\_CRK\_TOOTH\_PER@{Output\_CRK\_TOOTH\_PER}}
+\index{Output\_CRK\_TOOTH\_PER@{Output\_CRK\_TOOTH\_PER}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{Output\_CRK\_TOOTH\_PER()}{Output\_CRK\_TOOTH\_PER()}}
+{\footnotesize\ttfamily void Output\+\_\+\+CRK\+\_\+\+TOOTH\+\_\+\+PER (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{failures_8c_source_l00525}{525}} of file \mbox{\hyperlink{failures_8c_source}{failures.\+c}}.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{failures_8c_ae920b63749813032dfd845247a8ee9bd_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{failures_8c_ad206b129f04322b488059719a3757196}\label{failures_8c_ad206b129f04322b488059719a3757196}} 
+\index{failures.c@{failures.c}!Output\_POSN\_ENG\_STST@{Output\_POSN\_ENG\_STST}}
+\index{Output\_POSN\_ENG\_STST@{Output\_POSN\_ENG\_STST}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{Output\_POSN\_ENG\_STST()}{Output\_POSN\_ENG\_STST()}}
+{\footnotesize\ttfamily void Output\+\_\+\+POSN\+\_\+\+ENG\+\_\+\+STST (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{failures_8c_source_l01048}{1048}} of file \mbox{\hyperlink{failures_8c_source}{failures.\+c}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{failures_8c_ad206b129f04322b488059719a3757196_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{failures_8c_ad206b129f04322b488059719a3757196_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{failures_8c_a682f1aff804ad2665cb73cb7aa0bb324}\label{failures_8c_a682f1aff804ad2665cb73cb7aa0bb324}} 
+\index{failures.c@{failures.c}!Output\_SC\_CAM\_CRK@{Output\_SC\_CAM\_CRK}}
+\index{Output\_SC\_CAM\_CRK@{Output\_SC\_CAM\_CRK}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{Output\_SC\_CAM\_CRK()}{Output\_SC\_CAM\_CRK()}}
+{\footnotesize\ttfamily void Output\+\_\+\+SC\+\_\+\+CAM\+\_\+\+CRK (\begin{DoxyParamCaption}\item[{int}]{cam\+\_\+id }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{failures_8c_source_l01165}{1165}} of file \mbox{\hyperlink{failures_8c_source}{failures.\+c}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{failures_8c_a682f1aff804ad2665cb73cb7aa0bb324_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{failures_8c_a682f1aff804ad2665cb73cb7aa0bb324_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{failures_8c_aeb3f2f2e16c2bb9e70db27b7e132a754}\label{failures_8c_aeb3f2f2e16c2bb9e70db27b7e132a754}} 
+\index{failures.c@{failures.c}!Output\_SEG\_ADP\_ER\_LIM@{Output\_SEG\_ADP\_ER\_LIM}}
+\index{Output\_SEG\_ADP\_ER\_LIM@{Output\_SEG\_ADP\_ER\_LIM}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{Output\_SEG\_ADP\_ER\_LIM()}{Output\_SEG\_ADP\_ER\_LIM()}}
+{\footnotesize\ttfamily void Output\+\_\+\+SEG\+\_\+\+ADP\+\_\+\+ER\+\_\+\+LIM (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{failures_8c_source_l00978}{978}} of file \mbox{\hyperlink{failures_8c_source}{failures.\+c}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{failures_8c_aeb3f2f2e16c2bb9e70db27b7e132a754_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{failures_8c_aeb3f2f2e16c2bb9e70db27b7e132a754_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{failures_8c_ac2f8acabc9f03c44dbd82b7a84ca6ea1}\label{failures_8c_ac2f8acabc9f03c44dbd82b7a84ca6ea1}} 
+\index{failures.c@{failures.c}!POSN\_ENG\_STST\_reset@{POSN\_ENG\_STST\_reset}}
+\index{POSN\_ENG\_STST\_reset@{POSN\_ENG\_STST\_reset}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{POSN\_ENG\_STST\_reset()}{POSN\_ENG\_STST\_reset()}}
+{\footnotesize\ttfamily void POSN\+\_\+\+ENG\+\_\+\+STST\+\_\+reset (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{failures_8c_source_l01066}{1066}} of file \mbox{\hyperlink{failures_8c_source}{failures.\+c}}.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{failures_8c_ac2f8acabc9f03c44dbd82b7a84ca6ea1_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{failures_8c_af5a37ba4948cbb330017428e9863281e}\label{failures_8c_af5a37ba4948cbb330017428e9863281e}} 
+\index{failures.c@{failures.c}!SC\_CAM\_CRK\_reset@{SC\_CAM\_CRK\_reset}}
+\index{SC\_CAM\_CRK\_reset@{SC\_CAM\_CRK\_reset}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{SC\_CAM\_CRK\_reset()}{SC\_CAM\_CRK\_reset()}}
+{\footnotesize\ttfamily void SC\+\_\+\+CAM\+\_\+\+CRK\+\_\+reset (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{failures_8c_source_l01214}{1214}} of file \mbox{\hyperlink{failures_8c_source}{failures.\+c}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=345pt]{failures_8c_af5a37ba4948cbb330017428e9863281e_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{failures_8c_af5a37ba4948cbb330017428e9863281e_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{failures_8c_a9b4c0604e27a0e274bb04bf3d34b22d6}\label{failures_8c_a9b4c0604e27a0e274bb04bf3d34b22d6}} 
+\index{failures.c@{failures.c}!SEG\_ADP\_ER\_LIM\_reset@{SEG\_ADP\_ER\_LIM\_reset}}
+\index{SEG\_ADP\_ER\_LIM\_reset@{SEG\_ADP\_ER\_LIM\_reset}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{SEG\_ADP\_ER\_LIM\_reset()}{SEG\_ADP\_ER\_LIM\_reset()}}
+{\footnotesize\ttfamily void SEG\+\_\+\+ADP\+\_\+\+ER\+\_\+\+LIM\+\_\+reset (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{failures_8c_source_l01023}{1023}} of file \mbox{\hyperlink{failures_8c_source}{failures.\+c}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=305pt]{failures_8c_a9b4c0604e27a0e274bb04bf3d34b22d6_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{failures_8c_a9b4c0604e27a0e274bb04bf3d34b22d6_icgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{failures_8c_a1ab47ef12d9fd5a0a0c37354af662f7d}\label{failures_8c_a1ab47ef12d9fd5a0a0c37354af662f7d}} 
+\index{failures.c@{failures.c}!active\_CAM\_edges@{active\_CAM\_edges}}
+\index{active\_CAM\_edges@{active\_CAM\_edges}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{active\_CAM\_edges}{active\_CAM\_edges}}
+{\footnotesize\ttfamily char active\+\_\+\+CAM\+\_\+edges\mbox{[}2\mbox{]}\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00088}{88}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_ad7903904908b0166e54d513591340b4c}\label{failures_8c_ad7903904908b0166e54d513591340b4c}} 
+\index{failures.c@{failures.c}!active\_CAM\_edges\_counter@{active\_CAM\_edges\_counter}}
+\index{active\_CAM\_edges\_counter@{active\_CAM\_edges\_counter}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{active\_CAM\_edges\_counter}{active\_CAM\_edges\_counter}}
+{\footnotesize\ttfamily unsigned int active\+\_\+\+CAM\+\_\+edges\+\_\+counter\mbox{[}2\mbox{]}\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00234}{234}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_a98358735d6113042210027fe829762de}\label{failures_8c_a98358735d6113042210027fe829762de}} 
+\index{failures.c@{failures.c}!active\_cam\_failure@{active\_cam\_failure}}
+\index{active\_cam\_failure@{active\_cam\_failure}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{active\_cam\_failure}{active\_cam\_failure}}
+{\footnotesize\ttfamily int active\+\_\+cam\+\_\+failure\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00143}{143}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_a1aeabc5ac5f6b29223d857aceb659320}\label{failures_8c_a1aeabc5ac5f6b29223d857aceb659320}} 
+\index{failures.c@{failures.c}!active\_edges\_CAM\_PER@{active\_edges\_CAM\_PER}}
+\index{active\_edges\_CAM\_PER@{active\_edges\_CAM\_PER}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{active\_edges\_CAM\_PER}{active\_edges\_CAM\_PER}}
+{\footnotesize\ttfamily char active\+\_\+edges\+\_\+\+CAM\+\_\+\+PER\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00184}{184}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_a5107102b653d5cd439b1f861bd600f14}\label{failures_8c_a5107102b653d5cd439b1f861bd600f14}} 
+\index{failures.c@{failures.c}!all\_active\_edges\_CAM\_PER@{all\_active\_edges\_CAM\_PER}}
+\index{all\_active\_edges\_CAM\_PER@{all\_active\_edges\_CAM\_PER}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{all\_active\_edges\_CAM\_PER}{all\_active\_edges\_CAM\_PER}}
+{\footnotesize\ttfamily bool all\+\_\+active\+\_\+edges\+\_\+\+CAM\+\_\+\+PER\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00183}{183}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_af17a3a4176170c04e909c2cffab83a3e}\label{failures_8c_af17a3a4176170c04e909c2cffab83a3e}} 
+\index{failures.c@{failures.c}!angle\_time\_to\_start\_failure\_CAM\_REF\_CRK@{angle\_time\_to\_start\_failure\_CAM\_REF\_CRK}}
+\index{angle\_time\_to\_start\_failure\_CAM\_REF\_CRK@{angle\_time\_to\_start\_failure\_CAM\_REF\_CRK}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{angle\_time\_to\_start\_failure\_CAM\_REF\_CRK}{angle\_time\_to\_start\_failure\_CAM\_REF\_CRK}}
+{\footnotesize\ttfamily long double angle\+\_\+time\+\_\+to\+\_\+start\+\_\+failure\+\_\+\+CAM\+\_\+\+REF\+\_\+\+CRK\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00206}{206}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_a2a6666ba3f9fa015610de05c735552ac}\label{failures_8c_a2a6666ba3f9fa015610de05c735552ac}} 
+\index{failures.c@{failures.c}!angle\_to\_edge\_CAM\_delay@{angle\_to\_edge\_CAM\_delay}}
+\index{angle\_to\_edge\_CAM\_delay@{angle\_to\_edge\_CAM\_delay}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{angle\_to\_edge\_CAM\_delay}{angle\_to\_edge\_CAM\_delay}}
+{\footnotesize\ttfamily double angle\+\_\+to\+\_\+edge\+\_\+\+CAM\+\_\+delay\mbox{[}2\mbox{]}\mbox{[}6\mbox{]}\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00198}{198}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_a706090098ba2e12ba5bd608552f126d5}\label{failures_8c_a706090098ba2e12ba5bd608552f126d5}} 
+\index{failures.c@{failures.c}!angle\_to\_start\_failure\_CRK\_RUN\_OUT@{angle\_to\_start\_failure\_CRK\_RUN\_OUT}}
+\index{angle\_to\_start\_failure\_CRK\_RUN\_OUT@{angle\_to\_start\_failure\_CRK\_RUN\_OUT}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{angle\_to\_start\_failure\_CRK\_RUN\_OUT}{angle\_to\_start\_failure\_CRK\_RUN\_OUT}}
+{\footnotesize\ttfamily unsigned int angle\+\_\+to\+\_\+start\+\_\+failure\+\_\+\+CRK\+\_\+\+RUN\+\_\+\+OUT\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00167}{167}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_a0241a57f40777392b40aebc8ea433d2c}\label{failures_8c_a0241a57f40777392b40aebc8ea433d2c}} 
+\index{failures.c@{failures.c}!calculation\_factor\_CRK\_TOOTH\_PER@{calculation\_factor\_CRK\_TOOTH\_PER}}
+\index{calculation\_factor\_CRK\_TOOTH\_PER@{calculation\_factor\_CRK\_TOOTH\_PER}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{calculation\_factor\_CRK\_TOOTH\_PER}{calculation\_factor\_CRK\_TOOTH\_PER}}
+{\footnotesize\ttfamily double calculation\+\_\+factor\+\_\+\+CRK\+\_\+\+TOOTH\+\_\+\+PER\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00192}{192}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_a734dd27ee07083ae6985cc7e642de6e7}\label{failures_8c_a734dd27ee07083ae6985cc7e642de6e7}} 
+\index{failures.c@{failures.c}!CAM\_CRK\_synch\_ahead@{CAM\_CRK\_synch\_ahead}}
+\index{CAM\_CRK\_synch\_ahead@{CAM\_CRK\_synch\_ahead}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{CAM\_CRK\_synch\_ahead}{CAM\_CRK\_synch\_ahead}}
+{\footnotesize\ttfamily bool CAM\+\_\+\+CRK\+\_\+synch\+\_\+ahead\mbox{[}2\mbox{]}\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00116}{116}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_a4846863c93975e5d88fbd9b4ecc57d20}\label{failures_8c_a4846863c93975e5d88fbd9b4ecc57d20}} 
+\index{failures.c@{failures.c}!CAM\_signal@{CAM\_signal}}
+\index{CAM\_signal@{CAM\_signal}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{CAM\_signal}{CAM\_signal}}
+{\footnotesize\ttfamily bool CAM\+\_\+signal\mbox{[}2\mbox{]}\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00117}{117}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_aaa021fc02b2a585f7a62ec97bbee6d5e}\label{failures_8c_aaa021fc02b2a585f7a62ec97bbee6d5e}} 
+\index{failures.c@{failures.c}!counter\_CAM\_PER@{counter\_CAM\_PER}}
+\index{counter\_CAM\_PER@{counter\_CAM\_PER}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{counter\_CAM\_PER}{counter\_CAM\_PER}}
+{\footnotesize\ttfamily unsigned int counter\+\_\+\+CAM\+\_\+\+PER\mbox{[}2\mbox{]}\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00179}{179}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_adb0348602102ca6255e00dd691cfa53c}\label{failures_8c_adb0348602102ca6255e00dd691cfa53c}} 
+\index{failures.c@{failures.c}!counter\_gap\_left\_CRK\_TOOTH\_OFF@{counter\_gap\_left\_CRK\_TOOTH\_OFF}}
+\index{counter\_gap\_left\_CRK\_TOOTH\_OFF@{counter\_gap\_left\_CRK\_TOOTH\_OFF}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{counter\_gap\_left\_CRK\_TOOTH\_OFF}{counter\_gap\_left\_CRK\_TOOTH\_OFF}}
+{\footnotesize\ttfamily unsigned int counter\+\_\+gap\+\_\+left\+\_\+\+CRK\+\_\+\+TOOTH\+\_\+\+OFF\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00215}{215}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_af4e125ce632016b07d28f6ac94a33643}\label{failures_8c_af4e125ce632016b07d28f6ac94a33643}} 
+\index{failures.c@{failures.c}!counter\_POSN\_ENG\_STST@{counter\_POSN\_ENG\_STST}}
+\index{counter\_POSN\_ENG\_STST@{counter\_POSN\_ENG\_STST}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{counter\_POSN\_ENG\_STST}{counter\_POSN\_ENG\_STST}}
+{\footnotesize\ttfamily unsigned int counter\+\_\+\+POSN\+\_\+\+ENG\+\_\+\+STST\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00231}{231}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_a77556040fb54d335bacaf15336a82d29}\label{failures_8c_a77556040fb54d335bacaf15336a82d29}} 
+\index{failures.c@{failures.c}!counter\_ready@{counter\_ready}}
+\index{counter\_ready@{counter\_ready}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{counter\_ready}{counter\_ready}}
+{\footnotesize\ttfamily bool counter\+\_\+ready\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00175}{175}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_a5deea399d9689d2e2e0b3b3831462c5d}\label{failures_8c_a5deea399d9689d2e2e0b3b3831462c5d}} 
+\index{failures.c@{failures.c}!counter\_reset@{counter\_reset}}
+\index{counter\_reset@{counter\_reset}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{counter\_reset}{counter\_reset}}
+{\footnotesize\ttfamily bool counter\+\_\+reset\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00176}{176}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_aeab62b1deec35fe68ca4b720e3435984}\label{failures_8c_aeab62b1deec35fe68ca4b720e3435984}} 
+\index{failures.c@{failures.c}!counter\_TDC0@{counter\_TDC0}}
+\index{counter\_TDC0@{counter\_TDC0}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{counter\_TDC0}{counter\_TDC0}}
+{\footnotesize\ttfamily unsigned int counter\+\_\+\+TDC0\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00169}{169}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_af2b350cad5f904241be3cd72267e8cd4}\label{failures_8c_af2b350cad5f904241be3cd72267e8cd4}} 
+\index{failures.c@{failures.c}!counter\_tooth\_off@{counter\_tooth\_off}}
+\index{counter\_tooth\_off@{counter\_tooth\_off}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{counter\_tooth\_off}{counter\_tooth\_off}}
+{\footnotesize\ttfamily unsigned int counter\+\_\+tooth\+\_\+off\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00213}{213}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_af965503ff7c7adb887f502384215a402}\label{failures_8c_af965503ff7c7adb887f502384215a402}} 
+\index{failures.c@{failures.c}!CRK\_CAM\_synch@{CRK\_CAM\_synch}}
+\index{CRK\_CAM\_synch@{CRK\_CAM\_synch}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{CRK\_CAM\_synch}{CRK\_CAM\_synch}}
+{\footnotesize\ttfamily bool CRK\+\_\+\+CAM\+\_\+synch\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00118}{118}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_aeaf45155613124740bc925868c135034}\label{failures_8c_aeaf45155613124740bc925868c135034}} 
+\index{failures.c@{failures.c}!crk\_delay\_SEG\_ADP\_ER\_LIM@{crk\_delay\_SEG\_ADP\_ER\_LIM}}
+\index{crk\_delay\_SEG\_ADP\_ER\_LIM@{crk\_delay\_SEG\_ADP\_ER\_LIM}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{crk\_delay\_SEG\_ADP\_ER\_LIM}{crk\_delay\_SEG\_ADP\_ER\_LIM}}
+{\footnotesize\ttfamily double crk\+\_\+delay\+\_\+\+SEG\+\_\+\+ADP\+\_\+\+ER\+\_\+\+LIM\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00224}{224}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_ad60977ee83061906ebaf1f0c40ea504c}\label{failures_8c_ad60977ee83061906ebaf1f0c40ea504c}} 
+\index{failures.c@{failures.c}!crk\_pulse\_duration\_CRK\_PLS\_ORNG@{crk\_pulse\_duration\_CRK\_PLS\_ORNG}}
+\index{crk\_pulse\_duration\_CRK\_PLS\_ORNG@{crk\_pulse\_duration\_CRK\_PLS\_ORNG}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{crk\_pulse\_duration\_CRK\_PLS\_ORNG}{crk\_pulse\_duration\_CRK\_PLS\_ORNG}}
+{\footnotesize\ttfamily double crk\+\_\+pulse\+\_\+duration\+\_\+\+CRK\+\_\+\+PLS\+\_\+\+ORNG\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00227}{227}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_a66d1dc17c3815ec543259ff6cd358896}\label{failures_8c_a66d1dc17c3815ec543259ff6cd358896}} 
+\index{failures.c@{failures.c}!CRK\_signal@{CRK\_signal}}
+\index{CRK\_signal@{CRK\_signal}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{CRK\_signal}{CRK\_signal}}
+{\footnotesize\ttfamily bool CRK\+\_\+signal\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00075}{75}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_a7727b0a0a81b3a64c19a0e84fd498c5b}\label{failures_8c_a7727b0a0a81b3a64c19a0e84fd498c5b}} 
+\index{failures.c@{failures.c}!CRK\_synch@{CRK\_synch}}
+\index{CRK\_synch@{CRK\_synch}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{CRK\_synch}{CRK\_synch}}
+{\footnotesize\ttfamily bool CRK\+\_\+synch\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00072}{72}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_a21b65a4cdebaef539c0958653e7115da}\label{failures_8c_a21b65a4cdebaef539c0958653e7115da}} 
+\index{failures.c@{failures.c}!crk\_teeth\_off\_POSN\_ENG\_STST@{crk\_teeth\_off\_POSN\_ENG\_STST}}
+\index{crk\_teeth\_off\_POSN\_ENG\_STST@{crk\_teeth\_off\_POSN\_ENG\_STST}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{crk\_teeth\_off\_POSN\_ENG\_STST}{crk\_teeth\_off\_POSN\_ENG\_STST}}
+{\footnotesize\ttfamily unsigned int crk\+\_\+teeth\+\_\+off\+\_\+\+POSN\+\_\+\+ENG\+\_\+\+STST\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00230}{230}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_a7488bc4243e7ba92ade85f9186db2793}\label{failures_8c_a7488bc4243e7ba92ade85f9186db2793}} 
+\index{failures.c@{failures.c}!delay\_angle\_CAM\_delay@{delay\_angle\_CAM\_delay}}
+\index{delay\_angle\_CAM\_delay@{delay\_angle\_CAM\_delay}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{delay\_angle\_CAM\_delay}{delay\_angle\_CAM\_delay}}
+{\footnotesize\ttfamily double delay\+\_\+angle\+\_\+\+CAM\+\_\+delay\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00199}{199}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_a831028f10615ac593b739d4731a43060}\label{failures_8c_a831028f10615ac593b739d4731a43060}} 
+\index{failures.c@{failures.c}!delay\_counter\_CAM\_REF\_CRK@{delay\_counter\_CAM\_REF\_CRK}}
+\index{delay\_counter\_CAM\_REF\_CRK@{delay\_counter\_CAM\_REF\_CRK}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{delay\_counter\_CAM\_REF\_CRK}{delay\_counter\_CAM\_REF\_CRK}}
+{\footnotesize\ttfamily unsigned int delay\+\_\+counter\+\_\+\+CAM\+\_\+\+REF\+\_\+\+CRK\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00205}{205}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_af4fb580f228912ecc709426087150786}\label{failures_8c_af4fb580f228912ecc709426087150786}} 
+\index{failures.c@{failures.c}!delay\_factor\_CAM\_delay@{delay\_factor\_CAM\_delay}}
+\index{delay\_factor\_CAM\_delay@{delay\_factor\_CAM\_delay}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{delay\_factor\_CAM\_delay}{delay\_factor\_CAM\_delay}}
+{\footnotesize\ttfamily double delay\+\_\+factor\+\_\+\+CAM\+\_\+delay\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00200}{200}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_a97ace91c5a574a12275e24d4b4bd02be}\label{failures_8c_a97ace91c5a574a12275e24d4b4bd02be}} 
+\index{failures.c@{failures.c}!delay\_type\_CAM\_REF\_CRK@{delay\_type\_CAM\_REF\_CRK}}
+\index{delay\_type\_CAM\_REF\_CRK@{delay\_type\_CAM\_REF\_CRK}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{delay\_type\_CAM\_REF\_CRK}{delay\_type\_CAM\_REF\_CRK}}
+{\footnotesize\ttfamily char delay\+\_\+type\+\_\+\+CAM\+\_\+\+REF\+\_\+\+CRK\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00208}{208}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_af75c8735a41240c5a884f5024743c4c2}\label{failures_8c_af75c8735a41240c5a884f5024743c4c2}} 
+\index{failures.c@{failures.c}!detected\_TDC0@{detected\_TDC0}}
+\index{detected\_TDC0@{detected\_TDC0}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{detected\_TDC0}{detected\_TDC0}}
+{\footnotesize\ttfamily bool detected\+\_\+\+TDC0\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00173}{173}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_a89493411d9fa567844ffb6a621d46967}\label{failures_8c_a89493411d9fa567844ffb6a621d46967}} 
+\index{failures.c@{failures.c}!difference\_to\_edge\_failure\_start@{difference\_to\_edge\_failure\_start}}
+\index{difference\_to\_edge\_failure\_start@{difference\_to\_edge\_failure\_start}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{difference\_to\_edge\_failure\_start}{difference\_to\_edge\_failure\_start}}
+{\footnotesize\ttfamily double difference\+\_\+to\+\_\+edge\+\_\+failure\+\_\+start\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00172}{172}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_a874e6e147c885cc35f55b3d8bc18ceb8}\label{failures_8c_a874e6e147c885cc35f55b3d8bc18ceb8}} 
+\index{failures.c@{failures.c}!difference\_to\_edge\_failure\_start\_CAM\_REF\_CRK@{difference\_to\_edge\_failure\_start\_CAM\_REF\_CRK}}
+\index{difference\_to\_edge\_failure\_start\_CAM\_REF\_CRK@{difference\_to\_edge\_failure\_start\_CAM\_REF\_CRK}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{difference\_to\_edge\_failure\_start\_CAM\_REF\_CRK}{difference\_to\_edge\_failure\_start\_CAM\_REF\_CRK}}
+{\footnotesize\ttfamily double difference\+\_\+to\+\_\+edge\+\_\+failure\+\_\+start\+\_\+\+CAM\+\_\+\+REF\+\_\+\+CRK\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00207}{207}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_a8156941efe0dcd826307b446f3ef48f1}\label{failures_8c_a8156941efe0dcd826307b446f3ef48f1}} 
+\index{failures.c@{failures.c}!difference\_to\_edge\_TDC0@{difference\_to\_edge\_TDC0}}
+\index{difference\_to\_edge\_TDC0@{difference\_to\_edge\_TDC0}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{difference\_to\_edge\_TDC0}{difference\_to\_edge\_TDC0}}
+{\footnotesize\ttfamily double difference\+\_\+to\+\_\+edge\+\_\+\+TDC0\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00171}{171}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_aeb8d44ce914f7ffc964e78ab44c14735}\label{failures_8c_aeb8d44ce914f7ffc964e78ab44c14735}} 
+\index{failures.c@{failures.c}!edges\_beetween\_shift\_CAM\_delay@{edges\_beetween\_shift\_CAM\_delay}}
+\index{edges\_beetween\_shift\_CAM\_delay@{edges\_beetween\_shift\_CAM\_delay}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{edges\_beetween\_shift\_CAM\_delay}{edges\_beetween\_shift\_CAM\_delay}}
+{\footnotesize\ttfamily const int edges\+\_\+beetween\+\_\+shift\+\_\+\+CAM\+\_\+delay\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00196}{196}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_a658a74de9ab44e3ad4b459d557dac9d7}\label{failures_8c_a658a74de9ab44e3ad4b459d557dac9d7}} 
+\index{failures.c@{failures.c}!engine\_revolutions\_CRK\_TOOTH\_PER@{engine\_revolutions\_CRK\_TOOTH\_PER}}
+\index{engine\_revolutions\_CRK\_TOOTH\_PER@{engine\_revolutions\_CRK\_TOOTH\_PER}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{engine\_revolutions\_CRK\_TOOTH\_PER}{engine\_revolutions\_CRK\_TOOTH\_PER}}
+{\footnotesize\ttfamily unsigned int engine\+\_\+revolutions\+\_\+\+CRK\+\_\+\+TOOTH\+\_\+\+PER\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00189}{189}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_a7aeb1a0c2ff915edcc0973978f0dc21c}\label{failures_8c_a7aeb1a0c2ff915edcc0973978f0dc21c}} 
+\index{failures.c@{failures.c}!engine\_start@{engine\_start}}
+\index{engine\_start@{engine\_start}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{engine\_start}{engine\_start}}
+{\footnotesize\ttfamily bool engine\+\_\+start\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00077}{77}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_aa009bc0b69bbb38154e60d1428ffc33c}\label{failures_8c_aa009bc0b69bbb38154e60d1428ffc33c}} 
+\index{failures.c@{failures.c}!failure\_active@{failure\_active}}
+\index{failure\_active@{failure\_active}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{failure\_active}{failure\_active}}
+{\footnotesize\ttfamily bool failure\+\_\+active\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00149}{149}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_ae1dbfa52ababd302f93dbe4fd0620f8f}\label{failures_8c_ae1dbfa52ababd302f93dbe4fd0620f8f}} 
+\index{failures.c@{failures.c}!failure\_active\_CAM\_blank\_out@{failure\_active\_CAM\_blank\_out}}
+\index{failure\_active\_CAM\_blank\_out@{failure\_active\_CAM\_blank\_out}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{failure\_active\_CAM\_blank\_out}{failure\_active\_CAM\_blank\_out}}
+{\footnotesize\ttfamily bool failure\+\_\+active\+\_\+\+CAM\+\_\+blank\+\_\+out\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00150}{150}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_a906f58f9fb2ce60131ecacd1d649d6a1}\label{failures_8c_a906f58f9fb2ce60131ecacd1d649d6a1}} 
+\index{failures.c@{failures.c}!failure\_identify@{failure\_identify}}
+\index{failure\_identify@{failure\_identify}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{failure\_identify}{failure\_identify}}
+{\footnotesize\ttfamily char failure\+\_\+identify\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00128}{128}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_a36381716e95bbb3090a24ba5260bf35d}\label{failures_8c_a36381716e95bbb3090a24ba5260bf35d}} 
+\index{failures.c@{failures.c}!failure\_passed@{failure\_passed}}
+\index{failure\_passed@{failure\_passed}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{failure\_passed}{failure\_passed}}
+{\footnotesize\ttfamily bool failure\+\_\+passed\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00152}{152}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_ad90c6afa3ef6d8897b04b50f9161bd3a}\label{failures_8c_ad90c6afa3ef6d8897b04b50f9161bd3a}} 
+\index{failures.c@{failures.c}!failure\_period\_CRK\_RUN\_OUT@{failure\_period\_CRK\_RUN\_OUT}}
+\index{failure\_period\_CRK\_RUN\_OUT@{failure\_period\_CRK\_RUN\_OUT}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{failure\_period\_CRK\_RUN\_OUT}{failure\_period\_CRK\_RUN\_OUT}}
+{\footnotesize\ttfamily unsigned int failure\+\_\+period\+\_\+\+CRK\+\_\+\+RUN\+\_\+\+OUT\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00168}{168}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_a9efd1f4caf11e1037604fb6f4b42ed31}\label{failures_8c_a9efd1f4caf11e1037604fb6f4b42ed31}} 
+\index{failures.c@{failures.c}!failure\_set@{failure\_set}}
+\index{failure\_set@{failure\_set}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{failure\_set}{failure\_set}}
+{\footnotesize\ttfamily bool failure\+\_\+set\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00151}{151}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_ae1abad2ed2b92b6b82254dc4debca57a}\label{failures_8c_ae1abad2ed2b92b6b82254dc4debca57a}} 
+\index{failures.c@{failures.c}!failure\_waiting@{failure\_waiting}}
+\index{failure\_waiting@{failure\_waiting}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{failure\_waiting}{failure\_waiting}}
+{\footnotesize\ttfamily bool failure\+\_\+waiting\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00153}{153}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_ae78fc7b1baf9c329b60166be6b88b85c}\label{failures_8c_ae78fc7b1baf9c329b60166be6b88b85c}} 
+\index{failures.c@{failures.c}!filter\_time\_CAM@{filter\_time\_CAM}}
+\index{filter\_time\_CAM@{filter\_time\_CAM}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{filter\_time\_CAM}{filter\_time\_CAM}}
+{\footnotesize\ttfamily double filter\+\_\+time\+\_\+\+CAM\mbox{[}2\mbox{]}\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00084}{84}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_a30aee154f6067d411dbf4839fdc3cc93}\label{failures_8c_a30aee154f6067d411dbf4839fdc3cc93}} 
+\index{failures.c@{failures.c}!first\_seg\_angle@{first\_seg\_angle}}
+\index{first\_seg\_angle@{first\_seg\_angle}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{first\_seg\_angle}{first\_seg\_angle}}
+{\footnotesize\ttfamily double first\+\_\+seg\+\_\+angle\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00042}{42}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_a912fe456cc42c18b47eae6de3e35c4f8}\label{failures_8c_a912fe456cc42c18b47eae6de3e35c4f8}} 
+\index{failures.c@{failures.c}!first\_seg\_start\_tooth@{first\_seg\_start\_tooth}}
+\index{first\_seg\_start\_tooth@{first\_seg\_start\_tooth}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{first\_seg\_start\_tooth}{first\_seg\_start\_tooth}}
+{\footnotesize\ttfamily unsigned int first\+\_\+seg\+\_\+start\+\_\+tooth\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00044}{44}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_a1ffeb87120d45d392916acb155ef3879}\label{failures_8c_a1ffeb87120d45d392916acb155ef3879}} 
+\index{failures.c@{failures.c}!interrupt\_check\_CAM\_delay@{interrupt\_check\_CAM\_delay}}
+\index{interrupt\_check\_CAM\_delay@{interrupt\_check\_CAM\_delay}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{interrupt\_check\_CAM\_delay}{interrupt\_check\_CAM\_delay}}
+{\footnotesize\ttfamily bool interrupt\+\_\+check\+\_\+\+CAM\+\_\+delay\mbox{[}2\mbox{]}\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00202}{202}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_aa62fd33093aac3979c77d8ac47195785}\label{failures_8c_aa62fd33093aac3979c77d8ac47195785}} 
+\index{failures.c@{failures.c}!microsecond\_per\_timer\_tick\_CAM\_PER\_\_CRK\_TOOTH\_PER@{microsecond\_per\_timer\_tick\_CAM\_PER\_\_CRK\_TOOTH\_PER}}
+\index{microsecond\_per\_timer\_tick\_CAM\_PER\_\_CRK\_TOOTH\_PER@{microsecond\_per\_timer\_tick\_CAM\_PER\_\_CRK\_TOOTH\_PER}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{microsecond\_per\_timer\_tick\_CAM\_PER\_\_CRK\_TOOTH\_PER}{microsecond\_per\_timer\_tick\_CAM\_PER\_\_CRK\_TOOTH\_PER}}
+{\footnotesize\ttfamily double microsecond\+\_\+per\+\_\+timer\+\_\+tick\+\_\+\+CAM\+\_\+\+PER\+\_\+\+\_\+\+CRK\+\_\+\+TOOTH\+\_\+\+PER\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00182}{182}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_ab673b177757a7a75f938fa6debada427}\label{failures_8c_ab673b177757a7a75f938fa6debada427}} 
+\index{failures.c@{failures.c}!milli\_second\_per\_timer\_tick\_CRK@{milli\_second\_per\_timer\_tick\_CRK}}
+\index{milli\_second\_per\_timer\_tick\_CRK@{milli\_second\_per\_timer\_tick\_CRK}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{milli\_second\_per\_timer\_tick\_CRK}{milli\_second\_per\_timer\_tick\_CRK}}
+{\footnotesize\ttfamily long double const milli\+\_\+second\+\_\+per\+\_\+timer\+\_\+tick\+\_\+\+CRK\hspace{0.3cm}{\ttfamily [extern]}}
+
+\mbox{\Hypertarget{failures_8c_addba43fee255dd630dc49630cd23655d}\label{failures_8c_addba43fee255dd630dc49630cd23655d}} 
+\index{failures.c@{failures.c}!mycrosecond\_per\_timer\_tick\_CAM\_PER\_\_CRK\_TOOTH\_PER@{mycrosecond\_per\_timer\_tick\_CAM\_PER\_\_CRK\_TOOTH\_PER}}
+\index{mycrosecond\_per\_timer\_tick\_CAM\_PER\_\_CRK\_TOOTH\_PER@{mycrosecond\_per\_timer\_tick\_CAM\_PER\_\_CRK\_TOOTH\_PER}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{mycrosecond\_per\_timer\_tick\_CAM\_PER\_\_CRK\_TOOTH\_PER}{mycrosecond\_per\_timer\_tick\_CAM\_PER\_\_CRK\_TOOTH\_PER}}
+{\footnotesize\ttfamily double mycrosecond\+\_\+per\+\_\+timer\+\_\+tick\+\_\+\+CAM\+\_\+\+PER\+\_\+\+\_\+\+CRK\+\_\+\+TOOTH\+\_\+\+PER\hspace{0.3cm}{\ttfamily [extern]}}
+
+\mbox{\Hypertarget{failures_8c_a70548cc19cb8197d69bde4da728a470a}\label{failures_8c_a70548cc19cb8197d69bde4da728a470a}} 
+\index{failures.c@{failures.c}!number\_edges\_CAM\_PER@{number\_edges\_CAM\_PER}}
+\index{number\_edges\_CAM\_PER@{number\_edges\_CAM\_PER}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{number\_edges\_CAM\_PER}{number\_edges\_CAM\_PER}}
+{\footnotesize\ttfamily unsigned int number\+\_\+edges\+\_\+\+CAM\+\_\+\+PER\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00180}{180}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_af9b6adca0c1aa5a6ba1da07c6f4e1588}\label{failures_8c_af9b6adca0c1aa5a6ba1da07c6f4e1588}} 
+\index{failures.c@{failures.c}!number\_gap@{number\_gap}}
+\index{number\_gap@{number\_gap}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{number\_gap}{number\_gap}}
+{\footnotesize\ttfamily int number\+\_\+gap\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00040}{40}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_ac953f0c0d545347b98a28a5f7e1ea15c}\label{failures_8c_ac953f0c0d545347b98a28a5f7e1ea15c}} 
+\index{failures.c@{failures.c}!number\_miss\_teeth@{number\_miss\_teeth}}
+\index{number\_miss\_teeth@{number\_miss\_teeth}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{number\_miss\_teeth}{number\_miss\_teeth}}
+{\footnotesize\ttfamily int number\+\_\+miss\+\_\+teeth\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00039}{39}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_ab28b6d5505e18cd397139cfa75aa3912}\label{failures_8c_ab28b6d5505e18cd397139cfa75aa3912}} 
+\index{failures.c@{failures.c}!number\_processing\_edges\_CAM\_delay@{number\_processing\_edges\_CAM\_delay}}
+\index{number\_processing\_edges\_CAM\_delay@{number\_processing\_edges\_CAM\_delay}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{number\_processing\_edges\_CAM\_delay}{number\_processing\_edges\_CAM\_delay}}
+{\footnotesize\ttfamily unsigned int number\+\_\+processing\+\_\+edges\+\_\+\+CAM\+\_\+delay\mbox{[}2\mbox{]}\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00195}{195}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_a6d79ff75c0424017b90b2039f2f5aeaa}\label{failures_8c_a6d79ff75c0424017b90b2039f2f5aeaa}} 
+\index{failures.c@{failures.c}!number\_pulses\_CRK\_TOOTH\_PER@{number\_pulses\_CRK\_TOOTH\_PER}}
+\index{number\_pulses\_CRK\_TOOTH\_PER@{number\_pulses\_CRK\_TOOTH\_PER}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{number\_pulses\_CRK\_TOOTH\_PER}{number\_pulses\_CRK\_TOOTH\_PER}}
+{\footnotesize\ttfamily unsigned int number\+\_\+pulses\+\_\+\+CRK\+\_\+\+TOOTH\+\_\+\+PER\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00188}{188}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_ab040cae3d9ae46728a9af9db655c014e}\label{failures_8c_ab040cae3d9ae46728a9af9db655c014e}} 
+\index{failures.c@{failures.c}!number\_real\_teeth@{number\_real\_teeth}}
+\index{number\_real\_teeth@{number\_real\_teeth}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{number\_real\_teeth}{number\_real\_teeth}}
+{\footnotesize\ttfamily unsigned int number\+\_\+real\+\_\+teeth\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00062}{62}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_a896b3f467a176975dc687f95f1a1367e}\label{failures_8c_a896b3f467a176975dc687f95f1a1367e}} 
+\index{failures.c@{failures.c}!number\_segments\_CRK@{number\_segments\_CRK}}
+\index{number\_segments\_CRK@{number\_segments\_CRK}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{number\_segments\_CRK}{number\_segments\_CRK}}
+{\footnotesize\ttfamily unsigned int number\+\_\+segments\+\_\+\+CRK\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00066}{66}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_a05e75142d685997ef05acf36e45a356a}\label{failures_8c_a05e75142d685997ef05acf36e45a356a}} 
+\index{failures.c@{failures.c}!number\_teeth\_between\_gaps@{number\_teeth\_between\_gaps}}
+\index{number\_teeth\_between\_gaps@{number\_teeth\_between\_gaps}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{number\_teeth\_between\_gaps}{number\_teeth\_between\_gaps}}
+{\footnotesize\ttfamily unsigned int number\+\_\+teeth\+\_\+between\+\_\+gaps\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00063}{63}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_ab06ff1f3f9aa8e15f049ad90eb229aec}\label{failures_8c_ab06ff1f3f9aa8e15f049ad90eb229aec}} 
+\index{failures.c@{failures.c}!number\_teeth\_between\_tooth\_off@{number\_teeth\_between\_tooth\_off}}
+\index{number\_teeth\_between\_tooth\_off@{number\_teeth\_between\_tooth\_off}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{number\_teeth\_between\_tooth\_off}{number\_teeth\_between\_tooth\_off}}
+{\footnotesize\ttfamily unsigned int number\+\_\+teeth\+\_\+between\+\_\+tooth\+\_\+off\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00212}{212}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_aaca9f30a09d8f0badb85553cb2f4a225}\label{failures_8c_aaca9f30a09d8f0badb85553cb2f4a225}} 
+\index{failures.c@{failures.c}!number\_teeth\_CAM@{number\_teeth\_CAM}}
+\index{number\_teeth\_CAM@{number\_teeth\_CAM}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{number\_teeth\_CAM}{number\_teeth\_CAM}}
+{\footnotesize\ttfamily int number\+\_\+teeth\+\_\+\+CAM\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00083}{83}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_afe64a7b02b07021acd3f4e7d30195fe2}\label{failures_8c_afe64a7b02b07021acd3f4e7d30195fe2}} 
+\index{failures.c@{failures.c}!number\_teeth\_CRK@{number\_teeth\_CRK}}
+\index{number\_teeth\_CRK@{number\_teeth\_CRK}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{number\_teeth\_CRK}{number\_teeth\_CRK}}
+{\footnotesize\ttfamily int number\+\_\+teeth\+\_\+\+CRK\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00038}{38}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_a42368ade50de18ac6efb5e231ba284ab}\label{failures_8c_a42368ade50de18ac6efb5e231ba284ab}} 
+\index{failures.c@{failures.c}!number\_tooth\_off@{number\_tooth\_off}}
+\index{number\_tooth\_off@{number\_tooth\_off}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{number\_tooth\_off}{number\_tooth\_off}}
+{\footnotesize\ttfamily unsigned int number\+\_\+tooth\+\_\+off\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00211}{211}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_ac6eafc14bbf628d09f0aea91c943dc44}\label{failures_8c_ac6eafc14bbf628d09f0aea91c943dc44}} 
+\index{failures.c@{failures.c}!period\_counter\_CRK\_RUN\_OUT@{period\_counter\_CRK\_RUN\_OUT}}
+\index{period\_counter\_CRK\_RUN\_OUT@{period\_counter\_CRK\_RUN\_OUT}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{period\_counter\_CRK\_RUN\_OUT}{period\_counter\_CRK\_RUN\_OUT}}
+{\footnotesize\ttfamily int period\+\_\+counter\+\_\+\+CRK\+\_\+\+RUN\+\_\+\+OUT\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00170}{170}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_ae00db4a9603885a19a44080bdb2331d9}\label{failures_8c_ae00db4a9603885a19a44080bdb2331d9}} 
+\index{failures.c@{failures.c}!revolution\_counter\_CRK\_TOOTH\_PER@{revolution\_counter\_CRK\_TOOTH\_PER}}
+\index{revolution\_counter\_CRK\_TOOTH\_PER@{revolution\_counter\_CRK\_TOOTH\_PER}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{revolution\_counter\_CRK\_TOOTH\_PER}{revolution\_counter\_CRK\_TOOTH\_PER}}
+{\footnotesize\ttfamily unsigned int revolution\+\_\+counter\+\_\+\+CRK\+\_\+\+TOOTH\+\_\+\+PER\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00191}{191}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_af3c32be62d5f2307cc01a316c01ba3dc}\label{failures_8c_af3c32be62d5f2307cc01a316c01ba3dc}} 
+\index{failures.c@{failures.c}!revolution\_CRK@{revolution\_CRK}}
+\index{revolution\_CRK@{revolution\_CRK}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{revolution\_CRK}{revolution\_CRK}}
+{\footnotesize\ttfamily double revolution\+\_\+\+CRK\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00071}{71}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_ad09cc41f983fa5c4f93b335e55684b81}\label{failures_8c_ad09cc41f983fa5c4f93b335e55684b81}} 
+\index{failures.c@{failures.c}!sc\_type\_CRK\_RUN\_OUT@{sc\_type\_CRK\_RUN\_OUT}}
+\index{sc\_type\_CRK\_RUN\_OUT@{sc\_type\_CRK\_RUN\_OUT}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{sc\_type\_CRK\_RUN\_OUT}{sc\_type\_CRK\_RUN\_OUT}}
+{\footnotesize\ttfamily char sc\+\_\+type\+\_\+\+CRK\+\_\+\+RUN\+\_\+\+OUT\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00165}{165}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_a4337a7e2ea5f37681e9765a379c42831}\label{failures_8c_a4337a7e2ea5f37681e9765a379c42831}} 
+\index{failures.c@{failures.c}!sc\_type\_SC\_CAM\_CRK@{sc\_type\_SC\_CAM\_CRK}}
+\index{sc\_type\_SC\_CAM\_CRK@{sc\_type\_SC\_CAM\_CRK}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{sc\_type\_SC\_CAM\_CRK}{sc\_type\_SC\_CAM\_CRK}}
+{\footnotesize\ttfamily unsigned int sc\+\_\+type\+\_\+\+SC\+\_\+\+CAM\+\_\+\+CRK\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00237}{237}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_ae9953e9e08afe49f7e2a4b4daee5332b}\label{failures_8c_ae9953e9e08afe49f7e2a4b4daee5332b}} 
+\index{failures.c@{failures.c}!shift\_counter\_CAM\_delay@{shift\_counter\_CAM\_delay}}
+\index{shift\_counter\_CAM\_delay@{shift\_counter\_CAM\_delay}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{shift\_counter\_CAM\_delay}{shift\_counter\_CAM\_delay}}
+{\footnotesize\ttfamily unsigned int shift\+\_\+counter\+\_\+\+CAM\+\_\+delay\mbox{[}2\mbox{]}\mbox{[}6\mbox{]}\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00197}{197}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_a1c7e64943d24c04093dce025db73714d}\label{failures_8c_a1c7e64943d24c04093dce025db73714d}} 
+\index{failures.c@{failures.c}!start\_on\_edge\_CRK\_RUN\_OUT@{start\_on\_edge\_CRK\_RUN\_OUT}}
+\index{start\_on\_edge\_CRK\_RUN\_OUT@{start\_on\_edge\_CRK\_RUN\_OUT}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{start\_on\_edge\_CRK\_RUN\_OUT}{start\_on\_edge\_CRK\_RUN\_OUT}}
+{\footnotesize\ttfamily bool start\+\_\+on\+\_\+edge\+\_\+\+CRK\+\_\+\+RUN\+\_\+\+OUT\hspace{0.3cm}{\ttfamily [extern]}}
+
+\mbox{\Hypertarget{failures_8c_aa92e684341d20dd78cbbf8a8d98b1899}\label{failures_8c_aa92e684341d20dd78cbbf8a8d98b1899}} 
+\index{failures.c@{failures.c}!start\_tooth\_CRK\_TOOTH\_PER@{start\_tooth\_CRK\_TOOTH\_PER}}
+\index{start\_tooth\_CRK\_TOOTH\_PER@{start\_tooth\_CRK\_TOOTH\_PER}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{start\_tooth\_CRK\_TOOTH\_PER}{start\_tooth\_CRK\_TOOTH\_PER}}
+{\footnotesize\ttfamily unsigned int start\+\_\+tooth\+\_\+\+CRK\+\_\+\+TOOTH\+\_\+\+PER\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00187}{187}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_a8bc6e99e5b5b1814027ef2f4c2524e8f}\label{failures_8c_a8bc6e99e5b5b1814027ef2f4c2524e8f}} 
+\index{failures.c@{failures.c}!T\_TOOTH\_RAW@{T\_TOOTH\_RAW}}
+\index{T\_TOOTH\_RAW@{T\_TOOTH\_RAW}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{T\_TOOTH\_RAW}{T\_TOOTH\_RAW}}
+{\footnotesize\ttfamily unsigned long T\+\_\+\+TOOTH\+\_\+\+RAW\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00053}{53}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_a15ef7a57549da0cf7802f16dbd26487f}\label{failures_8c_a15ef7a57549da0cf7802f16dbd26487f}} 
+\index{failures.c@{failures.c}!TDC\_on\_edge@{TDC\_on\_edge}}
+\index{TDC\_on\_edge@{TDC\_on\_edge}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{TDC\_on\_edge}{TDC\_on\_edge}}
+{\footnotesize\ttfamily bool TDC\+\_\+on\+\_\+edge\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00174}{174}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_a2522b63ff5828da052d1c8b3ee9c157c}\label{failures_8c_a2522b63ff5828da052d1c8b3ee9c157c}} 
+\index{failures.c@{failures.c}!tdc\_to\_gap@{tdc\_to\_gap}}
+\index{tdc\_to\_gap@{tdc\_to\_gap}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{tdc\_to\_gap}{tdc\_to\_gap}}
+{\footnotesize\ttfamily double tdc\+\_\+to\+\_\+gap\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00041}{41}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_ac15826e516583ca9efd204606ba7083c}\label{failures_8c_ac15826e516583ca9efd204606ba7083c}} 
+\index{failures.c@{failures.c}!teeth\_count\_CAM\_CRK\_synch@{teeth\_count\_CAM\_CRK\_synch}}
+\index{teeth\_count\_CAM\_CRK\_synch@{teeth\_count\_CAM\_CRK\_synch}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{teeth\_count\_CAM\_CRK\_synch}{teeth\_count\_CAM\_CRK\_synch}}
+{\footnotesize\ttfamily unsigned int teeth\+\_\+count\+\_\+\+CAM\+\_\+\+CRK\+\_\+synch\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00060}{60}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_a4bbd4ffdc69f028b74e8af0c54dd9ee0}\label{failures_8c_a4bbd4ffdc69f028b74e8af0c54dd9ee0}} 
+\index{failures.c@{failures.c}!teeth\_count\_CAM\_CRK\_synch\_ahead@{teeth\_count\_CAM\_CRK\_synch\_ahead}}
+\index{teeth\_count\_CAM\_CRK\_synch\_ahead@{teeth\_count\_CAM\_CRK\_synch\_ahead}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{teeth\_count\_CAM\_CRK\_synch\_ahead}{teeth\_count\_CAM\_CRK\_synch\_ahead}}
+{\footnotesize\ttfamily unsigned int teeth\+\_\+count\+\_\+\+CAM\+\_\+\+CRK\+\_\+synch\+\_\+ahead\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00061}{61}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_ab187efc17c279156d2fbe40791bd1182}\label{failures_8c_ab187efc17c279156d2fbe40791bd1182}} 
+\index{failures.c@{failures.c}!teeth\_count\_CRK@{teeth\_count\_CRK}}
+\index{teeth\_count\_CRK@{teeth\_count\_CRK}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{teeth\_count\_CRK}{teeth\_count\_CRK}}
+{\footnotesize\ttfamily unsigned int teeth\+\_\+count\+\_\+\+CRK\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00059}{59}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_a9979f80ab833421bad2e664b9f7d91d4}\label{failures_8c_a9979f80ab833421bad2e664b9f7d91d4}} 
+\index{failures.c@{failures.c}!teeth\_count\_overall@{teeth\_count\_overall}}
+\index{teeth\_count\_overall@{teeth\_count\_overall}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{teeth\_count\_overall}{teeth\_count\_overall}}
+{\footnotesize\ttfamily int teeth\+\_\+count\+\_\+overall\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00120}{120}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_a0afd59a7cbe5941cd4735019f3431de4}\label{failures_8c_a0afd59a7cbe5941cd4735019f3431de4}} 
+\index{failures.c@{failures.c}!teeth\_counter\_CRK\_GAP\_NOT\_DET@{teeth\_counter\_CRK\_GAP\_NOT\_DET}}
+\index{teeth\_counter\_CRK\_GAP\_NOT\_DET@{teeth\_counter\_CRK\_GAP\_NOT\_DET}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{teeth\_counter\_CRK\_GAP\_NOT\_DET}{teeth\_counter\_CRK\_GAP\_NOT\_DET}}
+{\footnotesize\ttfamily unsigned int teeth\+\_\+counter\+\_\+\+CRK\+\_\+\+GAP\+\_\+\+NOT\+\_\+\+DET\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00218}{218}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_a39121f24b916d4e2ea6e7f897bafe4a8}\label{failures_8c_a39121f24b916d4e2ea6e7f897bafe4a8}} 
+\index{failures.c@{failures.c}!teeth\_counter\_CRK\_RUN\_OUT@{teeth\_counter\_CRK\_RUN\_OUT}}
+\index{teeth\_counter\_CRK\_RUN\_OUT@{teeth\_counter\_CRK\_RUN\_OUT}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{teeth\_counter\_CRK\_RUN\_OUT}{teeth\_counter\_CRK\_RUN\_OUT}}
+{\footnotesize\ttfamily unsigned int teeth\+\_\+counter\+\_\+\+CRK\+\_\+\+RUN\+\_\+\+OUT\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00166}{166}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_a590ad1bd7a49f0ea3fb90f8e24997bb1}\label{failures_8c_a590ad1bd7a49f0ea3fb90f8e24997bb1}} 
+\index{failures.c@{failures.c}!teeth\_counter\_CRK\_TOOTH\_OFF@{teeth\_counter\_CRK\_TOOTH\_OFF}}
+\index{teeth\_counter\_CRK\_TOOTH\_OFF@{teeth\_counter\_CRK\_TOOTH\_OFF}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{teeth\_counter\_CRK\_TOOTH\_OFF}{teeth\_counter\_CRK\_TOOTH\_OFF}}
+{\footnotesize\ttfamily unsigned int teeth\+\_\+counter\+\_\+\+CRK\+\_\+\+TOOTH\+\_\+\+OFF\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00214}{214}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_a2068dfcf9f70475272677ad2446d6cdf}\label{failures_8c_a2068dfcf9f70475272677ad2446d6cdf}} 
+\index{failures.c@{failures.c}!teeth\_counter\_CRK\_TOOTH\_PER@{teeth\_counter\_CRK\_TOOTH\_PER}}
+\index{teeth\_counter\_CRK\_TOOTH\_PER@{teeth\_counter\_CRK\_TOOTH\_PER}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{teeth\_counter\_CRK\_TOOTH\_PER}{teeth\_counter\_CRK\_TOOTH\_PER}}
+{\footnotesize\ttfamily unsigned int teeth\+\_\+counter\+\_\+\+CRK\+\_\+\+TOOTH\+\_\+\+PER\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00190}{190}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_ae22dd0b559e11e340eacb7e5acea6269}\label{failures_8c_ae22dd0b559e11e340eacb7e5acea6269}} 
+\index{failures.c@{failures.c}!teeth\_counter\_SEG\_ADP\_ER\_LIM@{teeth\_counter\_SEG\_ADP\_ER\_LIM}}
+\index{teeth\_counter\_SEG\_ADP\_ER\_LIM@{teeth\_counter\_SEG\_ADP\_ER\_LIM}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{teeth\_counter\_SEG\_ADP\_ER\_LIM}{teeth\_counter\_SEG\_ADP\_ER\_LIM}}
+{\footnotesize\ttfamily unsigned int teeth\+\_\+counter\+\_\+\+SEG\+\_\+\+ADP\+\_\+\+ER\+\_\+\+LIM\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00222}{222}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_ac73a776a47669561214b6ad84a70e641}\label{failures_8c_ac73a776a47669561214b6ad84a70e641}} 
+\index{failures.c@{failures.c}!timer\_active\_CAM\_delay@{timer\_active\_CAM\_delay}}
+\index{timer\_active\_CAM\_delay@{timer\_active\_CAM\_delay}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{timer\_active\_CAM\_delay}{timer\_active\_CAM\_delay}}
+{\footnotesize\ttfamily bool timer\+\_\+active\+\_\+\+CAM\+\_\+delay\mbox{[}2\mbox{]}\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00201}{201}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_a0efa411b2fc4c7948d45abd03d6264a0}\label{failures_8c_a0efa411b2fc4c7948d45abd03d6264a0}} 
+\index{failures.c@{failures.c}!timer\_Counter\_CRK\_GAP\_NOT\_DET@{timer\_Counter\_CRK\_GAP\_NOT\_DET}}
+\index{timer\_Counter\_CRK\_GAP\_NOT\_DET@{timer\_Counter\_CRK\_GAP\_NOT\_DET}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{timer\_Counter\_CRK\_GAP\_NOT\_DET}{timer\_Counter\_CRK\_GAP\_NOT\_DET}}
+{\footnotesize\ttfamily unsigned int timer\+\_\+\+Counter\+\_\+\+CRK\+\_\+\+GAP\+\_\+\+NOT\+\_\+\+DET\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00219}{219}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_aebc1cf24310f46e5fd32d36c9b93edb5}\label{failures_8c_aebc1cf24310f46e5fd32d36c9b93edb5}} 
+\index{failures.c@{failures.c}!timer\_Counter\_SEG\_ADP\_ER\_LIM@{timer\_Counter\_SEG\_ADP\_ER\_LIM}}
+\index{timer\_Counter\_SEG\_ADP\_ER\_LIM@{timer\_Counter\_SEG\_ADP\_ER\_LIM}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{timer\_Counter\_SEG\_ADP\_ER\_LIM}{timer\_Counter\_SEG\_ADP\_ER\_LIM}}
+{\footnotesize\ttfamily unsigned int timer\+\_\+\+Counter\+\_\+\+SEG\+\_\+\+ADP\+\_\+\+ER\+\_\+\+LIM\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00223}{223}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_aa7f0f8e777321cf47da5f0dd59c5be94}\label{failures_8c_aa7f0f8e777321cf47da5f0dd59c5be94}} 
+\index{failures.c@{failures.c}!timer\_overflow\_CAM\_failure@{timer\_overflow\_CAM\_failure}}
+\index{timer\_overflow\_CAM\_failure@{timer\_overflow\_CAM\_failure}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{timer\_overflow\_CAM\_failure}{timer\_overflow\_CAM\_failure}}
+{\footnotesize\ttfamily unsigned long timer\+\_\+overflow\+\_\+\+CAM\+\_\+failure\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00161}{161}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_a7ccd9723b2e11820cc395d0b16931872}\label{failures_8c_a7ccd9723b2e11820cc395d0b16931872}} 
+\index{failures.c@{failures.c}!timer\_overflow\_CAM\_REF\_CRK@{timer\_overflow\_CAM\_REF\_CRK}}
+\index{timer\_overflow\_CAM\_REF\_CRK@{timer\_overflow\_CAM\_REF\_CRK}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{timer\_overflow\_CAM\_REF\_CRK}{timer\_overflow\_CAM\_REF\_CRK}}
+{\footnotesize\ttfamily unsigned long timer\+\_\+overflow\+\_\+\+CAM\+\_\+\+REF\+\_\+\+CRK\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00162}{162}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_aa697468758fbf1b546cd67c827d8dd84}\label{failures_8c_aa697468758fbf1b546cd67c827d8dd84}} 
+\index{failures.c@{failures.c}!timer\_overflow\_CRK@{timer\_overflow\_CRK}}
+\index{timer\_overflow\_CRK@{timer\_overflow\_CRK}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{timer\_overflow\_CRK}{timer\_overflow\_CRK}}
+{\footnotesize\ttfamily unsigned long timer\+\_\+overflow\+\_\+\+CRK\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00058}{58}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{failures_8c_ab2fec6547dc914b855112ea2d069e652}\label{failures_8c_ab2fec6547dc914b855112ea2d069e652}} 
+\index{failures.c@{failures.c}!timer\_overflow\_CRK\_failure@{timer\_overflow\_CRK\_failure}}
+\index{timer\_overflow\_CRK\_failure@{timer\_overflow\_CRK\_failure}!failures.c@{failures.c}}
+\doxysubsubsection{\texorpdfstring{timer\_overflow\_CRK\_failure}{timer\_overflow\_CRK\_failure}}
+{\footnotesize\ttfamily unsigned long timer\+\_\+overflow\+\_\+\+CRK\+\_\+failure\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00160}{160}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+

@@ -1,0 +1,256 @@
+\hypertarget{timer_8c_source}{}\doxysection{timer.\+c}
+\label{timer_8c_source}\index{Nouveau PIR/firmware/source/timer.c@{Nouveau PIR/firmware/source/timer.c}}
+\mbox{\hyperlink{timer_8c}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00001}00001 \textcolor{comment}{/*****************************************************************************/}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00002}00002 \textcolor{comment}{/* Projectname     :  ENSD-\/Jammer                                            */}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00003}00003 \textcolor{comment}{/* Programm        :  Timer                                                  */}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00004}00004 \textcolor{comment}{/* Controller      :  dsPIC33F                                               */}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00005}00005 \textcolor{comment}{/* Latest change   :  31.08.2020                                             */}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00006}00006 \textcolor{comment}{/* Author          :  Gr{\ucr}goire Chabin/Christian Ringlstetter/Thomas Pichler  */}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00007}00007 \textcolor{comment}{/*****************************************************************************/}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00008}00008 }
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00009}00009 \textcolor{comment}{// \#\#\# Basic includes \#\#\#}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00010}00010 }
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00011}00011 \textcolor{preprocessor}{    \#include "{}\mbox{\hyperlink{timer_8h}{timer.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00012}00012 }
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00013}00013 }
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00014}00014 \textcolor{comment}{// \#\#\# Variables \#\#\#}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00015}00015 }
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00016}00016     \textcolor{keyword}{extern} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} \mbox{\hyperlink{timer_8c_aa697468758fbf1b546cd67c827d8dd84}{timer\_overflow\_CRK}};}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00017}00017     \textcolor{keyword}{extern} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} \mbox{\hyperlink{timer_8c_af63272d2518e2577d29c0d278b3fa48e}{timer\_overflow\_CAM}};}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00018}00018     \textcolor{keyword}{extern} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} \mbox{\hyperlink{timer_8c_ab2fec6547dc914b855112ea2d069e652}{timer\_overflow\_CRK\_failure}};}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00019}00019     \textcolor{keyword}{extern} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} \mbox{\hyperlink{timer_8c_aa7f0f8e777321cf47da5f0dd59c5be94}{timer\_overflow\_CAM\_failure}};}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00020}00020     \textcolor{keyword}{extern} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} \mbox{\hyperlink{timer_8c_a7ccd9723b2e11820cc395d0b16931872}{timer\_overflow\_CAM\_REF\_CRK}};}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00021}00021 }
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00022}00022 \textcolor{comment}{// \#\#\# Functions \#\#\#}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00023}00023 }
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00024}00024 \textcolor{comment}{// \#\# Timer1 Init **Prescaler: 256; Communication validation** }}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00025}\mbox{\hyperlink{timer_8h_a2806444250f7a6b55ea9b3ac603a52ae}{00025}}     \textcolor{keywordtype}{void} \mbox{\hyperlink{timer_8c_a2806444250f7a6b55ea9b3ac603a52ae}{Timer1Init}}(\textcolor{keywordtype}{void})\{}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00026}00026         }
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00027}00027         \textcolor{comment}{// Aim: high timer duration}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00028}00028         \textcolor{comment}{// FCPU with PLL = 73,7 MHz}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00029}00029         \textcolor{comment}{// Fcy: 36,85 MHz}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00030}00030         \textcolor{comment}{// 36,85 Mhz/ 64 = 575,78 kHz = 1,737 {\ucr}s}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00031}00031 }
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00032}00032         T1CONbits.TON = 0;          \textcolor{comment}{// Disable Timer}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00033}00033         T1CONbits.TSIDL = 0;        \textcolor{comment}{// Continue timer operation in idle mode}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00034}00034         T1CONbits.TGATE = 0;        \textcolor{comment}{// Disable Gated Timer mode}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00035}00035         T1CONbits.TCS = 0;          \textcolor{comment}{// Select internal instruction cycle clock}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00036}00036         T1CONbits.TCKPS = 0b11;     \textcolor{comment}{// Select 1:256 Prescaler}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00037}00037         \mbox{\hyperlink{p33_f_j256_g_p710_a_8h_a4dedcb5ae32698839ce5e62aa2c3cd3b}{TMR1}} = 0x00;                \textcolor{comment}{// Clear timer register}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00038}00038         \mbox{\hyperlink{p33_f_j256_g_p710_a_8h_afe5e60f63d50631b52179004b04ecbe2}{PR1}} = 0xFD07;                \textcolor{comment}{// Load the period value(timer period: 450ms)}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00039}00039         }
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00040}00040         IPC0bits.T1IP = 0x02;       \textcolor{comment}{// Set Timer1 Interrupt Priority Level}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00041}00041         IFS0bits.T1IF = 0;          \textcolor{comment}{// Clear Timer1 Interrupt Flag}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00042}00042         IEC0bits.T1IE = 1;          \textcolor{comment}{// Enable Timer1 interrupt}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00043}00043     \}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00044}00044 }
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00045}00045     \textcolor{comment}{// \#\# Timer2 Init **Prescaler: 64; CRK Synchronization; tooth time** }}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00046}\mbox{\hyperlink{timer_8h_a21b35a563150d94b502ad806d1151473}{00046}}     \textcolor{keywordtype}{void} \mbox{\hyperlink{timer_8c_a21b35a563150d94b502ad806d1151473}{Timer2Init}}(\textcolor{keywordtype}{void})\{}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00047}00047 }
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00048}00048         \textcolor{comment}{// Aim: resolution of < 2 {\ucr}s;}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00049}00049         \textcolor{comment}{// FCPU with PLL = 73,7 MHz}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00050}00050         \textcolor{comment}{// Fcy: 36,85 MHz}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00051}00051         \textcolor{comment}{// 36,85 Mhz/ 64 = 575,78 kHz = 1,7367744624683038660599534544444{\ucr}s}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00052}00052         }
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00053}00053         T2CONbits.TON = 0;          \textcolor{comment}{// Disable Timer}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00054}00054         T2CONbits.TSIDL = 0;        \textcolor{comment}{// Continue timer operation in idle mode}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00055}00055         T2CONbits.TGATE = 0;        \textcolor{comment}{// Disable Gated Timer mode}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00056}00056         T2CONbits.TCS = 0;          \textcolor{comment}{// Select internal instruction cycle clock}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00057}00057         T2CONbits.TCKPS = 0b10;     \textcolor{comment}{// Select 1:64 Prescaler}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00058}00058         T2CONbits.T32 = 0;          \textcolor{comment}{// Separate timers}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00059}00059         \mbox{\hyperlink{p33_f_j256_g_p710_a_8h_ab9ba0f088efcfb18f08b7d2490486b98}{TMR2}} = 0x00;                \textcolor{comment}{// Clear timer register}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00060}00060         \mbox{\hyperlink{p33_f_j256_g_p710_a_8h_aa21e0868ca8fce26c238b15c661b42ab}{PR2}} = 0xFFFF;                \textcolor{comment}{// Load the period value}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00061}00061         }
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00062}00062         IPC1bits.T2IP = 0x02;       \textcolor{comment}{// Set Timer2 Interrupt Priority Level}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00063}00063         IFS0bits.T2IF = 0;          \textcolor{comment}{// Clear Timer2 Interrupt Flag}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00064}00064         IEC0bits.T2IE = 1;          \textcolor{comment}{// Enable Timer2 interrupt}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00065}00065         T2CONbits.TON = 1;          \textcolor{comment}{// Start Timer}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00066}00066         }
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00067}00067     \}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00068}00068 }
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00069}00069 }
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00070}00070     \textcolor{comment}{// \#\# Timer3 Init **Prescaler: 256; CAM Synchronization; segment time** }}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00071}\mbox{\hyperlink{timer_8h_ae66273f67cb40083e80b4dcb297744e7}{00071}}     \textcolor{keywordtype}{void} \mbox{\hyperlink{timer_8c_ae66273f67cb40083e80b4dcb297744e7}{Timer3Init}}(\textcolor{keywordtype}{void})\{}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00072}00072         }
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00073}00073         \textcolor{comment}{// Aim: high timer duration}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00074}00074         \textcolor{comment}{// FCPU with PLL = 73,7 MHz}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00075}00075         \textcolor{comment}{// Fcy: 36,85 MHz}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00076}00076         \textcolor{comment}{// 36,85 Mhz/ 256 = 143,95 kHz = 6.946 {\ucr}s}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00077}00077 }
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00078}00078         T3CONbits.TON = 0;          \textcolor{comment}{// Disable Timer}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00079}00079         T3CONbits.TSIDL = 0;        \textcolor{comment}{// Continue timer operation in idle mode}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00080}00080         T3CONbits.TGATE = 0;        \textcolor{comment}{// Disable Gated Timer mode}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00081}00081         T3CONbits.TCS = 0;          \textcolor{comment}{// Select internal instruction cycle clock}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00082}00082         T3CONbits.TCKPS = 0b11;     \textcolor{comment}{// Select 1:256 Prescaler}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00083}00083         \mbox{\hyperlink{p33_f_j256_g_p710_a_8h_a443f07a9b884886d9b82597d02e594b7}{TMR3}} = 0x00;                \textcolor{comment}{// Clear timer register}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00084}00084         \mbox{\hyperlink{p33_f_j256_g_p710_a_8h_a99c08ad10f3c1087a0222ea18a88c67a}{PR3}} = 0xFFFF;                \textcolor{comment}{// Load the period value}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00085}00085         }
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00086}00086         IPC2bits.T3IP = 0x02;       \textcolor{comment}{// Set Timer3 Interrupt Priority Level}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00087}00087         IFS0bits.T3IF = 0;          \textcolor{comment}{// Clear Timer3 Interrupt Flag}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00088}00088         IEC0bits.T3IE = 1;          \textcolor{comment}{// Enable Timer3 interrupt}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00089}00089         T3CONbits.TON = 1;          \textcolor{comment}{// Start Timer}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00090}00090 }
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00091}00091     \}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00092}00092 }
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00093}00093     \textcolor{comment}{// \#\# Timer4 Init **Prescaler: 64; CRK\_NO\_SIG/CAM\_delay**  }}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00094}\mbox{\hyperlink{timer_8h_ad85c1183ed955a75f7f2cd6eccce16d8}{00094}}     \textcolor{keywordtype}{void} \mbox{\hyperlink{timer_8c_ad85c1183ed955a75f7f2cd6eccce16d8}{Timer4Init}}(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00095}00095     \{}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00096}00096         \textcolor{comment}{// Aim: resolution of < 2 {\ucr}s;}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00097}00097         \textcolor{comment}{// FCPU with PLL = 73,7 MHz}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00098}00098         \textcolor{comment}{// Fcy: 36,85 MHz}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00099}00099         \textcolor{comment}{// 36,85 Mhz/ 64 = 575,78 kHz = 1,737 {\ucr}s}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00100}00100 }
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00101}00101         T4CONbits.TON = 0;          \textcolor{comment}{// Disable Timer}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00102}00102         T4CONbits.TSIDL = 0;        \textcolor{comment}{// Continue timer operation in idle mode}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00103}00103         T4CONbits.TGATE = 0;        \textcolor{comment}{// Disable Gated Timer mode}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00104}00104         T4CONbits.TCS = 0;          \textcolor{comment}{// Select internal instruction cycle clock}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00105}00105         T4CONbits.TCKPS = 0b10;     \textcolor{comment}{// Select 1:64 Prescaler}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00106}00106         \mbox{\hyperlink{p33_f_j256_g_p710_a_8h_acebd208546d34896c1904ab4c7c5ef27}{TMR4}} = 0x00;                \textcolor{comment}{// Clear timer register}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00107}00107         \mbox{\hyperlink{p33_f_j256_g_p710_a_8h_a2de23c7d2e0026bba8482c12df49780a}{PR4}} = 0xFFFF;                \textcolor{comment}{// Load the period value}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00108}00108         }
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00109}00109         IPC6bits.T4IP = 0x02;       \textcolor{comment}{// Set Timer4 Interrupt Priority Level}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00110}00110         IFS1bits.T4IF = 0;          \textcolor{comment}{// Clear Timer4 Interrupt Flag}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00111}00111         IEC1bits.T4IE = 1;          \textcolor{comment}{// Enable Timer4 interrupt}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00112}00112     \}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00113}00113 }
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00114}00114     \textcolor{comment}{// \#\# Timer5 Init **CAM Prescaler: 256; CAM\_NO\_SIG**}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00115}\mbox{\hyperlink{timer_8h_a94de93121cb4149703f5fac5046668b3}{00115}}     \textcolor{keywordtype}{void} \mbox{\hyperlink{timer_8c_a94de93121cb4149703f5fac5046668b3}{Timer5Init}}(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00116}00116     \{}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00117}00117         \textcolor{comment}{// Aim: high timer duration}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00118}00118         \textcolor{comment}{// FCPU with PLL = 73,7 MHz}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00119}00119         \textcolor{comment}{// Fcy: 36,85 MHz}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00120}00120         \textcolor{comment}{// 36,85 Mhz/ 256 = 143,95 kHz = 6.946 {\ucr}s}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00121}00121 }
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00122}00122         T5CONbits.TON = 0;          \textcolor{comment}{// Disable Timer}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00123}00123         T5CONbits.TSIDL = 0;        \textcolor{comment}{// Continue timer operation in idle mode}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00124}00124         T5CONbits.TGATE = 0;        \textcolor{comment}{// Disable Gated Timer mode}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00125}00125         T5CONbits.TCS = 0;          \textcolor{comment}{// Select internal instruction cycle clock}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00126}00126         T5CONbits.TCKPS = 0b11;     \textcolor{comment}{// Select 1:256 Prescaler}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00127}00127         \mbox{\hyperlink{p33_f_j256_g_p710_a_8h_acf9da0ba0e15ec19546e94d16787d5f5}{TMR5}} = 0x00;                \textcolor{comment}{// Clear timer register}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00128}00128         \mbox{\hyperlink{p33_f_j256_g_p710_a_8h_a24740be3b4a0a2369e2f5495cc64df37}{PR5}} = 0xFFFF;                \textcolor{comment}{// Load the period value}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00129}00129         }
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00130}00130         IPC7bits.T5IP = 0x02;       \textcolor{comment}{// Set Timer5 Interrupt Priority Level}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00131}00131         IFS1bits.T5IF = 0;          \textcolor{comment}{// Clear Timer5 Interrupt Flag}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00132}00132         IEC1bits.T5IE = 1;          \textcolor{comment}{// Enable Timer5 interrupt}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00133}00133     \}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00134}00134     }
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00135}00135     \textcolor{comment}{// \#\# Timer6 Init **Prescaler: 8; CAM\_PER/CRK\_TOOTH\_PER(start-\/value)//CRK\_SHO\_LEVEL pulse duration**}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00136}\mbox{\hyperlink{timer_8h_a8535789e70af446f607d51b00faa8e74}{00136}}     \textcolor{keywordtype}{void} \mbox{\hyperlink{timer_8c_a8535789e70af446f607d51b00faa8e74}{Timer6Init}}(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00137}00137     \{}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00138}00138         \textcolor{comment}{// Aim: Timer ticks < 1 {\ucr}s}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00139}00139         \textcolor{comment}{// FCPU with PLL = 73,7 MHz}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00140}00140         \textcolor{comment}{// Fcy: 36,85 MHz}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00141}00141         \textcolor{comment}{// 36,85 Mhz/ 8 = 4606 kHz = 0.217 {\ucr}s}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00142}00142 }
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00143}00143         T6CONbits.TON = 0;          \textcolor{comment}{// Disable Timer}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00144}00144         T6CONbits.TSIDL = 0;        \textcolor{comment}{// Continue timer operation in idle mode}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00145}00145         T6CONbits.TGATE = 0;        \textcolor{comment}{// Disable Gated Timer mode}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00146}00146         T6CONbits.TCS = 0;          \textcolor{comment}{// Select internal instruction cycle clock}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00147}00147         T6CONbits.TCKPS = 0b01;     \textcolor{comment}{// Select 1:8 Prescaler}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00148}00148         \mbox{\hyperlink{p33_f_j256_g_p710_a_8h_ad25236deeccf5b917fe8957db869fc25}{TMR6}} = 0x00;                \textcolor{comment}{// Clear timer register}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00149}00149         \mbox{\hyperlink{p33_f_j256_g_p710_a_8h_a7baafa1fda2fbf3a6fb69ee50c478ec6}{PR6}} = 0xFFFF;                \textcolor{comment}{// Load the period value}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00150}00150         }
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00151}00151         IPC11bits.T6IP = 0x04;      \textcolor{comment}{// Set Timer6 Interrupt Priority Level}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00152}00152         IFS2bits.T6IF = 0;          \textcolor{comment}{// Clear Timer6 Interrupt Flag}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00153}00153         IEC2bits.T6IE = 1;          \textcolor{comment}{// Enable Timer6 interrupt}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00154}00154     \}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00155}00155 }
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00156}00156     \textcolor{comment}{// \#\# Timer7 Init **Prescaler: 8; CAM\_PER/CRK\_TOOTH\_PER(pulse duration)**}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00157}\mbox{\hyperlink{timer_8h_ac8159d78a79df090ed27f08dc4b1ade7}{00157}}     \textcolor{keywordtype}{void} \mbox{\hyperlink{timer_8c_ac8159d78a79df090ed27f08dc4b1ade7}{Timer7Init}}(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00158}00158     \{}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00159}00159         \textcolor{comment}{// Aim: Timer ticks < 1 {\ucr}s}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00160}00160         \textcolor{comment}{// FCPU with PLL = 73,7 MHz}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00161}00161         \textcolor{comment}{// Fcy: 36,85 MHz}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00162}00162         \textcolor{comment}{// 36,85 Mhz/ 8 = 4606 kHz = 0.217 {\ucr}s}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00163}00163 }
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00164}00164         T7CONbits.TON = 0;          \textcolor{comment}{// Disable Timer}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00165}00165         T7CONbits.TSIDL = 0;        \textcolor{comment}{// Continue timer operation in idle mode}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00166}00166         T7CONbits.TGATE = 0;        \textcolor{comment}{// Disable Gated Timer mode}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00167}00167         T7CONbits.TCS = 0;          \textcolor{comment}{// Select internal instruction cycle clock}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00168}00168         T7CONbits.TCKPS = 0b01;     \textcolor{comment}{// Select 1:8 Prescaler}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00169}00169         \mbox{\hyperlink{p33_f_j256_g_p710_a_8h_aef967221366734fe4ea85170350c9e23}{TMR7}} = 0x00;                \textcolor{comment}{// Clear timer register}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00170}00170         \mbox{\hyperlink{p33_f_j256_g_p710_a_8h_a358042ac66961b04c718ccd323d1ccf7}{PR7}} = 0x002E;                \textcolor{comment}{// Load the period value //5us 0x0017 is too low for pulse recognition, double value}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00171}00171         }
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00172}00172         IPC12bits.T7IP = 0x04;      \textcolor{comment}{// Set Timer7 Interrupt Priority Level}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00173}00173         IFS3bits.T7IF = 0;          \textcolor{comment}{// Clear Timer7 Interrupt Flag}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00174}00174         IEC3bits.T7IE = 1;          \textcolor{comment}{// Enable Timer7 interrupt}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00175}00175     \}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00176}00176 }
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00177}00177     \textcolor{comment}{// \#\# Timer8 Init **Prescaler: 64; CRK\_RUN\_OUT/CAM\_delay**}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00178}\mbox{\hyperlink{timer_8h_a51d0e1103eb944c46ccc15d486804638}{00178}}     \textcolor{keywordtype}{void} \mbox{\hyperlink{timer_8c_a51d0e1103eb944c46ccc15d486804638}{Timer8Init}}(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00179}00179     \{}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00180}00180         \textcolor{comment}{// FCPU with PLL = 73,7 MHz}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00181}00181         \textcolor{comment}{// Fcy: 36,85 MHz}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00182}00182         \textcolor{comment}{// 36,85 Mhz/ 64 = 575,78 kHz = 1.73 {\ucr}s}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00183}00183         T8CONbits.TON = 0;          \textcolor{comment}{// Disable Timer}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00184}00184         T8CONbits.TSIDL = 0;        \textcolor{comment}{// Continue timer operation in idle mode}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00185}00185         T8CONbits.TGATE = 0;        \textcolor{comment}{// Disable Gated Timer mode}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00186}00186         T8CONbits.TCS = 0;          \textcolor{comment}{// Select internal instruction cycle clock}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00187}00187         T8CONbits.TCKPS = 0b10;     \textcolor{comment}{// Select 1:64 Prescaler}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00188}00188         \mbox{\hyperlink{p33_f_j256_g_p710_a_8h_aadb469ee183cde61e8cd557de2559bb6}{TMR8}} = 0x00;                \textcolor{comment}{// Clear timer register}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00189}00189         \mbox{\hyperlink{p33_f_j256_g_p710_a_8h_a091f7a4f20332abe80463f72a67a3690}{PR8}} = 0xFFFF;                \textcolor{comment}{// Load the period value}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00190}00190         }
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00191}00191         IPC12bits.T8IP = 0x02;      \textcolor{comment}{// Set Timer8 Interrupt Priority Level}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00192}00192         IFS3bits.T8IF = 0;          \textcolor{comment}{// Clear Timer8 Interrupt Flag}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00193}00193         IEC3bits.T8IE = 1;          \textcolor{comment}{// Enable Timer8 interrupt}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00194}00194     \}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00195}00195 }
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00196}00196     \textcolor{comment}{// \#\# Timer9 Init **Prescaler: 64; CAM\_delay**}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00197}\mbox{\hyperlink{timer_8h_ae26fa840585daa71d05e65dfcc9d45cb}{00197}}     \textcolor{keywordtype}{void} \mbox{\hyperlink{timer_8c_ae26fa840585daa71d05e65dfcc9d45cb}{Timer9Init}}(\textcolor{keywordtype}{void})\{}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00198}00198         }
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00199}00199         \textcolor{comment}{// Aim: high timer duration}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00200}00200         \textcolor{comment}{// FCPU with PLL = 73,7 MHz}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00201}00201         \textcolor{comment}{// Fcy: 36,85 MHz}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00202}00202         \textcolor{comment}{// 36,85 Mhz/ 64 = 575,78 kHz = 1.73 {\ucr}s}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00203}00203 }
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00204}00204         T9CONbits.TON = 0;          \textcolor{comment}{// Disable Timer}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00205}00205         T9CONbits.TSIDL = 0;        \textcolor{comment}{// Continue timer operation in idle mode}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00206}00206         T9CONbits.TGATE = 0;        \textcolor{comment}{// Disable Gated Timer mode}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00207}00207         T9CONbits.TCS = 0;          \textcolor{comment}{// Select internal instruction cycle clock}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00208}00208         T9CONbits.TCKPS = 0b10;     \textcolor{comment}{// Select 1:64 Prescaler}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00209}00209         \mbox{\hyperlink{p33_f_j256_g_p710_a_8h_aff058313e78c6ccf26fc95fd9f5a8d7f}{TMR9}} = 0x00;                \textcolor{comment}{// Clear timer register}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00210}00210         \mbox{\hyperlink{p33_f_j256_g_p710_a_8h_ab51d830c63d67781dc44b6dad5f9a708}{PR9}} = 0xFFFF;                \textcolor{comment}{// Load the period value}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00211}00211         }
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00212}00212         IPC13bits.T9IP = 0x02;      \textcolor{comment}{// Set Timer9 Interrupt Priority Level}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00213}00213         IFS3bits.T9IF = 0;          \textcolor{comment}{// Clear Timer9 Interrupt Flag}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00214}00214         IEC3bits.T9IE = 1;          \textcolor{comment}{// Enable Timer9 interrupt}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00215}00215     \}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00216}00216 }
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00217}00217     \textcolor{comment}{//\#\# Timer2Reset **Prescaler: 64; CRK Synchronization; tooth time** }}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00218}\mbox{\hyperlink{timer_8h_ab2bfce2c8ade4ae64b3cda0bc458e0ca}{00218}}     \textcolor{keywordtype}{void} \mbox{\hyperlink{timer_8c_ab2bfce2c8ade4ae64b3cda0bc458e0ca}{Timer2Reset}}(\textcolor{keywordtype}{void})\{}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00219}00219         \mbox{\hyperlink{p33_f_j256_g_p710_a_8h_ab9ba0f088efcfb18f08b7d2490486b98}{TMR2}} = 0x00;                \textcolor{comment}{// Reset TMR2}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00220}00220         \mbox{\hyperlink{timer_8c_aa697468758fbf1b546cd67c827d8dd84}{timer\_overflow\_CRK}} = 0;}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00221}00221     \}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00222}00222     }
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00223}00223 }
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00224}00224     \textcolor{comment}{//\#\# Timer3Reset **Prescaler: 256; CAM Synchronization; segment time** }}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00225}\mbox{\hyperlink{timer_8h_ada1771b555742f3998e491ceb0892ded}{00225}}     \textcolor{keywordtype}{void} \mbox{\hyperlink{timer_8c_ada1771b555742f3998e491ceb0892ded}{Timer3Reset}}(\textcolor{keywordtype}{void})\{}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00226}00226         \mbox{\hyperlink{p33_f_j256_g_p710_a_8h_a443f07a9b884886d9b82597d02e594b7}{TMR3}} = 0x00;                \textcolor{comment}{// Reset TMR3}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00227}00227         \mbox{\hyperlink{timer_8c_af63272d2518e2577d29c0d278b3fa48e}{timer\_overflow\_CAM}} = 0;}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00228}00228     \}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00229}00229 }
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00230}00230     \textcolor{comment}{//\#\# Timer4Reset **Prescaler: 64; CRK\_NO\_SIG/CAM\_delay** }}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00231}\mbox{\hyperlink{timer_8h_a148ff919643c880d9c04ee570e36b152}{00231}}     \textcolor{keywordtype}{void} \mbox{\hyperlink{timer_8c_a148ff919643c880d9c04ee570e36b152}{Timer4Reset}}(\textcolor{keywordtype}{void})\{}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00232}00232         \mbox{\hyperlink{p33_f_j256_g_p710_a_8h_acebd208546d34896c1904ab4c7c5ef27}{TMR4}} = 0x00;                \textcolor{comment}{// Reset TMR4}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00233}00233         \mbox{\hyperlink{timer_8c_ab2fec6547dc914b855112ea2d069e652}{timer\_overflow\_CRK\_failure}} = 0;}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00234}00234     \}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00235}00235 }
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00236}00236     \textcolor{comment}{//\#\# Timer5Reset **CAM Prescaler: 256; CAM\_NO\_SIG** }}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00237}\mbox{\hyperlink{timer_8h_af597d86edcd0db594fbbab5b5ad16b01}{00237}}     \textcolor{keywordtype}{void} \mbox{\hyperlink{timer_8c_af597d86edcd0db594fbbab5b5ad16b01}{Timer5Reset}}(\textcolor{keywordtype}{void})\{}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00238}00238         \mbox{\hyperlink{p33_f_j256_g_p710_a_8h_acf9da0ba0e15ec19546e94d16787d5f5}{TMR5}} = 0x00;                \textcolor{comment}{// Reset TMR5}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00239}00239         \mbox{\hyperlink{timer_8c_aa7f0f8e777321cf47da5f0dd59c5be94}{timer\_overflow\_CAM\_failure}} = 0;}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00240}00240     \}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00241}00241 }
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00242}00242     \textcolor{comment}{//\#\# Timer9Reset **Prescaler: 64; CAM\_delay** }}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00243}\mbox{\hyperlink{timer_8h_a066336f3fbf526e9501abbc7874b29fc}{00243}}     \textcolor{keywordtype}{void} \mbox{\hyperlink{timer_8c_a066336f3fbf526e9501abbc7874b29fc}{Timer9Reset}}(\textcolor{keywordtype}{void})\{}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00244}00244         \mbox{\hyperlink{p33_f_j256_g_p710_a_8h_aff058313e78c6ccf26fc95fd9f5a8d7f}{TMR9}} = 0x00;                \textcolor{comment}{// Reset TMR9}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00245}00245         \mbox{\hyperlink{timer_8c_a7ccd9723b2e11820cc395d0b16931872}{timer\_overflow\_CAM\_REF\_CRK}} = 0;}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00246}00246     \}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00247}00247 }
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00248}00248 }
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00249}00249 \textcolor{comment}{/*****************************************************************************/}}
+\DoxyCodeLine{\Hypertarget{timer_8c_source_l00250}00250 \textcolor{comment}{/*****************************************************************************/}}
+
+\end{DoxyCode}
