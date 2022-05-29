@@ -288,6 +288,9 @@ unsigned int active_CAM_edges_counter[2] =
 //** SC_CAM_CRK **
 unsigned int sc_type_SC_CAM_CRK = 0;
 
+//**Signal recording of CRK and CAM**
+volatile bool should_record;
+
 //***************** USART ********************
 //** Receive **
 int char_counter = 0;
@@ -351,6 +354,15 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 	{
 		CRK_signal = true; // Set actual signal level
 
+        if (should_record)
+        {
+            bool is_crk_buffer_full = save_crk(GetTimesamp(), CRK_signal);
+            if (is_crk_buffer_full) {
+                should_record = false;
+                // Should send CRK and CAM signals if not already sending
+            }
+        }
+
 		if (failure_active == false) // Set CRK-output
 		{
 			output_CRK_no_failure();
@@ -374,6 +386,15 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 	if (GPIO_Pin == 9) //## Capture Event falling edge --CRK--
 	{
 		CRK_signal = false; // Set actual signal level
+
+		if (should_record)
+        {
+            bool is_crk_buffer_full = save_crk(GetTimesamp(), CRK_signal);
+            if (is_crk_buffer_full) {
+                should_record = false;
+                // Should send CRK and CAM signals if not already sending
+            }
+        }
 
 		if (failure_active == false) // Set CRK-output
 		{
@@ -403,6 +424,15 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 
 		CAM_signal[0] = true; // Set actual signal level
 
+		if (should_record)
+        {
+            bool is_cam_buffer_full = save_cam(GetTimesamp(), CAM_signal[0]);
+            if (is_cam_buffer_full) {
+                should_record = false;
+                // Should send CRK and CAM signals if not already sending
+            }
+        }
+
 		output_CAM(failure_identify, 0); // CAM1 Output
 
 		if (configuration_complete == true)
@@ -415,6 +445,15 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 	if (GPIO_Pin == 11)	//## Capture Event falling edge --CAM1--
 	{
 		CAM_signal[0] = false;	// Set actual signal level
+
+		if (should_record)
+        {
+            bool is_cam_buffer_full = save_cam(GetTimesamp(), CAM_signal[0]);
+            if (is_cam_buffer_full) {
+                should_record = false;
+                // Should send CRK and CAM signals if not already sending
+            }
+        }
 
 		TIM2_Reset();
 
