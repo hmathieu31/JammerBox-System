@@ -29,15 +29,13 @@
 /* USER CODE BEGIN Includes */
 // ### Standard includes ###
 #include <stdbool.h>
-//#include "stm32f1xx_hal_gpio.h"
-
 // ### Software includes ###
 
-#include "../../JammerBox_Source/header/failures.h"
-#include "../../JammerBox_Source/header/synchronization.h"
-#include "../../JammerBox_Source/header/system_configuration.h"
-#include "../../JammerBox_Source/header/timer.h"
-#include "../../JammerBox_Source/header/usart_soft.h"
+#include "failures.h"
+#include "synchronization.h"
+#include "system_configuration.h"
+#include "timer.h"
+#include "usart_soft.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
