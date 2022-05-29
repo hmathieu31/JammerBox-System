@@ -4,15 +4,12 @@ const bp = require("body-parser");
 const cors = require("cors");
 const { PythonShell } = require("python-shell");
 const fs = require("fs");
+const IP = require("../interface-web/src/RaspiProp.json")["IP_ADDRESS"];
 
-const allowedOrigins = [
-  "http://localhost:3000",
-  "http://192.168.1.92:3000",
-  "http://172.20.10.9:3000",
-];
+const allowedOrigins = ["http://" + IP + ":3000"];
 
 //Has to be absolute path!
-const historicPath = "../interface-web/src/historicData.json";
+const historicPath = "./interface-web/src/historicData.json";
 
 //Configuring CORS
 app.use(
@@ -53,6 +50,7 @@ app.post("/run", (req, res) => {
     var json;
     fs.readFile(historicPath, function (err, data) {
       json = JSON.parse(data);
+      console.log(json);
       var objectId = Object.keys(json).length + 1;
       const date = new Date();
       json["Test " + objectId] = {
@@ -173,7 +171,7 @@ app.listen(8080, () => {
 
 function runPythonScript(params) {
   PythonShell.run(
-    "../USART_Script.py",
+    "./USART_Script.py", //Maybe has to be absolute too!!
     { args: params },
     function (err, results) {
       if (err) throw err;

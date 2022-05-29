@@ -5,14 +5,16 @@ import ParameterPopup from "./ParameterPopup";
 import React from "react";
 import Modal from "react-modal";
 import { Provider as AlertProvider } from "react-alert";
-import AlertTemplate from "react-alert-template-basic";
+import AlertTemplate from "../components/alertTemplate";
 import { withAlert } from "react-alert";
+import RaspiProp from "../RaspiProp.json";
 
 const options = {
   position: "bottom center",
   timeout: 5000,
   offset: "30px",
   transition: "scale",
+  type: "error",
 };
 
 class ButtonList extends React.Component {
@@ -43,7 +45,8 @@ class ButtonList extends React.Component {
   };
 
   sendData = (jsonData) => {
-    fetch("http://localhost:8080/run", {
+    console.log(jsonData);
+    fetch("http://" + RaspiProp["IP_ADDRESS"] + ":8080/run", {
       method: "POST",
       mode: "cors",
       headers: { "Content-type": "application/json" },
@@ -78,7 +81,7 @@ class ButtonList extends React.Component {
     this.props.alert.show("Jamming successfully started");
 
     console.log("Value after sending test parameters");
-    console.log(this.valueSelect);
+    console.log(this.state.valueSelect);
   };
 
   directRunTest = (data) => {
@@ -135,8 +138,11 @@ class ButtonList extends React.Component {
     );
   }
   render() {
-    const alert = this.props.alert;
-    return <div>{this.props.buttonList.map(this.makeButton)}</div>;
+    return (
+      <div className="button-list-div">
+        {this.props.buttonList.map(this.makeButton)}
+      </div>
+    );
   }
 }
 
