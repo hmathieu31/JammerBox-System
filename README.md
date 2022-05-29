@@ -28,11 +28,8 @@ PIR Project
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
+    <li><a href="#functionalities">Functionalities</a></li>
     <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
 
@@ -177,37 +174,32 @@ Each fault has a replay button, replaying the jammering with the same characteri
 
 ### Configuration
 
-When the “Upload config” button is pressed, a window will open for searching in the user computer a JSON file with the Jammer Box configuration. Once this file is uploaded, the user can choose to configure the CAM or the CRK separately. With the reset button, either one of these configurations can be erased.
+When the “Upload config” button is pressed, a window will open for searching in the user computer a JSON file with the Jammer Box configuration. For example:
+
+```JSON
+{
+  "NumOfTeeth": 60,
+  "NumOfGap": 1,
+  "NumOfTeethInGap": 2,
+  "Tdc0": 87.75,
+  "FirstErSegAngle": 42,
+  "NumOfCylinder": 4,
+  "CrkSensorType": "c",
+  "Cam0NumOfEdges": 2,
+  "Cam0Active_edge": "b",
+  "Cam0SensorType": "c",
+  "Cam0FilterInMicroSec": 30,
+  "Cam0EdgePos": 0.333
+}
+```
+
+
+
+Once this file is uploaded, the user can choose to configure the CAM or the CRK separately. With the reset button, either one of these configurations can be erased.
 
 ### Start recording
 
-When pressed, it starts recording the signals from the Jammer Box and saving them in file for further analysis.
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-<!-- ROADMAP -->
-
-## Roadmap
-
-- [x] Add Changelog
-- [x] Add back to top links
-- [ ] Add Additional Templates w/ Examples
-- [ ] Add "components" document to easily copy & paste sections of the readme
-- [ ] Multi-language Support
-  - [ ] Chinese
-  - [ ] Spanish
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-<!-- CONTRIBUTING -->
-
-## Contributing
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-<!-- LICENSE -->
-
-## License
+When pressed, it starts recording and saving in file the signals from the Jammer Box for further analysis.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -215,35 +207,14 @@ When pressed, it starts recording the signals from the Jammer Box and saving the
 
 ## Contact
 
-Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
+- Aubut, Guillaume - aubut@insa-toulouse.fr
+- Mancinelli, Alejo - mancinel@insa-toulouse.fr
+- Mathieu, Hugo - hmathieu@insa-toulouse.fr
+- Mouton, Viktor Adrian - vmouton@insa-toulouse.fr
+- Omre, Erik Semb - omre@insa-toulouse.fr
+- Pastor, Emmanuel - e_pastor@insa-toulouse.fr
+- Sixt, Romain - sixt@insa-toulouse.fr
 
-Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-<!-- ACKNOWLEDGMENTS -->
-
-## Acknowledgments
-
-Use this space to list resources you find helpful and would like to give credit to. I've included a few of my favorites to kick things off!
-
-- [Choose an Open Source License](https://choosealicense.com)
+Project Link: [https://github.com/hmathieu-insat/PIR](https://github.com/hmathieu-insat/PIR)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
-
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-
-[contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
-[contributors-url]: https://github.com/othneildrew/Best-README-Template/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=for-the-badge
-[forks-url]: https://github.com/othneildrew/Best-README-Template/network/members
-[stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=for-the-badge
-[stars-url]: https://github.com/othneildrew/Best-README-Template/stargazers
-[issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=for-the-badge
-[issues-url]: https://github.com/othneildrew/Best-README-Template/issues
-[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
-[license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/othneildrew
-[product-screenshot]: images/screenshot.png
