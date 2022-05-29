@@ -1,8 +1,0 @@
-<map id="Stalling_detection_CAM" name="Stalling_detection_CAM">
-<area shape="rect" id="node1" title=" " alt="" coords="5,107,167,133"/>
-<area shape="rect" id="node2" href="$failures_8c.html#a494682d906c6e4e666f46a15c2aed5eb" title=" " alt="" coords="230,5,327,32"/>
-<area shape="rect" id="node3" href="$synchronization_8c.html#abde77a3d46373c211c5ed2d5f97af994" title=" " alt="" coords="215,56,343,83"/>
-<area shape="rect" id="node4" href="$timer_8c.html#ada1771b555742f3998e491ceb0892ded" title=" " alt="" coords="231,107,326,133"/>
-<area shape="rect" id="node5" href="$timer_8c.html#af597d86edcd0db594fbbab5b5ad16b01" title=" " alt="" coords="231,157,326,184"/>
-<area shape="rect" id="node6" href="$uart_8c.html#af71719c2f6a621903fd9eb77473b5eb5" title=" " alt="" coords="233,208,324,235"/>
-</map>
