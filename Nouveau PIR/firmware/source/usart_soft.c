@@ -804,7 +804,7 @@ void USART_ProcessMessage(void)
 				communication_active = true;
 				communication_ready = true;
 
-				SYStick->CTRL |= ~SysTick_CTRL_ENABLE
+				SYStick->CTRL &= ~(1) //disable systick
 				uint8_t msg11 = message[11];
 				HAL_USART_Transmit_IT(&husart1, &msg11, 1);
 			}

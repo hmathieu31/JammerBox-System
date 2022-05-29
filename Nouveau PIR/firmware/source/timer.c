@@ -87,7 +87,7 @@ void SysTickInit(void)
 	// 36,85 Mhz/ 64 = 575,78 kHz = 1.73 µs
 
 	// Disable timer
-	SysTick->CTRL &= ~SysTick_CTRL_ENABLE;
+	SysTick->CTRL &= ~1;
 	// Systick is not subject to any idle mode
 	SysTick->VAL = (2 ^ 24) - 1; // Clear Systick count (Systick is count down and on 24 bits)
 	// Set to a 105ms period
