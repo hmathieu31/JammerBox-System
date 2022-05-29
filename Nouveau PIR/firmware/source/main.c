@@ -544,8 +544,55 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 void TIM1_PeriodElapsedCallback(void)
 {
 
-    // all overflows between the events
-    timer_overflow_CRK++;
+    if (failure_identify == 'i')
+    { // CRK_GAP_NOT_DET
+        timer_Counter_CRK_GAP_NOT_DET++;
+        switch (timer_Counter_CRK_GAP_NOT_DET)
+        {
+        case 1: {
+            HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET);
+
+            if (sensortype_CRK == 'c')
+            {
+                //§ PR8 = 0x001D;   // 29 * 1.73us = 50.1us
+                __HAL_TIM_SET_AUTORELOAD(&htim1, 3600);
+            }
+            else if (sensortype_CRK == 'h')
+            {
+                __HAL_TIM_SET_AUTORELOAD(&htim1,(T_TOOTH_RAW / 2) - 1);
+            }
+            else
+            {
+                __HAL_TIM_SET_AUTORELOAD(&htim1,1);
+            }
+            break;
+        }
+        case 2: {
+            HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
+
+            HAL_TIM_Base_Stop(&htim1);
+
+            timer_Counter_CRK_GAP_NOT_DET = 0;
+            failure_active = false;
+            break;
+        }
+        default: {
+            HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
+
+
+            HAL_TIM_Base_Stop(&htim1);
+            timer_Counter_CRK_GAP_NOT_DET = 0;
+            failure_active = false;
+            break;
+        }
+        }
+    }
+    else if (failure_identify == 'j') // SEG_ADP_ER_LIM
+    {
+        output_CRK_no_failure();
+        SEG_ADP_ER_LIM_reset();
+    }
+    __HAL_TIM_SET_COUNTER(&htim1, 0);  //clear tim1 count
 }
 
 //## Timer 2 Interrupt CAM tooth time (previously timer3)
@@ -666,21 +713,21 @@ void TIM4_PeriodElapsedCallback(void)
             {                              // if the rising edge has already happen
                 if (sensortype_CRK == 'c') // sensor is cpdd
                 {
-                    SysTick_Config(3600); // 72MHz*50us=3600
+                    __HAL_TIM_SET_PRESCALER(&htim1, 3600); // 72MHz*50us=3600
                 }
                 else if (sensortype_CRK == 'h')
                 { // all the others
-                    SysTick_Config((T_TOOTH_RAW / 2) - 1);
+                    __HAL_TIM_SET_PRESCALER(&htim1,(T_TOOTH_RAW / 2) - 1);
                 }
                 else
                 {
                     // if sensor type not set, shouldn't happen
-                    SysTick_Config(1);
+                    __HAL_TIM_SET_PRESCALER(&htim1,1);
                 }
 
                 // Start timer 8
-                SysTick->CTRL |= SysTick_CTRL_ENABLE; // TODO: Check these systick commands
-            }
+                HAL_TIM_Base_Start(&htim1); 
+                }
             failure_passed = true;
             break;
         }
