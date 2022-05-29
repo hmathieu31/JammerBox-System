@@ -597,7 +597,8 @@ void sync_CAM_CRK(int camId)
 // ## Stalling Detection Function
 void Stalling_detection(void)
 {
-    TIM1_Reset();
+    SysTick->VAL = (2 ^ 24) - 1;
+    timer_overflow_CRK = 0;
     TIM2_Reset();
     TIM_Soft_Reset();
 
@@ -676,7 +677,8 @@ void Stalling_detection(void)
 // ## Stalling Detection Function
 void Stalling_detection_CRK(void)
 {
-    TIM1_Reset();
+    SysTick->VAL = (2 ^ 24) - 1;
+    timer_overflow_CRK = 0;
     //		Timer4Reset();	// Is this necessary as well?
 
     // check all IC-buffers for overflow
@@ -780,8 +782,9 @@ void sync_CRK_preparation(void)
         }
     }
 
-    // reset timer 2
-    TIM1_Reset();
+    // reset timer 
+    SysTick->VAL = (2 ^ 24) - 1;
+    timer_overflow_CRK = 0;
 }
 
 // ## CAM_CRK synchronisation preparation

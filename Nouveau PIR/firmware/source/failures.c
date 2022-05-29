@@ -156,8 +156,8 @@ extern unsigned int active_CAM_edges_counter[2];
 extern unsigned int sc_type_SC_CAM_CRK;
 
 // TIM5 variables
-extern int tim5_Counting;
-extern int tim5_CounterOverflow;
+extern int TIM_Soft_Counting;
+extern int TIM_Soft_CounterOverflow;
 
 /* Public functions -------------------------------------------------------- */
 
@@ -515,7 +515,7 @@ void Output_CAM_delay(int cam_id) {
         switch (active_CAM_edges[cam_id]) {
             case ('b'): {
                 if (engine_start == true) {
-                    HAL_ResumeTick();  // Enable the SysTick (formerly Timer8 on microchip) till the first falling CRK_edge
+                    HAL_TIM_Base_Start(&htim1); // Enable tim1 (formerly Timer8 on microchip) till the first falling CRK_edge
                     timer_active_CAM_delay[cam_id] = true;
                 } else {
                     output_CAM_no_failure(cam_id);
@@ -526,7 +526,7 @@ void Output_CAM_delay(int cam_id) {
             case ('f'): {
                 if (CAM_signal[cam_id] == false) {
                     if (engine_start == true) {
-                        HAL_ResumeTick();  // Enable the SysTick (formerly Timer8 on microchip) till the first falling CRK_edge
+                        HAL_TIM_Base_Start(&htim1);// Enable tim1 (formerly Timer8 on microchip) till the first falling CRK_edge
                         timer_active_CAM_delay[cam_id] = true;
 
                         if (failure_active == false) {
@@ -558,7 +558,7 @@ void Output_CAM_delay(int cam_id) {
             case ('r'): {
                 if (CAM_signal[cam_id] == true) {
                     if (engine_start == true) {
-                        HAL_ResumeTick();  // Enable the SysTick (formerly Timer8 on microchip) till the first falling CRK_edge
+                        HAL_TIM_Base_Start(&htim1);  // Enable tim1 (formerly Timer8 on microchip) till the first falling CRK_edge
                         timer_active_CAM_delay[cam_id] = true;
 
                         if (failure_active == false) {
@@ -598,7 +598,7 @@ void Output_CAM_delay(int cam_id) {
 
 //## CAM_delay: CAM_TOOTH_OFF / CAM_REF_CRK / CAM_SYN / CAM_SYN_CRK
 void CAM_delay(int cam_id) {
-    if (tim5_Counting) {
+    if (TIM_Soft_Counting) {
         double former_teeth_time;
         former_teeth_time = former_teeth_time_calculation(T_TOOTH_RAW,
                                                           teeth_count_CRK, number_miss_teeth);
@@ -629,9 +629,9 @@ void CAM_delay(int cam_id) {
         former_teeth_time = former_teeth_time_calculation(T_TOOTH_RAW,
                                                           teeth_count_CRK, number_miss_teeth);
 
-        if (((double)HAL_GetTick() / former_teeth_time) * revolution_CRK >= (delay_angle_CAM_delay * delay_factor_CAM_delay)) {
-            HAL_ResumeTick();
-            uwtick = (2 ^ 24) - 1;  //TODO: Handle systick here
+        if (((double)__HAL_TIM_GetCounter(&htim1) / former_teeth_time) * revolution_CRK >= (delay_angle_CAM_delay * delay_factor_CAM_delay)) {
+            HAL_TIM_Base_Start(&htim1);
+            __HAL_TIM_SET_COUNTER(&htim1, 0); 
             timer_active_CAM_delay[cam_id] = false;
 
             if (interrupt_check_CAM_delay[cam_id] == false) {
@@ -650,7 +650,7 @@ void CAM_delay(int cam_id) {
                 }
 
                 if (active_CAM_edges[cam_id] == 'r' || active_CAM_edges[cam_id] == 'f') {
-                    HAL_ResumeTick();
+                    HAL_TIM_Base_Start(&htim1);
                 }
             }
         }
@@ -739,9 +739,9 @@ void CAM_delay_counter(int cam_id) {
                 if (shift_counter_CAM_delay[cam_id][i] == 0) {
                     shift_counter_CAM_delay[cam_id][i] = 1;
                     angle_to_edge_CAM_delay[cam_id][i] =
-                        ((double)(HAL_GetTick()) / former_teeth_time) * revolution_CRK;
-                    HAL_SuspendTick(); //TODO: Systick
-                    SysTick->VAL = (2 ^ 24) - 1;
+                        ((double)(__HAL_TIM_GET_COUNTER(&htim1)) / former_teeth_time) * revolution_CRK;
+                    HAL_TIM_Base_Stop(&htim1);
+                    __HAL_TIM_SET_COUNTER(&htim1, 0);
                     timer_active_CAM_delay[cam_id] = false;
                     number_processing_edges_CAM_delay[cam_id]++;
                     break;
@@ -775,8 +775,8 @@ void CAM_delay_counter(int cam_id) {
 void CAM_delay_reset(void) {
     failure_active = false;
     failure_set = false;
-    HAL_SuspendTick();  // disable SysTick
-    SysTick->VAL = (2 ^ 24) - 1;            // clear systick counter
+    HAL_TIM_Base_Stop(&htim1);  // disable tim1
+    __HAL_TIM_SET_COUNTER(&htim1, 0);          // clear tim1 counter
     TIM_Soft_Stop();
     TIM_Soft_Reset();
 
@@ -868,10 +868,10 @@ void output_CRK_GAP_NOT_DET(void) {
 
         if ((teeth_counter_CRK_GAP_NOT_DET == number_teeth_between_gaps) && failure_active == false) {
             failure_active = true;
-            SysTick_SetPeriod(T_TOOTH_RAW * 1.5);  // to be in the midle of the gap
+            __HAL_TIM_SET_AUTORELOAD(&htim1, T_TOOTH_RAW * 1.5); // to be in the midle of the gap
 
         } else if ((failure_active == true) && (CRK_signal == true)) {
-            HAL_ResumeTick();
+            HAL_TIM_Base_Start(&htim1);
         }
     }
 }
@@ -880,7 +880,6 @@ void output_CRK_GAP_NOT_DET(void) {
 void CRK_GAP_NOT_DET_reset(void) {
     failure_active_CAM_blank_out = false;
     failure_active = false;
-    SysTickInit();
 }
 
 //## Output_SEG_ADP_ER_LIM
@@ -921,7 +920,7 @@ void SEG_ADP_ER_LIM_reset(void) {
     failure_passed = false;
     failure_waiting = false;
     MX_TIM4_Init();
-    SysTickInit();
+    MX_TIM1_Init();
     timer_Counter_SEG_ADP_ER_LIM = 0;
 }
 
