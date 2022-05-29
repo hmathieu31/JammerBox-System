@@ -145,6 +145,43 @@ Every machine can now visit the web site hosted by the RaspberryPi if they are c
 
 You will land on the starting page of the web site, and from there, you can use all of the functionnalities displayed.
 
+<!-- INTERFACE WEB FUNCTIONALITIES -->
+
+## Functionalities
+
+### Inject fault
+
+Allows to inject one of the following faults into the Jammer Box for testing if it detects the fault and reacts accordingly to it.
+
+- CRK SHORT CIRCUIT
+- CAM SHORT CIRCUIT
+- CRK SPK
+- CRK RUN OUT
+- CRK TOOTH OFF
+- CRK GAP NOT DET
+- CRK SEG ADP ERR LIM
+- CRK PULSE DURATION
+- CRK POSN ENG STST
+- CAM DELAY
+- CAM SPK
+- CAM PAT ERR
+
+If a parameter is necessary, another small window will open allowing the introduction of this value and then the start of the jamming. When a parameter is not valid, a pop up window will show informing the user of this. If no parameters are needed, the jamming will start immediately after pressing the corresponding fault button. For either case, when the jamming starts, another pop up window will show up informing the user of the success of the order.
+
+### Faults Injection Logs
+
+Allows to inspect the faults historic logs. Each time a new fault is injected, this page will update and show its characteristics as well as if it was correctly executed. This is done by reading a JSON file that the API updates every time a new fault is injected. In addition, there is a delete button that cleans the faults log when pressed.
+
+Each fault has a replay button, replaying the jammering with the same characteristics as before.
+
+### Configuration
+
+When the “Upload config” button is pressed, a window will open for searching in the user computer a JSON file with the Jammer Box configuration. Once this file is uploaded, the user can choose to configure the CAM or the CRK separately. With the reset button, either one of these configurations can be erased.
+
+### Start recording
+
+When pressed, it starts recording the signals from the Jammer Box and saving them in file for further analysis.
+
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- ROADMAP -->
