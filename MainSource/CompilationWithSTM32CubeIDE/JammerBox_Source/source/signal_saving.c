@@ -39,7 +39,7 @@ void timestamp_to_digit_array(uint32_t timestamp, uint8_t *array) {
     array[0] = (timestamp & 0xff000000U) >> 24;
 }
 
-uint8_t crk_save(uint32_t timestamp, uint8_t value) {
+uint8_t CRK_save(uint32_t timestamp, uint8_t value) {
     if (crk_array == NULL) {
         crk_array = malloc(sizeof(uint8_t) * CRK_MAX_SIZE); // 60 KB array for CRK signal
     } else if (crk_index >= CRK_MAX_SIZE) {
@@ -57,7 +57,7 @@ uint8_t crk_save(uint32_t timestamp, uint8_t value) {
     }
 }
 
-uint8_t cam_save(uint32_t timestamp, uint8_t value) {
+uint8_t CAM_save(uint32_t timestamp, uint8_t value) {
     if (cam_array == NULL) {
         cam_array = malloc(sizeof(uint8_t) * CAM_MAX_SIZE); // 40 KB array for CAM signal
     } else if (cam_index >= CAM_MAX_SIZE) {
@@ -75,30 +75,30 @@ uint8_t cam_save(uint32_t timestamp, uint8_t value) {
     }
 }
 
-void crk_wipe() {
+void CRK_wipe() {
     free(crk_array);
     crk_array = NULL;
     crk_index = 0;
 }
 
-void cam_wipe() {
+void CAM_wipe() {
     free(cam_array);
     cam_array = NULL;
     cam_index = 0;
 }
 
-int crk_get_size() {
+int CRK_get_size() {
     return crk_index;
 }
 
-int cam_get_size() {
+int CAM_get_size() {
     return cam_index;
 }
 
-uint8_t *crk_get_array() {
+uint8_t *CRK_get_array() {
     return crk_array;
 }
 
-uint8_t *cam_get_array() {
+uint8_t *CAM_get_array() {
     return cam_array;
 }

@@ -336,7 +336,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 		CRK_signal = true; // Set actual signal level
 
 		if (should_record) {
-			bool is_crk_buffer_full = save_crk(GetTimestamp(), CRK_signal);
+			bool is_crk_buffer_full = CRK_save(GetTimestamp(), CRK_signal);
 			if (is_crk_buffer_full) {
 				should_record = false;
 				// Should send CRK and CAM signals if not already sending
@@ -366,7 +366,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 		CRK_signal = false; // Set actual signal level
 
 		if (should_record) {
-			bool is_crk_buffer_full = save_crk(GetTimestamp(), CRK_signal);
+			bool is_crk_buffer_full = CRK_save(GetTimestamp(), CRK_signal);
 			if (is_crk_buffer_full) {
 				should_record = false;
 				// Should send CRK and CAM signals if not already sending
@@ -399,7 +399,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 		CAM_signal[0] = true; // Set actual signal level
 
 		if (should_record) {
-			bool is_cam_buffer_full = save_cam(GetTimesamp(), CAM_signal[0]);
+			bool is_cam_buffer_full = CAM_save(GetTimestamp(), CAM_signal[0]);
 			if (is_cam_buffer_full) {
 				should_record = false;
 				// Should send CRK and CAM signals if not already sending
@@ -419,7 +419,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 		CAM_signal[0] = false;	// Set actual signal level
 
 		if (should_record) {
-			bool is_cam_buffer_full = save_cam(GetTimesamp(), CAM_signal[0]);
+			bool is_cam_buffer_full = CAM_save(GetTimestamp(), CAM_signal[0]);
 			if (is_cam_buffer_full) {
 				should_record = false;
 				// Should send CRK and CAM signals if not already sending

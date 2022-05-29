@@ -310,6 +310,7 @@ void USART_ProcessMessage(void)
 					temp_chars_6[input_char_counter] = temp;
 
 					temp_chars_6[input_char_counter + 1] = '\0';
+					break;
 				}
 				case 7:
 				{

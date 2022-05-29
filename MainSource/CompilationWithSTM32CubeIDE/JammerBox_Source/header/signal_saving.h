@@ -9,13 +9,13 @@
  * @param signal: The signal value
  * @retval 0 if the array is not full, 1 if the array is full, after saving the given signal
 */
-uint8_t crk_save(uint32_t timestamp, uint8_t value);
+uint8_t CRK_save(uint32_t timestamp, uint8_t value);
 
 /*
  * @brief Wipes all the saved CRK signals
  * Also wipes the usart CRK buffer
 */
-void crk_wipe();
+void CRK_wipe();
 
 /*
  * @brief Saves the CAM signal value recorded at the specified timestamp
@@ -23,13 +23,13 @@ void crk_wipe();
  * @param signal: The signal value
  * @retval 0 if the array is not full, 1 if the array is full, after saving the given signal
 */
-uint8_t cam_save(uint32_t timestamp, uint8_t value);
+uint8_t CAM_save(uint32_t timestamp, uint8_t value);
 
 /*
  * @brief Wipes all the saved CAM signals
  * Also wipes the usart CAM buffer
 */
-void cam_wipe();
+void CAM_wipe();
 
 /*
  * @brief Prints each signal on two seperate lines in reverse order
@@ -41,12 +41,12 @@ void print_signals();
 /*
  * @retval The number of 8 byte values stored in the CRK array
 */
-int crk_get_size();
+int CRK_get_size();
 
 /*
  * @retval The number of 8 byte values stored in the CAM array
 */
-int cam_get_size();
+int CAM_get_size();
 
 /*
  * @brief If we received a 1 at timestamp 2484285499, it is stored as such:
@@ -54,7 +54,7 @@ int cam_get_size();
  * byte3 is the MSB of the timestamp and byte0 is the LSB, the timestamp being a 4 byte value
  * @retval The array containing the recorded CRK signals
 */
-uint8_t *crk_get_array();
+uint8_t *CRK_get_array();
 
 /*
  * @brief If we received a 1 at timestamp 2484285499, it is stored as such:
@@ -62,6 +62,6 @@ uint8_t *crk_get_array();
  * byte3 is the MSB of the timestamp and byte0 is the LSB, the timestamp being a 4 byte value
  * @retval The array containing the recorded CAM signals
 */
-uint8_t *cam_get_array();
+uint8_t *CAM_get_array();
 
 #endif

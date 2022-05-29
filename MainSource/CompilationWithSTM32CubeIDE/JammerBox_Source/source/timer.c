@@ -163,7 +163,7 @@ int TIM_Soft_GetCounter(void)
 }
 
 // Returns a timestamp in microseconds
-static inline uint32_t GetTimestamp() {
+int GetTimestamp(void) {
     uint32_t nb_of_periods;
     uint32_t val;
     uint32_t load;

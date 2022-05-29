@@ -46,7 +46,7 @@ void TIM_Soft_Reset(void);
 
 int TIM_Soft_GetCounter(void);
 
-static inline uint32_t GetTimestamp();
+int GetTimestamp(void);
 
 #endif
 
