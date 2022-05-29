@@ -90,8 +90,8 @@ void SysTickInit(void)
 	SysTick->CTRL &= ~SysTick_CTRL_ENABLE;
 	// Systick is not subject to any idle mode
 	SysTick->VAL = (2 ^ 24) - 1; // Clear Systick count (Systick is count down and on 24 bits)
-	// Set to a 120ms period
-	Systick_SetPeriod(120000.0);
+	// Set to a 105ms period
+	Systick_SetPeriod(105000.0);
 	NVIC_SetPriority(SysTick_IRQn, 2);  // Set Systick interrupt priority
 	// No need to reset flag in systick
 	SysTick->CTRL |= SysTick_CTRL_TICKINT_Msk;  // Enable Systick interrupt
@@ -103,7 +103,7 @@ void TIM1_Reset(void)
 	HAL_TIM_Base_Stop_IT(&htim1);
 	__HAL_TIM_SET_COUNTER(&htim1, 0); // Reset TIM1 counter value
 	HAL_TIM_Base_Start_IT(&htim1);
-	timer_overflow_CRK = 0;
+	
 }
 
 //## TIM2_Reset **Prescaler: 256; CAM Synchronization; segment time**
@@ -119,7 +119,7 @@ void TIM_Soft_Start(void)
 {
 	if (TIM_Soft_Counting == false)
 	{
-		TIM_Soft_StartTick = __HAL_TIM_GET_COUNTER(&htim1); // TIM1 is used as based
+		TIM_Soft_StartTick = HAL_GetTick(); // Systick is used as based
 		// for the software-encoded timer
 		TIM_Soft_Counting = 1;
 	}
@@ -130,10 +130,10 @@ void TIM_Soft_Stop(void)
 	if (TIM_Soft_Counting)
 	{
 		TIM_Soft_Counting = 0;
-		TIM_Soft_StopTick = __HAL_TIM_GET_COUNTER(&htim1);
+		TIM_Soft_StopTick =  HAL_GetTick();
 		TIM_Soft_TicksCounted += ((TIM_Soft_StopTick - TIM_Soft_StartTick)
-				+ TIM_Soft_CounterOverflow * __HAL_TIM_GET_AUTORELOAD(&htim1))
-				% __HAL_TIM_GET_AUTORELOAD(&htim1);
+				+ TIM_Soft_CounterOverflow * 62999)
+				% 62999;
 		TIM_Soft_CounterOverflow = 0;
 	}
 }
@@ -150,9 +150,9 @@ int TIM_Soft_GetCounter(void)
 {
 	if (TIM_Soft_Counting)
 	{
-		return ((__HAL_TIM_GET_COUNTER(&htim1) - TIM_Soft_StartTick)
-				+ TIM_Soft_CounterOverflow * __HAL_TIM_GET_AUTORELOAD(&htim1))
-				% __HAL_TIM_GET_AUTORELOAD(&htim1);
+		return ((TIM_Soft_StopTick - TIM_Soft_StartTick)
+				+ TIM_Soft_CounterOverflow * 62999)
+				% 62999;
 	}
 	else
 	{
