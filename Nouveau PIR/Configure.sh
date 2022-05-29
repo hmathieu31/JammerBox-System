@@ -6,8 +6,8 @@ then
     exit 1
 fi
 
-WEB_FOLDER="./interface-web"
-API_FOLDER="./API"
+WEB_FOLDER="../MainSource/interface-web"
+API_FOLDER="../MainSource/API"
 
 echo "{\"IP_ADDRESS\":\"$1\"}" > $WEB_FOLDER/src/RaspiProp.json
 

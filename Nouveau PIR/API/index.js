@@ -9,7 +9,8 @@ const IP = require("../interface-web/src/RaspiProp.json")["IP_ADDRESS"];
 const allowedOrigins = ["http://" + IP + ":3000"];
 
 //Has to be absolute path!
-const historicPath = "./interface-web/src/historicData.json";
+const historicPath = "../MainSource/interface-web/src/historicData.json";
+const pythonScripPath = "../USART_Script.py";
 
 //Configuring CORS
 app.use(
@@ -168,13 +169,9 @@ app.listen(8080, () => {
 });
 
 function runPythonScript(params) {
-  PythonShell.run(
-    "./USART_Script.py", //Maybe has to be absolute too!!
-    { args: params },
-    function (err, results) {
-      if (err) throw err;
-      // results is an array consisting of messages collected during execution
-      console.log("results: %j", results);
-    }
-  );
+  PythonShell.run(pythonScripPath, { args: params }, function (err, results) {
+    if (err) throw err;
+    // results is an array consisting of messages collected during execution
+    console.log("results: %j", results);
+  });
 }
