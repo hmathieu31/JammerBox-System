@@ -1,8 +1,0 @@
-<map id="sync_CAM_CRK" name="sync_CAM_CRK">
-<area shape="rect" id="node1" title=" " alt="" coords="5,97,125,123"/>
-<area shape="rect" id="node2" href="$synchronization_8c.html#ab0caa63c2ff75c02e9bea82e6f1d9007" title=" " alt="" coords="173,5,343,47"/>
-<area shape="rect" id="node3" href="$synchronization_8c.html#af721d8ba3bf53760e5e5b3581c275dc7" title=" " alt="" coords="177,71,339,98"/>
-<area shape="rect" id="node4" href="$synchronization_8c.html#a1aef6fd9920a9c9ad556bbb27339bab2" title=" " alt="" coords="182,122,334,149"/>
-<area shape="rect" id="node6" href="$synchronization_8c.html#a3cf03fed5d29d4dda9d858b7323377b0" title=" " alt="" coords="175,173,341,199"/>
-<area shape="rect" id="node5" href="$uart_8c.html#af71719c2f6a621903fd9eb77473b5eb5" title=" " alt="" coords="391,122,481,149"/>
-</map>

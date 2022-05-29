@@ -1,8 +1,0 @@
-<map id="Nouveau PIR/firmware/header/timer.h" name="Nouveau PIR/firmware/header/timer.h">
-<area shape="rect" id="node1" title=" " alt="" coords="361,5,509,47"/>
-<area shape="rect" id="node2" href="$failures_8c.html" title=" " alt="" coords="5,95,153,136"/>
-<area shape="rect" id="node3" href="$main_8c.html" title=" " alt="" coords="177,95,325,136"/>
-<area shape="rect" id="node4" href="$synchronization_8c.html" title=" " alt="" coords="350,95,521,136"/>
-<area shape="rect" id="node5" href="$timer_8c.html" title=" " alt="" coords="545,95,693,136"/>
-<area shape="rect" id="node6" href="$uart_8c.html" title=" " alt="" coords="717,95,865,136"/>
-</map>
