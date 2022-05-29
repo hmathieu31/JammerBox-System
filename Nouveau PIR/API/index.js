@@ -50,10 +50,6 @@ app.post("/run", (req, res) => {
     var json;
     fs.readFile(historicPath, function (err, data) {
       json = JSON.parse(data);
-<<<<<<< HEAD
-      console.log(json);
-=======
->>>>>>> origin/main
       var objectId = Object.keys(json).length + 1;
       const date = new Date();
       json["Test " + objectId] = {
@@ -174,11 +170,7 @@ app.listen(8080, () => {
 
 function runPythonScript(params) {
   PythonShell.run(
-<<<<<<< HEAD
     "./USART_Script.py", //Maybe has to be absolute too!!
-=======
-    "../USART_Script.py",
->>>>>>> origin/main
     { args: params },
     function (err, results) {
       if (err) throw err;
