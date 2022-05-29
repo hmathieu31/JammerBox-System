@@ -162,7 +162,11 @@ extern int TIM_Soft_CounterOverflow;
 
 /* Public functions -------------------------------------------------------- */
 
-//## Output Function CRK
+/**
+ * @brief This function processes every CRK case that can happen for each CRK edge.
+ * 
+ * @param failure_ident failure identifier given depending on the fault injected.
+ */
 void output_CRK(char failure_ident)  // processed at each CRK edge
 {
     switch (failure_ident) {
@@ -255,7 +259,12 @@ void output_CRK(char failure_ident)  // processed at each CRK edge
     }
 }
 
-//## Output Function CAM
+/**
+ * @brief This function processes every CAM case that can happen.
+ * 
+ * @param failure_ident failure identifier given depending on the fault injected.
+ * @param cam_id the id of the camera used between the first and the second camera.
+ */
 void output_CAM(char failure_ident, int cam_id) {
     if ((cam_id == active_cam_failure) || active_cam_failure == 2) {
         switch (failure_ident) {
@@ -361,7 +370,6 @@ void output_CAM(char failure_ident, int cam_id) {
     }
 }
 
-//## Output_CRK no Failure Function
 /**
  * @brief This function outputs the CRK signal in its normal state (no failure).
  * This simply consists in reproducing the CRK signal as is.
@@ -375,7 +383,11 @@ void output_CRK_no_failure(void) {
     }
 }
 
-//## Output_CAM no Failure Function
+/**
+ * @brief This function outputs the CAM signal in its normal state (no failure).
+ * 
+ * @param cam_id the id of the camera used between the first and the second camera.
+ */
 void output_CAM_no_failure(int cam_id) {
     if (CAM_signal[cam_id] == true) {
         if (cam_id == 0) {
@@ -392,7 +404,10 @@ void output_CAM_no_failure(int cam_id) {
     }
 }
 
-//### Output CRK: RUN_OUT ###
+/**
+ * @brief This function is the process when facing the failure CRK_RUN_OUT
+ * 
+ */
 void output_CRK_RUN_OUT(void) {
     if (CRK_signal == true) {
         if (teeth_count_CRK != number_teeth_between_gaps) {  // count the teeths on th rising edge
@@ -428,14 +443,21 @@ void output_CRK_RUN_OUT(void) {
     }
 }
 
-//### CRK_RUN_OUT_reset ###
+/**
+ * @brief This function resets the counters and global variables after a CRK_RUN_OUT failure.
+ * 
+ */
 void CRK_RUN_OUT_reset(void) {
     failure_active = false;
     failure_passed = false;
     period_counter_CRK_RUN_OUT = 0;
 }
 
-//## Output CAM: CAM_PER
+/**
+ * @brief This function is the process when facing a CAM_PER failure.
+ * 
+ * @param cam_id the id of the camera used between the first and the second camera.
+ */
 void output_CAM_PER(int cam_id) {
     if (active_edges_CAM_PER == 'b') {
         if (cam_id == 0) {          // For CAM1
@@ -464,7 +486,10 @@ void output_CAM_PER(int cam_id) {
     }
 }
 
-//## CAM_PER_reset
+/**
+ * @brief This function resets the counters and global variables after a CAM_PER failure.
+ * 
+ */
 void CAM_PER_reset(void) {
     if (HAL_TIM_Base_GetState(&htim3) == HAL_TIM_STATE_BUSY)  // if TIM3 is busy
     {
@@ -484,14 +509,20 @@ void CAM_PER_reset(void) {
     counter_CAM_PER[1] = 0;
 }
 
-//## Output CRK: CRK_TOOTH_PER
+/**
+ * @brief This function is the process when facing a CRK_TOOTH_PER failure.
+ * 
+ */
 void output_CRK_TOOTH_PER(void) {
     if (CRK_signal == false) {
         HAL_TIM_Base_Start(&htim3); // Enable timer3 (formerly Timer6 on microchip)     
     }
 }
 
-//## CRK_TOOTH_PER_reset
+/**
+ * @brief This function resets the counters and global variables after a CRK_TOOTH_PER failure.
+ * 
+ */
 void CRK_TOOTH_PER_reset(void) {
     if (HAL_TIM_Base_GetState(&htim3) == HAL_TIM_STATE_BUSY)  // if timer3 is enabled
     {
@@ -510,7 +541,11 @@ void CRK_TOOTH_PER_reset(void) {
     failure_active = false;
 }
 
-//## Output CAM_delay: CAM_TOOTH_OFF / CAM_REF_CRK / CAM_SYN / CAM_SYN_CRK
+/**
+ * @brief This function processes the output for the CAM_delay function.
+ * 
+ * @param cam_id the id of the camera used between the first and the second camera.
+ */
 void Output_CAM_delay(int cam_id) {
     if (failure_identify == '9') {
         switch (active_CAM_edges[cam_id]) {
@@ -597,7 +632,11 @@ void Output_CAM_delay(int cam_id) {
     }
 }
 
-//## CAM_delay: CAM_TOOTH_OFF / CAM_REF_CRK / CAM_SYN / CAM_SYN_CRK
+/**
+ * @brief This function is the process when facing the failures inducing a CAM delay
+ * 
+ * @param cam_id the id of the camera used between the first and the second camera.
+ */
 void CAM_delay(int cam_id) {
     if (TIM_Soft_Counting) {
         double former_teeth_time;
@@ -701,7 +740,11 @@ void CAM_delay(int cam_id) {
     }
 }
 
-//## CAM_delay_counter: CAM_TOOTH_OFF / CAM_REF_CRK / CAM_SYN / CAM_SYN_CRK
+/**
+ * @brief This function counts the number occurences of CAM_delay.
+ * 
+ * @param cam_id the id of the camera used between the first and the second camera.
+ */
 void CAM_delay_counter(int cam_id) {
     if ((failure_identify == '9') && CRK_signal == false) {
         interrupt_check_CAM_delay[cam_id] = true;
@@ -772,7 +815,10 @@ void CAM_delay_counter(int cam_id) {
     }
 }
 
-//## CAM_delay reset
+/**
+ * @brief This function resets the counters and global variables after a CAM_delay failure.
+ * 
+ */
 void CAM_delay_reset(void) {
     failure_active = false;
     failure_set = false;
@@ -802,7 +848,10 @@ void CAM_delay_reset(void) {
     }
 }
 
-//##Output_CRK_TOOTH_OFF
+/**
+ * @brief This function is the process when facing a CRK_TOOTH_OFF failure.
+ * 
+ */
 void output_CRK_TOOTH_OFF(void) {
     number_teeth_between_tooth_off = number_teeth_between_gaps / number_tooth_off;
 
@@ -846,13 +895,19 @@ void output_CRK_TOOTH_OFF(void) {
     }
 }
 
-//##CRK_TOOTH_OFF_reset
+/**
+ * @brief This function resets the counters and global variables after a CRK_TOOTH_OFF failure.
+ * 
+ */
 void CRK_TOOTH_OFF_reset(void) {
     failure_active = false;
     number_teeth_between_tooth_off = 0;
 }
 
-//##Output_CRK_GAP_NOT_DET
+/**
+ * @brief This function is the process when facing a CRK_GAP_NOT_DET failure.
+ * 
+ */
 void output_CRK_GAP_NOT_DET(void) {
     if (CRK_signal == true) {
         if (teeth_count_CRK != number_teeth_between_gaps) {
@@ -877,13 +932,19 @@ void output_CRK_GAP_NOT_DET(void) {
     }
 }
 
-//## CRK_GAP_NOT_DET_reset
+/**
+ * @brief This function resets the counters and global variables after a CRK_GAP_NOT_DET failure.
+ * 
+ */
 void CRK_GAP_NOT_DET_reset(void) {
     failure_active_CAM_blank_out = false;
     failure_active = false;
 }
 
-//## Output_SEG_ADP_ER_LIM
+/**
+ * @brief This function is the process when facing a SEG_ADP_ER_LIM failure.
+ * 
+ */
 void output_SEG_ADP_ER_LIM(void) {
     if (CRK_signal == true) {
         if (teeth_count_CRK != number_teeth_between_gaps) {
@@ -915,7 +976,10 @@ void output_SEG_ADP_ER_LIM(void) {
     }
 }
 
-//## SEG_ADP_ER_LIM_reset
+/**
+ * @brief This function resets the counters and global variables after a SEG_ADP_ER_LIM failure.
+ * 
+ */
 void SEG_ADP_ER_LIM_reset(void) {
     failure_active = false;
     failure_passed = false;
@@ -925,7 +989,11 @@ void SEG_ADP_ER_LIM_reset(void) {
     timer_Counter_SEG_ADP_ER_LIM = 0;
 }
 
-//## Output_CRK_pulse_duration
+
+/**
+ * @brief This function is the process when facing a CRK_pulse_duration failure.
+ * 
+ */
 void output_CRK_pulse_duration(void) {
     if (CRK_signal == false) {
         HAL_TIM_Base_Start(&htim4); // start the timer4 (formerly TIM7 on microchip)
@@ -933,13 +1001,19 @@ void output_CRK_pulse_duration(void) {
     }
 }
 
-//## CRK_PLS_ORNG_reset
+/**
+ * @brief  This function resets the counters and global variables after a CRK_PLS_ORNG failure.
+ * 
+ */
 void CRK_pulse_duration_reset(void) {
     MX_TIM3_Init();
     failure_active = false;
 }
 
-//## Output_POSN_ENG_STST
+/**
+ * @brief This function is the process when facing a POSN_ENG_STST failure.
+ * 
+ */
 void output_POSN_ENG_STST(void) {
     if ((CRK_signal == false) && (failure_active == true)) {
         counter_POSN_ENG_STST++;  // counte the teeth'
@@ -954,13 +1028,19 @@ void output_POSN_ENG_STST(void) {
     }
 }
 
-//## POSN_ENG_STST_LOSS_reset
+/**
+ * @brief This function resets the counters and global variables after a Output_POSN_ENG_STST failure.
+ * 
+ */
 void POSN_ENG_STST_reset(void) {
     failure_active = false;
 }
 
-//## Output_CAM_PAT_ERR
-
+/**
+ * @brief This function is the process when facing a CAM_PAT_ERR failure.
+ * 
+ * @param cam_id the id of the camera used between the first and the second camera.
+ */
 void output_CAM_PAT_ERR(int cam_id) {
     switch (active_CAM_edges[cam_id]) {
         case 'b': {
@@ -1020,8 +1100,10 @@ void output_CAM_PAT_ERR(int cam_id) {
     }
 }
 
-//## CAM_PAT_ERR_reset
-
+/**
+ * @brief This function resets the counters and global variables after a CAM_PAT_ERR failure.
+ * 
+ */
 void CAM_PAT_ERR_reset() {
     active_CAM_edges_counter[0] = 0;  // reset counter for CAM1
     active_CAM_edges_counter[1] = 0;  // reset counter for CAM2
@@ -1029,7 +1111,11 @@ void CAM_PAT_ERR_reset() {
     output_CAM_no_failure(1);         // reset CAM2
 }
 
-//## Output_SC_CAM_CRK
+/**
+ * @brief This function is the process when facing a SC_CAM_CRK failure.
+ * 
+ * @param cam_id the id of the camera used between the first and the second camera.
+ */
 void output_SC_CAM_CRK(int cam_id) {
     if (failure_active == true) {
         switch (sc_type_SC_CAM_CRK) {
@@ -1072,7 +1158,10 @@ void output_SC_CAM_CRK(int cam_id) {
     }
 }
 
-//## POSN_ENG_STST_LOSS_reset
+/**
+ * @brief This function resets the counters and global variables after a SC_CAM_CRK failure.
+ * 
+ */
 void SC_CAM_CRK_reset(void) {
     failure_active = false;
     output_CRK_no_failure();
@@ -1080,7 +1169,11 @@ void SC_CAM_CRK_reset(void) {
     output_CAM_no_failure(1);  // reset CAM2
 }
 
-//### Failure Processing ###
+/**
+ * @brief This function calls the different process functions depending on which fault we are injecting.
+ * 
+ * @param failure_ident failure identifier given depending on the fault injected.
+ */
 void failure_processing(char failure_ident) {
     switch (failure_ident) {
         case '1': {
@@ -1148,7 +1241,11 @@ void failure_processing(char failure_ident) {
     }
 }
 
-//### Failure Synchronization Reset ###
+/**
+ * @brief This function calls the different reset functions depending on which fault we are injecting.
+ * 
+ * @param failure_ident failure identifier given depending on the fault injected.
+ */
 void failure_synch_reset(char failure_ident) {
     switch (failure_ident) {
         case '4': {
@@ -1171,7 +1268,15 @@ void failure_synch_reset(char failure_ident) {
     }
 }
 
-//### Former teeth time calculation ###
+
+/**
+ * @brief This function process the value of the former teeth time.
+ * 
+ * @param t_tooth 
+ * @param teeth_count 
+ * @param numb_miss_teeth 
+ * @return double 
+ */
 double former_teeth_time_calculation(long t_tooth, unsigned int teeth_count,
                                      int numb_miss_teeth) {
     double form_teeth_time;
@@ -1185,7 +1290,14 @@ double former_teeth_time_calculation(long t_tooth, unsigned int teeth_count,
     return (form_teeth_time);
 }
 
-//### Former teeth time calculation output ###
+/**
+ * @brief This function process the value of the former teeth time.
+ * 
+ * @param t_tooth 
+ * @param teeth_count 
+ * @param numb_miss_teeth 
+ * @return double 
+ */
 double former_teeth_time_calculation_output(long t_tooth,
                                             unsigned int teeth_count, int numb_miss_teeth) {
     double form_teeth_time;

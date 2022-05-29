@@ -47,7 +47,11 @@ int TIM_Soft_TicksCounted = 0;
 /* Private functions --------------------------------------------------------*/
 
 // Returns the computed value, 0 if impossible
-// TODO: #129 Check if operations on SysTick indeed is allowed
+/**
+ * @brief This function sets the different parameters to set the period of the systic.
+ * 
+ * @param Duration_us Duration of the systic period in microseconds
+ */
 void Systick_SetPeriod(float Duration_us)
 {
 	uint32_t Nb_Reload;
@@ -81,7 +85,11 @@ void Systick_SetPeriod(float Duration_us)
 	SysTick->LOAD = Nb_Reload;
 }
 
-// ## SysTick Timer Init **Prescaler: 64; CRK_RUN_OUT/CAM_delay**
+/**
+ * @brief This function initialise the systic timer. 
+ * Using a presacler of 64. It is used for CRK_RUN_OUT and CAM-delay
+ * 
+ */
 void SysTickInit(void)
 {
 	// FCPU with PLL = 73,7 MHz
@@ -99,7 +107,10 @@ void SysTickInit(void)
 	SysTick->CTRL |= SysTick_CTRL_TICKINT_Msk;  // Enable Systick interrupt
 }
 
-//## Timer2Reset **Prescaler: 64; CRK Synchronization; tooth time**
+/**
+ * @brief This function resets the Timer 1. 
+ * Using a presacler of 64. It is used for CRK Synchronization and tooth time
+ */
 void TIM1_Reset(void)
 {
 	HAL_TIM_Base_Stop_IT(&htim1);
@@ -109,6 +120,10 @@ void TIM1_Reset(void)
 }
 
 //## TIM2_Reset **Prescaler: 256; CAM Synchronization; segment time**
+/**
+ * @brief This function resets the Timer 1. 
+ * Using a presacler of 256. It is used for CAM Synchronization and segment time.
+ */
 void TIM2_Reset(void)
 {
 	HAL_TIM_Base_Stop_IT(&htim2);
@@ -117,6 +132,10 @@ void TIM2_Reset(void)
 	timer_overflow_CAM = 0;
 }
 
+/**
+ * @brief This function starts the soft timer, the software encoded timer based on the systic
+ * 
+ */
 void TIM_Soft_Start(void)
 {
 	if (TIM_Soft_Counting == false)
@@ -127,6 +146,10 @@ void TIM_Soft_Start(void)
 	}
 }
 
+/**
+ * @brief   This function stops the soft timer.
+ * 
+ */
 void TIM_Soft_Stop(void)
 {
 	if (TIM_Soft_Counting)
@@ -140,6 +163,10 @@ void TIM_Soft_Stop(void)
 	}
 }
 
+/**
+ * @brief This function resets the soft timer parameters.
+ * 
+ */
 void TIM_Soft_Reset(void)
 {
 	TIM_Soft_StartTick = 0;
@@ -148,6 +175,11 @@ void TIM_Soft_Reset(void)
 	TIM_Soft_CounterOverflow = 0;
 }
 
+/**
+ * @brief This function returns the value of the counter of the soft timer.
+ * 
+ * @return int : TIM_Soft_TicksCounted : Number of ticks counted.
+ */
 int TIM_Soft_GetCounter(void)
 {
 	if (TIM_Soft_Counting)
@@ -162,7 +194,11 @@ int TIM_Soft_GetCounter(void)
 	}
 }
 
-// Returns a timestamp in microseconds
+/**
+ * @brief Get the Timestamp object
+ * 
+ * @return uint32_t : returns a timestamp in microseconds
+ */
 static inline uint32_t GetTimestamp() {
     uint32_t nb_of_periods;
     uint32_t val;

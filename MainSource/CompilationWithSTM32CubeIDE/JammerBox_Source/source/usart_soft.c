@@ -151,6 +151,10 @@ extern bool communication_ready;
 
 /* Public functions ----------------------------------------------------------*/
 
+/**
+ * @brief This function processes the different cases of messages.
+ * 
+ */
 void USART_ProcessMessage(void)
 {
 
@@ -845,8 +849,10 @@ void USART_ProcessMessage(void)
 	HAL_USART_Transmit_IT(&husart1, &msg_communication_receive_ready, 1);
 }
 
-//## USART COM Error Function
-
+/**
+ * @brief This function is the process when there is a USART_COM_ERROR
+ * 
+ */
 void USART_COM_error(void)
 {
 	if (com_error == false)
@@ -868,7 +874,13 @@ void USART_COM_error(void)
 }
 
 //## USART Send Failure Configuration Status Function
-
+/**
+ * @brief This function is used to configure when the USART send function is stated as a failure.
+ * 
+ * @param failure_ident The identifier of the different failure type.
+ * @param failure_conf Boolean that checks the confirmation of the failure.
+ * @param failure_conf_CAM_blank_out 
+ */
 void USART_send_failure_configuration_status(char failure_ident,
 		bool failure_conf, bool failure_conf_CAM_blank_out)
 {
@@ -902,8 +914,10 @@ void USART_send_failure_configuration_status(char failure_ident,
 	}
 }
 
-//## USART Reset temporary char-arrays
-
+/**
+ * @brief This funciton resets the values in the temp_chars arrays.
+ * 
+ */
 void Reset_temp_arrays(void)
 {
 	temp_chars_1[0] = '\0';
