@@ -148,7 +148,6 @@ app.get("/getlog", (req, res) => {
   try {
     fs.readFile(historicPath, function (err, data) {
       historicJson = JSON.parse(data);
-      console.log(historicJson);
       res.status(200).json(historicJson);
     });
   } catch (e) {
