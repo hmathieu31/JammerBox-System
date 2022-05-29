@@ -1,3 +1,4 @@
+*.DS_Store
 .editorconfig
 .vscode/*
 Ancien PIR/src/firmware/doc/**

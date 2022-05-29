@@ -1,0 +1,10 @@
+BasedOnStyle : Google
+UseTab : Never
+TabWidth : 2
+SortIncludes: true
+ColumnLimit : 80
+AllowShortFunctionsOnASingleLine: Empty 
+AllowShortLoopsOnASingleLine: false
+AllowShortIfStatementsOnASingleLine: false
+AllowShortCaseLabelsOnASingleLine: false
+AllowShortBlocksOnASingleLine : false
