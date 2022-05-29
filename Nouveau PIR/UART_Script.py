@@ -3,10 +3,13 @@ from serial import Serial
 import sys
 from time import sleep
 
-print(sys.argv)
 usart_message = "!"
 print("Opening port...")
-ser = Serial("/dev/ttyAMA0", 115200,timeout=1)    #Open port with baud rate
+try:
+    ser = Serial("/dev/ttyAMA0", 115200,timeout=1)    #Open port with baud rate
+except serial.SerialException:
+    print("Port could not be opened")
+    exit()
 print("Port opened!")
 #                   #print received data
 
