@@ -5,7 +5,7 @@ import ParameterPopup from "./ParameterPopup";
 import React from "react";
 import Modal from "react-modal";
 import { Provider as AlertProvider } from "react-alert";
-import AlertTemplate from "react-alert-template-basic";
+import AlertTemplate from "../components/alertTemplate";
 import { withAlert } from "react-alert";
 
 const options = {
@@ -13,6 +13,7 @@ const options = {
   timeout: 5000,
   offset: "30px",
   transition: "scale",
+  type: "error",
 };
 
 class ButtonList extends React.Component {
@@ -81,7 +82,7 @@ class ButtonList extends React.Component {
     this.props.alert.show("Jamming successfully started");
 
     console.log("Value after sending test parameters");
-    console.log(this.valueSelect);
+    console.log(this.state.valueSelect);
   };
 
   directRunTest = (data) => {
@@ -131,7 +132,6 @@ class ButtonList extends React.Component {
     );
   };
   render() {
-    const alert = this.props.alert;
     return (
       <div className="button-list-div">
         {this.props.buttonList.map(this.makeButton)}

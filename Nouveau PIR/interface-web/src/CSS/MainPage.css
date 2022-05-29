@@ -35,15 +35,12 @@ p {
 
 .frame-1 {
     background: url(../../public/BackgroundImage.png), linear-gradient(0deg, rgba(255, 255, 255, 1), rgba(255, 255, 255, 1)) fixed;
-    padding: 20% 10rem;
+    padding: 15% 10rem;
     box-sizing: border-box;
     background-size: 100% 100%;
     width: 100%;
     min-width: 20em;
     height: 100%;
-
-    /*background: linear-gradient(144deg, #AF40FF, #5B42F3 50%, #00DDEB) 50% 50%;
-    */
 }
 
 .group-19 {
@@ -59,7 +56,7 @@ p {
     color: lightyellow;
     text-align: center;
     word-wrap: break-word;
-    padding: 3%;
+    padding-bottom: 1%;
     text-transform: lowercase;
     font-variant: small-caps;
     text-shadow: 0 0 0 rgb(213, 213, 213),
@@ -71,6 +68,24 @@ p {
     0px 0px 3px rgba(0, 0, 0, .2);
 }
 
+.txt-272 {
+    font-size: 6em;
+    font-family: Arial, sans-serif;
+    font-weight: 700;
+    color: lightyellow;
+    text-align: center;
+    word-wrap: break-word;
+    padding-bottom: 4%;
+    text-transform: lowercase;
+    font-variant: small-caps;
+    text-shadow: 0 0 0 rgb(213, 213, 213),
+    0px 1px 0 rgb(172, 172, 172),
+    0px 2px 0 rgb(130, 130, 130),
+    0px 3px 0 rgb(88, 88, 88),
+    0px 4px 3px rgba(0, 0, 0, 1),
+    0px 4px 1px rgba(0, 0, 0, 0.5),
+    0px 0px 3px rgba(0, 0, 0, .2);
+}
 
 .group-6 {
     align-items: center;
@@ -125,8 +140,9 @@ p {
 
 .button-list-div {
     display: grid;
-    grid-template-columns: repeat(2, 50%);
+    grid-template-columns: repeat(2, auto);
     grid-auto-rows: minmax(25px, auto);
+    place-items: center;    
 }
 
 .button-list-item {
@@ -135,8 +151,15 @@ p {
     justify-content: center;
 }
 
+.upload-button {
+    padding-bottom: 2%;
+}
+
 .configuration-list {
     display: grid;
+    grid-template-columns: repeat(2, auto);
+    grid-auto-rows: minmax(25px, auto);
     align-items: center;
     justify-content: center;
+    grid-gap: 14%;
 }
