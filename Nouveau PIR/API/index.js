@@ -10,6 +10,8 @@ const allowedOrigins = [
   "http://192.168.1.92:3000",
   "http://172.20.10.9:3000",
 ];
+
+//Has to be absolute path!
 const historicPath = "../interface-web/src/historicData.json";
 
 //Configuring CORS
