@@ -1,0 +1,8 @@
+<map id="Stalling_detection_CRK" name="Stalling_detection_CRK">
+<area shape="rect" id="node1" title=" " alt="" coords="5,107,164,133"/>
+<area shape="rect" id="node2" href="$failures_8c.html#a494682d906c6e4e666f46a15c2aed5eb" title=" " alt="" coords="227,5,325,32"/>
+<area shape="rect" id="node3" href="$synchronization_8c.html#abde77a3d46373c211c5ed2d5f97af994" title=" " alt="" coords="212,56,340,83"/>
+<area shape="rect" id="node4" href="$timer_8c.html#ab2bfce2c8ade4ae64b3cda0bc458e0ca" title=" " alt="" coords="229,107,323,133"/>
+<area shape="rect" id="node5" href="$timer_8c.html#a148ff919643c880d9c04ee570e36b152" title=" " alt="" coords="229,157,323,184"/>
+<area shape="rect" id="node6" href="$uart_8c.html#af71719c2f6a621903fd9eb77473b5eb5" title=" " alt="" coords="231,208,321,235"/>
+</map>

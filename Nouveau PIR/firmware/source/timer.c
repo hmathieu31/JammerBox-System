@@ -1,234 +1,178 @@
-/*****************************************************************************/
-/* Projectname     :  ENSD-Jammer                                            */
-/* Programm        :  Timer                                                  */
-/* Controller      :  dsPIC33F                                               */
-/* Latest change   :  31.08.2020                                             */
-/* Author          :  Gr�goire Chabin/Christian Ringlstetter/Thomas Pichler  */
-/*****************************************************************************/
+/**
+ ******************************************************************************
+ * @file    	  timer.c
+ * @brief   	  Timer management functions and implementation of the software
+ * 				  timer
+ * 				  Project name	: STM32-Jammerbox
+ * 				  Controller	: STM32F103RB
+ * @date		  25 May 2022
+ ******************************************************************************
+ * @attention
+ *
+ * All rights reserved.
+ *
+ * This software is licensed under terms that can be found in the LICENSE file
+ * in the root directory of this software component.
+ * If no LICENSE file comes with this software, it is provided AS-IS.
+ *
+ ******************************************************************************
+ */
 
-// ### Basic includes ###
+/* Private includes ---------------------------------------------------------*/
+#include "timer.h"
 
-	//#include "p33FJ256GP710A.h"
-	#include "timer.h"
-	#include <stm32f10x.h>
-	#include <stm32f10x_tim.h>
+// ### Standard includes ###
+#include <stdbool.h>
+#include <stdint.h>
 
+// ### Hardware includes ###
+#include "tim.h"
 
-// ### Variables ###
-
-	extern unsigned long timer_overflow_CRK;
-	extern unsigned long timer_overflow_CAM;
-	extern unsigned long timer_overflow_CRK_failure;
-	extern unsigned long timer_overflow_CAM_failure;
-	extern unsigned long timer_overflow_CAM_REF_CRK;
-
-// ### Functions ###
-
-// ## Timer1 Init **Prescaler: 256; Communication validation** 
-	void Timer1Init(void){
-		
-		// Aim: high timer duration
-		// FCPU with PLL = 73,7 MHz
-		// Fcy: 36,85 MHz
-		// 36,85 Mhz/ 64 = 575,78 kHz = 1,737 �s
-
-		T1CONbits.TON = 0; 			// Disable Timer
-		T1CONbits.TSIDL = 0;		// Continue timer operation in idle mode
-		T1CONbits.TGATE = 0; 		// Disable Gated Timer mode
-		T1CONbits.TCS = 0; 			// Select internal instruction cycle clock
-		T1CONbits.TCKPS = 0b11; 	// Select 1:256 Prescaler
-		TMR1 = 0x00; 				// Clear timer register
-		PR1 = 0xFD07;				// Load the period value(timer period: 450ms)
-		
-		IPC0bits.T1IP = 0x02; 		// Set Timer1 Interrupt Priority Level
-		IFS0bits.T1IF = 0; 			// Clear Timer1 Interrupt Flag
-		IEC0bits.T1IE = 1; 			// Enable Timer1 interrupt
-	}
-
-	// ## Timer2 Init **Prescaler: 64; CRK Synchronization; tooth time** 
-	void Timer2Init(void){
-
-		// Aim: resolution of < 2 �s;
-		// FCPU with PLL = 73,7 MHz
-		// Fcy: 36,85 MHz
-		// 36,85 Mhz/ 64 = 575,78 kHz = 1,7367744624683038660599534544444�s
-		
-		T2CONbits.TON = 0; 			// Disable Timer
-		T2CONbits.TSIDL = 0;		// Continue timer operation in idle mode
-		T2CONbits.TGATE = 0; 		// Disable Gated Timer mode
-		T2CONbits.TCS = 0; 			// Select internal instruction cycle clock
-		T2CONbits.TCKPS = 0b10; 	// Select 1:64 Prescaler
-		T2CONbits.T32 = 0;			// Separate timers
-		TMR2 = 0x00; 				// Clear timer register
-		PR2 = 0xFFFF;				// Load the period value
-		
-		IPC1bits.T2IP = 0x02; 		// Set Timer2 Interrupt Priority Level
-		IFS0bits.T2IF = 0; 			// Clear Timer2 Interrupt Flag
-		IEC0bits.T2IE = 1; 			// Enable Timer2 interrupt
-		T2CONbits.TON = 1; 			// Start Timer
-		
-	}
+#define SYSTICK_US_PERIOD 120000
 
 
-	// ## Timer3 Init **Prescaler: 256; CAM Synchronization; segment time** 
-	void Timer3Init(void){
-		
-		// Aim: high timer duration
-		// FCPU with PLL = 73,7 MHz
-		// Fcy: 36,85 MHz
-		// 36,85 Mhz/ 256 = 143,95 kHz = 6.946 �s
+/* External variables -------------------------------------------------------*/
+extern unsigned long timer_overflow_CRK;
+extern unsigned long timer_overflow_CAM;
+extern unsigned long timer_overflow_CRK_failure;
+extern unsigned long timer_overflow_CAM_failure;
+extern unsigned long timer_overflow_CAM_REF_CRK;
 
-		T3CONbits.TON = 0; 			// Disable Timer
-		T3CONbits.TSIDL = 0;		// Continue timer operation in idle mode
-		T3CONbits.TGATE = 0; 		// Disable Gated Timer mode
-		T3CONbits.TCS = 0; 			// Select internal instruction cycle clock
-		T3CONbits.TCKPS = 0b11; 	// Select 1:256 Prescaler
-		TMR3 = 0x00; 				// Clear timer register
-		PR3 = 0xFFFF;				// Load the period value
-		
-		IPC2bits.T3IP = 0x02; 		// Set Timer3 Interrupt Priority Level
-		IFS0bits.T3IF = 0; 			// Clear Timer3 Interrupt Flag
-		IEC0bits.T3IE = 1; 			// Enable Timer3 interrupt
-		T3CONbits.TON = 1; 			// Start Timer
+/* Private variables --------------------------------------------------------*/
+int TIM_Soft_StartTick = 0;
+int TIM_Soft_StopTick = 0;
+int TIM_Soft_CounterOverflow = 0;
+int TIM_Soft_Counting = 0; //boolean TODO: Convert use correct type
+int TIM_Soft_TicksCounted = 0;
 
-	}
+/* Private functions --------------------------------------------------------*/
 
-	// ## Timer4 Init **Prescaler: 64; CRK_NO_SIG/CAM_delay**  
-	void Timer4Init(void)
+// Returns the computed value, 0 if impossible
+// TODO: #129 Check if operations on SysTick indeed is allowed
+void Systick_SetPeriod(float Duration_us)
+{
+	uint32_t Nb_Reload;
+	float Nb_Reload_Float;
+	float Real_Duration_us;
+	float In_Freq;
+
+	In_Freq = SystemCoreClock;
+
+	Nb_Reload_Float = Duration_us * In_Freq / 1000000.0;
+	Nb_Reload = (float) Nb_Reload_Float;
+	Real_Duration_us = ((float) Nb_Reload) / In_Freq * 1000000.0;
+
+	// Limit testing
+	// No prescaler
+	SysTick->CTRL = (SysTick->CTRL) | 1 << 2;
+	if (Nb_Reload_Float >= 16777215.0)  // 2^24-1 max
 	{
-		// Aim: resolution of < 2 �s;
-		// FCPU with PLL = 73,7 MHz
-		// Fcy: 36,85 MHz
-		// 36,85 Mhz/ 64 = 575,78 kHz = 1,737 �s
-
-		T4CONbits.TON = 0; 			// Disable Timer
-		T4CONbits.TSIDL = 0;		// Continue timer operation in idle mode
-		T4CONbits.TGATE = 0; 		// Disable Gated Timer mode
-		T4CONbits.TCS = 0; 			// Select internal instruction cycle clock
-		T4CONbits.TCKPS = 0b10; 	// Select 1:64 Prescaler
-		TMR4 = 0x00; 				// Clear timer register
-		PR4 = 0xFFFF;				// Load the period value
-		
-		IPC6bits.T4IP = 0x02; 		// Set Timer4 Interrupt Priority Level
-		IFS1bits.T4IF = 0; 			// Clear Timer4 Interrupt Flag
-		IEC1bits.T4IE = 1; 			// Enable Timer4 interrupt
+		// Fix the prescaler to 8
+		SysTick->CTRL = (SysTick->CTRL) & ~(1 << 2);
+		Nb_Reload_Float = Duration_us * In_Freq / 8000000.0;
+		Nb_Reload = (float) Nb_Reload_Float;
+		Real_Duration_us = ((float) Nb_Reload) / In_Freq * 8000000.0;
 	}
 
-	// ## Timer5 Init **CAM Prescaler: 256; CAM_NO_SIG**
-	void Timer5Init(void)
+	if (Nb_Reload_Float >= 16777215.0)  // 2^24-1 max
 	{
-		// Aim: high timer duration
-		// FCPU with PLL = 73,7 MHz
-		// Fcy: 36,85 MHz
-		// 36,85 Mhz/ 256 = 143,95 kHz = 6.946 �s
-
-		T5CONbits.TON = 0; 			// Disable Timer
-		T5CONbits.TSIDL = 0;		// Continue timer operation in idle mode
-		T5CONbits.TGATE = 0; 		// Disable Gated Timer mode
-		T5CONbits.TCS = 0; 			// Select internal instruction cycle clock
-		T5CONbits.TCKPS = 0b11; 	// Select 1:256 Prescaler
-		TMR5 = 0x00; 				// Clear timer register
-		PR5 = 0xFFFF;				// Load the period value
-		
-		IPC7bits.T5IP = 0x02; 		// Set Timer5 Interrupt Priority Level
-		IFS1bits.T5IF = 0; 			// Clear Timer5 Interrupt Flag
-		IEC1bits.T5IE = 1; 			// Enable Timer5 interrupt
+		Real_Duration_us = 0.0;
 	}
+
+	SysTick->LOAD = Nb_Reload;
+}
+
+// ## SysTick Timer Init **Prescaler: 64; CRK_RUN_OUT/CAM_delay**
+void SysTickInit(void)
+{
+	// FCPU with PLL = 73,7 MHz
+	// Fcy: 36,85 MHz
+	// 36,85 Mhz/ 64 = 575,78 kHz = 1.73 µs
+
+	// Disable timer
+	SysTick->CTRL &= ~1;
+	// Systick is not subject to any idle mode
+	SysTick->VAL = (2 ^ 24) - 1; // Clear Systick count (Systick is count down and on 24 bits)
+	// Set to a 105ms period
+	Systick_SetPeriod(105000.0);
+	NVIC_SetPriority(SysTick_IRQn, 2);  // Set Systick interrupt priority
+	// No need to reset flag in systick
+	SysTick->CTRL |= SysTick_CTRL_TICKINT_Msk;  // Enable Systick interrupt
+}
+
+//## Timer2Reset **Prescaler: 64; CRK Synchronization; tooth time**
+void TIM1_Reset(void)
+{
+	HAL_TIM_Base_Stop_IT(&htim1);
+	__HAL_TIM_SET_COUNTER(&htim1, 0); // Reset TIM1 counter value
+	HAL_TIM_Base_Start_IT(&htim1);
 	
-	// ## Timer6 Init **Prescaler: 8; CAM_PER/CRK_TOOTH_PER(start-value)//CRK_SHO_LEVEL pulse duration**
-	void Timer6Init(void)
+}
+
+//## TIM2_Reset **Prescaler: 256; CAM Synchronization; segment time**
+void TIM2_Reset(void)
+{
+	HAL_TIM_Base_Stop_IT(&htim2);
+	__HAL_TIM_SET_COUNTER(&htim2, 0); // Reset TIM2 counter value
+	HAL_TIM_Base_Start_IT(&htim2);
+	timer_overflow_CAM = 0;
+}
+
+void TIM_Soft_Start(void)
+{
+	if (TIM_Soft_Counting == false)
 	{
-		// Aim: Timer ticks < 1 �s
-		// FCPU with PLL = 73,7 MHz
-		// Fcy: 36,85 MHz
-		// 36,85 Mhz/ 8 = 4606 kHz = 0.217 �s
-
-		T6CONbits.TON = 0; 			// Disable Timer
-		T6CONbits.TSIDL = 0;		// Continue timer operation in idle mode
-		T6CONbits.TGATE = 0; 		// Disable Gated Timer mode
-		T6CONbits.TCS = 0; 			// Select internal instruction cycle clock
-		T6CONbits.TCKPS = 0b01; 	// Select 1:8 Prescaler
-		TMR6 = 0x00; 				// Clear timer register
-		PR6 = 0xFFFF;				// Load the period value
-		
-		IPC11bits.T6IP = 0x04; 		// Set Timer6 Interrupt Priority Level
-		IFS2bits.T6IF = 0; 			// Clear Timer6 Interrupt Flag
-		IEC2bits.T6IE = 1; 			// Enable Timer6 interrupt
+		TIM_Soft_StartTick = HAL_GetTick(); // Systick is used as based
+		// for the software-encoded timer
+		TIM_Soft_Counting = 1;
 	}
+}
 
-	// ## Timer7 Init **Prescaler: 8; CAM_PER/CRK_TOOTH_PER(pulse duration)**
-	void Timer7Init(void)
+void TIM_Soft_Stop(void)
+{
+	if (TIM_Soft_Counting)
 	{
-		// Aim: Timer ticks < 1 �s
-		// FCPU with PLL = 73,7 MHz
-		// Fcy: 36,85 MHz
-		// 36,85 Mhz/ 8 = 4606 kHz = 0.217 �s
-
-		T7CONbits.TON = 0; 			// Disable Timer
-		T7CONbits.TSIDL = 0;		// Continue timer operation in idle mode
-		T7CONbits.TGATE = 0; 		// Disable Gated Timer mode
-		T7CONbits.TCS = 0; 			// Select internal instruction cycle clock
-		T7CONbits.TCKPS = 0b01; 	// Select 1:8 Prescaler
-		TMR7 = 0x00; 				// Clear timer register
-		PR7 = 0x002E;				// Load the period value //5us 0x0017 is too low for pulse recognition, double value
-		
-		IPC12bits.T7IP = 0x04; 		// Set Timer7 Interrupt Priority Level
-		IFS3bits.T7IF = 0; 			// Clear Timer7 Interrupt Flag
-		IEC3bits.T7IE = 1; 			// Enable Timer7 interrupt
+		TIM_Soft_Counting = 0;
+		TIM_Soft_StopTick =  HAL_GetTick();
+		TIM_Soft_TicksCounted += ((TIM_Soft_StopTick - TIM_Soft_StartTick)
+				+ TIM_Soft_CounterOverflow * 62999)
+				% 62999;
+		TIM_Soft_CounterOverflow = 0;
 	}
+}
 
-	// ## Timer8 Init **Prescaler: 64; CRK_RUN_OUT/CAM_delay**
-	void Timer8Init(void)
+void TIM_Soft_Reset(void)
+{
+	TIM_Soft_StartTick = 0;
+	TIM_Soft_StopTick = 0;
+	TIM_Soft_TicksCounted = 0;
+	TIM_Soft_CounterOverflow = 0;
+}
+
+int TIM_Soft_GetCounter(void)
+{
+	if (TIM_Soft_Counting)
 	{
-		// FCPU with PLL = 73,7 MHz
-		// Fcy: 36,85 MHz
-		// 36,85 Mhz/ 64 = 575,78 kHz = 1.73 �s
-		T8CONbits.TON = 0; 			// Disable Timer
-		T8CONbits.TSIDL = 0;		// Continue timer operation in idle mode
-		T8CONbits.TGATE = 0; 		// Disable Gated Timer mode
-		T8CONbits.TCS = 0; 			// Select internal instruction cycle clock
-		T8CONbits.TCKPS = 0b10; 	// Select 1:64 Prescaler
-		TMR8 = 0x00; 				// Clear timer register
-		PR8 = 0xFFFF;				// Load the period value
-		
-		IPC12bits.T8IP = 0x02; 		// Set Timer8 Interrupt Priority Level
-		IFS3bits.T8IF = 0; 			// Clear Timer8 Interrupt Flag
-		IEC3bits.T8IE = 1; 			// Enable Timer8 interrupt
+		return ((TIM_Soft_StopTick - TIM_Soft_StartTick)
+				+ TIM_Soft_CounterOverflow * 62999)
+				% 62999;
 	}
-
-	// ## Timer9 Init **Prescaler: 64; CAM_delay**
-	void Timer9Init(void){
-		
-		// Aim: high timer duration
-		// FCPU with PLL = 73,7 MHz
-		// Fcy: 36,85 MHz
-		// 36,85 Mhz/ 64 = 575,78 kHz = 1.73 �s
-
-		T9CONbits.TON = 0; 			// Disable Timer
-		T9CONbits.TSIDL = 0;		// Continue timer operation in idle mode
-		T9CONbits.TGATE = 0; 		// Disable Gated Timer mode
-		T9CONbits.TCS = 0; 			// Select internal instruction cycle clock
-		T9CONbits.TCKPS = 0b10; 	// Select 1:64 Prescaler
-		TMR9 = 0x00; 				// Clear timer register
-		PR9 = 0xFFFF;				// Load the period value
-		
-		IPC13bits.T9IP = 0x02; 		// Set Timer9 Interrupt Priority Level
-		IFS3bits.T9IF = 0; 			// Clear Timer9 Interrupt Flag
-		IEC3bits.T9IE = 1; 			// Enable Timer9 interrupt
+	else
+	{
+		return TIM_Soft_TicksCounted;
 	}
+}
 
-	//## Timer2Reset **Prescaler: 64; CRK Synchronization; tooth time** 
-	void Timer2Reset(void){
-		TIM_SetCounter(TIM1, 0);		//Reset Timer2 sur l'ancien PIR, TIM1 pour nous
-		timer_overflow_CRK = 0;
-	}
-	
+// Returns a timestamp in microseconds
+static inline uint32_t GetTimestamp() {
+    uint32_t nb_of_periods;
+    uint32_t val;
+    uint32_t load;
 
-	//## Timer3Reset **Prescaler: 256; CAM Synchronization; segment time** 
-	void Timer3Reset(void){
-		TIM_SetCounter(TIM2, 0);				// Reset Timer3
-		timer_overflow_CAM = 0;
-	}
+	nb_of_periods = HAL_GetTick();
+	val = SysTick->VAL;
+	load = SysTick->LOAD;
 
-/*****************************************************************************/
-/*****************************************************************************/
+    // Do not factorize for precision purposes
+    return nb_of_periods * SYSTICK_US_PERIOD + (load + 1 - val) * SYSTICK_US_PERIOD / (load + 1);
+}

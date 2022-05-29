@@ -1,0 +1,8 @@
+var searchData=
+[
+  ['failure_5fprocessing_0',['Failure_processing',['../failures_8h.html#aeda4f321c053b7b8d9a10a47228988d8',1,'Failure_processing(char):&#160;failures.c'],['../failures_8c.html#a124dbbcadfb06406cf91d1201bb05c68',1,'Failure_processing(char failure_ident):&#160;failures.c']]],
+  ['failure_5freset_1',['Failure_reset',['../failures_8h.html#a494682d906c6e4e666f46a15c2aed5eb',1,'Failure_reset(void):&#160;failures.c'],['../failures_8c.html#a494682d906c6e4e666f46a15c2aed5eb',1,'Failure_reset(void):&#160;failures.c']]],
+  ['failure_5fsynch_5freset_2',['Failure_synch_reset',['../failures_8h.html#a6ea522e6a341dc0a0c127e8892f44c11',1,'Failure_synch_reset(char):&#160;failures.c'],['../failures_8c.html#a155e0b42be698fd658fea6a0dbb8608b',1,'Failure_synch_reset(char failure_ident):&#160;failures.c']]],
+  ['former_5fteeth_5ftime_5fcalculation_3',['Former_teeth_time_calculation',['../failures_8h.html#a5a07bf22c6553e23b66d7b26f06d286c',1,'Former_teeth_time_calculation(long, unsigned int, int):&#160;failures.c'],['../failures_8c.html#a3714f6c2b6cf52e7944ee9352143e105',1,'Former_teeth_time_calculation(long t_tooth, unsigned int teeth_count, int numb_miss_teeth):&#160;failures.c']]],
+  ['former_5fteeth_5ftime_5fcalculation_5foutput_4',['Former_teeth_time_calculation_output',['../failures_8h.html#aaedcc3fbf68595dee835b43fea8bd48c',1,'Former_teeth_time_calculation_output(long, unsigned int, int):&#160;failures.c'],['../failures_8c.html#acb639aa52e59059a33fa47ad4e7a9dc6',1,'Former_teeth_time_calculation_output(long t_tooth, unsigned int teeth_count, int numb_miss_teeth):&#160;failures.c']]]
+];

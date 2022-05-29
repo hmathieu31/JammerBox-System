@@ -6,36 +6,36 @@
 /* Author          :  Gr�goire Chabin/Christian Ringlstetter/Thomas Pichler  */
 /*****************************************************************************/
 
-
 // ### Basic includes ###
-#include "config.h"
-#include "stdbool.h"
-#include "stdlib.h"
-#include "string.h"
-#include "stm32f10x.h"
-#include "stm32f10x_exti.h"
-#include "stm32f10x_gpio.h"
-#include "stm32f10x_tim.h"
-#include "stm32f10x_usart.h"
+#include <stdbool.h>
+#include <stdlib.h>
+#include <string.h>
 
-// ### Programm includes ###
-#include "osc.h"
-#include "timer.h"
-#include "ic.h"
-#include "uart.h"
-#include "port_config.h"
-#include "system_configuration.h"
-#include "synchronization.h"
+// ### Hardware specific includes ###
+#include "stm32f1xx_hal_conf.h"
+
+#include "stm32f1xx_hal.h"
+#include "stm32f1xx_hal_gpio.h"
+#include "stm32f1xx_hal_tim.h"
+#include "stm32f1xx_hal_usart.h"
+
+// ### Program includes ###
 #include "failures.h"
 
+#include "gpio.h"
+#include "main.h"
+#include "synchronization.h"
+#include "system_configuration.h"
+#include "tim.h"
+#include "timer.h"
+#include "usart.h"
 
 // ### Definitions ###
 
 //** CAM_delay **
-#define edges_beetween_shift_CAM_delay_definition  6
+#define edges_beetween_shift_CAM_delay_definition 6
 
-
-// ### Globas variables ###
+// ### Global variables ###
 
 //***************** CRK ********************
 //** User config **
@@ -49,15 +49,15 @@ unsigned int first_seg_start_tooth = 0;
 double gap_ratio_CRK_DET = 0; // Typical Value for C_CRK_GAP_DET = 1.375
 // Gap ratio CRK for Gap Validation
 double gap_ratio_CRK_VLD = 0; // Typical Value for C_CRK_GAP_VLD = 3
-char sensortype_CRK; // c = CPDD  h = hall sensor 
+char sensortype_CRK;          // c = CPDD  h = hall sensor
 
-//Variables to replace the input capture buffer
+// Variables to replace the input capture buffer
 unsigned long IC1BUF;
-unsigned long IC2BUF; 
-unsigned long IC3BUF; 
-unsigned long IC4BUF; 
-unsigned long IC5BUF; 
-unsigned long IC6BUF; 
+unsigned long IC2BUF;
+unsigned long IC3BUF;
+unsigned long IC4BUF;
+unsigned long IC5BUF;
+unsigned long IC6BUF;
 
 //** Calculation variables **
 unsigned long T_TOOTH_RAW_2 = 0;
@@ -92,47 +92,59 @@ bool synch_times_valid = false;
 //***************** CAM ********************
 //** User config **
 unsigned int number_active_edges_CAM[2];
-int number_teeth_CAM[2] = {0, 0};
+int number_teeth_CAM[2] =
+    {0, 0};
 double filter_time_CAM[2];
 double CAM_edges[2][24];
 double distance_gap_to_CAM_edge[2][24];
-double first_edge_to_tdc0[2] = {0, 0};
+double first_edge_to_tdc0[2] =
+    {0, 0};
 char active_CAM_edges[2]; // f: falling; r: rising; b: both
 char sensortype_CAM[2];
 int number_of_CAM = 1;
 int cam_setup_counter = 0;
 
-
 //***************** CAM/CRK - configuration completion and output port setting ********************
 bool configuration_complete = false;
 bool output_level_setting = false;
-
 
 //***************** CAM/CRK ****************
 //** Calculation variables **
 unsigned long timer_overflow_CAM = 0;
 unsigned long segment_time_CAM = 0;
-unsigned int edge_count_CAM[2] = {0, 0};
-unsigned int edge_validation_counter_CAM[2] = {0, 0};
-unsigned int edge_position_counter_CAM[2] = {0, 0};
-unsigned int former_edge_position_CAM[2] = {0, 0};
-unsigned int edge_validation_counter_CAM_ahead[2] = {0, 0};
-unsigned int edge_position_counter_CAM_ahead[2] = {0, 0};
-unsigned int former_edge_position_CAM_ahead[2] = {0, 0};
+unsigned int edge_count_CAM[2] =
+    {0, 0};
+unsigned int edge_validation_counter_CAM[2] =
+    {0, 0};
+unsigned int edge_position_counter_CAM[2] =
+    {0, 0};
+unsigned int former_edge_position_CAM[2] =
+    {0, 0};
+unsigned int edge_validation_counter_CAM_ahead[2] =
+    {0, 0};
+unsigned int edge_position_counter_CAM_ahead[2] =
+    {0, 0};
+unsigned int former_edge_position_CAM_ahead[2] =
+    {0, 0};
 double gap_to_edge;
 double gap_to_edge_ahead;
-double gap_to_first_edge[2] = {0, 0};
-double gap_to_first_edge_difference[2] = {0, 0};
+double gap_to_first_edge[2] =
+    {0, 0};
+double gap_to_first_edge_difference[2] =
+    {0, 0};
 double tolerance_window_CAM[2];
-bool CAM_tolerance_switch[2] = {false, false};
+bool CAM_tolerance_switch[2] =
+    {false, false};
 bool CAM_CRK_synch_status = false;
-bool CAM_CRK_synch_status_ahead =  false;
-bool CAM_CRK_synch_ahead[2] = {false, false};
-bool CAM_signal[2] = {false, false};
-bool CRK_CAM_synch[2] = {false, false};
+bool CAM_CRK_synch_status_ahead = false;
+bool CAM_CRK_synch_ahead[2] =
+    {false, false};
+bool CAM_signal[2] =
+    {false, false};
+bool CRK_CAM_synch[2] =
+    {false, false};
 bool CAM_config = false;
 int teeth_count_overall = 0;
-
 
 //***************** Communication validation ************
 bool communication_active = false;
@@ -141,24 +153,24 @@ bool communication_validation = false;
 
 //********** Failure treatment **************
 char failure_identify = '0';
-//0: No failure
-//1: CRK_NO_SIG
-//2: CAM_NO_SIG
-//3: CAM/CRK_NO_SIG
-//4: CRK_RUN_OUT
-//5: CAM_PER
-//6: CRK_TOOTH_PER
-//7: CAM_TOOTH_OFF
-//8: CAM_SYN
-//9: CAM_SYN_CRK
-//a: CAM_REF_CRK
-//b: CRK_SHO_LEVEL
-//f: CRK_TOOTH_NR
+// 0: No failure
+// 1: CRK_NO_SIG
+// 2: CAM_NO_SIG
+// 3: CAM/CRK_NO_SIG
+// 4: CRK_RUN_OUT
+// 5: CAM_PER
+// 6: CRK_TOOTH_PER
+// 7: CAM_TOOTH_OFF
+// 8: CAM_SYN
+// 9: CAM_SYN_CRK
+// a: CAM_REF_CRK
+// b: CRK_SHO_LEVEL
+// f: CRK_TOOTH_NR
 
 int active_cam_failure = 0;
-//0: Failur is active on CAM1 
-//1: Failur is active on CAM2 
-//2: Failur is active on CAM1 and CAM2 
+// 0: Failur is active on CAM1
+// 1: Failur is active on CAM2
+// 2: Failur is active on CAM1 and CAM2
 
 //** Labels indicating failure status **
 bool failure_active = false;
@@ -176,7 +188,6 @@ unsigned long timer_overflow_CRK_failure = 0;
 unsigned long timer_overflow_CAM_failure = 0;
 unsigned long timer_overflow_CAM_REF_CRK = 0;
 
-
 //** CRK_RUN_OUT **
 char sc_type_CRK_RUN_OUT;
 unsigned int teeth_counter_CRK_RUN_OUT = 0;
@@ -192,7 +203,8 @@ bool counter_ready = false;
 bool counter_reset = true;
 
 //** CAM_PER **
-unsigned int counter_CAM_PER[2] = {0,0};
+unsigned int counter_CAM_PER[2] =
+    {0, 0};
 unsigned int number_edges_CAM_PER;
 double filter_time_CAM_PER;
 double microsecond_per_timer_tick_CAM_PER__CRK_TOOTH_PER = 0.217;
@@ -208,13 +220,15 @@ unsigned int revolution_counter_CRK_TOOTH_PER;
 double calculation_factor_CRK_TOOTH_PER;
 
 //** CAM_DELAY(CAM_TOOTH_OFF / CAM_REF_CRK / CAM_SYN / CAM_SYN_CRK) **
-unsigned int number_processing_edges_CAM_delay[2] = {0, 0};
+unsigned int number_processing_edges_CAM_delay[2] =
+    {0, 0};
 const unsigned int edges_beetween_shift_CAM_delay = 6;
 unsigned int shift_counter_CAM_delay[2][edges_beetween_shift_CAM_delay_definition];
 double angle_to_edge_CAM_delay[2][edges_beetween_shift_CAM_delay_definition];
 double delay_angle_CAM_delay;
 double delay_factor_CAM_delay = 1.0;
-bool timer_active_CAM_delay[2] = {false, false};
+bool timer_active_CAM_delay[2] =
+    {false, false};
 bool interrupt_check_CAM_delay[2];
 
 //** CAM_REF_CRK **
@@ -232,11 +246,11 @@ unsigned int counter_gap_left_CRK_TOOTH_OFF = 0;
 
 //** CRK_GAP_NOT_DET **
 unsigned int teeth_counter_CRK_GAP_NOT_DET = 0;
-unsigned int timer_Counter_CRK_GAP_NOT_DET = 0;  
+unsigned int timer_Counter_CRK_GAP_NOT_DET = 0;
 
 //** SEG_ADP_ER_LIM **
 unsigned int teeth_counter_SEG_ADP_ER_LIM = 0;
-unsigned int timer_Counter_SEG_ADP_ER_LIM = 0; 
+unsigned int timer_Counter_SEG_ADP_ER_LIM = 0;
 double crk_delay_SEG_ADP_ER_LIM = 0;
 
 //** CRK_PLS_ORNG **
@@ -247,13 +261,13 @@ unsigned int crk_teeth_off_POSN_ENG_STST = 0;
 unsigned int counter_POSN_ENG_STST = 0;
 
 //** CAM_PAT_ERR **
-unsigned int active_CAM_edges_counter[2] = {0,0};
+unsigned int active_CAM_edges_counter[2] =
+    {0, 0};
 
 //** SC_CAM_CRK **
 unsigned int sc_type_SC_CAM_CRK = 0;
 
-
-//***************** UART ********************
+//***************** USART ********************
 //** Receive **
 int char_counter = 0;
 int data_counter = 0;
@@ -279,614 +293,517 @@ bool com_error = false;
 char message_identify;
 
 //** Send **
-char message[14] = {'1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'z', 'x', 'y'};
-//1: COM-error
-//2: CRK-configuration ready
-//3: CAM-configuration ready
-//4: CRK-synchronization ready
-//5: CRK-synchronization lost
-//6: CAM/CRK-synchronization ready
-//7: CAM/CRK-synchronization lost
-//8: Failure active
-//9: Failure passive
-//a: Failure CAM blank out active
-//b: Failure CAM blank out passive
-//z: Communication validation
-//x: Communication receive ready
-//y: Communication receive not ready
+char message[14] =
+    {'1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'z', 'x', 'y'};
+// 1: COM-error
+// 2: CRK-configuration ready
+// 3: CAM-configuration ready
+// 4: CRK-synchronization ready
+// 5: CRK-synchronization lost
+// 6: CAM/CRK-synchronization ready
+// 7: CAM/CRK-synchronization lost
+// 8: Failure active
+// 9: Failure passive
+// a: Failure CAM blank out active
+// b: Failure CAM blank out passive
+// z: Communication validation
+// x: Communication receive ready
+// y: Communication receive not ready
 
 //### Main Function ###
 
-int main(void) {
+int main1(void)
+{
+    Config_clock_tree();
+    // ## Initialising ##
 
-    //***************** Initialization ********************
+    TIM1Init(); //? We probabaly can replace the Timer 2 by the watchdog timer (and use timer 2 for timer 4) (some refactoring time incoming)
 
-
-    // ## Initialisierung ##
-
-    OSCInit();
-
-    Timer1Init();
-
-    Timer2Init();
+    TIM2Init();
 
     Timer3Init();
 
     Timer4Init();
 
-    Timer5Init();
+    SysTickInit();
 
-    Timer6Init();
+    EXTI8Init();
 
-    Timer7Init();
+    EXTI9Init();
 
-    Timer8Init();
+    EXTI14Init();
 
-    Timer9Init();
+    EXTI11Init();
 
-    IC1Init();
+    EXTI12Init();
 
-    IC2Init();
+    EXTI13Init();
 
-    IC3Init();
+    PORT_A_Config();
 
-    IC4Init();
-    
-    IC5Init();
+    PORT_B_Config();
 
-    IC6Init();
+    Usart1Init();
 
-    GPIOs_config();
-
-    Uart2Init();
-
-
-    TRISAbits.TRISA9 = 0;
-
-    LATAbits.LATA9 = 0;
+    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, GPIO_PIN_RESET);
 
     // ## Main loop ##
-    while (1) {
-        //failure processing
-        if (configuration_complete){
-            Failure_processing(failure_identify);
-        }
-
-        //process the received message
-        if (message_received == true && com_error == false) {
-            UART_receive();
-        }
-
-        //reset all values when CRK stalling is detected
-        if ((timer_overflow_CRK > 10))// || (timer_overflow_CAM > 5))
+    while (1)
+    {
+        // failure processing
+        if (configuration_complete)
         {
-            //Stalling_detection();
-            Stalling_detection_CRK();
-            LATAbits.LATA9 = 1;
+            failure_processing(failure_identify);
         }
-        //reset all values when CAM stalling is detected //was not here before
-        if ((timer_overflow_CAM > 5)) {
+
+        // process the received message
+        if (message_received == true && com_error == false)
+        {
+            USART_ProcessMessage();
+        }
+
+        // reset all values when CRK stalling is detected
+        if ((timer_overflow_CRK > 10)) // || (timer_overflow_CAM > 5))
+        {
+            // Stalling_detection();
+            Stalling_detection_CRK();
+            HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, GPIO_PIN_SET);
+        }
+        // reset all values when CAM stalling is detected //was not here before
+        if ((timer_overflow_CAM > 5))
+        {
             Stalling_detection_CAM(0);
             Stalling_detection_CAM(1);
-            LATAbits.LATA9 = 1;
+            HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, GPIO_PIN_SET);
         }
 
+        // send failure configuration status
+        USART_send_failure_configuration_status(failure_identify, failure_configured, failure_configured_CAM_blank_out);
 
-        //send failure configuration status
-        UART_send_failure_configuration_status(failure_identify, failure_configured, failure_configured_CAM_blank_out);
-
-        //check input signal level and set corresponding output level
+        // check input signal level and set corresponding output level
         Input_signal_observe(output_level_setting);
-        
-        
-        if (CRK_synch) {
-            LATAbits.LATA0 = 1;
-            LATAbits.LATA3 = 0;
-        } else {
-            LATAbits.LATA0 = 0;
+        if (CRK_synch)
+        {
+            HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_SET);
+            HAL_GPIO_WritePin(GPIOA, GPIO_PIN_2, GPIO_PIN_RESET);
+        }
+        else
+        {
+            HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_RESET);
         }
 
-        if (CRK_synch_temp) {
-            LATAbits.LATA1 = 1;
-        } else {
-            LATAbits.LATA1 = 0;
+        if (CRK_synch_temp)
+        {
+            HAL_GPIO_WritePin(GPIOA, GPIO_PIN_1, GPIO_PIN_SET);
+        }
+        else
+        {
+            HAL_GPIO_WritePin(GPIOA, GPIO_PIN_1, GPIO_PIN_RESET);
         }
 
-        if (CRK_synch) {
-            LATAbits.LATA9 = 1;
+        if (CRK_synch)
+        {
+            HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, GPIO_PIN_SET);
         }
-        else{
-            LATAbits.LATA9 = 0;
+        else
+        {
+            HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, GPIO_PIN_RESET);
         }
-    };
+    }
 }
 
+// ### EXTI Callback functions ###
 
-
-// ### Interrupt Functions ###
-
-//## Capture Event rising edge --CRK--
-
-void __attribute__((__interrupt__, no_auto_psv)) _IC1Interrupt(void) {
-
-    CRK_signal = true; //Set actual signal level
-
-    if (failure_active == false) //Set CRK-output
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+    if (GPIO_Pin == 8) // Capture Event rising edge --CRK--
     {
-        Output_CRK_no_failure();
-    } else if (failure_identify != '1' && failure_identify != '4' && failure_identify != 'f'
-            && failure_identify != 'b' && failure_identify != 'i' && failure_identify != 'j' 
-            && failure_identify != 'k' && failure_identify != 'l' && failure_identify != 'm')
-    {
-        Output_CRK_no_failure();
-    }
+        CRK_signal = true; // Set actual signal level
 
-    low_time_CRK = (unsigned long) IC1BUF; //Set actual low time of CRK signal
-
-    Output_CRK(failure_identify); //CRK Output
-    timer_overflow_CRK=0; //edge was detected, so no stalling
-    IFS0bits.IC1IF = 0; //Clear IC1 Interrupt Flag
-    
-
-}
-
-//## Capture Event falling edge --CRK--
-
-void __attribute__((__interrupt__, no_auto_psv)) _IC2Interrupt(void) {
-
-
-    CRK_signal = false; //Set actual signal level
-
-    if (failure_active == false) //Set CRK-output
-    {
-        Output_CRK_no_failure();
-    } else if (failure_identify != '1' && failure_identify != '4' && failure_identify != 'f' 
-            && failure_identify != 'h' && failure_identify != 'i' && failure_identify != 'j'
-            && failure_identify != 'k' && failure_identify != 'l' && failure_identify != 'm')
-    {
-        Output_CRK_no_failure();
-    }
-
-    sync_CRK_preparation(); //CRK synchronisation preparation
-
-    Output_CRK(failure_identify); //CRK Output
-    if (configuration_complete == true) {
-        sync_CRK(); //CRK synchronizatione
-    }
-    timer_overflow_CRK = 0; //edge was detected, so no stalling
-    IC2BUF = TIM_GetCounter(TIM2);
-    EXTI_ClearFlag(EXTI_PR_PR9); //Clear IC2 Interrupt Flag
-    
-}
-
-//## Capture Event rising edge --CAM1--
-
-void __attribute__((__interrupt__, no_auto_psv)) _IC3Interrupt(void) {
-
-    CAM_signal[0] = true; //Set actual signal level
-
-    Output_CAM(failure_identify, 0); //CAM1 Output
-
-    if (configuration_complete == true) {
-        sync_CAM_CRK(0); //CAM_CRK synchronization
-    }
-    timer_overflow_CAM = 0; //edge was detected, so no stalling
-
-   EXTI_ClearFlag(EXTI_PR_PR10); //Clear IC3 interrupt flag
-
-}
-
-
-//## Capture Event falling edge --CAM1--
-
-void __attribute__((__interrupt__, no_auto_psv)) _IC4Interrupt(void) {
-
-    CAM_signal[0] = false; //Set actual signal level
-
-    Timer3Reset();
-    
-    Output_CAM(failure_identify, 0); //CAM1 Output
-
-    if (configuration_complete == true) {
-        sync_CAM_CRK(0); //CAM_CRK synchronization
-    }
-    timer_overflow_CAM=0; //edge was detected, so no stalling
-    EXTI_ClearFlag(EXTI_PR_PR11); //Clear IC4 Interrupt Flag
-}
-
-
-//## Capture Event rising edge --CAM2--
-
-void __attribute__((__interrupt__, no_auto_psv)) _IC5Interrupt(void) {
-    if(number_of_CAM == 2)
-    {
-        CAM_signal[1] = true; //Set actual signal level
-
-        Output_CAM(failure_identify, 1); //CAM2 Output
-
-        if (configuration_complete == true) {
-            sync_CAM_CRK(1); //CAM_CRK synchronization
+        if (failure_active == false) // Set CRK-output
+        {
+            output_CRK_no_failure();
         }
-        timer_overflow_CAM=0; //edge was detected, so no stalling  
-    } 
-    EXTI_ClearFlag(EXTI_PR_PR12); //Clear IC5 Interrupt Flag
- 
-}
-
-
-//## Capture Event falling edge --CAM2--
-
-void __attribute__((__interrupt__, no_auto_psv)) _IC6Interrupt(void) {
-    if(number_of_CAM == 2)
-    {
-        CAM_signal[1] = false; //Set actual signal level
-
-        Timer3Reset();
-
-        Output_CAM(failure_identify, 1); //CAM2 Output
-
-        if (configuration_complete == true) {
-            sync_CAM_CRK(1); //CAM_CRK synchronization
+        else if (failure_identify != '1' && failure_identify != '4' && failure_identify != 'f' && failure_identify != 'b' && failure_identify != 'i' && failure_identify != 'j' && failure_identify != 'k' && failure_identify != 'l' && failure_identify != 'm')
+        {
+            output_CRK_no_failure();
         }
-        timer_overflow_CAM=0; //edge was detected, so no stalling
+
+        low_time_CRK = IC1BUF; // Set actual low time of CRK signal
+
+        output_CRK(failure_identify); // CRK Output
+        timer_overflow_CRK = 0;       // edge was detected, so no stalling
     }
-    EXTI_ClearFlag(EXTI_PR_PR13);  //Clear IC6 Interrupt Flag
-}
 
+    if (GPIO_Pin == 9) //## Capture Event falling edge --CRK--
+    {
+        CRK_signal = false; // Set actual signal level
 
+        if (failure_active == false) // Set CRK-output
+        {
+            output_CRK_no_failure();
+        }
+        else if (failure_identify != '1' && failure_identify != '4' && failure_identify != 'f' && failure_identify != 'h' && failure_identify != 'i' && failure_identify != 'j' && failure_identify != 'k' && failure_identify != 'l' && failure_identify != 'm')
+        {
+            output_CRK_no_failure();
+        }
 
-//## Timer 1 Interrupt: Communication validation
+        sync_CRK_preparation(); // CRK synchronisation preparation
 
-void __attribute__((__interrupt__, no_auto_psv)) _T1Interrupt(void) {
-    if (communication_active == true) {
-        USART_send(message[11]);
+        output_CRK(failure_identify); // CRK Output
+        if (configuration_complete == true)
+        {
+            sync_CRK(); // CRK synchronisation
+        }
+        timer_overflow_CRK = 0; // edge was detected, so no stalling
+    }
 
-        if (communication_validation == true) {
-            if (communication_ready == true) {
-                communication_ready = false;
-            } else {
-                failure_identify = '0';
-                configuration_complete = false;
-                CRK_config = false;
-                CAM_config = false;
-                communication_active = false;
-                communication_validation = false;               
-                TIM_Cmd(TIM1, DISABLE); //Stop timer1
-                TIM_SetCounter(TIM1, 0);
-                Stalling_detection();
+    if (GPIO_Pin == 14) //## Capture Event rising edge --CAM1--
+    {
+
+        CAM_signal[0] = true; // Set actual signal level
+
+        output_CAM(failure_identify, 0); // CAM1 Output
+
+        if (configuration_complete == true)
+        {
+            sync_CAM_CRK(0); // CAM_CRK Synchronisation
+        }
+        timer_overflow_CAM = 0; // edge was detected, so no stalling
+    }
+
+    if (GPIO_Pin == 11) //## Capture Event falling edge --CAM1--
+    {
+        CAM_signal[0] = false; // Set actual signal level
+
+        TIM2_Reset();
+
+        output_CAM(failure_identify, 0); // CAM1 Output
+
+        if (configuration_complete == true)
+        {
+            sync_CAM_CRK(0); // CAM_CRK Synchronisation
+        }
+        timer_overflow_CAM = 0; // edge was detected, so no stalling
+    }
+
+    if (GPIO_Pin == 12) //## Capture Event rising edge --CAM2--
+    {
+        CAM_signal[1] = true; // Set actual signal level
+
+        output_CAM(failure_identify, 1); // CAM2 Output
+
+        if (configuration_complete == true)
+        {
+            sync_CAM_CRK(1); // CAM_CRK Synchronisation
+        }
+        timer_overflow_CAM = 0; // edge was detected, so no stalling
+    }
+
+    if (GPIO_Pin == 13) //## Capture Event falling edge --CAM2--
+    {
+        if (number_of_CAM == 2)
+        {
+            CAM_signal[1] = false; // Set actual signal level
+
+            TIM2_Reset();
+
+            output_CAM(failure_identify, 1); // CAM2 Output
+
+            if (configuration_complete == true)
+            {
+                sync_CAM_CRK(1); // CAM_CRK Synchronisation
             }
-        }
-
-        if (communication_active == true) {
-            communication_validation = !communication_validation;
+            timer_overflow_CAM = 0; // edge was detected, so no stalling
         }
     }
-
-    TIM_ClearFlag(TIM1, TIM_FLAG_Update);
 }
 
-
-//## Timer 2 Interrupt CRK tooth time
-
-void __attribute__((__interrupt__, no_auto_psv)) TIM2_IRQHandler(void) {
-
-    // all overflows between the events
-    timer_overflow_CRK++;
-
-    TIM_ClearFlag(TIM2,TIM_FLAG_Update);
-
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+    if (htim == &htim1)
+    {
+        TIM1_PeriodElapsedCallback();
+    }
+    if (htim == &htim2)
+    {
+        TIM2_PeriodElapsedCallback();
+    }
+    if (htim == &htim3)
+    {
+        TIM3_PeriodElapsedCallback();
+    }
+    if (htim == &htim4)
+    {
+        TIM4_PeriodElapsedCallback();
+    }
 }
 
-//## Timer 3 Interrupt CAM tooth time
+//## Timer 1 Interrupt CRK tooth time (previously timer2)
 
-void __attribute__((__interrupt__, no_auto_psv)) TIM3_IRQHandler(void) {
+void TIM1_PeriodElapsedCallback(void)
+{
 
+    if (failure_identify == 'i')
+    { // CRK_GAP_NOT_DET
+        timer_Counter_CRK_GAP_NOT_DET++;
+        switch (timer_Counter_CRK_GAP_NOT_DET)
+        {
+        case 1: {
+            HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET);
+
+            if (sensortype_CRK == 'c')
+            {
+                //§ PR8 = 0x001D;   // 29 * 1.73us = 50.1us
+                __HAL_TIM_SET_AUTORELOAD(&htim1, 3600);
+            }
+            else if (sensortype_CRK == 'h')
+            {
+                __HAL_TIM_SET_AUTORELOAD(&htim1,(T_TOOTH_RAW / 2) - 1);
+            }
+            else
+            {
+                __HAL_TIM_SET_AUTORELOAD(&htim1,1);
+            }
+            break;
+        }
+        case 2: {
+            HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
+
+            HAL_TIM_Base_Stop(&htim1);
+
+            timer_Counter_CRK_GAP_NOT_DET = 0;
+            failure_active = false;
+            break;
+        }
+        default: {
+            HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
+
+
+            HAL_TIM_Base_Stop(&htim1);
+            timer_Counter_CRK_GAP_NOT_DET = 0;
+            failure_active = false;
+            break;
+        }
+        }
+    }
+    else if (failure_identify == 'j') // SEG_ADP_ER_LIM
+    {
+        output_CRK_no_failure();
+        SEG_ADP_ER_LIM_reset();
+    }
+    __HAL_TIM_SET_COUNTER(&htim1, 0);  //clear tim1 count
+}
+
+//## Timer 2 Interrupt CAM tooth time (previously timer3)
+
+void TIM2_PeriodElapsedCallback(void)
+{
     // all overflows between the events
-    //test
+    // test
     timer_overflow_CAM++;
-
-    TIM_ClearFlag(TIM3,TIM_FLAG_Update);
-
 }
+//## Timer 3 Interrupt: CAM_PER - start value
 
-//## Timer 4 Interrupt: CRK failure circuit-entering
+void TIM3_PeriodElapsedCallback(void)
+{
 
-void __attribute__((__interrupt__, no_auto_psv)) TIM4_IRQHandler(void) {
-    // all overflows between the events
-    timer_overflow_CRK_failure++;
+    if (failure_identify == '5')
+    { // CAM_PER: error identified by '5'
 
-    TIM_SetCounter(TIM4,0);
-    TIM_ClearFlag(TIM4,TIM_FLAG_Update);
-
-}
-
-//## Timer 5 Interrupt: CAM failure circuit-entering
-
-void __attribute__((__interrupt__, no_auto_psv)) TIM5_IRQHandler(void) {
-
-    // all overflows between the events
-    timer_overflow_CAM_failure++;
-
-    TIM_SetCounter(TIM5,0);
-    TIM_ClearFlag(TIM5,TIM_FLAG_Update);
-}
-
-//## Timer 6 Interrupt: CAM_PER - start value
-
-void __attribute__((__interrupt__, no_auto_psv)) TIM6_IRQHandler(void) {
-
-    if (failure_identify == '5') { //CAM_PER //?CAM_PER is the error identified by '5'
-
-        if (GPIO_ReadInputDataBit(GPIOG,7)==1)
+        if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_11) == 1)
         {
-            GPIO_SetBits(GPIOG,7);
+            HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_RESET);
         }
-        else if (GPIO_ReadInputDataBit(GPIOG,7)==0)
+        else
         {
-            GPIO_ResetBits(GPIOG,7);    
-        };
-
-        counter_CAM_PER[0]  ++; //? Number of times we lost CAM with timer 6 ?
-        if(counter_CAM_PER[0] == 2 ){
-            TIM_Cmd(TIM6,DISABLE);
-            counter_CAM_PER[0] = 0; //? Reset timer 6 CAM lost counter
+            HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_SET);
         }
-        TIM_SetCounter(TIM6, 0); // reset the timers counter 
 
-    } else if (failure_identify == '6') { //CRK_TOOTH_PER
+        counter_CAM_PER[0]++; // Number of times we lost CAM with timer 6
+        if (counter_CAM_PER[0] == 2)
+        {
+            HAL_TIM_Base_Stop(&htim3);
+            counter_CAM_PER[0] = 0; // Reset timer 6 CAM lost counter
+        }
+        __HAL_TIM_SET_COUNTER(&htim3, 0); // reset the timers counter
+    }
+    else if (failure_identify == '6')
+    { // CRK_TOOTH_PER
 
         // Load the period value 20us  here
-        //? Période du timer = Période_Horloge * (PSC+1) * (ARR+1)
-        //? Le mieux est d'avoir PSC le plus petit possible
-        //? Mais ARR doit pas dépasser (2^16)-1 = 65535
-        //? 72Mhz*PSC+1*ARR+1
-        TIM_PrescalerConfig(TIM7,0,TIM_PSCReloadMode_Immediate); //? Define PSC value
-        TIM_SetAutoreload(TIM7,1439); //? Define ARR value 20us*72Mhz = 1440
+        // Timer period = Clock_Period * (PSC+1) * (ARR+1)
+        // ideally we want the lowest possible PSC
+        // But ARR must not exceed (2^16)-1 = 65535
+        // 72Mhz*PSC+1*ARR+1
 
-        TIM_Cmd(TIM7,ENABLE);
+        __HAL_TIM_SET_AUTORELOAD(&htim4, 1439); // Define ARR value 20us*72Mhz = 1440 (PSC=0 pour TIM7)
 
-        if (GPIO_ReadInputDataBit(GPIOG,6)==1)
+        HAL_TIM_Base_Stop(&htim4);
+
+        if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_4) == 1)
         {
-            GPIO_SetBits(GPIOG,6);
+            HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET);
         }
-        else if (GPIO_ReadInputDataBit(GPIOG,6)==0)
+        else
         {
-            GPIO_ResetBits(GPIOG,6);    
-        };
-        
-        TIM_Cmd(TIM6,DISABLE);
+            HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
+        }
 
-    } else if (failure_identify == 'b') { //CRK_SHO_LEVEL
-
-        GPIO_SetBits(GPIOG,6);
-
-        TIM_Cmd(TIM6,DISABLE);
+        HAL_TIM_Base_Stop(&htim3);
     }
-     TIM_ClearFlag(TIM6,TIM_FLAG_Update); // Clear Timer6 Interrupt Flag
+    else if (failure_identify == 'b')
+    { // CRK_SHO_LEVEL
+
+        HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
+
+        HAL_TIM_Base_Stop(&htim3);
+    }
 }
 
-//## Timer 7 Interrupt: CAM_PER - pulse duration
+//## Timer 4 Interrupt: CAM_PER - pulse duration
 
-void __attribute__((__interrupt__, no_auto_psv)) TIM7_IRQHandler(void) {
+void TIM4_PeriodElapsedCallback(void)
+{
 
     if (failure_identify == '5') // CAM_PER --> Cam_Spk
     {
-        if (GPIO_ReadInputDataBit(GPIOG,8)==1)
+        if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_6) == 1)
         {
-            GPIO_SetBits(GPIOG,8);
+            HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, GPIO_PIN_RESET);
         }
-        else if (GPIO_ReadInputDataBit(GPIOG,8)==0)
+        else
         {
-            GPIO_ResetBits(GPIOG,8);    
-        };
-
-        counter_CAM_PER[1] ++;//? Number of times we lost CAM with timer 7 ?
-        if(counter_CAM_PER[1] == 2 ){
-
-            TIM_Cmd(TIM7,DISABLE);
-
-            counter_CAM_PER[1] = 0;//?Reset timer 7 CAM counter
+            HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, GPIO_PIN_SET);
         }
-        TIM_SetCounter(TIM7,0);
+
+        counter_CAM_PER[1]++; // Number of times we lost CAM with timer 7
+        if (counter_CAM_PER[1] == 2)
+        {
+
+            HAL_TIM_Base_Stop(&htim4);
+
+            counter_CAM_PER[1] = 0; // Reset timer 7 CAM counter
+        }
+
+        __HAL_TIM_SET_COUNTER(&htim4, 0);
     }
-    else if (failure_identify == '6')  // CRK_TOOTH_PER
+    else if (failure_identify == '6') // CRK_TOOTH_PER
     {
-        if (GPIO_ReadInputDataBit(GPIOG,6)==1)
+        if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_4) == 1)
         {
-            GPIO_SetBits(GPIOG,6);
+            HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET);
         }
-        else if (GPIO_ReadInputDataBit(GPIOG,6)==0)
+        else
         {
-            GPIO_ResetBits(GPIOG,6);    
-        };
+            HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
+        }
 
-        TIM_Cmd(TIM7,DISABLE);
-
+        HAL_TIM_Base_Stop(&htim4);
     }
-    else if (failure_identify == 'j') // SEG_ADP_ER_LIM
-    {
-        timer_Counter_SEG_ADP_ER_LIM ++;
-        switch(timer_Counter_SEG_ADP_ER_LIM)
+    else if (failure_identify == 'j')
+    { // SEG_ADP_ER_LIM
+
+        timer_Counter_SEG_ADP_ER_LIM++;
+        switch (timer_Counter_SEG_ADP_ER_LIM)
         {
-            case 1:
-            { // failure for the falling edge
-
-                GPIO_ResetBits(GPIOG,6);
-
-                if(failure_waiting == true)
-                { // if the rising edge has already happen
-                    if(sensortype_CRK == 'c') //sensor is cpdd
-                    {
-                        TIM_PrescalerConfig(TIM8,0,TIM_PSCReloadMode_Immediate);
-                        TIM_SetAutoreload(TIM8,3599);//? 72*50=3600
-                    }
-                    else if(sensortype_CRK == 'h'){ // all the others 
-                        TIM_PrescalerConfig(TIM8,0,TIM_PSCReloadMode_Immediate);
-                        TIM_SetAutoreload(TIM8,(T_TOOTH_RAW /2)-1); //? If setted period is more than 910 us PSC should be set higher
-                    }
-                    else
-                    {
-                        //§ PR8 = 0x0001; //if sensor typ not set, shouldn't happen
-                        TIM_PrescalerConfig(TIM8,0,TIM_PSCReloadMode_Immediate);
-                        TIM_SetAutoreload(TIM8,1); 
-                    } 
-
-                    //§ T8CONbits.TON = 1;//? Start timer 8
-                    TIM_Cmd(TIM8,ENABLE);
-
+        case 1: { // failure for the falling edge
+            HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET);
+            if (failure_waiting == true)
+            {                              // if the rising edge has already happen
+                if (sensortype_CRK == 'c') // sensor is cpdd
+                {
+                    __HAL_TIM_SET_PRESCALER(&htim1, 3600); // 72MHz*50us=3600
                 }
-                failure_passed = true;
-                break;
-            }
-            case 2:
-            { // failure for the rising edge
-                //? TODO: #23 Implement SEG_ADP_ER_LIM_reset
-                SEG_ADP_ER_LIM_reset();//?SEG_... failure_inactive, passed and waiting =false, init timer 7 & 8, SEG_...error counter reset 
-                break;
-            } 
-        }
-        TIM_Cmd(TIM7,DISABLE);
-
-    }
-    else if (failure_identify == 'k') // CrkPlsOrng
-    {
-        GPIO_SetBits(GPIOG,6);
-
-        TIM_Cmd(TIM7,DISABLE);
-    }
-    else {
-        TIM_Cmd(TIM7,DISABLE);
-    }//? Stop timer 7
-    
-    TIM_ClearFlag(TIM7,TIM_FLAG_Update);
-
-
-}
-
-
-//## Timer 8 Interrupt
-
-void __attribute__((__interrupt__, no_auto_psv)) TIM8_IRQHandler(void) {
-    
-    if(failure_identify == 'i') { // CRK_GAP_NOT_DET
-        timer_Counter_CRK_GAP_NOT_DET++;
-        switch(timer_Counter_CRK_GAP_NOT_DET){
-            case 1:{   
-                GPIO_ResetBits(GPIOG,6); 
-             
-                if(sensortype_CRK == 'c'){
-                   //§ PR8 = 0x001D;   // 29 * 1.73us = 50.1us
-                   TIM_PrescalerConfig(TIM8,0,TIM_PSCReloadMode_Immediate); //? Define PSC value
-                    TIM_SetAutoreload(TIM8,3599);
-                }
-                else if(sensortype_CRK == 'h'){
-                   TIM_PrescalerConfig(TIM8,0,TIM_PSCReloadMode_Immediate);
-                   TIM_SetAutoreload(TIM8,(T_TOOTH_RAW /2)-1); //? If setted period is more than 910us PSC should be set higher 
+                else if (sensortype_CRK == 'h')
+                { // all the others
+                    __HAL_TIM_SET_PRESCALER(&htim1,(T_TOOTH_RAW / 2) - 1);
                 }
                 else
                 {
-                   TIM_PrescalerConfig(TIM8,0,TIM_PSCReloadMode_Immediate);
-                   TIM_SetAutoreload(TIM8,1); 
+                    // if sensor type not set, shouldn't happen
+                    __HAL_TIM_SET_PRESCALER(&htim1,1);
                 }
-                break;
-            }
-            case 2:{
-                GPIO_SetBits(GPIOG,6);
 
-                TIM_Cmd(TIM8,DISABLE);
-
-                timer_Counter_CRK_GAP_NOT_DET = 0;
-                failure_active = false;                    
-                break;
-            }
-            default:{
-                GPIO_SetBits(GPIOG,6);
-
-                TIM_Cmd(TIM8,DISABLE);
-                timer_Counter_CRK_GAP_NOT_DET = 0;
-                failure_active = false;                    
-                break;
-            }
+                // Start timer 8
+                HAL_TIM_Base_Start(&htim1); 
+                }
+            failure_passed = true;
+            break;
         }
+        case 2: {                   // failure for the rising edge
+            SEG_ADP_ER_LIM_reset(); // SEG_... failure_inactive, passed and waiting =false, init timer 7 & 8, SEG_...error counter reset
+            break;
+        }
+        }
+        HAL_TIM_Base_Stop(&htim4);
     }
-    else if (failure_identify == 'j') // SEG_ADP_ER_LIM
+    else if (failure_identify == 'k') // CrkPlsOrng
     {
-        Output_CRK_no_failure();
-        SEG_ADP_ER_LIM_reset();
-    }  
-    TIM_SetCounter(TIM8,0);
+        HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
 
-    TIM_ClearFlag(TIM8,TIM_FLAG_Update);
-}
-
-//## Timer 9 Interrupt: CAM_PER - pulse duration
-
-void __attribute__((__interrupt__, no_auto_psv)) _T9Interrupt(void) {
-    timer_overflow_CAM_REF_CRK++;
-
-    TIM_ClearFlag(TIM9,TIM_FLAG_Update);
-}
-
-
-//## UART Receive Interrupt
-
-void __attribute__((__interrupt__, no_auto_psv)) _U2RXInterrupt(void) {
-
-    //§ in = U2RXREG;//? UART Receive
-    in =  USART_ReceiveData(USART1);
-
-    //§ if (U2STAbits.PERR == 1 || U2STAbits.FERR == 1) {//? PERR : parity error status bit 1 if error detected 0 i no error detected
-    if (USART_GetFlagStatus(USART1,USART_FLAG_PE)==SET || USART_GetFlagStatus(USART1,USART_FLAG_FE==SET)){
-        UART_COM_error();                           //? FERR : Framing Error Status bit 1 if error detected 0 i no error detected   
-
-    //§ } else if (U2STAbits.OERR == 1) {                //? OERR : Receive Buffer Overrun Error Status bit  1 = Receive buffer has overflowed 
-    } else if (USART_GetFlagStatus(USART1,USART_FLAG_ORE)==SET){  
-        UART_COM_error();                         //? 0 = Receive buffer has not overflowed. Clearing a previously set OERR bit (1 → 0 transition) will reset
-
-        //§ U2STAbits.OERR = 0;                         //? the receiver buffer and the UxRSR to the empty state
-        USART_ReceiveData(USART1); 
-        
-    } else {
-        char_counter++;
-
-        if (com_error == false && receiving == true && in != end_char) {
-            input_chars[char_counter - 2] = in; //write received char in array
-        } else if (com_error == false && in == end_char && receiving == true && char_counter > 2) {
-            input_chars[char_counter - 2] = '\0'; //set length of array
-
-            char_counter = 0; //reset counter value
-            receiving = false; //reset label that indicates receiving status
-            message_received = true; //set label that indicates succesfully received message
-        } else if (in == start_char && char_counter == 1) {
-
-            //§ UART_send(message[13]); //send communication receive status
-             USART_SendData(USART1,message[13]);
-            receiving = true; //set label that indicates receiving status
-            com_error = false; //reset COM error, due to received start char
-        } else {
-            UART_COM_error(); //send failure message
-        }
+        HAL_TIM_Base_Stop(&htim4);
+    }
+    else
+    {
+        HAL_TIM_Base_Stop(&htim4);
     }
 
-    //§ IFS1bits.U2RXIF = 0; //Clear U2RX Interrupt flag
-    USART_ReceiveData(USART1);
+    // ### USART Receive Callback function ###
+    void HAL_USART_RxCpltCallback(USART_HandleTypeDef * husart) // Likely similar to an interrupt triggering whenever a char is received as all the receptions we will get are of size 1 char
+        if (husart == &husart1)
+        {
+            // UART Receive
+            in = USART_ProcessMessage(USART1);
 
+            // PERR : parity error status bit 1 if error detected 0 i no error detected
+            if (USART_GetFlagStatus(USART1, USART_FLAG_PE) == SET || USART_GetFlagStatus(USART1, USART_FLAG_FE == SET))
+            {
+                UART_COM_error(); //? FERR : Framing Error Status bit 1 if error detected 0 if no error detected
+
+                //? OERR : Receive Buffer Overrun Error Status bit  1 = Receive buffer has overflowed
+            }
+            else if (USART_GetFlagStatus(USART1, USART_FLAG_ORE) == SET)
+            {
+                UART_COM_error(); //? 0 = Receive buffer has not overflowed. Clearing a previously set OERR bit (1 → 0 transition) will reset
+
+                //? the receiver buffer and the UxRSR to the empty state
+                USART_ProcessMessage(USART1);
+            }
+            else
+            {
+                char_counter++;
+
+                if (com_error == false && receiving == true && in != end_char)
+                {
+                    input_chars[char_counter - 2] = in; // write received char in array
+                }
+                else if (com_error == false && in == end_char && receiving == true && char_counter > 2)
+                {
+                    input_chars[char_counter - 2] = '\0'; // set length of array
+
+                    char_counter = 0;        // reset counter value
+                    receiving = false;       // reset label that indicates receiving status
+                    message_received = true; // set label that indicates succesfully received message
+                }
+                else if (in == start_char && char_counter == 1)
+                {
+
+				char_counter = 0;        // reset counter value
+				receiving = false; // reset label that indicates receiving status
+				message_received = true; // set label that indicates succesfully received message
+			}
+			else if (in == start_char && char_counter == 1)
+			{
+				HAL_USART_Transmit_IT(&husart1, &((uint8_t)message[13]), 1);
+				receiving = true;  // set label that indicates receiving status
+				com_error = false; // reset COM error, due to received start char
+			}
+			else
+			{
+				UART_COM_error(); // send failure message
+			}
+		}
+		USART_ProcessMessage(USART1);
+	}
 }
-
-
-//## UART Transmit Interrupt
-/* Probablement pas nécessaire de hadle ça manuellement car surement gérer par la stm32
-void __attribute__((__interrupt__, no_auto_psv)) _U2TXInterrupt(void) {
-    IFS1bits.U2TXIF = 0;
-}
-*/
-
-//## Default Interrupt
-
-void __attribute__((__interrupt__, no_auto_psv)) _DefaultInterrupt(void) {
-    while (1);
-}
-
-
-/*****************************************************************************/
-/*****************************************************************************/

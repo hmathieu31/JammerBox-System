@@ -6,6 +6,7 @@
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.4",
     "@testing-library/user-event": "^13.5.0",
+<<<<<<< HEAD
     "async_hooks": "^1.0.0",
     "browserify-zlib": "^0.2.0",
     "fs": "^0.0.1-security",
@@ -27,6 +28,17 @@
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
+=======
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-scripts": "5.0.0",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+>>>>>>> 80b24cb2 (⚡ Implement the STM32 software  (#157))
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -46,6 +58,7 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+<<<<<<< HEAD
   },
   "devDependencies": {
     "assert": "^2.0.0",
@@ -62,5 +75,7 @@
   },
   "browser": {
     "fs": false
+=======
+>>>>>>> 80b24cb2 (⚡ Implement the STM32 software  (#157))
   }
 }

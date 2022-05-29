@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="430px" preserveAspectRatio="none" style="width:768px;height:430px;background:#FFFFFF;" version="1.1" viewBox="0 0 768 430" width="768px" zoomAndPan="magnify"><defs><filter height="300%" id="fwzatl9cit43l" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><rect fill="#FEFECE" filter="url(#fwzatl9cit43l)" height="33.9688" style="stroke:#A80036;stroke-width:1.5;" width="55" x="332.24" y="7"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="41" x="339.24" y="20.1387">main.c</text><line style="stroke:#A80036;stroke-width:1.5;" x1="333.24" x2="386.24" y1="24.9688" y2="24.9688"/><rect fill="#FEFECE" filter="url(#fwzatl9cit43l)" height="33.9688" style="stroke:#A80036;stroke-width:1.5;" width="68" x="96.74" y="101"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="54" x="103.74" y="114.1387">failures.c</text><line style="stroke:#A80036;stroke-width:1.5;" x1="97.74" x2="163.74" y1="118.9688" y2="118.9688"/><rect fill="#FEFECE" filter="url(#fwzatl9cit43l)" height="33.9688" style="stroke:#A80036;stroke-width:1.5;" width="35" x="413.24" y="101"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="21" x="420.24" y="114.1387">ic.c</text><line style="stroke:#A80036;stroke-width:1.5;" x1="414.24" x2="447.24" y1="118.9688" y2="118.9688"/><rect fill="#FEFECE" filter="url(#fwzatl9cit43l)" height="33.9688" style="stroke:#A80036;stroke-width:1.5;" width="45" x="483.24" y="101"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="31" x="490.24" y="114.1387">osc.c</text><line style="stroke:#A80036;stroke-width:1.5;" x1="484.24" x2="527.24" y1="118.9688" y2="118.9688"/><rect fill="#FEFECE" filter="url(#fwzatl9cit43l)" height="33.9688" style="stroke:#A80036;stroke-width:1.5;" width="93" x="563.24" y="101"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="79" x="570.24" y="114.1387">port_config.c</text><line style="stroke:#A80036;stroke-width:1.5;" x1="564.24" x2="655.24" y1="118.9688" y2="118.9688"/><rect fill="#FEFECE" filter="url(#fwzatl9cit43l)" height="33.9688" style="stroke:#A80036;stroke-width:1.5;" width="120" x="115.74" y="195"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="106" x="122.74" y="208.1387">synchronization.c</text><line style="stroke:#A80036;stroke-width:1.5;" x1="116.74" x2="234.74" y1="212.9688" y2="212.9688"/><rect fill="#FEFECE" filter="url(#fwzatl9cit43l)" height="33.9688" style="stroke:#A80036;stroke-width:1.5;" width="154" x="114.74" y="383"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="140" x="121.74" y="396.1387">system_configuration.c</text><line style="stroke:#A80036;stroke-width:1.5;" x1="115.74" x2="267.74" y1="400.9688" y2="400.9688"/><rect fill="#FEFECE" filter="url(#fwzatl9cit43l)" height="33.9688" style="stroke:#A80036;stroke-width:1.5;" width="57" x="9.24" y="383"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="43" x="16.24" y="396.1387">timer.c</text><line style="stroke:#A80036;stroke-width:1.5;" x1="10.24" x2="65.24" y1="400.9688" y2="400.9688"/><rect fill="#FEFECE" filter="url(#fwzatl9cit43l)" height="33.9688" style="stroke:#A80036;stroke-width:1.5;" width="50" x="133.74" y="289"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="36" x="140.74" y="302.1387">uart.c</text><line style="stroke:#A80036;stroke-width:1.5;" x1="134.74" x2="182.74" y1="306.9688" y2="306.9688"/><rect fill="#FEFECE" filter="url(#fwzatl9cit43l)" height="33.9688" style="stroke:#A80036;stroke-width:1.5;" width="63" x="691.24" y="101"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="49" x="698.24" y="114.1387">config.h</text><line style="stroke:#A80036;stroke-width:1.5;" x1="692.24" x2="753.24" y1="118.9688" y2="118.9688"/><!--MD5=[1ad53ef024caa02451166942e06335e1]
 link main.c to config.h--><path codeLine="12" d="M387.65,30.99 C442.71,42.96 569.06,71.29 673.74,101 C677.82,102.16 682.08,103.44 686.3,104.75 " fill="none" id="main.c-to-config.h" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="691.22,106.31,683.8339,99.795,686.4501,104.8105,681.4347,107.4268,691.22,106.31" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[68e336f156b6198953521f79a10c4a5d]
 link main.c to osc.c--><path codeLine="13" d="M385.17,41.03 C411.28,57.47 451.75,82.98 478.5,99.83 " fill="none" id="main.c-to-osc.c" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="483,102.67,477.5276,94.4814,478.7729,99.9995,473.2548,101.2448,483,102.67" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[6b2a21be506a81d4119ee49a4298496b]
@@ -60,6 +61,191 @@ PlantUML version 1.2022.1(Tue Feb 01 19:19:58 CET 2022)
 Java Runtime: OpenJDK Runtime Environment
 JVM: OpenJDK 64-Bit Server VM
 Default Encoding: UTF-8
+=======
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="442px" preserveAspectRatio="none" style="width:683px;height:442px;background:#FFFFFF;" version="1.1" viewBox="0 0 683 442" width="683px" zoomAndPan="magnify"><defs/><g><g id="elem_main"><rect fill="#F1F1F1" height="37.6094" rx="3.5" ry="3.5" style="stroke:#181818;stroke-width:0.5;" width="44" x="319.5" y="7"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="30" x="326.5" y="23.5332">main</text><line style="stroke:#181818;stroke-width:0.5;" x1="320.5" x2="362.5" y1="28.6094" y2="28.6094"/></g><g id="elem_exti"><rect fill="#F1F1F1" height="37.6094" rx="3.5" ry="3.5" style="stroke:#181818;stroke-width:0.5;" width="35" x="7" y="105"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="21" x="14" y="121.5332">exti</text><line style="stroke:#181818;stroke-width:0.5;" x1="8" x2="41" y1="126.6094" y2="126.6094"/></g><g id="elem_failures"><rect fill="#F1F1F1" height="37.6094" rx="3.5" ry="3.5" style="stroke:#181818;stroke-width:0.5;" width="60" x="617.5" y="301"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="46" x="624.5" y="317.5332">failures</text><line style="stroke:#181818;stroke-width:0.5;" x1="618.5" x2="676.5" y1="322.6094" y2="322.6094"/></g><g id="elem_interrupt_configuration"><rect fill="#F1F1F1" height="37.6094" rx="3.5" ry="3.5" style="stroke:#181818;stroke-width:0.5;" width="157" x="205" y="399"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="143" x="212" y="415.5332">interrupt_configuration</text><line style="stroke:#181818;stroke-width:0.5;" x1="206" x2="361" y1="420.6094" y2="420.6094"/></g><g id="elem_port_config"><rect fill="#F1F1F1" height="37.6094" rx="3.5" ry="3.5" style="stroke:#181818;stroke-width:0.5;" width="85" x="149" y="105"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="71" x="156" y="121.5332">port_config</text><line style="stroke:#181818;stroke-width:0.5;" x1="150" x2="233" y1="126.6094" y2="126.6094"/></g><g id="elem_synchronization"><rect fill="#F1F1F1" height="37.6094" rx="3.5" ry="3.5" style="stroke:#181818;stroke-width:0.5;" width="112" x="340.5" y="105"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="98" x="347.5" y="121.5332">synchronization</text><line style="stroke:#181818;stroke-width:0.5;" x1="341.5" x2="451.5" y1="126.6094" y2="126.6094"/></g><g id="elem_system_configuration"><rect fill="#F1F1F1" height="37.6094" rx="3.5" ry="3.5" style="stroke:#181818;stroke-width:0.5;" width="148" x="429.5" y="301"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="134" x="436.5" y="317.5332">system_configuration</text><line style="stroke:#181818;stroke-width:0.5;" x1="430.5" x2="576.5" y1="322.6094" y2="322.6094"/></g><g id="elem_Tim5"><rect fill="#F1F1F1" height="37.6094" rx="3.5" ry="3.5" style="stroke:#181818;stroke-width:0.5;" width="45" x="261" y="203"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="31" x="268" y="219.5332">Tim5</text><line style="stroke:#181818;stroke-width:0.5;" x1="262" x2="305" y1="224.6094" y2="224.6094"/></g><g id="elem_timer"><rect fill="#F1F1F1" height="37.6094" rx="3.5" ry="3.5" style="stroke:#181818;stroke-width:0.5;" width="45" x="261" y="301"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="31" x="268" y="317.5332">timer</text><line style="stroke:#181818;stroke-width:0.5;" x1="262" x2="305" y1="322.6094" y2="322.6094"/></g><g id="elem_uart"><rect fill="#F1F1F1" height="37.6094" rx="3.5" ry="3.5" style="stroke:#181818;stroke-width:0.5;" width="39" x="484" y="203"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="25" x="491" y="219.5332">uart</text><line style="stroke:#181818;stroke-width:0.5;" x1="485" x2="522" y1="224.6094" y2="224.6094"/></g><!--MD5=[beb43096b5d06496bbf86adb1ce45878]
+link main to failures--><g id="link_main_failures"><path codeLine="13" d="M363.54,30.03 C404.11,36.67 491.33,56.01 544.5,105 C602.78,158.7 631.6,252.38 642.35,295.75 " fill="none" id="main-to-failures" style="stroke:#454645;stroke-width:1.0;"/><polygon fill="#454645" points="643.58,300.78,645.3315,291.0881,642.3942,295.9226,637.5597,292.9854,643.58,300.78" style="stroke:#454645;stroke-width:1.0;"/></g><!--MD5=[322e59138f39ba4e48a690994da41c59]
+link main to exti--><g id="link_main_exti"><path codeLine="14" d="M319.41,32.52 C272.78,44.36 161.06,73.65 69.5,105 C62.13,107.52 54.2,110.58 47.08,113.45 " fill="none" id="main-to-exti" style="stroke:#454645;stroke-width:1.0;"/><polygon fill="#454645" points="42.3,115.4,52.144,115.7087,46.9305,113.5135,49.1256,108.3,42.3,115.4" style="stroke:#454645;stroke-width:1.0;"/></g><!--MD5=[51fdb1dfef34b3c0255faf3ac608ed1d]
+link main to port_config--><g id="link_main_port_config"><path codeLine="15" d="M319.37,41.17 C294.3,57.21 253.21,83.5 224.39,101.95 " fill="none" id="main-to-port_config" style="stroke:#454645;stroke-width:1.0;"/><polygon fill="#454645" points="219.88,104.84,229.6195,103.3764,224.0965,102.1528,225.3201,96.6299,219.88,104.84" style="stroke:#454645;stroke-width:1.0;"/></g><!--MD5=[869778d90b74d1e010d5a3bd5d96512a]
+link main to synchronization--><g id="link_main_synchronization"><path codeLine="16" d="M351.85,45.06 C360.78,60.65 373.73,83.25 383.38,100.11 " fill="none" id="main-to-synchronization" style="stroke:#454645;stroke-width:1.0;"/><polygon fill="#454645" points="386.01,104.7,385.0108,94.902,383.5262,100.3605,378.0677,98.876,386.01,104.7" style="stroke:#454645;stroke-width:1.0;"/></g><!--MD5=[15618b8d2093adcee4cb1de5ad4d1658]
+link main to system_configuration--><g id="link_main_system_configuration"><path codeLine="17" d="M363.61,31.76 C398.53,40.38 466.49,61.85 505.5,105 C547.35,151.3 554.21,180.11 540.5,241 C536.05,260.74 526,281.36 517.5,296.44 " fill="none" id="main-to-system_configuration" style="stroke:#454645;stroke-width:1.0;"/><polygon fill="#454645" points="514.92,300.93,522.8767,295.1257,517.4145,296.5967,515.9435,291.1345,514.92,300.93" style="stroke:#454645;stroke-width:1.0;"/></g><!--MD5=[00aa11c6803e7e78b4267a56aeeb9ae2]
+link main to timer--><g id="link_main_timer"><path codeLine="18" d="M319.47,27.53 C275,29.94 175.02,42.41 131.5,105 C79.78,179.39 200.08,267.31 256.4,302.87 " fill="none" id="main-to-timer" style="stroke:#454645;stroke-width:1.0;"/><polygon fill="#454645" points="260.66,305.55,255.1357,297.3964,256.416,302.9064,250.9059,304.1868,260.66,305.55" style="stroke:#454645;stroke-width:1.0;"/></g><!--MD5=[3397a29bcb90305f9285a374a4291b4b]
+link main to uart--><g id="link_main_uart"><path codeLine="19" d="M363.51,34.63 C392.15,45.68 441.78,68.87 469.5,105 C490.49,132.36 498.54,172.39 501.62,197.55 " fill="none" id="main-to-uart" style="stroke:#454645;stroke-width:1.0;"/><polygon fill="#454645" points="502.2,202.68,505.1698,193.2896,501.6416,197.7113,497.2198,194.1831,502.2,202.68" style="stroke:#454645;stroke-width:1.0;"/></g><!--MD5=[9a562a5b397dede9f4ca764c42730d1a]
+link main to Tim5--><g id="link_main_Tim5"><path codeLine="20" d="M336.04,45.25 C325.44,80.73 302.06,158.92 290.4,197.93 " fill="none" id="main-to-Tim5" style="stroke:#454645;stroke-width:1.0;"/><polygon fill="#454645" points="288.9,202.94,295.3072,195.4602,290.3302,198.1489,287.6414,193.1719,288.9,202.94" style="stroke:#454645;stroke-width:1.0;"/></g><!--MD5=[eea97e21509d77a6f971d1db7e2329a6]
+link synchronization to timer--><g id="link_synchronization_timer"><path codeLine="22" d="M385.87,143.25 C365.12,178.87 319.29,257.56 296.66,296.4 " fill="none" id="synchronization-to-timer" style="stroke:#454645;stroke-width:1.0;"/><polygon fill="#454645" points="294.02,300.94,301.9993,295.1667,296.5314,296.6165,295.0816,291.1485,294.02,300.94" style="stroke:#454645;stroke-width:1.0;"/></g><!--MD5=[555af9ee4c0c99c2306a3ea73edf4f37]
+link synchronization to uart--><g id="link_synchronization_uart"><path codeLine="23" d="M416.63,143.06 C434.52,159.11 460.72,182.62 479.66,199.61 " fill="none" id="synchronization-to-uart" style="stroke:#454645;stroke-width:1.0;"/><polygon fill="#454645" points="483.83,203.35,479.7971,194.3647,480.1064,200.0131,474.458,200.3224,483.83,203.35" style="stroke:#454645;stroke-width:1.0;"/></g><!--MD5=[4198e6785ae85f7077d9c55496134301]
+link synchronization to failures--><g id="link_synchronization_failures"><path codeLine="24" d="M438.09,143.03 C468.1,157.07 508.74,178.3 540.5,203 C576.48,230.99 610.89,271.59 630.57,296.59 " fill="none" id="synchronization-to-failures" style="stroke:#454645;stroke-width:1.0;"/><polygon fill="#454645" points="633.83,300.77,631.4164,291.2215,630.7415,296.8379,625.1251,296.163,633.83,300.77" style="stroke:#454645;stroke-width:1.0;"/></g><!--MD5=[171c31fc0a8a788a9776983722f1be94]
+link synchronization to Tim5--><g id="link_synchronization_Tim5"><path codeLine="25" d="M375.25,143.06 C356.43,159.05 328.92,182.41 308.93,199.39 " fill="none" id="synchronization-to-Tim5" style="stroke:#454645;stroke-width:1.0;"/><polygon fill="#454645" points="305.04,202.7,314.4826,199.9004,308.8433,199.4543,309.2894,193.8151,305.04,202.7" style="stroke:#454645;stroke-width:1.0;"/></g><!--MD5=[e9b1bcf0cb8e3e700e021e74dbcb1b80]
+link system_configuration to synchronization--><g id="link_system_configuration_synchronization"><path codeLine="27" d="M493.54,300.94 C473.98,265.47 430.58,186.79 409.08,147.8 " fill="none" id="system_configuration-to-synchronization" style="stroke:#454645;stroke-width:1.0;"/><polygon fill="#454645" points="406.57,143.25,407.4196,153.0621,408.9873,147.6268,414.4226,149.1945,406.57,143.25" style="stroke:#454645;stroke-width:1.0;"/></g><!--MD5=[26dbfbd88baae13524796c0afd5a0eb1]
+link system_configuration to uart--><g id="link_system_configuration_uart"><path codeLine="28" d="M514.37,300.7 C517.56,285.17 517.85,262.81 515.23,246.06 " fill="none" id="system_configuration-to-uart" style="stroke:#454645;stroke-width:1.0;"/><polygon fill="#454645" points="514.32,241.06,511.975,250.6256,515.2044,245.9812,519.8488,249.2106,514.32,241.06" style="stroke:#454645;stroke-width:1.0;"/></g><!--MD5=[f1ab60a2bcd9309bc3a3b4c487782f94]
+link uart to system_configuration--><g id="link_uart_system_configuration"><path codeLine="35" d="M493.28,241.06 C490.24,256.51 489.94,278.86 492.38,295.67 " fill="none" id="uart-to-system_configuration" style="stroke:#454645;stroke-width:1.0;"/><polygon fill="#454645" points="493.23,300.7,495.687,291.1626,492.4034,295.7688,487.7971,292.4851,493.23,300.7" style="stroke:#454645;stroke-width:1.0;"/></g><!--MD5=[ce0040b68f86e51157cf69d60faa42fb]
+link Tim5 to timer--><g id="link_Tim5_timer"><path codeLine="30" d="M273.28,241.06 C270.24,256.51 269.94,278.86 272.38,295.67 " fill="none" id="Tim5-to-timer" style="stroke:#454645;stroke-width:1.0;"/><polygon fill="#454645" points="273.23,300.7,275.687,291.1626,272.4034,295.7688,267.7971,292.4851,273.23,300.7" style="stroke:#454645;stroke-width:1.0;"/></g><!--MD5=[196fc677d7956bcc24de835047e72d2d]
+link timer to Tim5--><g id="link_timer_Tim5"><path codeLine="32" d="M294.37,300.7 C297.56,285.17 297.85,262.81 295.23,246.06 " fill="none" id="timer-to-Tim5" style="stroke:#454645;stroke-width:1.0;"/><polygon fill="#454645" points="294.32,241.06,291.975,250.6256,295.2044,245.9812,299.8488,249.2106,294.32,241.06" style="stroke:#454645;stroke-width:1.0;"/></g><!--MD5=[d5200a8dc1fb50c9b658cac9dd174c7f]
+link timer to interrupt_configuration--><g id="link_timer_interrupt_configuration"><path codeLine="33" d="M283.5,339.06 C283.5,354.51 283.5,376.86 283.5,393.67 " fill="none" id="timer-to-interrupt_configuration" style="stroke:#454645;stroke-width:1.0;"/><polygon fill="#454645" points="283.5,398.7,287.5,389.7,283.5,393.7,279.5,389.7,283.5,398.7" style="stroke:#454645;stroke-width:1.0;"/></g><!--MD5=[10dc628b807d7fd4b97be273c0f8a7bc]
+link uart to failures--><g id="link_uart_failures"><path codeLine="36" d="M523.22,236.15 C547.13,252.09 587.73,279.15 615.99,297.99 " fill="none" id="uart-to-failures" style="stroke:#454645;stroke-width:1.0;"/><polygon fill="#454645" points="620.41,300.94,615.1272,292.6278,616.2454,298.1731,610.7001,299.2913,620.41,300.94" style="stroke:#454645;stroke-width:1.0;"/></g><!--MD5=[97e1ba69e6acc805b01389074e50b6f6]
+link uart to timer--><g id="link_uart_timer"><path codeLine="37" d="M483.98,231.52 C444.71,248.65 356.09,287.32 310.99,307 " fill="none" id="uart-to-timer" style="stroke:#454645;stroke-width:1.0;"/><polygon fill="#454645" points="306.24,309.08,316.0887,309.1373,310.8208,307.0759,312.8821,301.808,306.24,309.08" style="stroke:#454645;stroke-width:1.0;"/></g><!--MD5=[88ac0932f1d43fcc21755e1b2338af6b]
+@startuml
+!theme toy
+skinparam backgroundColor #ffffff
+
+object main
+object exti
+object failures
+object interrupt_configuration
+object port_config
+object synchronization
+object system_configuration
+object Tim5
+object timer
+object uart
+
+main - -> failures
+main - -> exti
+main - -> port_config
+main - -> synchronization
+main - -> system_configuration
+main - -> timer
+main - -> uart
+main - -> Tim5
+
+synchronization - -> timer
+synchronization - -> uart
+synchronization - -> failures
+synchronization - -> Tim5
+
+system_configuration - -> synchronization
+system_configuration - -> uart
+
+Tim5 - -> timer
+
+timer - -> Tim5
+timer - -> interrupt_configuration
+
+uart - -> system_configuration
+uart - -> failures
+uart - -> timer
+@enduml
+
+@startuml
+skinparam BackgroundColor DDDDDD
+skinparam shadowing false
+skinparam RoundCorner 7
+skinparam ArrowColor 454645
+skinparam FontColor 454645
+skinparam SequenceLifeLineBorderColor 454645
+skinparam SequenceGroupHeaderFontColor 454645
+skinparam SequenceGroupFontColor 454645
+skinparam SequenceGroupBorderColor 454645
+skinparam SequenceGroupBorderThickness 1
+
+skinparam sequenceDivider {
+    BorderColor 454645
+    BorderThickness 1
+    FontColor 454645
+}
+
+skinparam participant {
+    BackgroundColor FF6F61
+    BorderColor 454645
+    FontColor White
+    BorderThickness 1.5
+}
+
+skinparam database {
+    BackgroundColor 98DDDE
+    BorderColor 454645
+    FontColor 454645
+}
+
+skinparam entity {
+    BackgroundColor FFDA29
+    BorderColor 454645
+    FontColor 454645
+}
+
+skinparam note {
+    BackgroundColor LightGreen
+    BorderColor 454645
+    FontColor 454645
+    BorderThickness 1
+}
+
+skinparam actor {
+    BackgroundColor 454645
+    BorderColor 454645
+    FontColor 454645
+}
+
+skinparam boundary {
+    BackgroundColor FFDA29
+    BorderColor 454645
+    FontColor 454645
+}
+
+skinparam control {
+    BackgroundColor FFDA29
+    BorderColor 454645
+    FontColor 454645
+}
+
+skinparam collections {
+    BackgroundColor FF6F61
+    BorderColor 454645
+    FontColor 454645
+    BorderThickness 1.5
+}
+
+skinparam queue {
+    BackgroundColor FF6F61
+    BorderColor 454645
+    FontColor FFF
+    BorderThickness 1.5
+}
+skinparam backgroundColor #ffffff
+
+object main
+object exti
+object failures
+object interrupt_configuration
+object port_config
+object synchronization
+object system_configuration
+object Tim5
+object timer
+object uart
+
+main - -> failures
+main - -> exti
+main - -> port_config
+main - -> synchronization
+main - -> system_configuration
+main - -> timer
+main - -> uart
+main - -> Tim5
+
+synchronization - -> timer
+synchronization - -> uart
+synchronization - -> failures
+synchronization - -> Tim5
+
+system_configuration - -> synchronization
+system_configuration - -> uart
+
+Tim5 - -> timer
+
+timer - -> Tim5
+timer - -> interrupt_configuration
+
+uart - -> system_configuration
+uart - -> failures
+uart - -> timer
+@enduml
+
+PlantUML version 1.2022.5(Sat Apr 30 12:55:52 CEST 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: Cp1252
+>>>>>>> 80b24cb2 (⚡ Implement the STM32 software  (#157))
 Language: fr
 Country: FR
 --></g></svg>

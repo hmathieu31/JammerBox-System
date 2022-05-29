@@ -1,0 +1,33 @@
+<map id="UART_receive" name="UART_receive">
+<area shape="rect" id="node1" title=" " alt="" coords="5,476,108,503"/>
+<area shape="rect" id="node2" href="$system__configuration_8c.html#a9ed4ba8234d683606da8eeaa8845cb98" title=" " alt="" coords="183,113,314,140"/>
+<area shape="rect" id="node11" href="$uart_8c.html#af71719c2f6a621903fd9eb77473b5eb5" title=" " alt="" coords="795,63,885,89"/>
+<area shape="rect" id="node12" href="$failures_8c.html#ab03c344f7040d93549b7a6fc4816b61b" title=" " alt="" coords="186,236,311,263"/>
+<area shape="rect" id="node14" href="$failures_8c.html#a30f15834dbe25caba85572e172b9bc77" title=" " alt="" coords="172,287,325,313"/>
+<area shape="rect" id="node16" href="$failures_8c.html#a7739e18fdabcefcde3ee26001bd58edc" title=" " alt="" coords="188,388,309,415"/>
+<area shape="rect" id="node19" href="$system__configuration_8c.html#a89bb1b58a659dfbbcb0cab106d7ce4c3" title=" " alt="" coords="184,164,313,191"/>
+<area shape="rect" id="node20" href="$failures_8c.html#a7a130c71bb4f8b503445fa58eeea5f1c" title=" " alt="" coords="156,556,341,583"/>
+<area shape="rect" id="node22" href="$failures_8c.html#ab58329ba2cc19b5be493a8a632f996f9" title=" " alt="" coords="179,439,319,481"/>
+<area shape="rect" id="node23" href="$failures_8c.html#aae7f39efa073aa6122e590548bf2539d" title=" " alt="" coords="173,607,325,633"/>
+<area shape="rect" id="node24" href="$failures_8c.html#a71bedb574bc5fbc3fd230d3a67fa0742" title=" " alt="" coords="165,657,333,684"/>
+<area shape="rect" id="node25" href="$failures_8c.html#a0d2b84537acea4ac18ccc2fa5fdf8005" title=" " alt="" coords="164,708,333,735"/>
+<area shape="rect" id="node26" href="$failures_8c.html#ac2f8acabc9f03c44dbd82b7a84ca6ea1" title=" " alt="" coords="164,759,333,785"/>
+<area shape="rect" id="node27" href="$uart_8c.html#a7f09589843686b71eed76f6d5c67c93c" title=" " alt="" coords="181,809,316,836"/>
+<area shape="rect" id="node28" href="$failures_8c.html#af5a37ba4948cbb330017428e9863281e" title=" " alt="" coords="175,337,322,364"/>
+<area shape="rect" id="node30" href="$failures_8c.html#a9b4c0604e27a0e274bb04bf3d34b22d6" title=" " alt="" coords="162,505,335,532"/>
+<area shape="rect" id="node31" href="$uart_8c.html#a63c52296e7422b4878bfdfa080ea4abb" title=" " alt="" coords="185,860,312,887"/>
+<area shape="rect" id="node3" href="$system__configuration_8c.html#ad963f06dc329af81a8139668d5e8cbe9" title=" " alt="" coords="389,113,555,140"/>
+<area shape="rect" id="node4" href="$synchronization_8c.html#acde4eb7626d6b5f4d9aa424d378bb77d" title=" " alt="" coords="603,215,728,241"/>
+<area shape="rect" id="node5" href="$failures_8c.html#a494682d906c6e4e666f46a15c2aed5eb" title=" " alt="" coords="791,316,889,343"/>
+<area shape="rect" id="node6" href="$synchronization_8c.html#abde77a3d46373c211c5ed2d5f97af994" title=" " alt="" coords="776,113,904,140"/>
+<area shape="rect" id="node7" href="$timer_8c.html#ab2bfce2c8ade4ae64b3cda0bc458e0ca" title=" " alt="" coords="793,164,887,191"/>
+<area shape="rect" id="node8" href="$timer_8c.html#ada1771b555742f3998e491ceb0892ded" title=" " alt="" coords="793,215,887,241"/>
+<area shape="rect" id="node9" href="$timer_8c.html#a148ff919643c880d9c04ee570e36b152" title=" " alt="" coords="793,367,887,393"/>
+<area shape="rect" id="node10" href="$timer_8c.html#af597d86edcd0db594fbbab5b5ad16b01" title=" " alt="" coords="793,265,887,292"/>
+<area shape="rect" id="node13" href="$timer_8c.html#a066336f3fbf526e9501abbc7874b29fc" title=" " alt="" coords="425,215,519,241"/>
+<area shape="rect" id="node15" href="$failures_8c.html#a0556928e41411f2cac11ec82fc8d8ccb" title=" " alt="" coords="393,316,551,343"/>
+<area shape="rect" id="node17" href="$timer_8c.html#a8535789e70af446f607d51b00faa8e74" title=" " alt="" coords="433,417,511,444"/>
+<area shape="rect" id="node18" href="$timer_8c.html#ac8159d78a79df090ed27f08dc4b1ade7" title=" " alt="" coords="433,468,511,495"/>
+<area shape="rect" id="node21" href="$timer_8c.html#a51d0e1103eb944c46ccc15d486804638" title=" " alt="" coords="433,527,511,553"/>
+<area shape="rect" id="node29" href="$failures_8c.html#a3484fce8f4223ea262d178cbea751f06" title=" " alt="" coords="393,367,551,393"/>
+</map>
