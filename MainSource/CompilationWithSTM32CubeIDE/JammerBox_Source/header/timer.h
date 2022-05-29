@@ -21,6 +21,8 @@
 #ifndef _TIMER_H_
 #define _TIMER_H_
 
+#include <stdint.h>
+
 /* External variables --------------------------------------------------------*/
 extern int TIM_Soft_CounterOverflow;
 extern int TIM_Soft_Counting;
@@ -43,6 +45,8 @@ void TIM_Soft_Stop(void);
 void TIM_Soft_Reset(void);
 
 int TIM_Soft_GetCounter(void);
+
+static inline uint32_t GetTimestamp();
 
 #endif
 
