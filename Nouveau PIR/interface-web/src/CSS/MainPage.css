@@ -1,0 +1,160 @@
+/* Frame1 */
+
+@import url("https://fonts.googleapis.com/css2?family=Maven Pro:wght@700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=IBM Plex Sans:wght@600&display=swap");
+
+p {
+    margin: 0;
+}
+
+.clip-contents {
+    overflow: hidden;
+}
+
+.flex-col-hstart-vstart {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.flex-hcenter {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-width: 20%;
+}
+
+.flex-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.frame-1 {
+    background: url(../../public/BackgroundImage.png), linear-gradient(0deg, rgba(255, 255, 255, 1), rgba(255, 255, 255, 1)) fixed;
+    padding: 15% 10rem;
+    box-sizing: border-box;
+    background-size: 100% 100%;
+    width: 100%;
+    min-width: 20em;
+    height: 100%;
+}
+
+.group-19 {
+    width: 100%;
+    min-width: 20%;
+    height: 100%;
+}
+
+.txt-271 {
+    font-size: 6em;
+    font-family: Arial, sans-serif;
+    font-weight: 700;
+    color: lightyellow;
+    text-align: center;
+    word-wrap: break-word;
+    padding-bottom: 1%;
+    text-transform: lowercase;
+    font-variant: small-caps;
+    text-shadow: 0 0 0 rgb(213, 213, 213),
+    0px 1px 0 rgb(172, 172, 172),
+    0px 2px 0 rgb(130, 130, 130),
+    0px 3px 0 rgb(88, 88, 88),
+    0px 4px 3px rgba(0, 0, 0, 1),
+    0px 4px 1px rgba(0, 0, 0, 0.5),
+    0px 0px 3px rgba(0, 0, 0, .2);
+}
+
+.txt-272 {
+    font-size: 6em;
+    font-family: Arial, sans-serif;
+    font-weight: 700;
+    color: lightyellow;
+    text-align: center;
+    word-wrap: break-word;
+    padding-bottom: 4%;
+    text-transform: lowercase;
+    font-variant: small-caps;
+    text-shadow: 0 0 0 rgb(213, 213, 213),
+    0px 1px 0 rgb(172, 172, 172),
+    0px 2px 0 rgb(130, 130, 130),
+    0px 3px 0 rgb(88, 88, 88),
+    0px 4px 3px rgba(0, 0, 0, 1),
+    0px 4px 1px rgba(0, 0, 0, 0.5),
+    0px 0px 3px rgba(0, 0, 0, .2);
+}
+
+.group-6 {
+    align-items: center;
+    background: linear-gradient(to bottom right, #EF4765, #FF9A5A);
+    border: 0;
+    border-radius: 8px;
+    box-shadow: 10px 10px 14px 1px rgb(0 0 0 / 20%);
+    box-sizing: border-box;
+    color: #FFFFFF;
+    display: flex;
+    font-family: Arial, sans-serif;
+    font-size: 20px;
+    justify-content: center;
+    line-height: 1em;
+    max-width: 100%;
+    min-width: 400px;
+    padding: 19px 24px;
+    text-decoration: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    cursor: pointer;
+    transition: all 250ms;
+    margin: 10px;
+}
+
+.group-6:hover {
+    transform: scale(1.05);
+}
+
+.txt-733 {
+    font-family: Arial, sans-serif;
+    font-size: 25px;
+    color: white;
+    text-align: center;
+    word-wrap: break-word;
+    text-transform: lowercase;
+    font-variant: small-caps;
+}
+
+.txt-145 {
+    font-size: 44px;
+    font-family: IBM Plex Sans, sans-serif;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 1);
+    text-align: center;
+    width: 355px;
+    height: 69px;
+    word-wrap: break-word;
+    font-variant: small-caps;
+}
+
+.button-list-div {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    grid-auto-rows: minmax(25px, auto);
+    align-items: center;
+    justify-content: center;
+}
+
+.upload-button {
+    padding-bottom: 2%;
+}
+
+.configuration-list {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    grid-auto-rows: minmax(25px, auto);
+    align-items: center;
+    justify-content: center;
+    grid-gap: 14%;
+}
