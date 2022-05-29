@@ -1,0 +1,446 @@
+\hypertarget{system__configuration_8c}{}\doxysection{Nouveau PIR/firmware/source/system\+\_\+configuration.c File Reference}
+\label{system__configuration_8c}\index{Nouveau PIR/firmware/source/system\_configuration.c@{Nouveau PIR/firmware/source/system\_configuration.c}}
+{\ttfamily \#include \char`\"{}stdbool.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}system\+\_\+configuration.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}synchronization.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}uart.\+h\char`\"{}}\newline
+Include dependency graph for system\+\_\+configuration.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{system__configuration_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{system__configuration_8c_a89bb1b58a659dfbbcb0cab106d7ce4c3}{CRK\+\_\+configuration}} (void)
+\item 
+void \mbox{\hyperlink{system__configuration_8c_a9ed4ba8234d683606da8eeaa8845cb98}{CAM\+\_\+configuration}} (void)
+\item 
+void \mbox{\hyperlink{system__configuration_8c_ad963f06dc329af81a8139668d5e8cbe9}{CAM\+\_\+\+CRK\+\_\+configuration}} (void)
+\item 
+void \mbox{\hyperlink{system__configuration_8c_a4b88e9e2842b045ebb2d86ab96415abf}{Input\+\_\+signal\+\_\+observe}} (bool output\+\_\+set)
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+unsigned int \mbox{\hyperlink{system__configuration_8c_a05e75142d685997ef05acf36e45a356a}{number\+\_\+teeth\+\_\+between\+\_\+gaps}}
+\item 
+unsigned int \mbox{\hyperlink{system__configuration_8c_ad8651353e89c1aabf9090f25e9225f20}{number\+\_\+teeth\+\_\+\+CRK}}
+\item 
+unsigned int \mbox{\hyperlink{system__configuration_8c_a4abf94058506c41d30267b476c141268}{number\+\_\+gap}}
+\item 
+unsigned int \mbox{\hyperlink{system__configuration_8c_a3d8f18f378d3a6c7ee1289f88d36553d}{number\+\_\+miss\+\_\+teeth}}
+\item 
+unsigned int \mbox{\hyperlink{system__configuration_8c_ab040cae3d9ae46728a9af9db655c014e}{number\+\_\+real\+\_\+teeth}}
+\item 
+unsigned int \mbox{\hyperlink{system__configuration_8c_a896b3f467a176975dc687f95f1a1367e}{number\+\_\+segments\+\_\+\+CRK}}
+\item 
+unsigned int \mbox{\hyperlink{system__configuration_8c_a912fe456cc42c18b47eae6de3e35c4f8}{first\+\_\+seg\+\_\+start\+\_\+tooth}}
+\item 
+unsigned int \mbox{\hyperlink{system__configuration_8c_a2bfb90e694f4f1e42996bee8fcfa9a27}{number\+\_\+cylinder}}
+\item 
+double \mbox{\hyperlink{system__configuration_8c_af3c32be62d5f2307cc01a316c01ba3dc}{revolution\+\_\+\+CRK}}
+\item 
+double \mbox{\hyperlink{system__configuration_8c_a2522b63ff5828da052d1c8b3ee9c157c}{tdc\+\_\+to\+\_\+gap}}
+\item 
+double \mbox{\hyperlink{system__configuration_8c_a30aee154f6067d411dbf4839fdc3cc93}{first\+\_\+seg\+\_\+angle}}
+\item 
+bool \mbox{\hyperlink{system__configuration_8c_acd78757977e1e4a37661d2abf4d0e274}{CRK\+\_\+config}}
+\item 
+double \mbox{\hyperlink{system__configuration_8c_a4acf9cde9660862148d0a73f10984ced}{first\+\_\+edge\+\_\+to\+\_\+tdc0}} \mbox{[}2\mbox{]}
+\item 
+double \mbox{\hyperlink{system__configuration_8c_a77550eb84997c4bf1f3f258b305cb07b}{CAM\+\_\+edges}} \mbox{[}2\mbox{]}\mbox{[}24\mbox{]}
+\item 
+double \mbox{\hyperlink{system__configuration_8c_a9f65b0d3142356fc10814e114939a72a}{gap\+\_\+to\+\_\+first\+\_\+edge}} \mbox{[}2\mbox{]}
+\item 
+bool \mbox{\hyperlink{system__configuration_8c_a8995ceba29d39262ef73545674a0d4a8}{TDC\+\_\+on\+\_\+edge}} \mbox{[}2\mbox{]}
+\item 
+bool \mbox{\hyperlink{system__configuration_8c_af2b1f70badf370b8c61316f5dcefaf26}{configuration\+\_\+complete}}
+\item 
+bool \mbox{\hyperlink{system__configuration_8c_a26f49697b8275c1863e0716a3c236480}{output\+\_\+level\+\_\+setting}}
+\item 
+unsigned int \mbox{\hyperlink{system__configuration_8c_a8eb17d2b0f766d726dfbf5bd1be6d33c}{number\+\_\+teeth\+\_\+\+CAM}} \mbox{[}2\mbox{]}
+\item 
+unsigned int \mbox{\hyperlink{system__configuration_8c_a3d1c16f7b67a7b889ff09efcf7651345}{number\+\_\+active\+\_\+edges\+\_\+\+CAM}} \mbox{[}2\mbox{]}
+\item 
+double \mbox{\hyperlink{system__configuration_8c_a5f76355a7410c0f9ba6f2685976f7789}{distance\+\_\+gap\+\_\+to\+\_\+\+CAM\+\_\+edge}} \mbox{[}2\mbox{]}\mbox{[}24\mbox{]}
+\item 
+double \mbox{\hyperlink{system__configuration_8c_ae78fc7b1baf9c329b60166be6b88b85c}{filter\+\_\+time\+\_\+\+CAM}} \mbox{[}2\mbox{]}
+\item 
+double \mbox{\hyperlink{system__configuration_8c_a4433116b526521b3810d1671c1b9a96a}{tolerance\+\_\+window\+\_\+\+CAM}} \mbox{[}2\mbox{]}
+\item 
+bool \mbox{\hyperlink{system__configuration_8c_a7809eb20331648930f7a85897de70a88}{CAM\+\_\+config}}
+\item 
+char \mbox{\hyperlink{system__configuration_8c_a1ab47ef12d9fd5a0a0c37354af662f7d}{active\+\_\+\+CAM\+\_\+edges}} \mbox{[}2\mbox{]}
+\item 
+int \mbox{\hyperlink{system__configuration_8c_a8b96e45eeb664a177dede0e498910a1b}{number\+\_\+of\+\_\+\+CAM}}
+\item 
+char \mbox{\hyperlink{system__configuration_8c_ae1b4a2a0bd124fb2ee430c8ba7e3a071}{message}} \mbox{[}$\,$\mbox{]}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{system__configuration_8c_a9ed4ba8234d683606da8eeaa8845cb98}\label{system__configuration_8c_a9ed4ba8234d683606da8eeaa8845cb98}} 
+\index{system\_configuration.c@{system\_configuration.c}!CAM\_configuration@{CAM\_configuration}}
+\index{CAM\_configuration@{CAM\_configuration}!system\_configuration.c@{system\_configuration.c}}
+\doxysubsubsection{\texorpdfstring{CAM\_configuration()}{CAM\_configuration()}}
+{\footnotesize\ttfamily void CAM\+\_\+configuration (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{system__configuration_8c_source_l00097}{97}} of file \mbox{\hyperlink{system__configuration_8c_source}{system\+\_\+configuration.\+c}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{system__configuration_8c_a9ed4ba8234d683606da8eeaa8845cb98_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{system__configuration_8c_a9ed4ba8234d683606da8eeaa8845cb98_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{system__configuration_8c_ad963f06dc329af81a8139668d5e8cbe9}\label{system__configuration_8c_ad963f06dc329af81a8139668d5e8cbe9}} 
+\index{system\_configuration.c@{system\_configuration.c}!CAM\_CRK\_configuration@{CAM\_CRK\_configuration}}
+\index{CAM\_CRK\_configuration@{CAM\_CRK\_configuration}!system\_configuration.c@{system\_configuration.c}}
+\doxysubsubsection{\texorpdfstring{CAM\_CRK\_configuration()}{CAM\_CRK\_configuration()}}
+{\footnotesize\ttfamily void CAM\+\_\+\+CRK\+\_\+configuration (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{system__configuration_8c_source_l00145}{145}} of file \mbox{\hyperlink{system__configuration_8c_source}{system\+\_\+configuration.\+c}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{system__configuration_8c_ad963f06dc329af81a8139668d5e8cbe9_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{system__configuration_8c_ad963f06dc329af81a8139668d5e8cbe9_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{system__configuration_8c_a89bb1b58a659dfbbcb0cab106d7ce4c3}\label{system__configuration_8c_a89bb1b58a659dfbbcb0cab106d7ce4c3}} 
+\index{system\_configuration.c@{system\_configuration.c}!CRK\_configuration@{CRK\_configuration}}
+\index{CRK\_configuration@{CRK\_configuration}!system\_configuration.c@{system\_configuration.c}}
+\doxysubsubsection{\texorpdfstring{CRK\_configuration()}{CRK\_configuration()}}
+{\footnotesize\ttfamily void CRK\+\_\+configuration (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{system__configuration_8c_source_l00059}{59}} of file \mbox{\hyperlink{system__configuration_8c_source}{system\+\_\+configuration.\+c}}.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{system__configuration_8c_a89bb1b58a659dfbbcb0cab106d7ce4c3_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{system__configuration_8c_a89bb1b58a659dfbbcb0cab106d7ce4c3_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{system__configuration_8c_a4b88e9e2842b045ebb2d86ab96415abf}\label{system__configuration_8c_a4b88e9e2842b045ebb2d86ab96415abf}} 
+\index{system\_configuration.c@{system\_configuration.c}!Input\_signal\_observe@{Input\_signal\_observe}}
+\index{Input\_signal\_observe@{Input\_signal\_observe}!system\_configuration.c@{system\_configuration.c}}
+\doxysubsubsection{\texorpdfstring{Input\_signal\_observe()}{Input\_signal\_observe()}}
+{\footnotesize\ttfamily void Input\+\_\+signal\+\_\+observe (\begin{DoxyParamCaption}\item[{bool}]{output\+\_\+set }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{system__configuration_8c_source_l00176}{176}} of file \mbox{\hyperlink{system__configuration_8c_source}{system\+\_\+configuration.\+c}}.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=261pt]{system__configuration_8c_a4b88e9e2842b045ebb2d86ab96415abf_icgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{system__configuration_8c_a1ab47ef12d9fd5a0a0c37354af662f7d}\label{system__configuration_8c_a1ab47ef12d9fd5a0a0c37354af662f7d}} 
+\index{system\_configuration.c@{system\_configuration.c}!active\_CAM\_edges@{active\_CAM\_edges}}
+\index{active\_CAM\_edges@{active\_CAM\_edges}!system\_configuration.c@{system\_configuration.c}}
+\doxysubsubsection{\texorpdfstring{active\_CAM\_edges}{active\_CAM\_edges}}
+{\footnotesize\ttfamily char active\+\_\+\+CAM\+\_\+edges\mbox{[}2\mbox{]}\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00088}{88}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{system__configuration_8c_a7809eb20331648930f7a85897de70a88}\label{system__configuration_8c_a7809eb20331648930f7a85897de70a88}} 
+\index{system\_configuration.c@{system\_configuration.c}!CAM\_config@{CAM\_config}}
+\index{CAM\_config@{CAM\_config}!system\_configuration.c@{system\_configuration.c}}
+\doxysubsubsection{\texorpdfstring{CAM\_config}{CAM\_config}}
+{\footnotesize\ttfamily bool CAM\+\_\+config\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00119}{119}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{system__configuration_8c_a77550eb84997c4bf1f3f258b305cb07b}\label{system__configuration_8c_a77550eb84997c4bf1f3f258b305cb07b}} 
+\index{system\_configuration.c@{system\_configuration.c}!CAM\_edges@{CAM\_edges}}
+\index{CAM\_edges@{CAM\_edges}!system\_configuration.c@{system\_configuration.c}}
+\doxysubsubsection{\texorpdfstring{CAM\_edges}{CAM\_edges}}
+{\footnotesize\ttfamily double CAM\+\_\+edges\mbox{[}2\mbox{]}\mbox{[}24\mbox{]}\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00085}{85}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{system__configuration_8c_af2b1f70badf370b8c61316f5dcefaf26}\label{system__configuration_8c_af2b1f70badf370b8c61316f5dcefaf26}} 
+\index{system\_configuration.c@{system\_configuration.c}!configuration\_complete@{configuration\_complete}}
+\index{configuration\_complete@{configuration\_complete}!system\_configuration.c@{system\_configuration.c}}
+\doxysubsubsection{\texorpdfstring{configuration\_complete}{configuration\_complete}}
+{\footnotesize\ttfamily bool configuration\+\_\+complete\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00094}{94}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{system__configuration_8c_acd78757977e1e4a37661d2abf4d0e274}\label{system__configuration_8c_acd78757977e1e4a37661d2abf4d0e274}} 
+\index{system\_configuration.c@{system\_configuration.c}!CRK\_config@{CRK\_config}}
+\index{CRK\_config@{CRK\_config}!system\_configuration.c@{system\_configuration.c}}
+\doxysubsubsection{\texorpdfstring{CRK\_config}{CRK\_config}}
+{\footnotesize\ttfamily bool CRK\+\_\+config\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00076}{76}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{system__configuration_8c_a5f76355a7410c0f9ba6f2685976f7789}\label{system__configuration_8c_a5f76355a7410c0f9ba6f2685976f7789}} 
+\index{system\_configuration.c@{system\_configuration.c}!distance\_gap\_to\_CAM\_edge@{distance\_gap\_to\_CAM\_edge}}
+\index{distance\_gap\_to\_CAM\_edge@{distance\_gap\_to\_CAM\_edge}!system\_configuration.c@{system\_configuration.c}}
+\doxysubsubsection{\texorpdfstring{distance\_gap\_to\_CAM\_edge}{distance\_gap\_to\_CAM\_edge}}
+{\footnotesize\ttfamily double distance\+\_\+gap\+\_\+to\+\_\+\+CAM\+\_\+edge\mbox{[}2\mbox{]}\mbox{[}24\mbox{]}\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00086}{86}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{system__configuration_8c_ae78fc7b1baf9c329b60166be6b88b85c}\label{system__configuration_8c_ae78fc7b1baf9c329b60166be6b88b85c}} 
+\index{system\_configuration.c@{system\_configuration.c}!filter\_time\_CAM@{filter\_time\_CAM}}
+\index{filter\_time\_CAM@{filter\_time\_CAM}!system\_configuration.c@{system\_configuration.c}}
+\doxysubsubsection{\texorpdfstring{filter\_time\_CAM}{filter\_time\_CAM}}
+{\footnotesize\ttfamily double filter\+\_\+time\+\_\+\+CAM\mbox{[}2\mbox{]}\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00084}{84}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{system__configuration_8c_a4acf9cde9660862148d0a73f10984ced}\label{system__configuration_8c_a4acf9cde9660862148d0a73f10984ced}} 
+\index{system\_configuration.c@{system\_configuration.c}!first\_edge\_to\_tdc0@{first\_edge\_to\_tdc0}}
+\index{first\_edge\_to\_tdc0@{first\_edge\_to\_tdc0}!system\_configuration.c@{system\_configuration.c}}
+\doxysubsubsection{\texorpdfstring{first\_edge\_to\_tdc0}{first\_edge\_to\_tdc0}}
+{\footnotesize\ttfamily double first\+\_\+edge\+\_\+to\+\_\+tdc0\mbox{[}2\mbox{]}\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00087}{87}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{system__configuration_8c_a30aee154f6067d411dbf4839fdc3cc93}\label{system__configuration_8c_a30aee154f6067d411dbf4839fdc3cc93}} 
+\index{system\_configuration.c@{system\_configuration.c}!first\_seg\_angle@{first\_seg\_angle}}
+\index{first\_seg\_angle@{first\_seg\_angle}!system\_configuration.c@{system\_configuration.c}}
+\doxysubsubsection{\texorpdfstring{first\_seg\_angle}{first\_seg\_angle}}
+{\footnotesize\ttfamily double first\+\_\+seg\+\_\+angle\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00042}{42}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{system__configuration_8c_a912fe456cc42c18b47eae6de3e35c4f8}\label{system__configuration_8c_a912fe456cc42c18b47eae6de3e35c4f8}} 
+\index{system\_configuration.c@{system\_configuration.c}!first\_seg\_start\_tooth@{first\_seg\_start\_tooth}}
+\index{first\_seg\_start\_tooth@{first\_seg\_start\_tooth}!system\_configuration.c@{system\_configuration.c}}
+\doxysubsubsection{\texorpdfstring{first\_seg\_start\_tooth}{first\_seg\_start\_tooth}}
+{\footnotesize\ttfamily unsigned int first\+\_\+seg\+\_\+start\+\_\+tooth\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00044}{44}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{system__configuration_8c_a9f65b0d3142356fc10814e114939a72a}\label{system__configuration_8c_a9f65b0d3142356fc10814e114939a72a}} 
+\index{system\_configuration.c@{system\_configuration.c}!gap\_to\_first\_edge@{gap\_to\_first\_edge}}
+\index{gap\_to\_first\_edge@{gap\_to\_first\_edge}!system\_configuration.c@{system\_configuration.c}}
+\doxysubsubsection{\texorpdfstring{gap\_to\_first\_edge}{gap\_to\_first\_edge}}
+{\footnotesize\ttfamily double gap\+\_\+to\+\_\+first\+\_\+edge\mbox{[}2\mbox{]}\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00110}{110}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{system__configuration_8c_ae1b4a2a0bd124fb2ee430c8ba7e3a071}\label{system__configuration_8c_ae1b4a2a0bd124fb2ee430c8ba7e3a071}} 
+\index{system\_configuration.c@{system\_configuration.c}!message@{message}}
+\index{message@{message}!system\_configuration.c@{system\_configuration.c}}
+\doxysubsubsection{\texorpdfstring{message}{message}}
+{\footnotesize\ttfamily char message\mbox{[}$\,$\mbox{]}\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00265}{265}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{system__configuration_8c_a3d1c16f7b67a7b889ff09efcf7651345}\label{system__configuration_8c_a3d1c16f7b67a7b889ff09efcf7651345}} 
+\index{system\_configuration.c@{system\_configuration.c}!number\_active\_edges\_CAM@{number\_active\_edges\_CAM}}
+\index{number\_active\_edges\_CAM@{number\_active\_edges\_CAM}!system\_configuration.c@{system\_configuration.c}}
+\doxysubsubsection{\texorpdfstring{number\_active\_edges\_CAM}{number\_active\_edges\_CAM}}
+{\footnotesize\ttfamily unsigned int number\+\_\+active\+\_\+edges\+\_\+\+CAM\mbox{[}2\mbox{]}\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00082}{82}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{system__configuration_8c_a2bfb90e694f4f1e42996bee8fcfa9a27}\label{system__configuration_8c_a2bfb90e694f4f1e42996bee8fcfa9a27}} 
+\index{system\_configuration.c@{system\_configuration.c}!number\_cylinder@{number\_cylinder}}
+\index{number\_cylinder@{number\_cylinder}!system\_configuration.c@{system\_configuration.c}}
+\doxysubsubsection{\texorpdfstring{number\_cylinder}{number\_cylinder}}
+{\footnotesize\ttfamily unsigned int number\+\_\+cylinder\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00043}{43}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{system__configuration_8c_a4abf94058506c41d30267b476c141268}\label{system__configuration_8c_a4abf94058506c41d30267b476c141268}} 
+\index{system\_configuration.c@{system\_configuration.c}!number\_gap@{number\_gap}}
+\index{number\_gap@{number\_gap}!system\_configuration.c@{system\_configuration.c}}
+\doxysubsubsection{\texorpdfstring{number\_gap}{number\_gap}}
+{\footnotesize\ttfamily unsigned int number\+\_\+gap\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00040}{40}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{system__configuration_8c_a3d8f18f378d3a6c7ee1289f88d36553d}\label{system__configuration_8c_a3d8f18f378d3a6c7ee1289f88d36553d}} 
+\index{system\_configuration.c@{system\_configuration.c}!number\_miss\_teeth@{number\_miss\_teeth}}
+\index{number\_miss\_teeth@{number\_miss\_teeth}!system\_configuration.c@{system\_configuration.c}}
+\doxysubsubsection{\texorpdfstring{number\_miss\_teeth}{number\_miss\_teeth}}
+{\footnotesize\ttfamily unsigned int number\+\_\+miss\+\_\+teeth\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00039}{39}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{system__configuration_8c_a8b96e45eeb664a177dede0e498910a1b}\label{system__configuration_8c_a8b96e45eeb664a177dede0e498910a1b}} 
+\index{system\_configuration.c@{system\_configuration.c}!number\_of\_CAM@{number\_of\_CAM}}
+\index{number\_of\_CAM@{number\_of\_CAM}!system\_configuration.c@{system\_configuration.c}}
+\doxysubsubsection{\texorpdfstring{number\_of\_CAM}{number\_of\_CAM}}
+{\footnotesize\ttfamily int number\+\_\+of\+\_\+\+CAM\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00090}{90}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{system__configuration_8c_ab040cae3d9ae46728a9af9db655c014e}\label{system__configuration_8c_ab040cae3d9ae46728a9af9db655c014e}} 
+\index{system\_configuration.c@{system\_configuration.c}!number\_real\_teeth@{number\_real\_teeth}}
+\index{number\_real\_teeth@{number\_real\_teeth}!system\_configuration.c@{system\_configuration.c}}
+\doxysubsubsection{\texorpdfstring{number\_real\_teeth}{number\_real\_teeth}}
+{\footnotesize\ttfamily unsigned int number\+\_\+real\+\_\+teeth\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00062}{62}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{system__configuration_8c_a896b3f467a176975dc687f95f1a1367e}\label{system__configuration_8c_a896b3f467a176975dc687f95f1a1367e}} 
+\index{system\_configuration.c@{system\_configuration.c}!number\_segments\_CRK@{number\_segments\_CRK}}
+\index{number\_segments\_CRK@{number\_segments\_CRK}!system\_configuration.c@{system\_configuration.c}}
+\doxysubsubsection{\texorpdfstring{number\_segments\_CRK}{number\_segments\_CRK}}
+{\footnotesize\ttfamily unsigned int number\+\_\+segments\+\_\+\+CRK\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00066}{66}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{system__configuration_8c_a05e75142d685997ef05acf36e45a356a}\label{system__configuration_8c_a05e75142d685997ef05acf36e45a356a}} 
+\index{system\_configuration.c@{system\_configuration.c}!number\_teeth\_between\_gaps@{number\_teeth\_between\_gaps}}
+\index{number\_teeth\_between\_gaps@{number\_teeth\_between\_gaps}!system\_configuration.c@{system\_configuration.c}}
+\doxysubsubsection{\texorpdfstring{number\_teeth\_between\_gaps}{number\_teeth\_between\_gaps}}
+{\footnotesize\ttfamily unsigned int number\+\_\+teeth\+\_\+between\+\_\+gaps\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00063}{63}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{system__configuration_8c_a8eb17d2b0f766d726dfbf5bd1be6d33c}\label{system__configuration_8c_a8eb17d2b0f766d726dfbf5bd1be6d33c}} 
+\index{system\_configuration.c@{system\_configuration.c}!number\_teeth\_CAM@{number\_teeth\_CAM}}
+\index{number\_teeth\_CAM@{number\_teeth\_CAM}!system\_configuration.c@{system\_configuration.c}}
+\doxysubsubsection{\texorpdfstring{number\_teeth\_CAM}{number\_teeth\_CAM}}
+{\footnotesize\ttfamily unsigned int number\+\_\+teeth\+\_\+\+CAM\mbox{[}2\mbox{]}\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00083}{83}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{system__configuration_8c_ad8651353e89c1aabf9090f25e9225f20}\label{system__configuration_8c_ad8651353e89c1aabf9090f25e9225f20}} 
+\index{system\_configuration.c@{system\_configuration.c}!number\_teeth\_CRK@{number\_teeth\_CRK}}
+\index{number\_teeth\_CRK@{number\_teeth\_CRK}!system\_configuration.c@{system\_configuration.c}}
+\doxysubsubsection{\texorpdfstring{number\_teeth\_CRK}{number\_teeth\_CRK}}
+{\footnotesize\ttfamily unsigned int number\+\_\+teeth\+\_\+\+CRK\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00038}{38}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{system__configuration_8c_a26f49697b8275c1863e0716a3c236480}\label{system__configuration_8c_a26f49697b8275c1863e0716a3c236480}} 
+\index{system\_configuration.c@{system\_configuration.c}!output\_level\_setting@{output\_level\_setting}}
+\index{output\_level\_setting@{output\_level\_setting}!system\_configuration.c@{system\_configuration.c}}
+\doxysubsubsection{\texorpdfstring{output\_level\_setting}{output\_level\_setting}}
+{\footnotesize\ttfamily bool output\+\_\+level\+\_\+setting\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00095}{95}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{system__configuration_8c_af3c32be62d5f2307cc01a316c01ba3dc}\label{system__configuration_8c_af3c32be62d5f2307cc01a316c01ba3dc}} 
+\index{system\_configuration.c@{system\_configuration.c}!revolution\_CRK@{revolution\_CRK}}
+\index{revolution\_CRK@{revolution\_CRK}!system\_configuration.c@{system\_configuration.c}}
+\doxysubsubsection{\texorpdfstring{revolution\_CRK}{revolution\_CRK}}
+{\footnotesize\ttfamily double revolution\+\_\+\+CRK\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00071}{71}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{system__configuration_8c_a8995ceba29d39262ef73545674a0d4a8}\label{system__configuration_8c_a8995ceba29d39262ef73545674a0d4a8}} 
+\index{system\_configuration.c@{system\_configuration.c}!TDC\_on\_edge@{TDC\_on\_edge}}
+\index{TDC\_on\_edge@{TDC\_on\_edge}!system\_configuration.c@{system\_configuration.c}}
+\doxysubsubsection{\texorpdfstring{TDC\_on\_edge}{TDC\_on\_edge}}
+{\footnotesize\ttfamily bool TDC\+\_\+on\+\_\+edge\mbox{[}2\mbox{]}\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00174}{174}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{system__configuration_8c_a2522b63ff5828da052d1c8b3ee9c157c}\label{system__configuration_8c_a2522b63ff5828da052d1c8b3ee9c157c}} 
+\index{system\_configuration.c@{system\_configuration.c}!tdc\_to\_gap@{tdc\_to\_gap}}
+\index{tdc\_to\_gap@{tdc\_to\_gap}!system\_configuration.c@{system\_configuration.c}}
+\doxysubsubsection{\texorpdfstring{tdc\_to\_gap}{tdc\_to\_gap}}
+{\footnotesize\ttfamily double tdc\+\_\+to\+\_\+gap\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00041}{41}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+\mbox{\Hypertarget{system__configuration_8c_a4433116b526521b3810d1671c1b9a96a}\label{system__configuration_8c_a4433116b526521b3810d1671c1b9a96a}} 
+\index{system\_configuration.c@{system\_configuration.c}!tolerance\_window\_CAM@{tolerance\_window\_CAM}}
+\index{tolerance\_window\_CAM@{tolerance\_window\_CAM}!system\_configuration.c@{system\_configuration.c}}
+\doxysubsubsection{\texorpdfstring{tolerance\_window\_CAM}{tolerance\_window\_CAM}}
+{\footnotesize\ttfamily double tolerance\+\_\+window\+\_\+\+CAM\mbox{[}2\mbox{]}\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00112}{112}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
