@@ -156,8 +156,8 @@ extern unsigned int active_CAM_edges_counter[2];
 extern unsigned int sc_type_SC_CAM_CRK;
 
 // TIM5 variables
-extern int tim5_Counting;
-extern int tim5_CounterOverflow;
+extern int TIM_Soft_Counting;
+extern int TIM_Soft_CounterOverflow;
 
 /* Public functions -------------------------------------------------------- */
 
@@ -598,7 +598,7 @@ void Output_CAM_delay(int cam_id) {
 
 //## CAM_delay: CAM_TOOTH_OFF / CAM_REF_CRK / CAM_SYN / CAM_SYN_CRK
 void CAM_delay(int cam_id) {
-    if (tim5_Counting) {
+    if (TIM_Soft_Counting) {
         double former_teeth_time;
         former_teeth_time = former_teeth_time_calculation(T_TOOTH_RAW,
                                                           teeth_count_CRK, number_miss_teeth);
@@ -880,7 +880,6 @@ void output_CRK_GAP_NOT_DET(void) {
 void CRK_GAP_NOT_DET_reset(void) {
     failure_active_CAM_blank_out = false;
     failure_active = false;
-    MX_TIM1_Init;
 }
 
 //## Output_SEG_ADP_ER_LIM
