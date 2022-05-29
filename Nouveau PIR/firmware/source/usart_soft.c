@@ -148,6 +148,9 @@ extern bool engine_start;
 extern bool communication_active;
 extern bool communication_ready;
 
+//**Signal recording of CRK and CAM**
+extern volatile bool should_record;
+
 /* Public functions ----------------------------------------------------------*/
 
 void USART_ProcessMessage(void)
@@ -794,6 +797,10 @@ void USART_ProcessMessage(void)
 		Reset_temp_arrays();
 
 		break;
+	}
+	case ('n'):
+	{
+		should_record = true;
 	}
 	case ('z'): // communication validation
 	{
