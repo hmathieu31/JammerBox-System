@@ -82,7 +82,7 @@ class ButtonList extends React.Component {
     this.props.alert.show("Jamming successfully started");
 
     console.log("Value after sending test parameters");
-    console.log(this.valueSelect);
+    console.log(this.state.valueSelect);
   };
 
   directRunTest = (data) => {
@@ -132,7 +132,6 @@ class ButtonList extends React.Component {
     );
   };
   render() {
-    const alert = this.props.alert;
     return (
       <div className="button-list-div">
         {this.props.buttonList.map(this.makeButton)}

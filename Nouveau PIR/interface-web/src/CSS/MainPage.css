@@ -35,7 +35,7 @@ p {
 
 .frame-1 {
     background: url(../../public/BackgroundImage.png), linear-gradient(0deg, rgba(255, 255, 255, 1), rgba(255, 255, 255, 1)) fixed;
-    padding: 10% 10rem;
+    padding: 15% 10rem;
     box-sizing: border-box;
     background-size: 100% 100%;
     width: 100%;
