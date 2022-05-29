@@ -1,0 +1,14 @@
+{
+  "NumOfTeeth": 60,
+  "NumOfGap": 1,
+  "NumOfTeethInGap": 2,
+  "Tdc0": 87.75,
+  "FirstErSegAngle": 42,
+  "NumOfCylinder": 4,
+  "CrkSensorType": "c",
+  "Cam0NumOfEdges": 2,
+  "Cam0Active_edge": "b",
+  "Cam0SensorType": "c",
+  "Cam0FilterInMicroSec": 30,
+  "Cam0EdgePos": 0.333
+}

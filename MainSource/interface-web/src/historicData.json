@@ -1,0 +1,30 @@
+{
+  "Test 1": {
+    "id": 1,
+    "test_name": "CRK SHORT CIRCUIT",
+    "date": "9/5/2022",
+    "parametre": "Output Signal = battery",
+    "result": "success"
+  },
+  "Test 2": {
+    "id": 2,
+    "test_name": "CRK SPK",
+    "date": "11/5/2022",
+    "parametre": " = None",
+    "result": "success"
+  },
+  "Test 3": {
+    "id": 3,
+    "test_name": "CAM DELAY",
+    "date": "15/5/2022",
+    "parametre": "°CRK = 7",
+    "result": "success"
+  },
+  "Test 4": {
+    "id": 4,
+    "test_name": "CRK SHORT CIRCUIT",
+    "date": "15/5/2022",
+    "parametre": "Output Signal = ground",
+    "result": "success"
+  }
+}
