@@ -1,5 +1,6 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import "../CSS/RecordSignal.css";
+import RaspiProp from "../RaspiProp.json";
 
 function RecordSignal() {
   const [recording, setRecord] = useState(
@@ -9,7 +10,7 @@ function RecordSignal() {
   const recordToggle = () => {
     setRecord(!recording);
     localStorage.setItem("recording", JSON.stringify(!recording));
-    fetch("http://localhost:8080/record", {
+    fetch("http://" + RaspiProp["IP_ADDRESS"] + ":8080/record", {
       method: "PUT",
       mode: "cors",
       headers: { "Content-type": "application/json" },

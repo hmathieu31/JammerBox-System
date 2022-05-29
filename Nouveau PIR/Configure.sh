@@ -1,10 +1,15 @@
 #!/bin/bash
 
-PIR_FOLDER="./Nouveau\ PIR"
-WEB_FOLDER="${PIR_FOLDER}/interface-web"
-API_FOLDER="${PIR_FOLDER}/API"
+if [ $# != 1 ]
+then
+    echo "Please type in the device's IP address as the argument"
+    exit 1
+fi
 
-echo $WEB_FOLDER
+WEB_FOLDER="./interface-web"
+API_FOLDER="./API"
+
+echo "{\"IP_ADDRESS\":\"$1\"}" > $WEB_FOLDER/src/RaspiProp.json
 
 npm --prefix "$WEB_FOLDER" install "$WEB_FOLDER"
 npm --prefix "$API_FOLDER" install "$API_FOLDER"

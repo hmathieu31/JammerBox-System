@@ -7,6 +7,7 @@ import Modal from "react-modal";
 import { Provider as AlertProvider } from "react-alert";
 import AlertTemplate from "../components/alertTemplate";
 import { withAlert } from "react-alert";
+import RaspiProp from "../RaspiProp.json";
 
 const options = {
   position: "bottom center",
@@ -47,7 +48,8 @@ class ButtonList extends React.Component {
   };
 
   sendData = (jsonData) => {
-    fetch("http://localhost:8080/run", {
+    console.log(jsonData);
+    fetch("http://" + RaspiProp["IP_ADDRESS"] + ":8080/run", {
       method: "POST",
       mode: "cors",
       headers: { "Content-type": "application/json" },

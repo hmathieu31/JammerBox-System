@@ -3,6 +3,7 @@ import "../CSS/MainPage.css";
 import "../CSS/Historics.css";
 import React, { useEffect, useState } from "react";
 import POPOSSpace from "./ShowTestDiv";
+import RaspiProp from "../RaspiProp.json";
 
 export default function Testing() {
   const [jsonData, setJsonData] = useState(
@@ -12,7 +13,7 @@ export default function Testing() {
   useEffect(() => {
     const id = setInterval(
       () =>
-        fetch("http://localhost:8080/getLog", {
+        fetch("http://" + RaspiProp["IP_ADDRESS"] + ":8080/getLog", {
           method: "GET",
           mode: "cors",
           headers: { "Content-type": "application/json" },
@@ -30,7 +31,6 @@ export default function Testing() {
 
   const spaces = Object.entries(
     jsonData === null || jsonData === undefined ? "l" : jsonData
-
   ).map((obj) => {
     var newObj = obj[1];
 
@@ -46,13 +46,13 @@ export default function Testing() {
     );
   });
 
-  return(
+  return (
     <div>
-    {(jsonData === null || jsonData === undefined) ? (
-      <div></div>
-    ) : (
-      <div className="POPOSList">{spaces}</div>
-    )}
+      {jsonData === null || jsonData === undefined ? (
+        <div></div>
+      ) : (
+        <div className="POPOSList">{spaces}</div>
+      )}
     </div>
   );
 }
