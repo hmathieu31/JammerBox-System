@@ -782,7 +782,7 @@ void sync_CRK_preparation(void)
         }
     }
 
-    // reset timer 1
+    // reset timer 
     SysTick->VAL = (2 ^ 24) - 1;
     timer_overflow_CRK = 0;
 }
