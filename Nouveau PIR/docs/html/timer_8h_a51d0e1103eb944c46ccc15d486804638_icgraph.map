@@ -1,7 +1,0 @@
-<map id="Timer8Init" name="Timer8Init">
-<area shape="rect" id="node1" title=" " alt="" coords="488,56,567,83"/>
-<area shape="rect" id="node2" href="$failures_8c.html#a7a130c71bb4f8b503445fa58eeea5f1c" title=" " alt="" coords="255,5,440,32"/>
-<area shape="rect" id="node4" href="$main_8c.html#a840291bc02cba5474a4cb46a9b9566fe" title=" " alt="" coords="5,81,56,108"/>
-<area shape="rect" id="node5" href="$failures_8c.html#a9b4c0604e27a0e274bb04bf3d34b22d6" title=" " alt="" coords="261,56,434,83"/>
-<area shape="rect" id="node3" href="$uart_8c.html#aeb908abd909e8d4eb02495bd782db540" title=" " alt="" coords="104,56,207,83"/>
-</map>
