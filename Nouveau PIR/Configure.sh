@@ -6,8 +6,8 @@ then
     exit 1
 fi
 
-WEB_FOLDER="./interface-web"
-API_FOLDER="./API"
+WEB_FOLDER="../MainSource/interface-web"
+API_FOLDER="../MainSource/API"
 
 echo "{\"IP_ADDRESS\":\"$1\"}" > $WEB_FOLDER/src/RaspiProp.json
 
@@ -26,7 +26,7 @@ echo "Do you want to install Powershell? It will be used for testing purposes (t
 read x
 if [ $x = "yes" ]
 then
-    sudo apt-get updat
+    sudo apt-get update
     sudo apt-get install '^libssl1.0.[0-9]$' libunwind8 -y
     wget https://github.com/PowerShell/PowerShell/releases/download/v7.2.4/powershell-7.2.4-linux-arm32.tar.gz
     mkdir ~/powershell

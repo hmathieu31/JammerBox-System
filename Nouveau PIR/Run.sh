@@ -1,7 +1,7 @@
 #!/bin/bash
 
-WEB_FOLDER="./interface-web"
-API_FOLDER="./API"
+WEB_FOLDER="../MainSource/interface-web"
+API_FOLDER="../MainSource/API"
 
 #Running the API
 node $API_FOLDER/index.js &

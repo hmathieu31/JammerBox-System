@@ -12,7 +12,8 @@ const allowedOrigins = [
 ];
 
 //Has to be absolute path!
-const historicPath = "../interface-web/src/historicData.json";
+const historicPath = "../MainSource/interface-web/src/historicData.json";
+const pythonScripPath = "../USART_Script.py";
 
 //Configuring CORS
 app.use(
@@ -151,7 +152,6 @@ app.get("/getlog", (req, res) => {
   try {
     fs.readFile(historicPath, function (err, data) {
       historicJson = JSON.parse(data);
-      console.log(historicJson);
       res.status(200).json(historicJson);
     });
   } catch (e) {
@@ -172,13 +172,9 @@ app.listen(8080, () => {
 });
 
 function runPythonScript(params) {
-  PythonShell.run(
-    "../USART_Script.py",
-    { args: params },
-    function (err, results) {
-      if (err) throw err;
-      // results is an array consisting of messages collected during execution
-      console.log("results: %j", results);
-    }
-  );
+  PythonShell.run(pythonScripPath, { args: params }, function (err, results) {
+    if (err) throw err;
+    // results is an array consisting of messages collected during execution
+    console.log("results: %j", results);
+  });
 }
