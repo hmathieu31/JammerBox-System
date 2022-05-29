@@ -142,11 +142,6 @@ p {
     display: grid;
     grid-template-columns: repeat(2, auto);
     grid-auto-rows: minmax(25px, auto);
-    place-items: center;    
-}
-
-.button-list-item {
-    display: flex;
     align-items: center;
     justify-content: center;
 }
