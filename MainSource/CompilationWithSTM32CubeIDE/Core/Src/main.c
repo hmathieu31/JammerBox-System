@@ -29,6 +29,7 @@
 /* USER CODE BEGIN Includes */
 // ### Standard includes ###
 #include <stdbool.h>
+#include <stdint.h>
 //#include "stm32f1xx_hal_gpio.h"
 
 // ### Software includes ###
@@ -299,7 +300,7 @@ int data_counter = 0;
 char in;
 char start_char = '!';
 char end_char = '%';
-char input_chars[4];
+uint8_t input_chars[25];
 char input[250];
 int input_char_counter = 0;
 char temp_chars_1[21];
