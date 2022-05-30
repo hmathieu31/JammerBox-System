@@ -1,13 +1,16 @@
-# PIR
-
-PIR Project
 
 <div id="top"></div>
+
+<!-- PROJECT SHIELDS -->
+[![Contributors][contributors-shield]][contributors-url]
+[![Issues][issues-shield]][issues-url]
+[![MIT License][license-shield]][license-url]
+
 
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <h1>PIR PROJECT</h1>
+  <h1>JammerBox Project</h1>
 </div>
 
 <!-- TABLE OF CONTENTS -->
@@ -218,3 +221,13 @@ When pressed, it starts recording and saving in file the signals from the Jammer
 Project Link: [https://github.com/hmathieu-insat/PIR](https://github.com/hmathieu-insat/PIR)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
+
+<!-- MARKDOWN LINKS & IMAGES -->
+<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+[contributors-shield]: https://img.shields.io/github/contributors/hmathieu-insat/PIR.svg?style=for-the-badge
+[contributors-url]: https://github.com/hmathieu-insat/PIR/graphs/contributors
+[issues-shield]: https://img.shields.io/github/issues/hmathieu-insat/PIR.svg?style=for-the-badge
+[issues-url]: https://github.com/hmathieu-insat/PIR/issues
+[license-shield]: https://img.shields.io/github/license/hmathieu-insat/PIR.svg?style=for-the-badge
+[license-url]: https://github.com/hmathieu-insat/PIR/blob/master/LICENSE
+[product-screenshot]: images/screenshot.png
