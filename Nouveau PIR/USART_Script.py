@@ -2,6 +2,7 @@ from serial import Serial
 import sys
 from time import sleep
 
+sending_lengths=25
 print(sys.argv)
 usart_message = "!"
 print("Opening port...")
@@ -29,6 +30,8 @@ for i in range(2,len(sys.argv)):
     usart_message+= "/"+sys.argv[i]
 
 usart_message+="%"
+while(len(usart_message)<sending_lengths):
+    usart_message+="0"
 print(usart_message)
 
 '''ser.write(usart_message.encode())

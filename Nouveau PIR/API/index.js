@@ -9,8 +9,8 @@ const IP = require("../interface-web/src/RaspiProp.json")["IP_ADDRESS"];
 const allowedOrigins = ["http://" + IP + ":3000"];
 
 //Has to be absolute path!
-const historicPath = "../MainSource/interface-web/src/historicData.json";
-const pythonScripPath = "../USART_Script.py";
+const historicPath = "./interface-web/src/historicData.json";
+const pythonScripPath = "./USART_Script.py";
 
 //Configuring CORS
 app.use(
