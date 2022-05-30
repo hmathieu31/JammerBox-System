@@ -161,7 +161,7 @@ void USART_ProcessMessage(void)
 
 	input_char_counter = 0; //Set input char counter to 0
 
-	message_identify = input_chars[0]; //Read message identifier
+	message_identify = input_chars[1]; //Read message identifier
 
 	int i; //Set counter variable to read received message in for-loop
 
@@ -816,7 +816,7 @@ void USART_ProcessMessage(void)
 
 				SysTick->CTRL &= ~(1); //disable systick
 				uint8_t msg11 = message[11];
-				HAL_USART_Transmit_IT(&husart1, &msg11, 1);
+				HAL_UART_Transmit_IT(&huart1, &msg11, 1);
 			}
 			else
 			{
@@ -851,7 +851,7 @@ void USART_ProcessMessage(void)
 
 	//communication receive status
 	uint8_t msg_communication_receive_ready = message[12];
-	HAL_USART_Transmit_IT(&husart1, &msg_communication_receive_ready, 1);
+	HAL_UART_Transmit_IT(&huart1, &msg_communication_receive_ready, 1);
 }
 
 //## USART COM Error Function
@@ -872,7 +872,7 @@ void USART_COM_error(void)
 
 		//communication error treatment
 		uint8_t msg_COM_error = message[0];
-		HAL_USART_Transmit_IT(&husart1, &msg_COM_error, 1);
+		HAL_UART_Transmit_IT(&huart1, &msg_COM_error, 1);
 	}
 }
 
@@ -884,14 +884,14 @@ void USART_send_failure_configuration_status(char failure_ident,
 	if ((failure_ident == '0' || failure_ident == '2') && failure_conf == true)
 	{
 		uint8_t msg_failure_passive = message[8];
-		HAL_USART_Transmit_IT(&husart1, &msg_failure_passive, 1);
+		HAL_UART_Transmit_IT(&huart1, &msg_failure_passive, 1);
 		failure_configured = false;
 	}
 	else if ((failure_ident != '0' && failure_ident != '2')
 			&& failure_conf == false)
 	{
 		uint8_t msg_failure_active = message[7];
-		HAL_USART_Transmit_IT(&husart1, &msg_failure_active, 1);
+		HAL_UART_Transmit_IT(&huart1, &msg_failure_active, 1);
 		failure_configured = true;
 	}
 
@@ -899,14 +899,14 @@ void USART_send_failure_configuration_status(char failure_ident,
 			&& failure_conf_CAM_blank_out == true)
 	{
 		uint8_t msg_failure_cam_blank_out_passive = message[10];
-		HAL_USART_Transmit_IT(&husart1, &msg_failure_cam_blank_out_passive, 1);
+		HAL_UART_Transmit_IT(&huart1, &msg_failure_cam_blank_out_passive, 1);
 		failure_configured_CAM_blank_out = false;
 	}
 	else if ((failure_ident == '2' || failure_ident == '3')
 			&& failure_conf_CAM_blank_out == false)
 	{
 		uint8_t msg_failure_cam_blank_out_active = message[9];
-		HAL_USART_Transmit_IT(&husart1, &msg_failure_cam_blank_out_active, 1);
+		HAL_UART_Transmit_IT(&huart1, &msg_failure_cam_blank_out_active, 1);
 		failure_configured_CAM_blank_out = true;
 	}
 }

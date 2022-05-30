@@ -111,7 +111,7 @@ void CRK_configuration(void)
 
 	// Send configuration status
 	uint8_t msg_CRK_configuration_ready = message[1];
-	 HAL_USART_Transmit_IT(&husart1, &msg_CRK_configuration_ready, 1);
+	 HAL_UART_Transmit_IT(&huart1, &msg_CRK_configuration_ready, 1);
 }
 
 // ## CAM Configuration
@@ -159,7 +159,7 @@ void CAM_configuration(void)
 
 	// Send configuration status
 	uint8_t msg_CAM_configuration_ready = message[2];
-	 HAL_USART_Transmit_IT(&husart1, &msg_CAM_configuration_ready, 1);
+	 HAL_UART_Transmit_IT(&huart1, &msg_CAM_configuration_ready, 1);
 }
 
 // ## CAM_CRK Configuration
