@@ -1,0 +1,206 @@
+\hypertarget{system__configuration_8c_source}{}\doxysection{system\+\_\+configuration.\+c}
+\label{system__configuration_8c_source}\index{Nouveau PIR/firmware/source/system\_configuration.c@{Nouveau PIR/firmware/source/system\_configuration.c}}
+\mbox{\hyperlink{system__configuration_8c}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00001}00001 \textcolor{comment}{/*****************************************************************************/}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00002}00002 \textcolor{comment}{/* Projectname     :  ENSD-\/Jammer                                            */}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00003}00003 \textcolor{comment}{/* Programm        :  System configuration                                   */}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00004}00004 \textcolor{comment}{/* Controller      :  dsPIC33F                                               */}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00005}00005 \textcolor{comment}{/* Latest change   :  18.09.2012                                             */}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00006}00006 \textcolor{comment}{/* Author          :  Christian Ringlstetter/Thomas Pichler                  */}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00007}00007 \textcolor{comment}{/*****************************************************************************/}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00008}00008 }
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00009}00009 \textcolor{comment}{// \#\#\# Basic includes \#\#\#}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00010}00010 \textcolor{preprocessor}{    \#include "{}stdbool.h"{}}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00011}00011 \textcolor{preprocessor}{    \#include "{}\mbox{\hyperlink{system__configuration_8h}{system\_configuration.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00012}00012 }
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00013}00013 \textcolor{comment}{// \#\#\# Programm includes \#\#\#}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00014}00014 \textcolor{preprocessor}{    \#include "{}\mbox{\hyperlink{synchronization_8h}{synchronization.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00015}00015 \textcolor{preprocessor}{    \#include "{}\mbox{\hyperlink{uart_8h}{uart.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00016}00016             }
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00017}00017 }
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00018}00018 \textcolor{comment}{// \#\#\# Variables \#\#\#}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00019}00019 }
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00020}00020     \textcolor{comment}{// CRK-\/configuration}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00021}00021     \textcolor{keyword}{extern} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{system__configuration_8c_a05e75142d685997ef05acf36e45a356a}{number\_teeth\_between\_gaps}};}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00022}00022     \textcolor{keyword}{extern} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{system__configuration_8c_ad8651353e89c1aabf9090f25e9225f20}{number\_teeth\_CRK}};}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00023}00023     \textcolor{keyword}{extern} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{system__configuration_8c_a4abf94058506c41d30267b476c141268}{number\_gap}};}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00024}00024     \textcolor{keyword}{extern} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{system__configuration_8c_a3d8f18f378d3a6c7ee1289f88d36553d}{number\_miss\_teeth}};}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00025}00025     \textcolor{keyword}{extern} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{system__configuration_8c_ab040cae3d9ae46728a9af9db655c014e}{number\_real\_teeth}};}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00026}00026     \textcolor{keyword}{extern} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{system__configuration_8c_a896b3f467a176975dc687f95f1a1367e}{number\_segments\_CRK}};}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00027}00027     \textcolor{keyword}{extern} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{system__configuration_8c_a912fe456cc42c18b47eae6de3e35c4f8}{first\_seg\_start\_tooth}};  }
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00028}00028     \textcolor{keyword}{extern} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{system__configuration_8c_a2bfb90e694f4f1e42996bee8fcfa9a27}{number\_cylinder}};}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00029}00029     \textcolor{keyword}{extern} \textcolor{keywordtype}{double} \mbox{\hyperlink{system__configuration_8c_af3c32be62d5f2307cc01a316c01ba3dc}{revolution\_CRK}};}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00030}00030     \textcolor{keyword}{extern} \textcolor{keywordtype}{double} \mbox{\hyperlink{system__configuration_8c_a2522b63ff5828da052d1c8b3ee9c157c}{tdc\_to\_gap}};}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00031}00031     \textcolor{keyword}{extern} \textcolor{keywordtype}{double} \mbox{\hyperlink{system__configuration_8c_a30aee154f6067d411dbf4839fdc3cc93}{first\_seg\_angle}};}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00032}00032     \textcolor{keyword}{extern} \textcolor{keywordtype}{bool} \mbox{\hyperlink{system__configuration_8c_acd78757977e1e4a37661d2abf4d0e274}{CRK\_config}};}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00033}00033 }
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00034}00034     }
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00035}00035     \textcolor{comment}{//CAM\_CRK-\/configuration}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00036}00036     \textcolor{keyword}{extern} \textcolor{keywordtype}{double} \mbox{\hyperlink{system__configuration_8c_a4acf9cde9660862148d0a73f10984ced}{first\_edge\_to\_tdc0}}[2];}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00037}00037     \textcolor{keyword}{extern} \textcolor{keywordtype}{double} \mbox{\hyperlink{system__configuration_8c_a77550eb84997c4bf1f3f258b305cb07b}{CAM\_edges}}[2][24];}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00038}00038     \textcolor{keyword}{extern} \textcolor{keywordtype}{double} \mbox{\hyperlink{system__configuration_8c_a9f65b0d3142356fc10814e114939a72a}{gap\_to\_first\_edge}}[2];}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00039}00039     \textcolor{keyword}{extern} \textcolor{keywordtype}{bool} \mbox{\hyperlink{system__configuration_8c_a8995ceba29d39262ef73545674a0d4a8}{TDC\_on\_edge}}[2];}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00040}00040     \textcolor{keyword}{extern} \textcolor{keywordtype}{bool} \mbox{\hyperlink{system__configuration_8c_af2b1f70badf370b8c61316f5dcefaf26}{configuration\_complete}}; }
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00041}00041     \textcolor{keyword}{extern} \textcolor{keywordtype}{bool} \mbox{\hyperlink{system__configuration_8c_a26f49697b8275c1863e0716a3c236480}{output\_level\_setting}};}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00042}00042 }
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00043}00043     \textcolor{comment}{//CAM-\/configuration}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00044}00044     \textcolor{keyword}{extern} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{system__configuration_8c_a8eb17d2b0f766d726dfbf5bd1be6d33c}{number\_teeth\_CAM}}[2];}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00045}00045     \textcolor{keyword}{extern} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{system__configuration_8c_a3d1c16f7b67a7b889ff09efcf7651345}{number\_active\_edges\_CAM}}[2];}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00046}00046     \textcolor{keyword}{extern} \textcolor{keywordtype}{double} \mbox{\hyperlink{system__configuration_8c_a5f76355a7410c0f9ba6f2685976f7789}{distance\_gap\_to\_CAM\_edge}}[2][24];}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00047}00047     \textcolor{keyword}{extern} \textcolor{keywordtype}{double} \mbox{\hyperlink{system__configuration_8c_ae78fc7b1baf9c329b60166be6b88b85c}{filter\_time\_CAM}}[2];}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00048}00048     \textcolor{keyword}{extern} \textcolor{keywordtype}{double} \mbox{\hyperlink{system__configuration_8c_a4433116b526521b3810d1671c1b9a96a}{tolerance\_window\_CAM}}[2];}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00049}00049     \textcolor{keyword}{extern} \textcolor{keywordtype}{bool} \mbox{\hyperlink{system__configuration_8c_a7809eb20331648930f7a85897de70a88}{CAM\_config}};}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00050}00050     \textcolor{keyword}{extern} \textcolor{keywordtype}{char} \mbox{\hyperlink{system__configuration_8c_a1ab47ef12d9fd5a0a0c37354af662f7d}{active\_CAM\_edges}}[2];}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00051}00051     \textcolor{keyword}{extern} \textcolor{keywordtype}{int} \mbox{\hyperlink{system__configuration_8c_a8b96e45eeb664a177dede0e498910a1b}{number\_of\_CAM}};}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00052}00052 }
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00053}00053     \textcolor{comment}{//UART-\/Send }}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00054}00054     \textcolor{keyword}{extern} \textcolor{keywordtype}{char} \mbox{\hyperlink{system__configuration_8c_ae1b4a2a0bd124fb2ee430c8ba7e3a071}{message}}[];}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00055}00055 }
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00056}00056 \textcolor{comment}{//\#\#\# Functions \#\#\#}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00057}00057 }
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00058}00058     \textcolor{comment}{// \#\# CRK Configuration}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00059}\mbox{\hyperlink{system__configuration_8h_a89bb1b58a659dfbbcb0cab106d7ce4c3}{00059}}     \textcolor{keywordtype}{void} \mbox{\hyperlink{system__configuration_8c_a89bb1b58a659dfbbcb0cab106d7ce4c3}{CRK\_configuration}}(\textcolor{keywordtype}{void}) }
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00060}00060     \{}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00061}00061         \textcolor{comment}{// Number of teeth between two gaps }}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00062}00062         \mbox{\hyperlink{system__configuration_8c_a05e75142d685997ef05acf36e45a356a}{number\_teeth\_between\_gaps}} = (\mbox{\hyperlink{system__configuration_8c_ad8651353e89c1aabf9090f25e9225f20}{number\_teeth\_CRK}}/\mbox{\hyperlink{system__configuration_8c_a4abf94058506c41d30267b476c141268}{number\_gap}}) -\/ \mbox{\hyperlink{system__configuration_8c_a3d8f18f378d3a6c7ee1289f88d36553d}{number\_miss\_teeth}};}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00063}00063         }
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00064}00064         \textcolor{comment}{// Number of remaining teeth}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00065}00065         \mbox{\hyperlink{system__configuration_8c_ab040cae3d9ae46728a9af9db655c014e}{number\_real\_teeth}} = \mbox{\hyperlink{system__configuration_8c_ad8651353e89c1aabf9090f25e9225f20}{number\_teeth\_CRK}} -\/ \mbox{\hyperlink{system__configuration_8c_a3d8f18f378d3a6c7ee1289f88d36553d}{number\_miss\_teeth}};}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00066}00066         }
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00067}00067         \textcolor{comment}{// Revolution of one tooth time}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00068}00068         \mbox{\hyperlink{system__configuration_8c_af3c32be62d5f2307cc01a316c01ba3dc}{revolution\_CRK}} = (double)(360.0/\mbox{\hyperlink{system__configuration_8c_ad8651353e89c1aabf9090f25e9225f20}{number\_teeth\_CRK}});}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00069}00069     }
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00070}00070         \textcolor{comment}{// Set number of segments}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00071}00071         \mbox{\hyperlink{system__configuration_8c_a896b3f467a176975dc687f95f1a1367e}{number\_segments\_CRK}} = \mbox{\hyperlink{system__configuration_8c_a2bfb90e694f4f1e42996bee8fcfa9a27}{number\_cylinder}};}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00072}00072         }
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00073}00073         \textcolor{keywordtype}{int} first\_tooth\_angle = 720 -\/ \mbox{\hyperlink{system__configuration_8c_a2522b63ff5828da052d1c8b3ee9c157c}{tdc\_to\_gap}};}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00074}00074         }
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00075}00075         \textcolor{keywordflow}{if} (\mbox{\hyperlink{system__configuration_8c_a30aee154f6067d411dbf4839fdc3cc93}{first\_seg\_angle}} >= first\_tooth\_angle)\{}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00076}00076             \mbox{\hyperlink{system__configuration_8c_a912fe456cc42c18b47eae6de3e35c4f8}{first\_seg\_start\_tooth}} = (\mbox{\hyperlink{system__configuration_8c_a30aee154f6067d411dbf4839fdc3cc93}{first\_seg\_angle}} -\/ first\_tooth\_angle) / \mbox{\hyperlink{system__configuration_8c_af3c32be62d5f2307cc01a316c01ba3dc}{revolution\_CRK}};}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00077}00077             }
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00078}00078         \}\textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00079}00079             \mbox{\hyperlink{system__configuration_8c_a912fe456cc42c18b47eae6de3e35c4f8}{first\_seg\_start\_tooth}} = \mbox{\hyperlink{system__configuration_8c_ad8651353e89c1aabf9090f25e9225f20}{number\_teeth\_CRK}} -\/ (( first\_tooth\_angle -\/ \mbox{\hyperlink{system__configuration_8c_a30aee154f6067d411dbf4839fdc3cc93}{first\_seg\_angle}}) / \mbox{\hyperlink{system__configuration_8c_af3c32be62d5f2307cc01a316c01ba3dc}{revolution\_CRK}});}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00080}00080         \}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00081}00081 }
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00082}00082         \textcolor{comment}{// Set configuration status}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00083}00083         \mbox{\hyperlink{system__configuration_8c_acd78757977e1e4a37661d2abf4d0e274}{CRK\_config}} = \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00084}00084 }
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00085}00085         \textcolor{comment}{// Complete configuration}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00086}00086         \textcolor{keywordflow}{if}((\mbox{\hyperlink{system__configuration_8c_acd78757977e1e4a37661d2abf4d0e274}{CRK\_config}} == \textcolor{keyword}{true}) \&\& (\mbox{\hyperlink{system__configuration_8c_a7809eb20331648930f7a85897de70a88}{CAM\_config}} == \textcolor{keyword}{true}))}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00087}00087         \{}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00088}00088             \mbox{\hyperlink{system__configuration_8c_ad963f06dc329af81a8139668d5e8cbe9}{CAM\_CRK\_configuration}}(); }
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00089}00089         \}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00090}00090 }
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00091}00091         \textcolor{comment}{// Send configuration status}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00092}00092         \mbox{\hyperlink{uart_8h_a6a5e387e1c7d171a2fcc4e2c264964d4}{UART\_send}}(\mbox{\hyperlink{system__configuration_8c_ae1b4a2a0bd124fb2ee430c8ba7e3a071}{message}}[1]);}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00093}00093     \}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00094}00094 }
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00095}00095 }
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00096}00096     \textcolor{comment}{// \#\# CAM Configuration}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00097}\mbox{\hyperlink{system__configuration_8h_a9ed4ba8234d683606da8eeaa8845cb98}{00097}}     \textcolor{keywordtype}{void} \mbox{\hyperlink{system__configuration_8c_a9ed4ba8234d683606da8eeaa8845cb98}{CAM\_configuration}}(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00098}00098     \{   }
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00099}00099         \textcolor{keywordtype}{int} camId = 0;}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00100}00100         }
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00101}00101         \textcolor{keywordflow}{for}(camId = 0; camId < \mbox{\hyperlink{system__configuration_8c_a8b96e45eeb664a177dede0e498910a1b}{number\_of\_CAM}}; camId++)}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00102}00102         \{}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00103}00103             \textcolor{comment}{// Set counter to calculate the distances of the CAM edges to the gap in the for-\/loop}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00104}00104           \textcolor{keywordtype}{int} i;}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00105}00105 }
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00106}00106           \textcolor{comment}{// Set number of CAM edges}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00107}00107           \textcolor{keywordflow}{if}(\mbox{\hyperlink{system__configuration_8c_a1ab47ef12d9fd5a0a0c37354af662f7d}{active\_CAM\_edges}}[camId] == \textcolor{charliteral}{'b'})}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00108}00108           \{}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00109}00109               \mbox{\hyperlink{system__configuration_8c_a8eb17d2b0f766d726dfbf5bd1be6d33c}{number\_teeth\_CAM}}[camId] = \mbox{\hyperlink{system__configuration_8c_a3d1c16f7b67a7b889ff09efcf7651345}{number\_active\_edges\_CAM}}[camId] / 2;}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00110}00110           \}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00111}00111           \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00112}00112           \{}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00113}00113               \mbox{\hyperlink{system__configuration_8c_a8eb17d2b0f766d726dfbf5bd1be6d33c}{number\_teeth\_CAM}}[camId] = \mbox{\hyperlink{system__configuration_8c_a3d1c16f7b67a7b889ff09efcf7651345}{number\_active\_edges\_CAM}}[camId];}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00114}00114           \}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00115}00115 }
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00116}00116           \textcolor{comment}{// Calculate distance from gap to CAM edges}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00117}00117           \textcolor{keywordflow}{for}(i = 0; i < \mbox{\hyperlink{system__configuration_8c_a3d1c16f7b67a7b889ff09efcf7651345}{number\_active\_edges\_CAM}}[camId]; i++)}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00118}00118           \{}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00119}00119               \mbox{\hyperlink{system__configuration_8c_a5f76355a7410c0f9ba6f2685976f7789}{distance\_gap\_to\_CAM\_edge}}[camId][i] = \mbox{\hyperlink{system__configuration_8c_a77550eb84997c4bf1f3f258b305cb07b}{CAM\_edges}}[camId][i] + \mbox{\hyperlink{system__configuration_8c_a2522b63ff5828da052d1c8b3ee9c157c}{tdc\_to\_gap}};}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00120}00120 }
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00121}00121               \textcolor{keywordflow}{if}(\mbox{\hyperlink{system__configuration_8c_a5f76355a7410c0f9ba6f2685976f7789}{distance\_gap\_to\_CAM\_edge}}[camId][i] >= 720.0)}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00122}00122               \{}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00123}00123                   \mbox{\hyperlink{system__configuration_8c_a5f76355a7410c0f9ba6f2685976f7789}{distance\_gap\_to\_CAM\_edge}}[camId][i] = \mbox{\hyperlink{system__configuration_8c_a5f76355a7410c0f9ba6f2685976f7789}{distance\_gap\_to\_CAM\_edge}}[camId][i] -\/ 720.0;}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00124}00124               \}         }
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00125}00125           \}  }
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00126}00126         \}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00127}00127         }
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00128}00128 }
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00129}00129         \textcolor{comment}{// Set configuration status}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00130}00130         \mbox{\hyperlink{system__configuration_8c_a7809eb20331648930f7a85897de70a88}{CAM\_config}} = \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00131}00131 }
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00132}00132         \textcolor{comment}{// Complete configuration}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00133}00133         \textcolor{keywordflow}{if}(\mbox{\hyperlink{system__configuration_8c_acd78757977e1e4a37661d2abf4d0e274}{CRK\_config}} == \textcolor{keyword}{true} \&\& \mbox{\hyperlink{system__configuration_8c_a7809eb20331648930f7a85897de70a88}{CAM\_config}} == \textcolor{keyword}{true})}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00134}00134         \{}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00135}00135             \mbox{\hyperlink{system__configuration_8c_ad963f06dc329af81a8139668d5e8cbe9}{CAM\_CRK\_configuration}}();}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00136}00136         \}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00137}00137 }
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00138}00138         \textcolor{comment}{// Send configuration status}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00139}00139         \mbox{\hyperlink{uart_8h_a6a5e387e1c7d171a2fcc4e2c264964d4}{UART\_send}}(\mbox{\hyperlink{system__configuration_8c_ae1b4a2a0bd124fb2ee430c8ba7e3a071}{message}}[2]);}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00140}00140 }
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00141}00141     \}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00142}00142 }
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00143}00143 }
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00144}00144     \textcolor{comment}{// \#\# CAM\_CRK Configuration}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00145}\mbox{\hyperlink{system__configuration_8h_ad963f06dc329af81a8139668d5e8cbe9}{00145}}     \textcolor{keywordtype}{void} \mbox{\hyperlink{system__configuration_8c_ad963f06dc329af81a8139668d5e8cbe9}{CAM\_CRK\_configuration}}(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00146}00146     \{}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00147}00147         \textcolor{keywordtype}{int} camId = 0;}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00148}00148         }
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00149}00149         \textcolor{keywordflow}{for}(camId = 0; camId < \mbox{\hyperlink{system__configuration_8c_a8b96e45eeb664a177dede0e498910a1b}{number\_of\_CAM}}; camId++)}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00150}00150         \{}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00151}00151             \textcolor{comment}{// Set first falling(rising, when active\_edges = 'r') CAM edge after TDC0}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00152}00152             \mbox{\hyperlink{system__configuration_8c_a4acf9cde9660862148d0a73f10984ced}{first\_edge\_to\_tdc0}}[camId] = \mbox{\hyperlink{system__configuration_8c_a77550eb84997c4bf1f3f258b305cb07b}{CAM\_edges}}[camId][0];}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00153}00153 }
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00154}00154             \textcolor{comment}{// Distance from gap to first falling CAM-\/edge}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00155}00155             \mbox{\hyperlink{system__configuration_8c_a9f65b0d3142356fc10814e114939a72a}{gap\_to\_first\_edge}}[camId] = \mbox{\hyperlink{system__configuration_8c_a4acf9cde9660862148d0a73f10984ced}{first\_edge\_to\_tdc0}}[camId] + \mbox{\hyperlink{system__configuration_8c_a2522b63ff5828da052d1c8b3ee9c157c}{tdc\_to\_gap}};}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00156}00156 }
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00157}00157             \textcolor{keywordflow}{if}((\textcolor{keywordtype}{long})\mbox{\hyperlink{system__configuration_8c_a2522b63ff5828da052d1c8b3ee9c157c}{tdc\_to\_gap}}\%(\textcolor{keywordtype}{long})\mbox{\hyperlink{system__configuration_8c_af3c32be62d5f2307cc01a316c01ba3dc}{revolution\_CRK}} == 0)}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00158}00158             \{}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00159}00159                 \mbox{\hyperlink{system__configuration_8c_a8995ceba29d39262ef73545674a0d4a8}{TDC\_on\_edge}}[camId] = \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00160}00160             \}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00161}00161             \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00162}00162             \{}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00163}00163                 \mbox{\hyperlink{system__configuration_8c_a8995ceba29d39262ef73545674a0d4a8}{TDC\_on\_edge}}[camId] = \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00164}00164             \}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00165}00165 }
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00166}00166             \textcolor{comment}{// Set tolerance window for CAM\_CRK synchronization in case of start}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00167}00167             \mbox{\hyperlink{system__configuration_8c_a4433116b526521b3810d1671c1b9a96a}{tolerance\_window\_CAM}}[camId] = 2.0 * \mbox{\hyperlink{system__configuration_8c_af3c32be62d5f2307cc01a316c01ba3dc}{revolution\_CRK}};}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00168}00168         \}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00169}00169         \mbox{\hyperlink{synchronization_8h_acde4eb7626d6b5f4d9aa424d378bb77d}{Stalling\_detection}}();}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00170}00170 }
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00171}00171         \mbox{\hyperlink{system__configuration_8c_af2b1f70badf370b8c61316f5dcefaf26}{configuration\_complete}} = \textcolor{keyword}{true};                    }
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00172}00172     \}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00173}00173 }
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00174}00174 }
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00175}00175     \textcolor{comment}{//\#\#\# Input Signal Observation \#\#\#}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00176}\mbox{\hyperlink{system__configuration_8h_a59076703f9dd366b1aaea4086362723e}{00176}}     \textcolor{keywordtype}{void} \mbox{\hyperlink{system__configuration_8c_a4b88e9e2842b045ebb2d86ab96415abf}{Input\_signal\_observe}}(\textcolor{keywordtype}{bool} output\_set)}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00177}00177     \{}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00178}00178         \textcolor{keywordflow}{if}(!output\_set)}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00179}00179         \{}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00180}00180             \textcolor{comment}{// Check CRK input signal level}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00181}00181             \textcolor{keywordflow}{if}(PORTDbits.RD8 != PORTGbits.RG6)}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00182}00182             \{}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00183}00183                 LATGbits.LATG6 = !LATGbits.LATG6;}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00184}00184             \}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00185}00185     }
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00186}00186             \textcolor{comment}{// Check CAM input signal level}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00187}00187             \textcolor{keywordflow}{if}(PORTDbits.RD10 != PORTGbits.RG7)}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00188}00188             \{}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00189}00189                 LATGbits.LATG7 = !LATGbits.LATG7;}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00190}00190             \}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00191}00191             }
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00192}00192             \textcolor{keywordflow}{if}(PORTDbits.RD12 != PORTGbits.RG8)}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00193}00193             \{}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00194}00194                 LATGbits.LATG8 = !LATGbits.LATG8;}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00195}00195             \}}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00196}00196 }
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00197}00197             \mbox{\hyperlink{system__configuration_8c_a26f49697b8275c1863e0716a3c236480}{output\_level\_setting}} = \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00198}00198         \}       }
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00199}00199     \}   }
+\DoxyCodeLine{\Hypertarget{system__configuration_8c_source_l00200}00200 }
+
+\end{DoxyCode}
