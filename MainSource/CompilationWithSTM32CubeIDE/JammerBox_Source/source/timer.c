@@ -152,9 +152,11 @@ int TIM_Soft_GetCounter(void)
 {
 	if (TIM_Soft_Counting)
 	{
-		return ((TIM_Soft_StopTick - TIM_Soft_StartTick)
+		int retval = ((TIM_Soft_StopTick - TIM_Soft_StartTick)
 				+ TIM_Soft_CounterOverflow * 62999)
 				% 62999;
+		TIM_Soft_CounterOverflow = 0;
+		return retval;
 	}
 	else
 	{

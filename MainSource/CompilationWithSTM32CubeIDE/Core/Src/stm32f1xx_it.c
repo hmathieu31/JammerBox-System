@@ -20,6 +20,8 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "stm32f1xx_it.h"
+
+#include "timer.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 /* USER CODE END Includes */
@@ -60,6 +62,9 @@ extern TIM_HandleTypeDef htim2;
 extern TIM_HandleTypeDef htim3;
 extern TIM_HandleTypeDef htim4;
 extern UART_HandleTypeDef huart1;
+
+extern int TIM_Soft_CounterOverflow;
+extern int TIM_Soft_Counting;
 /* USER CODE BEGIN EV */
 
 /* USER CODE END EV */
@@ -187,6 +192,9 @@ void PendSV_Handler(void)
 void SysTick_Handler(void)
 {
   /* USER CODE BEGIN SysTick_IRQn 0 */
+  if (TIM_Soft_Counting){
+    TIM_Soft_CounterOverflow++;
+  }
 
   /* USER CODE END SysTick_IRQn 0 */
   HAL_IncTick();
