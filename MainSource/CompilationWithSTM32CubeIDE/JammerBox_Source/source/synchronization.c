@@ -118,7 +118,10 @@ extern char failure_identify;
 
 //### Functions ###
 
-// ## CRK Synchronisation
+/**
+ * @brief This function processes the synchronisation of CRK.
+ * 
+ */
 void sync_CRK(void)
 {
     // Set label that indicates engine start
@@ -321,7 +324,11 @@ void sync_CRK(void)
     } // delay_off == true - END
 }
 
-// ## CAM_CRK Synchronisation
+/**
+ * @brief This function processes the synchronisation between the camera and the cranks.
+ * 
+ * @param camId the id of the camera used between the first and the second camera.
+ */
 void sync_CAM_CRK(int camId)
 {
     // increase CAM edges counter
@@ -594,7 +601,10 @@ void sync_CAM_CRK(int camId)
     }     // CRK_synch == true - END
 }
 
-// ## Stalling Detection Function
+/**
+ * @brief This function is used to stall the detection, especially when the synchronisation is lost.
+ * 
+ */
 void Stalling_detection(void)
 {
     SysTick->VAL = (2 ^ 24) - 1;
@@ -674,7 +684,11 @@ void Stalling_detection(void)
     engine_start_counter = 0;
 }
 
-// ## Stalling Detection Function
+
+/**
+ * @brief This function is used to stall the detection, especially when the synchronisation with CRK is lost.
+ * 
+ */
 void Stalling_detection_CRK(void)
 {
     SysTick->VAL = (2 ^ 24) - 1;
@@ -717,11 +731,15 @@ void Stalling_detection_CRK(void)
     engine_start_counter = 0;
 }
 
-// ## Stalling Detection Function
+
+/**
+ * @brief This function is used to stall the detection, especially when the CAM synchronisation is lost.
+ * 
+ * @param camId the id of the camera used between the first and the second camera.
+ */
 void Stalling_detection_CAM(int camId)
 {
     TIM2_Reset();
-    // Timer5Reset(); // TODO: Is this reset warranted?
     // check all IC-buffers for overflow
     IC_overflow_check();
 
@@ -755,7 +773,10 @@ void Stalling_detection_CAM(int camId)
     engine_start_counter = 0;
 }
 
-// ## CRK synchronisation preparation
+/**
+ * @brief This function prepares the CRK by testing it.
+ * 
+ */
 void sync_CRK_preparation(void)
 {
     // Read Timer value from IC3-buffer
@@ -787,7 +808,11 @@ void sync_CRK_preparation(void)
     timer_overflow_CRK = 0;
 }
 
-// ## CAM_CRK synchronisation preparation
+
+/**
+ * @brief This function prepares the CAM_CRK.
+ * 
+ */
 void sync_CAM_CRK_preparation(void)
 {
     // Calculate segment time if falling edge has occured
@@ -798,7 +823,11 @@ void sync_CAM_CRK_preparation(void)
     TIM2_Reset();
 }
 
-// ## Gap to edge calculation
+
+/**
+ * @brief This funciton processes the value of the gap to the edge.
+ * 
+ */
 void gap_to_edge_calculation(void)
 {
     // calculate angles between reference gap and CAM-edges when synchronization is not yet done PR2: Timer periode value, TMR2 TMR counter at that moment
@@ -807,7 +836,11 @@ void gap_to_edge_calculation(void)
     gap_to_edge_ahead = (((double)teeth_count_CAM_CRK_synch_ahead - 1.0) + (double)(((unsigned long)(__HAL_TIM_GET_COUNTER(&htim2)) + timer_overflow_CRK * __HAL_TIM_GET_AUTORELOAD(&htim2)) / T_TOOTH_RAW)) * revolution_CRK;
 }
 
-// ## Reset CAM_CRK_synch
+/**
+ * @brief This function resest the synchronisation between CAM and CRK.
+ * 
+ * @param camId the id of the camera used between the first and the second camera.
+ */
 void CAM_CRK_synch_reset(int camId)
 {
     edge_position_counter_CAM[camId] = 0;
@@ -818,7 +851,11 @@ void CAM_CRK_synch_reset(int camId)
     CAM_CRK_synch_status = true;
 }
 
-// ## Reset CAM_CRK_synch_ahead
+/**
+ * @brief This function resest the synchronisation between CAM and CRK ahead.
+ * 
+ * @param camId the id of the camera used between the first and the second camera.
+ */
 void CAM_CRK_synch_ahead_reset(int camId)
 {
     edge_position_counter_CAM_ahead[camId] = 0;
@@ -829,7 +866,11 @@ void CAM_CRK_synch_ahead_reset(int camId)
     CAM_CRK_synch_status_ahead = true;
 }
 
-// ## Set CAM_CRK_synch
+/**
+ * @brief This function sets the synchronisation between CAM and CRK.
+ * 
+ * @param camId the id of the camera used between the first and the second camera.
+ */
 void CAM_CRK_synch_set(int camId)
 {
     CRK_CAM_synch[camId] = true;
@@ -842,7 +883,11 @@ void CAM_CRK_synch_set(int camId)
     shift_counter_CRK = 0;
 }
 
-// ## IC overflow check
+
+/**
+ * @brief This function checks the imput capture overflow bit.
+ * 
+ */
 void IC_overflow_check()
 {
     IC1BUF = 0;
