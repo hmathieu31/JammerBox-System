@@ -229,5 +229,5 @@ Project Link: [https://github.com/hmathieu-insat/PIR](https://github.com/hmathie
 [issues-shield]: https://img.shields.io/github/issues/hmathieu-insat/PIR.svg?style=for-the-badge
 [issues-url]: https://github.com/hmathieu-insat/PIR/issues
 [license-shield]: https://img.shields.io/github/license/hmathieu-insat/PIR.svg?style=for-the-badge
-[license-url]: https://github.com/hmathieu-insat/PIR/blob/master/LICENSE.txt
+[license-url]: https://github.com/hmathieu-insat/PIR/blob/master/LICENSE
 [product-screenshot]: images/screenshot.png
