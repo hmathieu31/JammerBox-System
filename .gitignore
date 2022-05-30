@@ -35,7 +35,7 @@ local.properties
 
 # CDT- autotools
 .autotools
-
+ 
 # Java annotation processor (APT)
 .factorypath
 
