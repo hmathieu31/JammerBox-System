@@ -1,0 +1,1379 @@
+\hypertarget{failures_8c_source}{}\doxysection{failures.\+c}
+\label{failures_8c_source}\index{Nouveau PIR/firmware/source/failures.c@{Nouveau PIR/firmware/source/failures.c}}
+\mbox{\hyperlink{failures_8c}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00001}00001 \textcolor{comment}{/*****************************************************************************/}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00002}00002 \textcolor{comment}{/* Projectname     :  ENSD-\/Jammer                                            */}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00003}00003 \textcolor{comment}{/* Programm        :  Failures                                               */}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00004}00004 \textcolor{comment}{/* Controller      :  dsPIC33F                                               */}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00005}00005 \textcolor{comment}{/* Latest change   :  31.08.2020                                             */}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00006}00006 \textcolor{comment}{/* Author          :  Gr{\ucr}goire Chabin/Christian Ringlstetter/Thomas Pichler  */}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00007}00007 \textcolor{comment}{/*****************************************************************************/}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00008}00008 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00009}00009 \textcolor{comment}{// \#\#\# Basic includes \#\#\#}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00010}00010 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00011}00011 \textcolor{preprocessor}{    \#include "{}stdbool.h"{}}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00012}00012 \textcolor{preprocessor}{    \#include "{}\mbox{\hyperlink{failures_8h}{failures.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00013}00013 \textcolor{preprocessor}{    \#include "{}stm32f10x.h"{}}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00014}00014 \textcolor{preprocessor}{    \#include "{}stm32f10x\_gpio.h"{}}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00015}00015 \textcolor{preprocessor}{    \#include "{}stm32f10x\_tim.h"{}}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00016}00016 \textcolor{comment}{// \#\#\# Programm includes \#\#\#}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00017}00017 \textcolor{preprocessor}{    \#include "{}\mbox{\hyperlink{timer_8h}{timer.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00018}00018 \textcolor{preprocessor}{    \#include "{}\mbox{\hyperlink{synchronization_8h}{synchronization.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00019}00019 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00020}00020 \textcolor{comment}{// \#\#\# Variables \#\#\#}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00021}00021     }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00022}00022     \textcolor{keyword}{extern} \textcolor{keywordtype}{bool} \mbox{\hyperlink{failures_8c_a66d1dc17c3815ec543259ff6cd358896}{CRK\_signal}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00023}00023     \textcolor{keyword}{extern} \textcolor{keywordtype}{bool} \mbox{\hyperlink{failures_8c_a4846863c93975e5d88fbd9b4ecc57d20}{CAM\_signal}}[2];}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00024}00024     }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00025}00025     }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00026}00026     \textcolor{comment}{//** Synchronization variables **}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00027}00027     \textcolor{keyword}{extern} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} \mbox{\hyperlink{failures_8c_aa697468758fbf1b546cd67c827d8dd84}{timer\_overflow\_CRK}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00028}00028     \textcolor{keyword}{extern} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} \mbox{\hyperlink{failures_8c_a8bc6e99e5b5b1814027ef2f4c2524e8f}{T\_TOOTH\_RAW}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00029}00029     \textcolor{keyword}{extern} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{failures_8c_ac15826e516583ca9efd204606ba7083c}{teeth\_count\_CAM\_CRK\_synch}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00030}00030     \textcolor{keyword}{extern} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{failures_8c_a4bbd4ffdc69f028b74e8af0c54dd9ee0}{teeth\_count\_CAM\_CRK\_synch\_ahead}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00031}00031     \textcolor{keyword}{extern} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{failures_8c_ab187efc17c279156d2fbe40791bd1182}{teeth\_count\_CRK}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00032}00032     \textcolor{keyword}{extern} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{failures_8c_ab040cae3d9ae46728a9af9db655c014e}{number\_real\_teeth}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00033}00033     \textcolor{keyword}{extern} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{failures_8c_a05e75142d685997ef05acf36e45a356a}{number\_teeth\_between\_gaps}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00034}00034     \textcolor{keyword}{extern} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{failures_8c_a896b3f467a176975dc687f95f1a1367e}{number\_segments\_CRK}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00035}00035     \textcolor{keyword}{extern} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{failures_8c_a912fe456cc42c18b47eae6de3e35c4f8}{first\_seg\_start\_tooth}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00036}00036     \textcolor{keyword}{extern} \textcolor{keywordtype}{int} \mbox{\hyperlink{failures_8c_afe64a7b02b07021acd3f4e7d30195fe2}{number\_teeth\_CRK}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00037}00037     \textcolor{keyword}{extern} \textcolor{keywordtype}{int} \mbox{\hyperlink{failures_8c_af9b6adca0c1aa5a6ba1da07c6f4e1588}{number\_gap}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00038}00038     \textcolor{keyword}{extern} \textcolor{keywordtype}{int} \mbox{\hyperlink{failures_8c_ac953f0c0d545347b98a28a5f7e1ea15c}{number\_miss\_teeth}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00039}00039     \textcolor{keyword}{extern} \textcolor{keywordtype}{int} \mbox{\hyperlink{failures_8c_aaca9f30a09d8f0badb85553cb2f4a225}{number\_teeth\_CAM}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00040}00040     \textcolor{keyword}{extern} \textcolor{keywordtype}{double} \mbox{\hyperlink{failures_8c_a2522b63ff5828da052d1c8b3ee9c157c}{tdc\_to\_gap}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00041}00041     \textcolor{keyword}{extern} \textcolor{keywordtype}{double} \mbox{\hyperlink{failures_8c_a30aee154f6067d411dbf4839fdc3cc93}{first\_seg\_angle}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00042}00042     \textcolor{keyword}{extern} \textcolor{keywordtype}{double} \mbox{\hyperlink{failures_8c_af3c32be62d5f2307cc01a316c01ba3dc}{revolution\_CRK}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00043}00043     \textcolor{keyword}{extern} \textcolor{keywordtype}{bool} \mbox{\hyperlink{failures_8c_a7aeb1a0c2ff915edcc0973978f0dc21c}{engine\_start}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00044}00044     \textcolor{keyword}{extern} \textcolor{keywordtype}{bool} \mbox{\hyperlink{failures_8c_a7727b0a0a81b3a64c19a0e84fd498c5b}{CRK\_synch}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00045}00045     \textcolor{keyword}{extern} \textcolor{keywordtype}{bool} \mbox{\hyperlink{failures_8c_af965503ff7c7adb887f502384215a402}{CRK\_CAM\_synch}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00046}00046     \textcolor{keyword}{extern} \textcolor{keywordtype}{bool} \mbox{\hyperlink{failures_8c_a734dd27ee07083ae6985cc7e642de6e7}{CAM\_CRK\_synch\_ahead}}[2];}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00047}00047     \textcolor{keyword}{extern} \textcolor{keywordtype}{char} \mbox{\hyperlink{failures_8c_a1ab47ef12d9fd5a0a0c37354af662f7d}{active\_CAM\_edges}}[2];}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00048}00048     \textcolor{keyword}{extern} \textcolor{keywordtype}{int} \mbox{\hyperlink{failures_8c_a9979f80ab833421bad2e664b9f7d91d4}{teeth\_count\_overall}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00049}00049     }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00050}00050     \textcolor{comment}{//** CAM variables **}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00051}00051     \textcolor{keyword}{extern} \textcolor{keywordtype}{double} \mbox{\hyperlink{failures_8c_ae78fc7b1baf9c329b60166be6b88b85c}{filter\_time\_CAM}}[2];}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00052}00052     }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00053}00053 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00054}00054     \textcolor{comment}{//** Timer overflow values for CRK and CAM -\/ failures **}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00055}00055     \textcolor{keyword}{extern} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} \mbox{\hyperlink{failures_8c_ab2fec6547dc914b855112ea2d069e652}{timer\_overflow\_CRK\_failure}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00056}00056     \textcolor{keyword}{extern} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} \mbox{\hyperlink{failures_8c_aa7f0f8e777321cf47da5f0dd59c5be94}{timer\_overflow\_CAM\_failure}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00057}00057     \textcolor{keyword}{extern} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} \mbox{\hyperlink{failures_8c_a7ccd9723b2e11820cc395d0b16931872}{timer\_overflow\_CAM\_REF\_CRK}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00058}00058 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00059}00059     \textcolor{comment}{//** Failure treatment **}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00060}00060     \textcolor{keyword}{extern} \textcolor{keywordtype}{char} \mbox{\hyperlink{failures_8c_a906f58f9fb2ce60131ecacd1d649d6a1}{failure\_identify}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00061}00061     \textcolor{keyword}{extern} \textcolor{keywordtype}{int} \mbox{\hyperlink{failures_8c_a98358735d6113042210027fe829762de}{active\_cam\_failure}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00062}00062 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00063}00063     \textcolor{comment}{//** Labels indicating failure status **}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00064}00064     \textcolor{keyword}{extern} \textcolor{keywordtype}{bool} \mbox{\hyperlink{failures_8c_aa009bc0b69bbb38154e60d1428ffc33c}{failure\_active}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00065}00065     \textcolor{keyword}{extern} \textcolor{keywordtype}{bool} \mbox{\hyperlink{failures_8c_ae1dbfa52ababd302f93dbe4fd0620f8f}{failure\_active\_CAM\_blank\_out}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00066}00066     \textcolor{keyword}{extern} \textcolor{keywordtype}{bool} \mbox{\hyperlink{failures_8c_a9efd1f4caf11e1037604fb6f4b42ed31}{failure\_set}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00067}00067     \textcolor{keyword}{extern} \textcolor{keywordtype}{bool} \mbox{\hyperlink{failures_8c_a36381716e95bbb3090a24ba5260bf35d}{failure\_passed}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00068}00068     \textcolor{keyword}{extern} \textcolor{keywordtype}{bool} \mbox{\hyperlink{failures_8c_ae1abad2ed2b92b6b82254dc4debca57a}{failure\_waiting}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00069}00069 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00070}00070     \textcolor{comment}{//** CRK\_RUN\_OUT **}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00071}00071     \textcolor{keyword}{extern} \textcolor{keywordtype}{char} \mbox{\hyperlink{failures_8c_ad09cc41f983fa5c4f93b335e55684b81}{sc\_type\_CRK\_RUN\_OUT}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00072}00072     \textcolor{keyword}{extern} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{failures_8c_a39121f24b916d4e2ea6e7f897bafe4a8}{teeth\_counter\_CRK\_RUN\_OUT}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00073}00073     \textcolor{keyword}{extern} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{failures_8c_a706090098ba2e12ba5bd608552f126d5}{angle\_to\_start\_failure\_CRK\_RUN\_OUT}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00074}00074     \textcolor{keyword}{extern} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{failures_8c_ad90c6afa3ef6d8897b04b50f9161bd3a}{failure\_period\_CRK\_RUN\_OUT}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00075}00075     \textcolor{keyword}{extern} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{failures_8c_aeab62b1deec35fe68ca4b720e3435984}{counter\_TDC0}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00076}00076     \textcolor{keyword}{extern} \textcolor{keywordtype}{int} \mbox{\hyperlink{failures_8c_ac6eafc14bbf628d09f0aea91c943dc44}{period\_counter\_CRK\_RUN\_OUT}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00077}00077     \textcolor{keyword}{extern} \textcolor{keywordtype}{double} \mbox{\hyperlink{failures_8c_a8156941efe0dcd826307b446f3ef48f1}{difference\_to\_edge\_TDC0}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00078}00078     \textcolor{keyword}{extern} \textcolor{keywordtype}{double} \mbox{\hyperlink{failures_8c_a89493411d9fa567844ffb6a621d46967}{difference\_to\_edge\_failure\_start}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00079}00079     \textcolor{keyword}{extern} \textcolor{keywordtype}{bool} \mbox{\hyperlink{failures_8c_af75c8735a41240c5a884f5024743c4c2}{detected\_TDC0}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00080}00080     \textcolor{keyword}{extern} \textcolor{keywordtype}{bool} \mbox{\hyperlink{failures_8c_a77556040fb54d335bacaf15336a82d29}{counter\_ready}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00081}00081     \textcolor{keyword}{extern} \textcolor{keywordtype}{bool} \mbox{\hyperlink{failures_8c_a5deea399d9689d2e2e0b3b3831462c5d}{counter\_reset}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00082}00082     \textcolor{keyword}{extern} \textcolor{keywordtype}{bool} \mbox{\hyperlink{failures_8c_a15ef7a57549da0cf7802f16dbd26487f}{TDC\_on\_edge}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00083}00083     \textcolor{keyword}{extern} \textcolor{keywordtype}{bool} \mbox{\hyperlink{failures_8c_a1c7e64943d24c04093dce025db73714d}{start\_on\_edge\_CRK\_RUN\_OUT}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00084}00084 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00085}00085     \textcolor{comment}{//** CAM\_PER **     }}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00086}00086     \textcolor{keyword}{extern} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{failures_8c_a70548cc19cb8197d69bde4da728a470a}{number\_edges\_CAM\_PER}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00087}00087     \textcolor{keyword}{extern} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{failures_8c_aaa021fc02b2a585f7a62ec97bbee6d5e}{counter\_CAM\_PER}}[2];}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00088}00088     \textcolor{keyword}{extern} \textcolor{keywordtype}{double} \mbox{\hyperlink{failures_8c_aa62fd33093aac3979c77d8ac47195785}{microsecond\_per\_timer\_tick\_CAM\_PER\_\_CRK\_TOOTH\_PER}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00089}00089     \textcolor{keyword}{extern} \textcolor{keywordtype}{bool} \mbox{\hyperlink{failures_8c_a5107102b653d5cd439b1f861bd600f14}{all\_active\_edges\_CAM\_PER}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00090}00090     \textcolor{keyword}{extern} \textcolor{keywordtype}{char} \mbox{\hyperlink{failures_8c_a1aeabc5ac5f6b29223d857aceb659320}{active\_edges\_CAM\_PER}}; }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00091}00091 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00092}00092     \textcolor{comment}{//** CRK\_TOOTH\_PER **}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00093}00093     \textcolor{keyword}{extern} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{failures_8c_aa92e684341d20dd78cbbf8a8d98b1899}{start\_tooth\_CRK\_TOOTH\_PER}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00094}00094     \textcolor{keyword}{extern} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{failures_8c_a6d79ff75c0424017b90b2039f2f5aeaa}{number\_pulses\_CRK\_TOOTH\_PER}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00095}00095     \textcolor{keyword}{extern} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{failures_8c_a658a74de9ab44e3ad4b459d557dac9d7}{engine\_revolutions\_CRK\_TOOTH\_PER}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00096}00096     \textcolor{keyword}{extern} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{failures_8c_a2068dfcf9f70475272677ad2446d6cdf}{teeth\_counter\_CRK\_TOOTH\_PER}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00097}00097     \textcolor{keyword}{extern} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{failures_8c_ae00db4a9603885a19a44080bdb2331d9}{revolution\_counter\_CRK\_TOOTH\_PER}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00098}00098     \textcolor{keyword}{extern} \textcolor{keywordtype}{long} \textcolor{keywordtype}{double} \textcolor{keyword}{const} \mbox{\hyperlink{failures_8c_ab673b177757a7a75f938fa6debada427}{milli\_second\_per\_timer\_tick\_CRK}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00099}00099     \textcolor{keyword}{extern} \textcolor{keywordtype}{double} \mbox{\hyperlink{failures_8c_addba43fee255dd630dc49630cd23655d}{mycrosecond\_per\_timer\_tick\_CAM\_PER\_\_CRK\_TOOTH\_PER}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00100}00100     \textcolor{keyword}{extern} \textcolor{keywordtype}{double} \mbox{\hyperlink{failures_8c_a0241a57f40777392b40aebc8ea433d2c}{calculation\_factor\_CRK\_TOOTH\_PER}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00101}00101 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00102}00102     \textcolor{comment}{//** CAM\_DELAY(CAM\_TOOTH\_OFF / CAM\_REF\_CRK / CAM\_SYN / CAM\_SYN\_CRK) **}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00103}00103     \textcolor{keyword}{extern} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{failures_8c_ab28b6d5505e18cd397139cfa75aa3912}{number\_processing\_edges\_CAM\_delay}}[2];}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00104}00104     \textcolor{keyword}{extern} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{failures_8c_ae9953e9e08afe49f7e2a4b4daee5332b}{shift\_counter\_CAM\_delay}}[2][6];}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00105}00105     \textcolor{keyword}{extern} \textcolor{keyword}{const} \textcolor{keywordtype}{int} \mbox{\hyperlink{failures_8c_aeb8d44ce914f7ffc964e78ab44c14735}{edges\_beetween\_shift\_CAM\_delay}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00106}00106     \textcolor{keyword}{extern} \textcolor{keywordtype}{double} \mbox{\hyperlink{failures_8c_a2a6666ba3f9fa015610de05c735552ac}{angle\_to\_edge\_CAM\_delay}}[2][6];}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00107}00107     \textcolor{keyword}{extern} \textcolor{keywordtype}{double} \mbox{\hyperlink{failures_8c_a7488bc4243e7ba92ade85f9186db2793}{delay\_angle\_CAM\_delay}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00108}00108     \textcolor{keyword}{extern} \textcolor{keywordtype}{double} \mbox{\hyperlink{failures_8c_af4fb580f228912ecc709426087150786}{delay\_factor\_CAM\_delay}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00109}00109     \textcolor{keyword}{extern} \textcolor{keywordtype}{bool} \mbox{\hyperlink{failures_8c_ac73a776a47669561214b6ad84a70e641}{timer\_active\_CAM\_delay}}[2];}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00110}00110     \textcolor{keyword}{extern} \textcolor{keywordtype}{bool} \mbox{\hyperlink{failures_8c_a1ffeb87120d45d392916acb155ef3879}{interrupt\_check\_CAM\_delay}}[2];}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00111}00111 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00112}00112     \textcolor{comment}{//** CAM\_REF\_CRK **}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00113}00113     \textcolor{keyword}{extern} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{failures_8c_a831028f10615ac593b739d4731a43060}{delay\_counter\_CAM\_REF\_CRK}};                             }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00114}00114     \textcolor{keyword}{extern} \textcolor{keywordtype}{long} \textcolor{keywordtype}{double} \mbox{\hyperlink{failures_8c_af17a3a4176170c04e909c2cffab83a3e}{angle\_time\_to\_start\_failure\_CAM\_REF\_CRK}};          \textcolor{comment}{// Value Delay (ms or {\ucr}CRK) }}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00115}00115     \textcolor{keyword}{extern} \textcolor{keywordtype}{double} \mbox{\hyperlink{failures_8c_a874e6e147c885cc35f55b3d8bc18ceb8}{difference\_to\_edge\_failure\_start\_CAM\_REF\_CRK}};         }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00116}00116     \textcolor{keyword}{extern} \textcolor{keywordtype}{char} \mbox{\hyperlink{failures_8c_a97ace91c5a574a12275e24d4b4bd02be}{delay\_type\_CAM\_REF\_CRK}};                                   \textcolor{comment}{// t: time / c: {\ucr}CRK}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00117}00117    }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00118}00118    }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00119}00119     \textcolor{comment}{//** CRK\_TOOTH\_OFF **}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00120}00120     \textcolor{keyword}{extern} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{failures_8c_a42368ade50de18ac6efb5e231ba284ab}{number\_tooth\_off}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00121}00121     \textcolor{keyword}{extern} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{failures_8c_ab06ff1f3f9aa8e15f049ad90eb229aec}{number\_teeth\_between\_tooth\_off}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00122}00122     \textcolor{keyword}{extern} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{failures_8c_a590ad1bd7a49f0ea3fb90f8e24997bb1}{teeth\_counter\_CRK\_TOOTH\_OFF}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00123}00123     \textcolor{keyword}{extern} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{failures_8c_af2b350cad5f904241be3cd72267e8cd4}{counter\_tooth\_off}};               \textcolor{comment}{// counts the number of tooth that were skiped}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00124}00124     \textcolor{keyword}{extern} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{failures_8c_adb0348602102ca6255e00dd691cfa53c}{counter\_gap\_left\_CRK\_TOOTH\_OFF}};  \textcolor{comment}{// counts the number of gap left befor a full CRK rotation}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00125}00125     }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00126}00126     \textcolor{comment}{//** CRK\_GAP\_NOT\_DET **}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00127}00127     \textcolor{keyword}{extern} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{failures_8c_a0afd59a7cbe5941cd4735019f3431de4}{teeth\_counter\_CRK\_GAP\_NOT\_DET}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00128}00128     \textcolor{keyword}{extern} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{failures_8c_a0efa411b2fc4c7948d45abd03d6264a0}{timer\_Counter\_CRK\_GAP\_NOT\_DET}};  }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00129}00129 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00130}00130     \textcolor{comment}{//** SEG\_ADP\_ER\_LIM **}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00131}00131     \textcolor{keyword}{extern} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{failures_8c_ae22dd0b559e11e340eacb7e5acea6269}{teeth\_counter\_SEG\_ADP\_ER\_LIM}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00132}00132     \textcolor{keyword}{extern} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{failures_8c_aebc1cf24310f46e5fd32d36c9b93edb5}{timer\_Counter\_SEG\_ADP\_ER\_LIM}}; }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00133}00133     \textcolor{keyword}{extern} \textcolor{keywordtype}{double} \mbox{\hyperlink{failures_8c_aeaf45155613124740bc925868c135034}{crk\_delay\_SEG\_ADP\_ER\_LIM}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00134}00134     }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00135}00135     \textcolor{comment}{//** CRK\_PLS\_ORNG **}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00136}00136     \textcolor{keyword}{extern} \textcolor{keywordtype}{double} \mbox{\hyperlink{failures_8c_ad60977ee83061906ebaf1f0c40ea504c}{crk\_pulse\_duration\_CRK\_PLS\_ORNG}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00137}00137 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00138}00138     \textcolor{comment}{//** POSN\_ENG\_STST\_LOSS **}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00139}00139     \textcolor{keyword}{extern} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{failures_8c_a21b65a4cdebaef539c0958653e7115da}{crk\_teeth\_off\_POSN\_ENG\_STST}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00140}00140     \textcolor{keyword}{extern} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{failures_8c_af4e125ce632016b07d28f6ac94a33643}{counter\_POSN\_ENG\_STST}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00141}00141 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00142}00142     \textcolor{comment}{//** CAM\_PAT\_ERR **}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00143}00143     \textcolor{keyword}{extern} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{failures_8c_ad7903904908b0166e54d513591340b4c}{active\_CAM\_edges\_counter}}[2];}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00144}00144     }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00145}00145     \textcolor{comment}{//** SC\_CAM\_CRK **}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00146}00146     \textcolor{keyword}{extern} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{failures_8c_a4337a7e2ea5f37681e9765a379c42831}{sc\_type\_SC\_CAM\_CRK}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00147}00147 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00148}00148 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00149}00149 \textcolor{comment}{//\#\#\# Functions \#\#\#}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00150}00150 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00151}00151 \textcolor{comment}{//\#\# Output Function CRK}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00152}\mbox{\hyperlink{failures_8h_af16df65011ea353486effc50e1639210}{00152}}     \textcolor{keywordtype}{void} \mbox{\hyperlink{failures_8c_a440cfd86084b45c9b92dd2ab0c845eb2}{Output\_CRK}}(\textcolor{keywordtype}{char} failure\_ident)  \textcolor{comment}{//processed at each CRK edge}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00153}00153     \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00154}00154         \textcolor{keywordflow}{switch}(failure\_ident)}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00155}00155         \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00156}00156             \textcolor{keywordflow}{case} \textcolor{charliteral}{'1'}: }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00157}00157                 \{   }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00158}00158                     \textcolor{keywordflow}{break}; }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00159}00159                 \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00160}00160             \textcolor{keywordflow}{case} \textcolor{charliteral}{'2'}: }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00161}00161                 \{   }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00162}00162                     \textcolor{keywordflow}{break}; }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00163}00163                 \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00164}00164             \textcolor{keywordflow}{case} \textcolor{charliteral}{'3'}: }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00165}00165                 \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00166}00166                     \textcolor{keywordflow}{break}; }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00167}00167                 \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00168}00168             \textcolor{keywordflow}{case} \textcolor{charliteral}{'4'}: \textcolor{comment}{//CRK\_RUN\_OUT}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00169}00169                 \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00170}00170                     \mbox{\hyperlink{failures_8c_a497fcda22de215e3e57f4ba889f23675}{Output\_CRK\_RUN\_OUT}}();}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00171}00171                     \textcolor{keywordflow}{break}; }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00172}00172                 \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00173}00173             \textcolor{keywordflow}{case} \textcolor{charliteral}{'6'}: \textcolor{comment}{//CRK\_TOOTH\_PER}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00174}00174                 \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00175}00175                     \mbox{\hyperlink{failures_8c_ae920b63749813032dfd845247a8ee9bd}{Output\_CRK\_TOOTH\_PER}}();}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00176}00176                     }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00177}00177                     \textcolor{keywordflow}{break}; }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00178}00178                 \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00179}00179             \textcolor{keywordflow}{case} \textcolor{charliteral}{'7'}: \textcolor{comment}{//CAM\_TOOTH\_OFF}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00180}00180                 \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00181}00181                     \mbox{\hyperlink{failures_8c_af07c1aaf230fb87af99aa7ef5816decb}{CAM\_delay\_counter}}(\mbox{\hyperlink{failures_8c_a98358735d6113042210027fe829762de}{active\_cam\_failure}});}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00182}00182                     }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00183}00183                     \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00184}00184                 \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00185}00185             \textcolor{keywordflow}{case} \textcolor{charliteral}{'8'}: \textcolor{comment}{//CAM\_PAT\_ERR}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00186}00186                 \{           }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00187}00187                     \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00188}00188                 \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00189}00189             \textcolor{keywordflow}{case} \textcolor{charliteral}{'9'}: \textcolor{comment}{//CAM\_SYN\_CRK}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00190}00190                 \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00191}00191                     \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_a98358735d6113042210027fe829762de}{active\_cam\_failure}} == 2)\{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00192}00192                         \mbox{\hyperlink{failures_8c_af07c1aaf230fb87af99aa7ef5816decb}{CAM\_delay\_counter}} (0); \textcolor{comment}{// for CAM1}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00193}00193                         \mbox{\hyperlink{failures_8c_af07c1aaf230fb87af99aa7ef5816decb}{CAM\_delay\_counter}} (1); \textcolor{comment}{// for CAM2}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00194}00194                     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00195}00195                     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}( \mbox{\hyperlink{failures_8c_a98358735d6113042210027fe829762de}{active\_cam\_failure}} == 1)\{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00196}00196                         \mbox{\hyperlink{failures_8c_af07c1aaf230fb87af99aa7ef5816decb}{CAM\_delay\_counter}} (1); \textcolor{comment}{// for CAM2                        }}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00197}00197                     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00198}00198                     \textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00199}00199                         \mbox{\hyperlink{failures_8c_af07c1aaf230fb87af99aa7ef5816decb}{CAM\_delay\_counter}} (0); \textcolor{comment}{// for CAM1}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00200}00200                     \}                   }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00201}00201                     \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00202}00202                 \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00203}00203             \textcolor{keywordflow}{case} \textcolor{charliteral}{'a'}: \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00204}00204                 \{               }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00205}00205                     \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00206}00206                 \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00207}00207             \textcolor{keywordflow}{case} \textcolor{charliteral}{'b'}: \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00208}00208                 \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00209}00209                     \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00210}00210                 \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00211}00211             \textcolor{keywordflow}{case} \textcolor{charliteral}{'f'}: \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00212}00212                 \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00213}00213                     \textcolor{keywordflow}{break}; }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00214}00214                 \}         }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00215}00215             \textcolor{keywordflow}{case} \textcolor{charliteral}{'h'}: \textcolor{comment}{//CRK\_TOOTH\_OFF}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00216}00216                 \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00217}00217                     \mbox{\hyperlink{failures_8c_ae262fe3c8a33d712da32a37e77fbd065}{Output\_CRK\_TOOTH\_OFF}}();}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00218}00218                     \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00219}00219                 \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00220}00220             \textcolor{keywordflow}{case} \textcolor{charliteral}{'i'}: \textcolor{comment}{//CRK\_GAP\_NOT\_DET}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00221}00221                 \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00222}00222                     \mbox{\hyperlink{failures_8c_a09b976185e7e818b4324aee696332f9a}{Output\_CRK\_GAP\_NOT\_DET}}();}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00223}00223                     \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00224}00224                 \}  }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00225}00225             \textcolor{keywordflow}{case} \textcolor{charliteral}{'j'}: \textcolor{comment}{//SEG\_ADP\_ER\_LIM}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00226}00226                 \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00227}00227                     \mbox{\hyperlink{failures_8c_aeb3f2f2e16c2bb9e70db27b7e132a754}{Output\_SEG\_ADP\_ER\_LIM}}();}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00228}00228                     \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00229}00229                 \}   }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00230}00230             \textcolor{keywordflow}{case} \textcolor{charliteral}{'k'}: \textcolor{comment}{//CRK\_pulse\_duration}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00231}00231                 \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00232}00232                     \mbox{\hyperlink{failures_8c_ad459ce1c26c453348a480e21725663b0}{Output\_CRK\_pulse\_duration}}();}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00233}00233                     \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00234}00234                 \}  }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00235}00235             \textcolor{keywordflow}{case} \textcolor{charliteral}{'l'}: \textcolor{comment}{//POSN\_ENG\_STST}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00236}00236                 \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00237}00237                     \mbox{\hyperlink{failures_8c_ad206b129f04322b488059719a3757196}{Output\_POSN\_ENG\_STST}}();}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00238}00238                     \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00239}00239                 \}     }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00240}00240             \textcolor{keywordflow}{case} \textcolor{charliteral}{'m'}: \textcolor{comment}{//SC\_CAM\_CRK}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00241}00241                 \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00242}00242                     \mbox{\hyperlink{failures_8c_a682f1aff804ad2665cb73cb7aa0bb324}{Output\_SC\_CAM\_CRK}}(\mbox{\hyperlink{failures_8c_a98358735d6113042210027fe829762de}{active\_cam\_failure}});}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00243}00243                     \textcolor{keywordflow}{break}; }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00244}00244                 \}   }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00245}00245             \textcolor{keywordflow}{default}: }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00246}00246                 \textcolor{keywordflow}{break};      }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00247}00247         \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00248}00248     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00249}00249     }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00250}00250 \textcolor{comment}{//\#\# Output Function CAM}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00251}\mbox{\hyperlink{failures_8h_aa767693c5162679ba4304f3902d51b14}{00251}}     \textcolor{keywordtype}{void} \mbox{\hyperlink{failures_8c_a6860c587b4f4392d32023e84e5e0dcfc}{Output\_CAM}}(\textcolor{keywordtype}{char} failure\_ident, \textcolor{keywordtype}{int} cam\_id)}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00252}00252     \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00253}00253         \textcolor{keywordflow}{if} ((cam\_id == \mbox{\hyperlink{failures_8c_a98358735d6113042210027fe829762de}{active\_cam\_failure}}) || \mbox{\hyperlink{failures_8c_a98358735d6113042210027fe829762de}{active\_cam\_failure}} == 2 )}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00254}00254         \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00255}00255             \textcolor{keywordflow}{switch}(failure\_ident)}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00256}00256             \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00257}00257                 \textcolor{keywordflow}{case} \textcolor{charliteral}{'0'}: \textcolor{comment}{//NO\_FAILURE}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00258}00258                     \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00259}00259                         \mbox{\hyperlink{failures_8c_a0556928e41411f2cac11ec82fc8d8ccb}{Output\_CAM\_no\_failure}}(cam\_id); \textcolor{comment}{//no failure to be put out on CAM }}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00260}00260                         \textcolor{keywordflow}{break}; }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00261}00261                     \}   }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00262}00262                 \textcolor{keywordflow}{case} \textcolor{charliteral}{'1'}: \textcolor{comment}{//CRK\_NO\_SIG}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00263}00263                     \{   }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00264}00264                         \mbox{\hyperlink{failures_8c_a0556928e41411f2cac11ec82fc8d8ccb}{Output\_CAM\_no\_failure}}(cam\_id); \textcolor{comment}{//no failure to be put out on CAM }}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00265}00265                         \textcolor{keywordflow}{break}; }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00266}00266                     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00267}00267                 \textcolor{keywordflow}{case} \textcolor{charliteral}{'2'}: \textcolor{comment}{//CAM\_NO\_SIG}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00268}00268                     \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00269}00269                         \mbox{\hyperlink{failures_8c_a0556928e41411f2cac11ec82fc8d8ccb}{Output\_CAM\_no\_failure}}(cam\_id);}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00270}00270                         \textcolor{keywordflow}{break}; }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00271}00271                     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00272}00272                 \textcolor{keywordflow}{case} \textcolor{charliteral}{'3'}: \textcolor{comment}{//CRK/CAM\_NO\_SIG}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00273}00273                     \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00274}00274                         \mbox{\hyperlink{failures_8c_a0556928e41411f2cac11ec82fc8d8ccb}{Output\_CAM\_no\_failure}}(cam\_id);}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00275}00275                         \textcolor{keywordflow}{break}; }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00276}00276                     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00277}00277                 \textcolor{keywordflow}{case} \textcolor{charliteral}{'4'}: \textcolor{comment}{//CRK\_RUN\_OUT}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00278}00278                     \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00279}00279                         \mbox{\hyperlink{failures_8c_a0556928e41411f2cac11ec82fc8d8ccb}{Output\_CAM\_no\_failure}}(cam\_id); \textcolor{comment}{//no failure to be put out on CAM }}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00280}00280                         \textcolor{keywordflow}{break}; }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00281}00281                     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00282}00282                 \textcolor{keywordflow}{case} \textcolor{charliteral}{'5'}: \textcolor{comment}{//CAM\_PER}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00283}00283                     \{       }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00284}00284                         \mbox{\hyperlink{failures_8c_a0556928e41411f2cac11ec82fc8d8ccb}{Output\_CAM\_no\_failure}}(cam\_id);}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00285}00285                         \mbox{\hyperlink{failures_8c_aa7a19058315d33f9c47e8628e709d5d4}{Output\_CAM\_PER}}(cam\_id);}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00286}00286                         \textcolor{keywordflow}{break}; }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00287}00287                     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00288}00288                 \textcolor{keywordflow}{case} \textcolor{charliteral}{'6'}: \textcolor{comment}{//CRK\_TOOTH\_PER}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00289}00289                     \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00290}00290                         \mbox{\hyperlink{failures_8c_a0556928e41411f2cac11ec82fc8d8ccb}{Output\_CAM\_no\_failure}}(cam\_id); \textcolor{comment}{//no failure to be put out on CAM }}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00291}00291                         \textcolor{keywordflow}{break}; }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00292}00292                     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00293}00293                 \textcolor{keywordflow}{case} \textcolor{charliteral}{'7'}: \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00294}00294                     \{               }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00295}00295                         \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00296}00296                     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00297}00297                 \textcolor{keywordflow}{case} \textcolor{charliteral}{'8'}: \textcolor{comment}{//CAM\_PAT\_ERR}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00298}00298                     \{               }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00299}00299                         \mbox{\hyperlink{failures_8c_ab67a5788e21fda86360207c9df71f75a}{Output\_CAM\_PAT\_ERR}}(cam\_id);}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00300}00300                         \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00301}00301                     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00302}00302                 \textcolor{keywordflow}{case} \textcolor{charliteral}{'9'}: \textcolor{comment}{//CAM\_SYN\_CRK}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00303}00303                     \{               }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00304}00304                         \mbox{\hyperlink{failures_8c_ab7a96c89fdff7f9c191ac8724f21dd59}{Output\_CAM\_delay}}(cam\_id);}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00305}00305                         \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00306}00306                     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00307}00307                 \textcolor{keywordflow}{case} \textcolor{charliteral}{'a'}: \textcolor{comment}{//}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00308}00308                     \{               }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00309}00309                         \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00310}00310                     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00311}00311                 \textcolor{keywordflow}{case} \textcolor{charliteral}{'b'}: \textcolor{comment}{//CRK\_SHO\_LEVEL}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00312}00312                     \{               }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00313}00313                         \mbox{\hyperlink{failures_8c_a0556928e41411f2cac11ec82fc8d8ccb}{Output\_CAM\_no\_failure}}(cam\_id); \textcolor{comment}{//no failure to be put out on CAM }}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00314}00314                         \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00315}00315                     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00316}00316                 \textcolor{keywordflow}{case} \textcolor{charliteral}{'f'}: \textcolor{comment}{//CRK\_TOOTH\_NR}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00317}00317                     \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00318}00318                         \mbox{\hyperlink{failures_8c_a0556928e41411f2cac11ec82fc8d8ccb}{Output\_CAM\_no\_failure}}(cam\_id); \textcolor{comment}{//no failure to be put out on CAM }}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00319}00319                         \textcolor{keywordflow}{break}; }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00320}00320                     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00321}00321                 \textcolor{keywordflow}{case} \textcolor{charliteral}{'h'}: \textcolor{comment}{//CRK\_TOOTH\_OFF}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00322}00322                     \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00323}00323                         \mbox{\hyperlink{failures_8c_a0556928e41411f2cac11ec82fc8d8ccb}{Output\_CAM\_no\_failure}}(cam\_id);}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00324}00324                         \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00325}00325                     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00326}00326                 \textcolor{keywordflow}{case} \textcolor{charliteral}{'i'}: \textcolor{comment}{//CRK\_Gap\_Not\_Det}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00327}00327                     \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00328}00328                         \mbox{\hyperlink{failures_8c_a0556928e41411f2cac11ec82fc8d8ccb}{Output\_CAM\_no\_failure}}(cam\_id);}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00329}00329                         \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00330}00330                     \} }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00331}00331                 \textcolor{keywordflow}{case} \textcolor{charliteral}{'j'}: \textcolor{comment}{//SEG\_ADP\_ER\_LIM}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00332}00332                     \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00333}00333                         \mbox{\hyperlink{failures_8c_a0556928e41411f2cac11ec82fc8d8ccb}{Output\_CAM\_no\_failure}}(cam\_id);}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00334}00334                         \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00335}00335                     \}  }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00336}00336                 \textcolor{keywordflow}{case} \textcolor{charliteral}{'k'}: \textcolor{comment}{//CRK\_pulse\_duration}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00337}00337                     \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00338}00338                         \mbox{\hyperlink{failures_8c_a0556928e41411f2cac11ec82fc8d8ccb}{Output\_CAM\_no\_failure}}(cam\_id);}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00339}00339                         \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00340}00340                     \}  }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00341}00341                 \textcolor{keywordflow}{case} \textcolor{charliteral}{'l'}: \textcolor{comment}{//POSN\_ENG\_STST}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00342}00342                     \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00343}00343                         \mbox{\hyperlink{failures_8c_a0556928e41411f2cac11ec82fc8d8ccb}{Output\_CAM\_no\_failure}}(cam\_id);}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00344}00344                         \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00345}00345                     \}          }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00346}00346                 \textcolor{keywordflow}{case} \textcolor{charliteral}{'m'}: \textcolor{comment}{//SC\_CAM\_CRK}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00347}00347                     \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00348}00348                         \mbox{\hyperlink{failures_8c_a682f1aff804ad2665cb73cb7aa0bb324}{Output\_SC\_CAM\_CRK}}(cam\_id);}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00349}00349                         \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00350}00350                     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00351}00351                 \textcolor{keywordflow}{default}: }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00352}00352                     \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00353}00353 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00354}00354             \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00355}00355         \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00356}00356         \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00357}00357         \{         }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00358}00358             \mbox{\hyperlink{failures_8c_a0556928e41411f2cac11ec82fc8d8ccb}{Output\_CAM\_no\_failure}}(cam\_id); \textcolor{comment}{//no failure to be put out on CAM }}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00359}00359         \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00360}00360     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00361}00361 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00362}00362 \textcolor{comment}{//\#\# Output\_CRK no Failure Function}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00363}\mbox{\hyperlink{failures_8h_a3484fce8f4223ea262d178cbea751f06}{00363}}     \textcolor{keywordtype}{void} \mbox{\hyperlink{failures_8c_a3484fce8f4223ea262d178cbea751f06}{Output\_CRK\_no\_failure}}(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00364}00364     \{       }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00365}00365         \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_a66d1dc17c3815ec543259ff6cd358896}{CRK\_signal}} == \textcolor{keyword}{true})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00366}00366         \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00367}00367             GPIO\_SetBits(GPIOG,6);}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00368}00368         \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00369}00369         \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00370}00370         \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00371}00371             GPIO\_ResetBits(GPIOG,6);}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00372}00372         \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00373}00373     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00374}00374 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00375}00375 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00376}00376 \textcolor{comment}{//\#\# Output\_CAM no Failure Function}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00377}\mbox{\hyperlink{failures_8h_a9b30b32dfdda375d3e5527d362ee801c}{00377}}     \textcolor{keywordtype}{void} \mbox{\hyperlink{failures_8c_a0556928e41411f2cac11ec82fc8d8ccb}{Output\_CAM\_no\_failure}}(\textcolor{keywordtype}{int} cam\_id) }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00378}00378     \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00379}00379         \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_a4846863c93975e5d88fbd9b4ecc57d20}{CAM\_signal}}[cam\_id] == \textcolor{keyword}{true})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00380}00380         \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00381}00381             \textcolor{keywordflow}{if}(cam\_id == 0)\{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00382}00382                 LATGbits.LATG7 = 1;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00383}00383             \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00384}00384             \textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00385}00385                 LATGbits.LATG8 = 1;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00386}00386             \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00387}00387         \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00388}00388         \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00389}00389         \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00390}00390             \textcolor{keywordflow}{if}(cam\_id == 0)\{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00391}00391                 LATGbits.LATG7 = 0;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00392}00392             \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00393}00393             \textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00394}00394                 LATGbits.LATG8 = 0;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00395}00395             \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00396}00396         \}   }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00397}00397     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00398}00398 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00399}00399 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00400}00400 \textcolor{comment}{//\#\#\# Output CRK: RUN\_OUT \#\#\#}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00401}\mbox{\hyperlink{failures_8h_a497fcda22de215e3e57f4ba889f23675}{00401}}     \textcolor{keywordtype}{void} \mbox{\hyperlink{failures_8c_a497fcda22de215e3e57f4ba889f23675}{Output\_CRK\_RUN\_OUT}}(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00402}00402     \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00403}00403         \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_a66d1dc17c3815ec543259ff6cd358896}{CRK\_signal}} == \textcolor{keyword}{true})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00404}00404         \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00405}00405             \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_ab187efc17c279156d2fbe40791bd1182}{teeth\_count\_CRK}} != \mbox{\hyperlink{failures_8c_a05e75142d685997ef05acf36e45a356a}{number\_teeth\_between\_gaps}})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00406}00406             \{ \textcolor{comment}{//count the teeths on th rising edge}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00407}00407                 \mbox{\hyperlink{failures_8c_a39121f24b916d4e2ea6e7f897bafe4a8}{teeth\_counter\_CRK\_RUN\_OUT}} = \mbox{\hyperlink{failures_8c_ab187efc17c279156d2fbe40791bd1182}{teeth\_count\_CRK}} + 1;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00408}00408             \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00409}00409             \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_ab187efc17c279156d2fbe40791bd1182}{teeth\_count\_CRK}} == \mbox{\hyperlink{failures_8c_a05e75142d685997ef05acf36e45a356a}{number\_teeth\_between\_gaps}})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00410}00410             \{ \textcolor{comment}{// if we reched a gap }}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00411}00411                 \mbox{\hyperlink{failures_8c_a39121f24b916d4e2ea6e7f897bafe4a8}{teeth\_counter\_CRK\_RUN\_OUT}} = 1;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00412}00412             \}        }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00413}00413         \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00414}00414         }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00415}00415         \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_aa009bc0b69bbb38154e60d1428ffc33c}{failure\_active}} == \textcolor{keyword}{true})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00416}00416         \{ \textcolor{comment}{// if failure is active             }}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00417}00417             \textcolor{keywordflow}{if}((\mbox{\hyperlink{failures_8c_a39121f24b916d4e2ea6e7f897bafe4a8}{teeth\_counter\_CRK\_RUN\_OUT}} * \mbox{\hyperlink{failures_8c_af3c32be62d5f2307cc01a316c01ba3dc}{revolution\_CRK}}) >= (\mbox{\hyperlink{failures_8c_ad90c6afa3ef6d8897b04b50f9161bd3a}{failure\_period\_CRK\_RUN\_OUT}} + \mbox{\hyperlink{failures_8c_a706090098ba2e12ba5bd608552f126d5}{angle\_to\_start\_failure\_CRK\_RUN\_OUT}}) )}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00418}00418             \{  \textcolor{comment}{//once we have reached the failure end}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00419}00419                 \mbox{\hyperlink{failures_8c_aa009bc0b69bbb38154e60d1428ffc33c}{failure\_active}} = \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00420}00420                 \mbox{\hyperlink{failures_8c_a36381716e95bbb3090a24ba5260bf35d}{failure\_passed}} = \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00421}00421             \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00422}00422             \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00423}00423             \{  \textcolor{comment}{// if failure is active }}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00424}00424                 \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_ad09cc41f983fa5c4f93b335e55684b81}{sc\_type\_CRK\_RUN\_OUT}} == \textcolor{charliteral}{'g'})\{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00425}00425                     LATGbits.LATG6 = 0; \textcolor{comment}{// set CRK as low}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00426}00426                 \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00427}00427                 \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_ad09cc41f983fa5c4f93b335e55684b81}{sc\_type\_CRK\_RUN\_OUT}} == \textcolor{charliteral}{'b'})\{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00428}00428                     LATGbits.LATG6 = 1; \textcolor{comment}{// set CRK as hight}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00429}00429                 \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00430}00430             \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00431}00431         \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00432}00432         \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_a36381716e95bbb3090a24ba5260bf35d}{failure\_passed}} == \textcolor{keyword}{true})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00433}00433         \{ \textcolor{comment}{// once the failure finished have a normal output }}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00434}00434             \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_ab187efc17c279156d2fbe40791bd1182}{teeth\_count\_CRK}} == \mbox{\hyperlink{failures_8c_a05e75142d685997ef05acf36e45a356a}{number\_teeth\_between\_gaps}})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00435}00435             \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00436}00436                     \mbox{\hyperlink{failures_8c_a36381716e95bbb3090a24ba5260bf35d}{failure\_passed}} = \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00437}00437             \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00438}00438             \mbox{\hyperlink{failures_8c_a39121f24b916d4e2ea6e7f897bafe4a8}{teeth\_counter\_CRK\_RUN\_OUT}} = 1;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00439}00439             \mbox{\hyperlink{failures_8c_a3484fce8f4223ea262d178cbea751f06}{Output\_CRK\_no\_failure}}();}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00440}00440         \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00441}00441         \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00442}00442         \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00443}00443               }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00444}00444             \textcolor{keywordflow}{if}((\mbox{\hyperlink{failures_8c_a706090098ba2e12ba5bd608552f126d5}{angle\_to\_start\_failure\_CRK\_RUN\_OUT}} < (\mbox{\hyperlink{failures_8c_a39121f24b916d4e2ea6e7f897bafe4a8}{teeth\_counter\_CRK\_RUN\_OUT}} * \mbox{\hyperlink{failures_8c_af3c32be62d5f2307cc01a316c01ba3dc}{revolution\_CRK}})) }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00445}00445                 \&\& ((\mbox{\hyperlink{failures_8c_a39121f24b916d4e2ea6e7f897bafe4a8}{teeth\_counter\_CRK\_RUN\_OUT}} * \mbox{\hyperlink{failures_8c_af3c32be62d5f2307cc01a316c01ba3dc}{revolution\_CRK}}) < (\mbox{\hyperlink{failures_8c_a706090098ba2e12ba5bd608552f126d5}{angle\_to\_start\_failure\_CRK\_RUN\_OUT}} + \mbox{\hyperlink{failures_8c_ad90c6afa3ef6d8897b04b50f9161bd3a}{failure\_period\_CRK\_RUN\_OUT}})))}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00446}00446             \{ \textcolor{comment}{// if we are past the the angle of fairue start and still in the failure period }}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00447}00447                \mbox{\hyperlink{failures_8c_aa009bc0b69bbb38154e60d1428ffc33c}{failure\_active}} = \textcolor{keyword}{true}; }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00448}00448             \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00449}00449             \textcolor{keywordflow}{else}\{\}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00450}00450             \mbox{\hyperlink{failures_8c_a3484fce8f4223ea262d178cbea751f06}{Output\_CRK\_no\_failure}}();}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00451}00451         \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00452}00452     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00453}00453 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00454}00454 \textcolor{comment}{//\#\#\# CRK\_RUN\_OUT\_reset \#\#\#}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00455}\mbox{\hyperlink{failures_8h_aae7f39efa073aa6122e590548bf2539d}{00455}}     \textcolor{keywordtype}{void} \mbox{\hyperlink{failures_8c_aae7f39efa073aa6122e590548bf2539d}{CRK\_RUN\_OUT\_reset}}(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00456}00456     \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00457}00457         \mbox{\hyperlink{failures_8c_aa009bc0b69bbb38154e60d1428ffc33c}{failure\_active}} = \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00458}00458         \mbox{\hyperlink{failures_8c_a36381716e95bbb3090a24ba5260bf35d}{failure\_passed}} = \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00459}00459         \mbox{\hyperlink{failures_8c_ac6eafc14bbf628d09f0aea91c943dc44}{period\_counter\_CRK\_RUN\_OUT}} = 0;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00460}00460     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00461}00461 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00462}00462 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00463}00463 \textcolor{comment}{//\#\# Output CAM: CAM\_PER}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00464}\mbox{\hyperlink{failures_8h_a36e40eaacad7f7ec38aacae51ceccd91}{00464}}     \textcolor{keywordtype}{void} \mbox{\hyperlink{failures_8c_aa7a19058315d33f9c47e8628e709d5d4}{Output\_CAM\_PER}}(\textcolor{keywordtype}{int} cam\_id)}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00465}00465     \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00466}00466         \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_a1aeabc5ac5f6b29223d857aceb659320}{active\_edges\_CAM\_PER}} == \textcolor{charliteral}{'b'})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00467}00467         \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00468}00468             \textcolor{keywordflow}{if}(cam\_id == 0)\{ \textcolor{comment}{// For CAM1}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00469}00469                 T6CONbits.TON = 1;          \textcolor{comment}{// Enable Timer6 }}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00470}00470                 \mbox{\hyperlink{p33_f_j256_g_p710_a_8h_a7baafa1fda2fbf3a6fb69ee50c478ec6}{PR6}} = (\mbox{\hyperlink{failures_8c_ae78fc7b1baf9c329b60166be6b88b85c}{filter\_time\_CAM}}[cam\_id] / 2.0 -\/ 5) / \mbox{\hyperlink{failures_8c_aa62fd33093aac3979c77d8ac47195785}{microsecond\_per\_timer\_tick\_CAM\_PER\_\_CRK\_TOOTH\_PER}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00471}00471             \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00472}00472             \textcolor{keywordflow}{else}\{ \textcolor{comment}{// For CAM2}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00473}00473                 T7CONbits.TON = 1;          \textcolor{comment}{// Enable Timer7}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00474}00474                 \mbox{\hyperlink{p33_f_j256_g_p710_a_8h_a358042ac66961b04c718ccd323d1ccf7}{PR7}} = (\mbox{\hyperlink{failures_8c_ae78fc7b1baf9c329b60166be6b88b85c}{filter\_time\_CAM}}[cam\_id] / 2.0 -\/ 5) / \mbox{\hyperlink{failures_8c_aa62fd33093aac3979c77d8ac47195785}{microsecond\_per\_timer\_tick\_CAM\_PER\_\_CRK\_TOOTH\_PER}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00475}00475             \}                   }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00476}00476         \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00477}00477         \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_a1aeabc5ac5f6b29223d857aceb659320}{active\_edges\_CAM\_PER}} == \textcolor{charliteral}{'f'} \&\& \mbox{\hyperlink{failures_8c_a4846863c93975e5d88fbd9b4ecc57d20}{CAM\_signal}}[cam\_id] == \textcolor{keyword}{false})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00478}00478         \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00479}00479             \textcolor{keywordflow}{if}(cam\_id == 0)\{ \textcolor{comment}{// For CAM1}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00480}00480                 T6CONbits.TON = 1;          \textcolor{comment}{// Enable Timer6 }}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00481}00481                 \mbox{\hyperlink{p33_f_j256_g_p710_a_8h_a7baafa1fda2fbf3a6fb69ee50c478ec6}{PR6}} = (\mbox{\hyperlink{failures_8c_ae78fc7b1baf9c329b60166be6b88b85c}{filter\_time\_CAM}}[cam\_id] / 2.0 -\/ 5) / \mbox{\hyperlink{failures_8c_aa62fd33093aac3979c77d8ac47195785}{microsecond\_per\_timer\_tick\_CAM\_PER\_\_CRK\_TOOTH\_PER}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00482}00482             \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00483}00483             \textcolor{keywordflow}{else}\{ \textcolor{comment}{// For CAM2}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00484}00484                 T7CONbits.TON = 1;          \textcolor{comment}{// Enable Timer7}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00485}00485                 \mbox{\hyperlink{p33_f_j256_g_p710_a_8h_a358042ac66961b04c718ccd323d1ccf7}{PR7}} = (\mbox{\hyperlink{failures_8c_ae78fc7b1baf9c329b60166be6b88b85c}{filter\_time\_CAM}}[cam\_id] / 2.0 -\/ 5) / \mbox{\hyperlink{failures_8c_aa62fd33093aac3979c77d8ac47195785}{microsecond\_per\_timer\_tick\_CAM\_PER\_\_CRK\_TOOTH\_PER}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00486}00486             \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00487}00487         \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00488}00488         \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_a1aeabc5ac5f6b29223d857aceb659320}{active\_edges\_CAM\_PER}} == \textcolor{charliteral}{'r'} \&\& \mbox{\hyperlink{failures_8c_a4846863c93975e5d88fbd9b4ecc57d20}{CAM\_signal}}[cam\_id] == \textcolor{keyword}{true})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00489}00489         \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00490}00490             \textcolor{keywordflow}{if}(cam\_id == 0)\{ \textcolor{comment}{// For CAM1}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00491}00491                 T6CONbits.TON = 1;          \textcolor{comment}{// Enable Timer6  }}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00492}00492                 \mbox{\hyperlink{p33_f_j256_g_p710_a_8h_a7baafa1fda2fbf3a6fb69ee50c478ec6}{PR6}} = (\mbox{\hyperlink{failures_8c_ae78fc7b1baf9c329b60166be6b88b85c}{filter\_time\_CAM}}[cam\_id] / 2.0 -\/ 5) / \mbox{\hyperlink{failures_8c_aa62fd33093aac3979c77d8ac47195785}{microsecond\_per\_timer\_tick\_CAM\_PER\_\_CRK\_TOOTH\_PER}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00493}00493             \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00494}00494             \textcolor{keywordflow}{else}\{ \textcolor{comment}{// For CAM2}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00495}00495                 T7CONbits.TON = 1;          \textcolor{comment}{// Enable Timer7}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00496}00496                 \mbox{\hyperlink{p33_f_j256_g_p710_a_8h_a358042ac66961b04c718ccd323d1ccf7}{PR7}} = (\mbox{\hyperlink{failures_8c_ae78fc7b1baf9c329b60166be6b88b85c}{filter\_time\_CAM}}[cam\_id] / 2.0 -\/ 5) / \mbox{\hyperlink{failures_8c_aa62fd33093aac3979c77d8ac47195785}{microsecond\_per\_timer\_tick\_CAM\_PER\_\_CRK\_TOOTH\_PER}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00497}00497             \}   }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00498}00498         \}       }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00499}00499     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00500}00500 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00501}00501 \textcolor{comment}{//\#\# CAM\_PER\_reset}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00502}\mbox{\hyperlink{failures_8h_a7739e18fdabcefcde3ee26001bd58edc}{00502}}     \textcolor{keywordtype}{void} \mbox{\hyperlink{failures_8c_a7739e18fdabcefcde3ee26001bd58edc}{CAM\_PER\_reset}}(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00503}00503     \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00504}00504         \textcolor{keywordflow}{if}(T6CONbits.TON == 1)}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00505}00505         \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00506}00506             T6CONbits.TON = 0;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00507}00507             \mbox{\hyperlink{p33_f_j256_g_p710_a_8h_ad25236deeccf5b917fe8957db869fc25}{TMR6}} = 0;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00508}00508         \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00509}00509 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00510}00510         \textcolor{keywordflow}{if}(T7CONbits.TON == 1)}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00511}00511         \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00512}00512             T7CONbits.TON = 0;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00513}00513             \mbox{\hyperlink{p33_f_j256_g_p710_a_8h_aef967221366734fe4ea85170350c9e23}{TMR7}} = 0;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00514}00514         \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00515}00515 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00516}00516         \mbox{\hyperlink{timer_8h_a8535789e70af446f607d51b00faa8e74}{Timer6Init}}();}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00517}00517         \mbox{\hyperlink{timer_8h_ac8159d78a79df090ed27f08dc4b1ade7}{Timer7Init}}();}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00518}00518         \mbox{\hyperlink{failures_8c_aaa021fc02b2a585f7a62ec97bbee6d5e}{counter\_CAM\_PER}}[0] = 0;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00519}00519         \mbox{\hyperlink{failures_8c_aaa021fc02b2a585f7a62ec97bbee6d5e}{counter\_CAM\_PER}}[1] = 0;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00520}00520     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00521}00521 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00522}00522 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00523}00523 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00524}00524 \textcolor{comment}{//\#\# Output CRK: CRK\_TOOTH\_PER}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00525}\mbox{\hyperlink{failures_8h_ae920b63749813032dfd845247a8ee9bd}{00525}}     \textcolor{keywordtype}{void} \mbox{\hyperlink{failures_8c_ae920b63749813032dfd845247a8ee9bd}{Output\_CRK\_TOOTH\_PER}}(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00526}00526     \{   }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00527}00527         \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_a66d1dc17c3815ec543259ff6cd358896}{CRK\_signal}} == \textcolor{keyword}{false})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00528}00528         \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00529}00529             T6CONbits.TON = 1;          \textcolor{comment}{// Enable Timer6}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00530}00530         \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00531}00531     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00532}00532 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00533}00533 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00534}00534 \textcolor{comment}{//\#\# CRK\_TOOTH\_PER\_reset}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00535}\mbox{\hyperlink{failures_8h_a0d2b84537acea4ac18ccc2fa5fdf8005}{00535}}     \textcolor{keywordtype}{void} \mbox{\hyperlink{failures_8c_a0d2b84537acea4ac18ccc2fa5fdf8005}{CRK\_TOOTH\_PER\_reset}}(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00536}00536     \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00537}00537         \textcolor{keywordflow}{if}(T6CONbits.TON == 1)}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00538}00538         \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00539}00539             T6CONbits.TON = 0;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00540}00540             \mbox{\hyperlink{p33_f_j256_g_p710_a_8h_ad25236deeccf5b917fe8957db869fc25}{TMR6}} = 0;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00541}00541         \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00542}00542 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00543}00543         \textcolor{keywordflow}{if}(T7CONbits.TON == 1)}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00544}00544         \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00545}00545             T7CONbits.TON = 0;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00546}00546             \mbox{\hyperlink{p33_f_j256_g_p710_a_8h_aef967221366734fe4ea85170350c9e23}{TMR7}} = 0;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00547}00547         \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00548}00548 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00549}00549         \mbox{\hyperlink{failures_8c_a9efd1f4caf11e1037604fb6f4b42ed31}{failure\_set}} = \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00550}00550         \mbox{\hyperlink{failures_8c_aa009bc0b69bbb38154e60d1428ffc33c}{failure\_active}} = \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00551}00551     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00552}00552 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00553}00553 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00554}00554 \textcolor{comment}{//\#\# Output CAM\_delay: CAM\_TOOTH\_OFF / CAM\_REF\_CRK / CAM\_SYN / CAM\_SYN\_CRK}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00555}\mbox{\hyperlink{failures_8h_a2be0b8a63928eac32b771de2ea429cd4}{00555}}     \textcolor{keywordtype}{void} \mbox{\hyperlink{failures_8c_ab7a96c89fdff7f9c191ac8724f21dd59}{Output\_CAM\_delay}} (\textcolor{keywordtype}{int} cam\_id)}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00556}00556     \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00557}00557         \textcolor{keywordflow}{if} ( \mbox{\hyperlink{failures_8c_a906f58f9fb2ce60131ecacd1d649d6a1}{failure\_identify}} == \textcolor{charliteral}{'9'})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00558}00558         \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00559}00559             \textcolor{keywordflow}{switch} (\mbox{\hyperlink{failures_8c_a1ab47ef12d9fd5a0a0c37354af662f7d}{active\_CAM\_edges}}[cam\_id])}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00560}00560             \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00561}00561                 \textcolor{keywordflow}{case} (\textcolor{charliteral}{'b'}):}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00562}00562                     \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00563}00563                         \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_a7aeb1a0c2ff915edcc0973978f0dc21c}{engine\_start}} == \textcolor{keyword}{true})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00564}00564                         \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00565}00565                             T8CONbits.TON = 1;                          \textcolor{comment}{// Enable Timer8 till the first falling CRK\_edge}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00566}00566                             \mbox{\hyperlink{failures_8c_ac73a776a47669561214b6ad84a70e641}{timer\_active\_CAM\_delay}}[cam\_id] = \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00567}00567                         \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00568}00568                         \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00569}00569                         \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00570}00570                             \mbox{\hyperlink{failures_8c_a0556928e41411f2cac11ec82fc8d8ccb}{Output\_CAM\_no\_failure}}(cam\_id);}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00571}00571                         \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00572}00572 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00573}00573                         \textcolor{keywordflow}{break};      }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00574}00574                     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00575}00575                 \textcolor{keywordflow}{case} (\textcolor{charliteral}{'f'}):}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00576}00576                     \{   }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00577}00577                         \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_a4846863c93975e5d88fbd9b4ecc57d20}{CAM\_signal}}[cam\_id] == \textcolor{keyword}{false})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00578}00578                         \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00579}00579                             \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_a7aeb1a0c2ff915edcc0973978f0dc21c}{engine\_start}} == \textcolor{keyword}{true})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00580}00580                             \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00581}00581                                 T8CONbits.TON = 1;                          \textcolor{comment}{// Enable Timer8 till the first falling CRK\_edge}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00582}00582                                 \mbox{\hyperlink{failures_8c_ac73a776a47669561214b6ad84a70e641}{timer\_active\_CAM\_delay}}[cam\_id] = \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00583}00583 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00584}00584                                 \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_aa009bc0b69bbb38154e60d1428ffc33c}{failure\_active}} == \textcolor{keyword}{false})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00585}00585                                 \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00586}00586                                     \mbox{\hyperlink{failures_8c_aa009bc0b69bbb38154e60d1428ffc33c}{failure\_active}} = \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00587}00587                                 \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00588}00588                             \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00589}00589                             \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00590}00590                             \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00591}00591                                 \mbox{\hyperlink{failures_8c_a0556928e41411f2cac11ec82fc8d8ccb}{Output\_CAM\_no\_failure}}(cam\_id);}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00592}00592                             \}                   }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00593}00593                         \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00594}00594                         \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_a4846863c93975e5d88fbd9b4ecc57d20}{CAM\_signal}}[cam\_id] == \textcolor{keyword}{true} \&\& \mbox{\hyperlink{failures_8c_aa009bc0b69bbb38154e60d1428ffc33c}{failure\_active}} == \textcolor{keyword}{false})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00595}00595                         \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00596}00596                             \textcolor{keywordflow}{if}(cam\_id == 0)\{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00597}00597                                LATGbits.LATG7 = !LATGbits.LATG7; }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00598}00598                             \}\textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(cam\_id == 1)\{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00599}00599                                LATGbits.LATG8 = !LATGbits.LATG8;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00600}00600                             \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00601}00601                         \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00602}00602 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00603}00603                         \textcolor{keywordflow}{break};  }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00604}00604                     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00605}00605                 \textcolor{keywordflow}{case} (\textcolor{charliteral}{'r'}):}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00606}00606                     \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00607}00607                         \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_a4846863c93975e5d88fbd9b4ecc57d20}{CAM\_signal}}[cam\_id] == \textcolor{keyword}{true})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00608}00608                         \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00609}00609                             \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_a7aeb1a0c2ff915edcc0973978f0dc21c}{engine\_start}} == \textcolor{keyword}{true})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00610}00610                             \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00611}00611                                 T8CONbits.TON = 1;                          \textcolor{comment}{// Enable Timer8 till the first falling CRK\_edge}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00612}00612                                 \mbox{\hyperlink{failures_8c_ac73a776a47669561214b6ad84a70e641}{timer\_active\_CAM\_delay}}[cam\_id] = \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00613}00613 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00614}00614                                 \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_aa009bc0b69bbb38154e60d1428ffc33c}{failure\_active}} == \textcolor{keyword}{false})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00615}00615                                 \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00616}00616                                     \mbox{\hyperlink{failures_8c_aa009bc0b69bbb38154e60d1428ffc33c}{failure\_active}} = \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00617}00617                                 \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00618}00618                             \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00619}00619                             \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00620}00620                             \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00621}00621                                 \mbox{\hyperlink{failures_8c_a0556928e41411f2cac11ec82fc8d8ccb}{Output\_CAM\_no\_failure}}(cam\_id);}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00622}00622                             \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00623}00623                         \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00624}00624                         \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_a4846863c93975e5d88fbd9b4ecc57d20}{CAM\_signal}}[cam\_id] == \textcolor{keyword}{false} \&\& \mbox{\hyperlink{failures_8c_aa009bc0b69bbb38154e60d1428ffc33c}{failure\_active}} == \textcolor{keyword}{false})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00625}00625                         \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00626}00626                             \textcolor{keywordflow}{if}(cam\_id == 0)\{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00627}00627                                 LATGbits.LATG7 = !LATGbits.LATG7; }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00628}00628                             \}\textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(cam\_id == 1)\{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00629}00629                                LATGbits.LATG8 = !LATGbits.LATG8;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00630}00630                             \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00631}00631                         \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00632}00632 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00633}00633                         \textcolor{keywordflow}{break};  }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00634}00634                     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00635}00635                 \textcolor{keywordflow}{default}:}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00636}00636                     \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00637}00637                         \mbox{\hyperlink{failures_8c_a0556928e41411f2cac11ec82fc8d8ccb}{Output\_CAM\_no\_failure}}(cam\_id);}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00638}00638                         \textcolor{keywordflow}{break};  }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00639}00639                     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00640}00640             \}   }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00641}00641         \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00642}00642         \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00643}00643         \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00644}00644             \mbox{\hyperlink{failures_8c_a0556928e41411f2cac11ec82fc8d8ccb}{Output\_CAM\_no\_failure}}(cam\_id);}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00645}00645         \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00646}00646     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00647}00647 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00648}00648 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00649}00649 \textcolor{comment}{//\#\# CAM\_delay: CAM\_TOOTH\_OFF / CAM\_REF\_CRK / CAM\_SYN / CAM\_SYN\_CRK}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00650}\mbox{\hyperlink{failures_8h_a927fa488675a8a6fbd8bba8efb983f5d}{00650}}     \textcolor{keywordtype}{void} \mbox{\hyperlink{failures_8c_ade42031293947ccd593f610346d343a9}{CAM\_delay}} (\textcolor{keywordtype}{int} cam\_id)}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00651}00651     \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00652}00652         \textcolor{keywordflow}{if}(T4CONbits.TON == 1)}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00653}00653         \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00654}00654             \textcolor{keywordtype}{double} former\_teeth\_time; }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00655}00655             former\_teeth\_time = \mbox{\hyperlink{failures_8c_a3714f6c2b6cf52e7944ee9352143e105}{Former\_teeth\_time\_calculation}}(\mbox{\hyperlink{failures_8c_a8bc6e99e5b5b1814027ef2f4c2524e8f}{T\_TOOTH\_RAW}}, \mbox{\hyperlink{failures_8c_ab187efc17c279156d2fbe40791bd1182}{teeth\_count\_CRK}}, \mbox{\hyperlink{failures_8c_ac953f0c0d545347b98a28a5f7e1ea15c}{number\_miss\_teeth}});}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00656}00656     }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00657}00657             \textcolor{keywordflow}{if}(((\textcolor{keywordtype}{double})\mbox{\hyperlink{p33_f_j256_g_p710_a_8h_acebd208546d34896c1904ab4c7c5ef27}{TMR4}}/former\_teeth\_time)*\mbox{\hyperlink{failures_8c_af3c32be62d5f2307cc01a316c01ba3dc}{revolution\_CRK}} >= (\mbox{\hyperlink{failures_8c_af3c32be62d5f2307cc01a316c01ba3dc}{revolution\_CRK}}/2.0))}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00658}00658             \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00659}00659                 \textcolor{keywordflow}{if}(cam\_id == 0)\{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00660}00660                    LATGbits.LATG7 = !LATGbits.LATG7; }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00661}00661                 \}\textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(cam\_id == 1)\{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00662}00662                    LATGbits.LATG8 = !LATGbits.LATG8;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00663}00663                 \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00664}00664                 T4CONbits.TON = 0;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00665}00665                 \mbox{\hyperlink{timer_8h_a148ff919643c880d9c04ee570e36b152}{Timer4Reset}}();}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00666}00666             \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00667}00667         \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00668}00668         }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00669}00669 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00670}00670         \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_ac73a776a47669561214b6ad84a70e641}{timer\_active\_CAM\_delay}}[cam\_id] == \textcolor{keyword}{true} \&\& \mbox{\hyperlink{failures_8c_ab28b6d5505e18cd397139cfa75aa3912}{number\_processing\_edges\_CAM\_delay}}[cam\_id] == 0)}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00671}00671         \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00672}00672             \mbox{\hyperlink{failures_8c_a1ffeb87120d45d392916acb155ef3879}{interrupt\_check\_CAM\_delay}}[cam\_id] = \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00673}00673             }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00674}00674             \textcolor{keywordtype}{double} former\_teeth\_time; }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00675}00675             former\_teeth\_time = \mbox{\hyperlink{failures_8c_a3714f6c2b6cf52e7944ee9352143e105}{Former\_teeth\_time\_calculation}}(\mbox{\hyperlink{failures_8c_a8bc6e99e5b5b1814027ef2f4c2524e8f}{T\_TOOTH\_RAW}}, \mbox{\hyperlink{failures_8c_ab187efc17c279156d2fbe40791bd1182}{teeth\_count\_CRK}}, \mbox{\hyperlink{failures_8c_ac953f0c0d545347b98a28a5f7e1ea15c}{number\_miss\_teeth}});}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00676}00676 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00677}00677             \textcolor{keywordflow}{if}(((\textcolor{keywordtype}{double})\mbox{\hyperlink{p33_f_j256_g_p710_a_8h_aadb469ee183cde61e8cd557de2559bb6}{TMR8}}/former\_teeth\_time) * \mbox{\hyperlink{failures_8c_af3c32be62d5f2307cc01a316c01ba3dc}{revolution\_CRK}} >= (\mbox{\hyperlink{failures_8c_a7488bc4243e7ba92ade85f9186db2793}{delay\_angle\_CAM\_delay}} * \mbox{\hyperlink{failures_8c_af4fb580f228912ecc709426087150786}{delay\_factor\_CAM\_delay}}))}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00678}00678             \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00679}00679                 T8CONbits.TON = 0;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00680}00680                 \mbox{\hyperlink{p33_f_j256_g_p710_a_8h_aadb469ee183cde61e8cd557de2559bb6}{TMR8}} = 0;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00681}00681                 \mbox{\hyperlink{failures_8c_ac73a776a47669561214b6ad84a70e641}{timer\_active\_CAM\_delay}}[cam\_id] = \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00682}00682 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00683}00683                 \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_a1ffeb87120d45d392916acb155ef3879}{interrupt\_check\_CAM\_delay}}[cam\_id] == \textcolor{keyword}{false})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00684}00684                 \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00685}00685                     \textcolor{keywordflow}{if}(cam\_id == 0)\{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00686}00686                         LATGbits.LATG7 = !LATGbits.LATG7; }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00687}00687                     \}\textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(cam\_id == 1)\{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00688}00688                         LATGbits.LATG8 = !LATGbits.LATG8;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00689}00689                     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00690}00690     }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00691}00691                     \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_a1ab47ef12d9fd5a0a0c37354af662f7d}{active\_CAM\_edges}}[cam\_id] == \textcolor{charliteral}{'r'} || \mbox{\hyperlink{failures_8c_a1ab47ef12d9fd5a0a0c37354af662f7d}{active\_CAM\_edges}}[cam\_id] == \textcolor{charliteral}{'f'})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00692}00692                     \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00693}00693                         T4CONbits.TON = 1;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00694}00694                     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00695}00695                 \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00696}00696             \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00697}00697         \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00698}00698         \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_ab28b6d5505e18cd397139cfa75aa3912}{number\_processing\_edges\_CAM\_delay}}[cam\_id] > 0)}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00699}00699         \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00700}00700             \textcolor{keywordtype}{int} i = 0;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00701}00701             \textcolor{keywordtype}{int} count = 0;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00702}00702 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00703}00703             \textcolor{keywordtype}{double} former\_teeth\_time; }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00704}00704             former\_teeth\_time = \mbox{\hyperlink{failures_8c_a3714f6c2b6cf52e7944ee9352143e105}{Former\_teeth\_time\_calculation}}(\mbox{\hyperlink{failures_8c_a8bc6e99e5b5b1814027ef2f4c2524e8f}{T\_TOOTH\_RAW}}, \mbox{\hyperlink{failures_8c_ab187efc17c279156d2fbe40791bd1182}{teeth\_count\_CRK}}, \mbox{\hyperlink{failures_8c_ac953f0c0d545347b98a28a5f7e1ea15c}{number\_miss\_teeth}});}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00705}00705 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00706}00706             \textcolor{keywordflow}{for}(i = 0; i < \mbox{\hyperlink{failures_8c_aeb8d44ce914f7ffc964e78ab44c14735}{edges\_beetween\_shift\_CAM\_delay}}; i++)}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00707}00707             \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00708}00708                 \textcolor{keywordflow}{if}(count == \mbox{\hyperlink{failures_8c_ab28b6d5505e18cd397139cfa75aa3912}{number\_processing\_edges\_CAM\_delay}}[cam\_id])}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00709}00709                 \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00710}00710                     \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00711}00711                 \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00712}00712 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00713}00713                 \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_ae9953e9e08afe49f7e2a4b4daee5332b}{shift\_counter\_CAM\_delay}}[cam\_id][i] != 0)}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00714}00714                 \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00715}00715                     \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_a2a6666ba3f9fa015610de05c735552ac}{angle\_to\_edge\_CAM\_delay}}[cam\_id][i] + ((\textcolor{keywordtype}{double})(\mbox{\hyperlink{failures_8c_ae9953e9e08afe49f7e2a4b4daee5332b}{shift\_counter\_CAM\_delay}}[cam\_id][i] -\/ 1) + ((\textcolor{keywordtype}{double})((\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long})\mbox{\hyperlink{p33_f_j256_g_p710_a_8h_ab9ba0f088efcfb18f08b7d2490486b98}{TMR2}} + \mbox{\hyperlink{failures_8c_aa697468758fbf1b546cd67c827d8dd84}{timer\_overflow\_CRK}}*(\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long})\mbox{\hyperlink{p33_f_j256_g_p710_a_8h_aa21e0868ca8fce26c238b15c661b42ab}{PR2}}))/former\_teeth\_time) * \mbox{\hyperlink{failures_8c_af3c32be62d5f2307cc01a316c01ba3dc}{revolution\_CRK}} >= (\mbox{\hyperlink{failures_8c_a7488bc4243e7ba92ade85f9186db2793}{delay\_angle\_CAM\_delay}} * \mbox{\hyperlink{failures_8c_af4fb580f228912ecc709426087150786}{delay\_factor\_CAM\_delay}}))}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00716}00716                     \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00717}00717                         \mbox{\hyperlink{failures_8c_ae9953e9e08afe49f7e2a4b4daee5332b}{shift\_counter\_CAM\_delay}}[cam\_id][i] = 0;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00718}00718                         \mbox{\hyperlink{failures_8c_a2a6666ba3f9fa015610de05c735552ac}{angle\_to\_edge\_CAM\_delay}}[cam\_id][i] = 0;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00719}00719                         \mbox{\hyperlink{failures_8c_ab28b6d5505e18cd397139cfa75aa3912}{number\_processing\_edges\_CAM\_delay}}[cam\_id]-\/-\/;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00720}00720                         \textcolor{keywordflow}{if}(cam\_id == 0)\{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00721}00721                            LATGbits.LATG7 = !LATGbits.LATG7; }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00722}00722                         \}\textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(cam\_id == 1)\{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00723}00723                            LATGbits.LATG8 = !LATGbits.LATG8;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00724}00724                         \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00725}00725                         }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00726}00726             }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00727}00727                         \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_a1ab47ef12d9fd5a0a0c37354af662f7d}{active\_CAM\_edges}}[cam\_id] == \textcolor{charliteral}{'r'} || \mbox{\hyperlink{failures_8c_a1ab47ef12d9fd5a0a0c37354af662f7d}{active\_CAM\_edges}}[cam\_id] == \textcolor{charliteral}{'f'})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00728}00728                         \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00729}00729                             T4CONbits.TON = 1;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00730}00730                         \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00731}00731 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00732}00732                         \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00733}00733                     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00734}00734 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00735}00735                     count++;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00736}00736                 \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00737}00737             \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00738}00738         \}       }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00739}00739     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00740}00740 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00741}00741 \textcolor{comment}{//\#\# CAM\_delay\_counter: CAM\_TOOTH\_OFF / CAM\_REF\_CRK / CAM\_SYN / CAM\_SYN\_CRK}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00742}\mbox{\hyperlink{failures_8h_a15b6582de1d12a5c4160bad4c817bb5c}{00742}}     \textcolor{keywordtype}{void} \mbox{\hyperlink{failures_8c_af07c1aaf230fb87af99aa7ef5816decb}{CAM\_delay\_counter}}(\textcolor{keywordtype}{int} cam\_id)}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00743}00743     \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00744}00744         \textcolor{keywordflow}{if} ((\mbox{\hyperlink{failures_8c_a906f58f9fb2ce60131ecacd1d649d6a1}{failure\_identify}} == \textcolor{charliteral}{'9'}) \&\& \mbox{\hyperlink{failures_8c_a66d1dc17c3815ec543259ff6cd358896}{CRK\_signal}} == \textcolor{keyword}{false})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00745}00745         \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00746}00746 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00747}00747             \mbox{\hyperlink{failures_8c_a1ffeb87120d45d392916acb155ef3879}{interrupt\_check\_CAM\_delay}}[cam\_id] = \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00748}00748 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00749}00749             \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_ac73a776a47669561214b6ad84a70e641}{timer\_active\_CAM\_delay}}[cam\_id] == \textcolor{keyword}{true})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00750}00750             \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00751}00751                 \textcolor{keywordtype}{int} i = 0;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00752}00752                 \textcolor{keywordtype}{int} count = 0;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00753}00753     }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00754}00754                 \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_ab28b6d5505e18cd397139cfa75aa3912}{number\_processing\_edges\_CAM\_delay}}[cam\_id] != 0)}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00755}00755                 \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00756}00756                     \textcolor{keywordflow}{for}(i = 0; i < \mbox{\hyperlink{failures_8c_aeb8d44ce914f7ffc964e78ab44c14735}{edges\_beetween\_shift\_CAM\_delay}}; i++) \textcolor{comment}{// edges\_beetween\_shift\_CAM\_delay = 6}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00757}00757                     \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00758}00758                         \textcolor{keywordflow}{if}(count == \mbox{\hyperlink{failures_8c_ab28b6d5505e18cd397139cfa75aa3912}{number\_processing\_edges\_CAM\_delay}}[cam\_id])}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00759}00759                         \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00760}00760                             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00761}00761                         \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00762}00762         }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00763}00763                         \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_ae9953e9e08afe49f7e2a4b4daee5332b}{shift\_counter\_CAM\_delay}}[cam\_id][i] != 0)}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00764}00764                         \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00765}00765                             \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_ab187efc17c279156d2fbe40791bd1182}{teeth\_count\_CRK}} == \mbox{\hyperlink{failures_8c_a05e75142d685997ef05acf36e45a356a}{number\_teeth\_between\_gaps}})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00766}00766                             \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00767}00767                                 \mbox{\hyperlink{failures_8c_ae9953e9e08afe49f7e2a4b4daee5332b}{shift\_counter\_CAM\_delay}}[cam\_id][i] = \mbox{\hyperlink{failures_8c_ae9953e9e08afe49f7e2a4b4daee5332b}{shift\_counter\_CAM\_delay}}[cam\_id][i] + \mbox{\hyperlink{failures_8c_ac953f0c0d545347b98a28a5f7e1ea15c}{number\_miss\_teeth}} + 1;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00768}00768                             \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00769}00769                             \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00770}00770                             \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00771}00771                                 \mbox{\hyperlink{failures_8c_ae9953e9e08afe49f7e2a4b4daee5332b}{shift\_counter\_CAM\_delay}}[cam\_id][i]++;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00772}00772                             \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00773}00773         }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00774}00774                             count++;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00775}00775                         \}           }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00776}00776                     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00777}00777                 \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00778}00778     }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00779}00779                 i = 0;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00780}00780             }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00781}00781                 \textcolor{keywordtype}{double} former\_teeth\_time; }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00782}00782                 former\_teeth\_time = \mbox{\hyperlink{failures_8c_acb639aa52e59059a33fa47ad4e7a9dc6}{Former\_teeth\_time\_calculation\_output}}(\mbox{\hyperlink{failures_8c_a8bc6e99e5b5b1814027ef2f4c2524e8f}{T\_TOOTH\_RAW}}, \mbox{\hyperlink{failures_8c_ab187efc17c279156d2fbe40791bd1182}{teeth\_count\_CRK}}, \mbox{\hyperlink{failures_8c_ac953f0c0d545347b98a28a5f7e1ea15c}{number\_miss\_teeth}});}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00783}00783 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00784}00784                 \textcolor{keywordflow}{for}(i = 0; i < \mbox{\hyperlink{failures_8c_aeb8d44ce914f7ffc964e78ab44c14735}{edges\_beetween\_shift\_CAM\_delay}}; i++)}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00785}00785                 \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00786}00786                     \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_ae9953e9e08afe49f7e2a4b4daee5332b}{shift\_counter\_CAM\_delay}}[cam\_id][i] == 0)}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00787}00787                     \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00788}00788                         \mbox{\hyperlink{failures_8c_ae9953e9e08afe49f7e2a4b4daee5332b}{shift\_counter\_CAM\_delay}}[cam\_id][i] = 1;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00789}00789                         \mbox{\hyperlink{failures_8c_a2a6666ba3f9fa015610de05c735552ac}{angle\_to\_edge\_CAM\_delay}}[cam\_id][i] = ((double)(\mbox{\hyperlink{p33_f_j256_g_p710_a_8h_aadb469ee183cde61e8cd557de2559bb6}{TMR8}})/former\_teeth\_time)*\mbox{\hyperlink{failures_8c_af3c32be62d5f2307cc01a316c01ba3dc}{revolution\_CRK}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00790}00790                         T8CONbits.TON = 0;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00791}00791                         \mbox{\hyperlink{p33_f_j256_g_p710_a_8h_aadb469ee183cde61e8cd557de2559bb6}{TMR8}} = 0;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00792}00792                         \mbox{\hyperlink{failures_8c_ac73a776a47669561214b6ad84a70e641}{timer\_active\_CAM\_delay}}[cam\_id] = \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00793}00793                         \mbox{\hyperlink{failures_8c_ab28b6d5505e18cd397139cfa75aa3912}{number\_processing\_edges\_CAM\_delay}}[cam\_id]++;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00794}00794                         \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00795}00795                     \}   }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00796}00796                 \}   }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00797}00797             \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00798}00798             \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_ab28b6d5505e18cd397139cfa75aa3912}{number\_processing\_edges\_CAM\_delay}}[cam\_id] != 0)}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00799}00799             \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00800}00800                 \textcolor{keywordtype}{int} count = 0;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00801}00801                 \textcolor{keywordtype}{int} i = 0;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00802}00802 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00803}00803                 \textcolor{keywordflow}{for}(i = 0; i < \mbox{\hyperlink{failures_8c_aeb8d44ce914f7ffc964e78ab44c14735}{edges\_beetween\_shift\_CAM\_delay}}; i++)}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00804}00804                 \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00805}00805                     \textcolor{keywordflow}{if}(count == \mbox{\hyperlink{failures_8c_ab28b6d5505e18cd397139cfa75aa3912}{number\_processing\_edges\_CAM\_delay}}[cam\_id])}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00806}00806                     \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00807}00807                         \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00808}00808                     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00809}00809         }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00810}00810                     \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_ae9953e9e08afe49f7e2a4b4daee5332b}{shift\_counter\_CAM\_delay}}[cam\_id][i] != 0)}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00811}00811                     \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00812}00812                         \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_ab187efc17c279156d2fbe40791bd1182}{teeth\_count\_CRK}} == \mbox{\hyperlink{failures_8c_a05e75142d685997ef05acf36e45a356a}{number\_teeth\_between\_gaps}})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00813}00813                         \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00814}00814                             \mbox{\hyperlink{failures_8c_ae9953e9e08afe49f7e2a4b4daee5332b}{shift\_counter\_CAM\_delay}}[cam\_id][i] = \mbox{\hyperlink{failures_8c_ae9953e9e08afe49f7e2a4b4daee5332b}{shift\_counter\_CAM\_delay}}[cam\_id][i] + \mbox{\hyperlink{failures_8c_ac953f0c0d545347b98a28a5f7e1ea15c}{number\_miss\_teeth}} + 1;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00815}00815                         \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00816}00816                         \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00817}00817                         \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00818}00818                             \mbox{\hyperlink{failures_8c_ae9953e9e08afe49f7e2a4b4daee5332b}{shift\_counter\_CAM\_delay}}[cam\_id][i]++;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00819}00819                         \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00820}00820         }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00821}00821                         count++;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00822}00822                     \}           }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00823}00823                 \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00824}00824             \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00825}00825         \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00826}00826     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00827}00827 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00828}00828 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00829}00829 \textcolor{comment}{//\#\# CAM\_delay reset}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00830}\mbox{\hyperlink{failures_8h_ab03c344f7040d93549b7a6fc4816b61b}{00830}}     \textcolor{keywordtype}{void} \mbox{\hyperlink{failures_8c_ab03c344f7040d93549b7a6fc4816b61b}{CAM\_delay\_reset}} (\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00831}00831     \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00832}00832         \mbox{\hyperlink{failures_8c_aa009bc0b69bbb38154e60d1428ffc33c}{failure\_active}} = \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00833}00833         \mbox{\hyperlink{failures_8c_a9efd1f4caf11e1037604fb6f4b42ed31}{failure\_set}} = \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00834}00834         T8CONbits.TON = 0;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00835}00835         \mbox{\hyperlink{p33_f_j256_g_p710_a_8h_aadb469ee183cde61e8cd557de2559bb6}{TMR8}} = 0;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00836}00836         T9CONbits.TON = 0;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00837}00837         \mbox{\hyperlink{timer_8h_a066336f3fbf526e9501abbc7874b29fc}{Timer9Reset}}();}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00838}00838         T4CONbits.TON = 0;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00839}00839         \mbox{\hyperlink{timer_8h_a148ff919643c880d9c04ee570e36b152}{Timer4Reset}}();       }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00840}00840         \mbox{\hyperlink{failures_8c_ab28b6d5505e18cd397139cfa75aa3912}{number\_processing\_edges\_CAM\_delay}}[0] = 0;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00841}00841         \mbox{\hyperlink{failures_8c_ab28b6d5505e18cd397139cfa75aa3912}{number\_processing\_edges\_CAM\_delay}}[1] = 0;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00842}00842         \mbox{\hyperlink{failures_8c_ac73a776a47669561214b6ad84a70e641}{timer\_active\_CAM\_delay}}[0] = \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00843}00843         \mbox{\hyperlink{failures_8c_ac73a776a47669561214b6ad84a70e641}{timer\_active\_CAM\_delay}}[1] = \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00844}00844         \mbox{\hyperlink{failures_8c_a831028f10615ac593b739d4731a43060}{delay\_counter\_CAM\_REF\_CRK}} = 0;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00845}00845 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00846}00846         \textcolor{keywordtype}{int} i;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00847}00847 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00848}00848         \textcolor{keywordflow}{for}(i = 0; i < \mbox{\hyperlink{failures_8c_aeb8d44ce914f7ffc964e78ab44c14735}{edges\_beetween\_shift\_CAM\_delay}}; i++)}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00849}00849         \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00850}00850             \mbox{\hyperlink{failures_8c_ae9953e9e08afe49f7e2a4b4daee5332b}{shift\_counter\_CAM\_delay}}[0][i] = 0;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00851}00851             \mbox{\hyperlink{failures_8c_ae9953e9e08afe49f7e2a4b4daee5332b}{shift\_counter\_CAM\_delay}}[1][i] = 0;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00852}00852         \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00853}00853         }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00854}00854         i = 0;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00855}00855 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00856}00856         \textcolor{keywordflow}{for}(i = 0; i < \mbox{\hyperlink{failures_8c_aeb8d44ce914f7ffc964e78ab44c14735}{edges\_beetween\_shift\_CAM\_delay}}; i++)}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00857}00857         \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00858}00858             \mbox{\hyperlink{failures_8c_a2a6666ba3f9fa015610de05c735552ac}{angle\_to\_edge\_CAM\_delay}}[0][i] = 0;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00859}00859             \mbox{\hyperlink{failures_8c_a2a6666ba3f9fa015610de05c735552ac}{angle\_to\_edge\_CAM\_delay}}[1][i] = 0;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00860}00860         \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00861}00861     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00862}00862 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00863}00863 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00864}00864 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00865}00865 \textcolor{comment}{//\#\#Output\_CRK\_TOOTH\_OFF}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00866}\mbox{\hyperlink{failures_8h_ae262fe3c8a33d712da32a37e77fbd065}{00866}} \textcolor{keywordtype}{void} \mbox{\hyperlink{failures_8c_ae262fe3c8a33d712da32a37e77fbd065}{Output\_CRK\_TOOTH\_OFF}}(\textcolor{keywordtype}{void})\{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00867}00867     }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00868}00868     \mbox{\hyperlink{failures_8c_ab06ff1f3f9aa8e15f049ad90eb229aec}{number\_teeth\_between\_tooth\_off}} = \mbox{\hyperlink{failures_8c_a05e75142d685997ef05acf36e45a356a}{number\_teeth\_between\_gaps}} / \mbox{\hyperlink{failures_8c_a42368ade50de18ac6efb5e231ba284ab}{number\_tooth\_off}};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00869}00869 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00870}00870     \textcolor{comment}{// only count a tooth when CRK rising edge }}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00871}00871     \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_a66d1dc17c3815ec543259ff6cd358896}{CRK\_signal}} == \textcolor{keyword}{true})\{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00872}00872         \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_ab187efc17c279156d2fbe40791bd1182}{teeth\_count\_CRK}} != \mbox{\hyperlink{failures_8c_a05e75142d685997ef05acf36e45a356a}{number\_teeth\_between\_gaps}})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00873}00873         \{ }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00874}00874             \mbox{\hyperlink{failures_8c_a590ad1bd7a49f0ea3fb90f8e24997bb1}{teeth\_counter\_CRK\_TOOTH\_OFF}} = \mbox{\hyperlink{failures_8c_ab187efc17c279156d2fbe40791bd1182}{teeth\_count\_CRK}} + 1;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00875}00875         \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00876}00876         \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_ab187efc17c279156d2fbe40791bd1182}{teeth\_count\_CRK}} == \mbox{\hyperlink{failures_8c_a05e75142d685997ef05acf36e45a356a}{number\_teeth\_between\_gaps}})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00877}00877         \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00878}00878             \mbox{\hyperlink{failures_8c_a590ad1bd7a49f0ea3fb90f8e24997bb1}{teeth\_counter\_CRK\_TOOTH\_OFF}} = 1;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00879}00879             \mbox{\hyperlink{failures_8c_adb0348602102ca6255e00dd691cfa53c}{counter\_gap\_left\_CRK\_TOOTH\_OFF}} ++; }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00880}00880             \mbox{\hyperlink{failures_8c_af2b350cad5f904241be3cd72267e8cd4}{counter\_tooth\_off}} = 0; \textcolor{comment}{// reset at every gap}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00881}00881             }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00882}00882             \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_adb0348602102ca6255e00dd691cfa53c}{counter\_gap\_left\_CRK\_TOOTH\_OFF}} == \mbox{\hyperlink{failures_8c_af9b6adca0c1aa5a6ba1da07c6f4e1588}{number\_gap}})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00883}00883             \{ \textcolor{comment}{// if we made a full rotation}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00884}00884                 \mbox{\hyperlink{failures_8c_adb0348602102ca6255e00dd691cfa53c}{counter\_gap\_left\_CRK\_TOOTH\_OFF}} = 0;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00885}00885             \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00886}00886         \}        }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00887}00887     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00888}00888 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00889}00889     \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_aa009bc0b69bbb38154e60d1428ffc33c}{failure\_active}} == \textcolor{keyword}{true})\{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00890}00890         }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00891}00891         \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_a66d1dc17c3815ec543259ff6cd358896}{CRK\_signal}} == \textcolor{keyword}{false})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00892}00892         \{   \textcolor{comment}{// if failure active and the Crk is set to 0 set Crk output at 1 to miss a tooth}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00893}00893             \mbox{\hyperlink{failures_8c_a36381716e95bbb3090a24ba5260bf35d}{failure\_passed}} = \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00894}00894             LATGbits.LATG6 = 1;  }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00895}00895         \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00896}00896         \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_a36381716e95bbb3090a24ba5260bf35d}{failure\_passed}} == \textcolor{keyword}{true})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00897}00897         \{   \textcolor{comment}{// a tooth has been skiped}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00898}00898             \mbox{\hyperlink{failures_8c_a36381716e95bbb3090a24ba5260bf35d}{failure\_passed}} = \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00899}00899             \mbox{\hyperlink{failures_8c_aa009bc0b69bbb38154e60d1428ffc33c}{failure\_active}} = \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00900}00900             \mbox{\hyperlink{failures_8c_af2b350cad5f904241be3cd72267e8cd4}{counter\_tooth\_off}} ++;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00901}00901         \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00902}00902 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00903}00903     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00904}00904     \textcolor{keywordflow}{else}\{   }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00905}00905         \textcolor{keywordflow}{if}(((\mbox{\hyperlink{failures_8c_a590ad1bd7a49f0ea3fb90f8e24997bb1}{teeth\_counter\_CRK\_TOOTH\_OFF}} \% \mbox{\hyperlink{failures_8c_ab06ff1f3f9aa8e15f049ad90eb229aec}{number\_teeth\_between\_tooth\_off}}) == ((\mbox{\hyperlink{failures_8c_ab06ff1f3f9aa8e15f049ad90eb229aec}{number\_teeth\_between\_tooth\_off}}/2) + 1))}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00906}00906         \&\& (\mbox{\hyperlink{failures_8c_a66d1dc17c3815ec543259ff6cd358896}{CRK\_signal}} == \textcolor{keyword}{true}))}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00907}00907         \{ \textcolor{comment}{//if we passed a tooth and this tooth is separated by the number\_teeth\_between\_tooth\_off}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00908}00908             \textcolor{keywordflow}{if}((\mbox{\hyperlink{failures_8c_adb0348602102ca6255e00dd691cfa53c}{counter\_gap\_left\_CRK\_TOOTH\_OFF}} == 0) \&\& (\mbox{\hyperlink{failures_8c_af2b350cad5f904241be3cd72267e8cd4}{counter\_tooth\_off}} < ((\mbox{\hyperlink{failures_8c_a42368ade50de18ac6efb5e231ba284ab}{number\_tooth\_off}} / \mbox{\hyperlink{failures_8c_af9b6adca0c1aa5a6ba1da07c6f4e1588}{number\_gap}}) + (\mbox{\hyperlink{failures_8c_a42368ade50de18ac6efb5e231ba284ab}{number\_tooth\_off}} \% \mbox{\hyperlink{failures_8c_af9b6adca0c1aa5a6ba1da07c6f4e1588}{number\_gap}}))))}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00909}00909             \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00910}00910                 \mbox{\hyperlink{failures_8c_aa009bc0b69bbb38154e60d1428ffc33c}{failure\_active}} = \textcolor{keyword}{true};    }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00911}00911             \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00912}00912             \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_af2b350cad5f904241be3cd72267e8cd4}{counter\_tooth\_off}} < (\mbox{\hyperlink{failures_8c_a42368ade50de18ac6efb5e231ba284ab}{number\_tooth\_off}} / \mbox{\hyperlink{failures_8c_af9b6adca0c1aa5a6ba1da07c6f4e1588}{number\_gap}}))}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00913}00913             \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00914}00914                 \mbox{\hyperlink{failures_8c_aa009bc0b69bbb38154e60d1428ffc33c}{failure\_active}} = \textcolor{keyword}{true};    }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00915}00915             \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00916}00916             \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00917}00917             \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00918}00918                 \mbox{\hyperlink{failures_8c_a3484fce8f4223ea262d178cbea751f06}{Output\_CRK\_no\_failure}}();}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00919}00919             \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00920}00920  }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00921}00921         \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00922}00922         \textcolor{keywordflow}{else}\{\}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00923}00923         }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00924}00924     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00925}00925 \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00926}00926 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00927}00927 \textcolor{comment}{//\#\#CRK\_TOOTH\_OFF\_reset}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00928}\mbox{\hyperlink{failures_8h_a71bedb574bc5fbc3fd230d3a67fa0742}{00928}} \textcolor{keywordtype}{void} \mbox{\hyperlink{failures_8c_a71bedb574bc5fbc3fd230d3a67fa0742}{CRK\_TOOTH\_OFF\_reset}}(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00929}00929 \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00930}00930     \mbox{\hyperlink{failures_8c_aa009bc0b69bbb38154e60d1428ffc33c}{failure\_active}} = \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00931}00931     \mbox{\hyperlink{failures_8c_ab06ff1f3f9aa8e15f049ad90eb229aec}{number\_teeth\_between\_tooth\_off}} = 0;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00932}00932 \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00933}00933 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00934}00934 \textcolor{comment}{//\#\#Output\_CRK\_GAP\_NOT\_DET}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00935}\mbox{\hyperlink{failures_8h_a09b976185e7e818b4324aee696332f9a}{00935}} \textcolor{keywordtype}{void} \mbox{\hyperlink{failures_8c_a09b976185e7e818b4324aee696332f9a}{Output\_CRK\_GAP\_NOT\_DET}}(\textcolor{keywordtype}{void})\{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00936}00936     }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00937}00937     \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_a66d1dc17c3815ec543259ff6cd358896}{CRK\_signal}} == \textcolor{keyword}{true})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00938}00938     \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00939}00939         \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_ab187efc17c279156d2fbe40791bd1182}{teeth\_count\_CRK}} != \mbox{\hyperlink{failures_8c_a05e75142d685997ef05acf36e45a356a}{number\_teeth\_between\_gaps}})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00940}00940         \{ }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00941}00941             \mbox{\hyperlink{failures_8c_a0afd59a7cbe5941cd4735019f3431de4}{teeth\_counter\_CRK\_GAP\_NOT\_DET}} = \mbox{\hyperlink{failures_8c_ab187efc17c279156d2fbe40791bd1182}{teeth\_count\_CRK}} + 1;    }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00942}00942         \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00943}00943         \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_ab187efc17c279156d2fbe40791bd1182}{teeth\_count\_CRK}} == \mbox{\hyperlink{failures_8c_a05e75142d685997ef05acf36e45a356a}{number\_teeth\_between\_gaps}})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00944}00944         \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00945}00945             \mbox{\hyperlink{failures_8c_a0afd59a7cbe5941cd4735019f3431de4}{teeth\_counter\_CRK\_GAP\_NOT\_DET}} = 1;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00946}00946         \} }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00947}00947     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00948}00948  }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00949}00949     \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_a7727b0a0a81b3a64c19a0e84fd498c5b}{CRK\_synch}} == \textcolor{keyword}{false})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00950}00950     \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00951}00951         LATGbits.LATG6 = 1;      }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00952}00952     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00953}00953     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_a7727b0a0a81b3a64c19a0e84fd498c5b}{CRK\_synch}} == \textcolor{keyword}{true})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00954}00954     \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00955}00955         \mbox{\hyperlink{failures_8c_a3484fce8f4223ea262d178cbea751f06}{Output\_CRK\_no\_failure}}();  }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00956}00956         }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00957}00957         \textcolor{keywordflow}{if}((\mbox{\hyperlink{failures_8c_a0afd59a7cbe5941cd4735019f3431de4}{teeth\_counter\_CRK\_GAP\_NOT\_DET}} == \mbox{\hyperlink{failures_8c_a05e75142d685997ef05acf36e45a356a}{number\_teeth\_between\_gaps}} ) \&\& \mbox{\hyperlink{failures_8c_aa009bc0b69bbb38154e60d1428ffc33c}{failure\_active}} == \textcolor{keyword}{false})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00958}00958         \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00959}00959             \mbox{\hyperlink{failures_8c_aa009bc0b69bbb38154e60d1428ffc33c}{failure\_active}} = \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00960}00960             \mbox{\hyperlink{p33_f_j256_g_p710_a_8h_a091f7a4f20332abe80463f72a67a3690}{PR8}} = \mbox{\hyperlink{failures_8c_a8bc6e99e5b5b1814027ef2f4c2524e8f}{T\_TOOTH\_RAW}} * 1.5 ; \textcolor{comment}{// to be in the midle of the gap }}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00961}00961 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00962}00962         \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00963}00963         \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}((\mbox{\hyperlink{failures_8c_aa009bc0b69bbb38154e60d1428ffc33c}{failure\_active}} == \textcolor{keyword}{true}) \&\& (\mbox{\hyperlink{failures_8c_a66d1dc17c3815ec543259ff6cd358896}{CRK\_signal}} == \textcolor{keyword}{true}))}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00964}00964         \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00965}00965             T8CONbits.TON = 1;  }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00966}00966         \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00967}00967     \}  }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00968}00968 \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00969}00969 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00970}00970 \textcolor{comment}{//\#\# CRK\_GAP\_NOT\_DET\_reset}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00971}\mbox{\hyperlink{failures_8h_a7a130c71bb4f8b503445fa58eeea5f1c}{00971}} \textcolor{keywordtype}{void} \mbox{\hyperlink{failures_8c_a7a130c71bb4f8b503445fa58eeea5f1c}{CRK\_GAP\_NOT\_DET\_reset}}(\textcolor{keywordtype}{void})\{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00972}00972     \mbox{\hyperlink{failures_8c_ae1dbfa52ababd302f93dbe4fd0620f8f}{failure\_active\_CAM\_blank\_out}} = \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00973}00973     \mbox{\hyperlink{failures_8c_aa009bc0b69bbb38154e60d1428ffc33c}{failure\_active}} = \textcolor{keyword}{false};      }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00974}00974     \mbox{\hyperlink{timer_8h_a51d0e1103eb944c46ccc15d486804638}{Timer8Init}}();}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00975}00975 \}    }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00976}00976 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00977}00977 \textcolor{comment}{//\#\# Output\_SEG\_ADP\_ER\_LIM}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00978}\mbox{\hyperlink{failures_8h_aeb3f2f2e16c2bb9e70db27b7e132a754}{00978}} \textcolor{keywordtype}{void} \mbox{\hyperlink{failures_8c_aeb3f2f2e16c2bb9e70db27b7e132a754}{Output\_SEG\_ADP\_ER\_LIM}}(\textcolor{keywordtype}{void})\{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00979}00979     \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_a66d1dc17c3815ec543259ff6cd358896}{CRK\_signal}} == \textcolor{keyword}{true})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00980}00980     \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00981}00981         \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_ab187efc17c279156d2fbe40791bd1182}{teeth\_count\_CRK}} != \mbox{\hyperlink{failures_8c_a05e75142d685997ef05acf36e45a356a}{number\_teeth\_between\_gaps}})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00982}00982         \{ }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00983}00983             \mbox{\hyperlink{failures_8c_ae22dd0b559e11e340eacb7e5acea6269}{teeth\_counter\_SEG\_ADP\_ER\_LIM}} = \mbox{\hyperlink{failures_8c_ab187efc17c279156d2fbe40791bd1182}{teeth\_count\_CRK}} + 1;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00984}00984         \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00985}00985         \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_ab187efc17c279156d2fbe40791bd1182}{teeth\_count\_CRK}} == \mbox{\hyperlink{failures_8c_a05e75142d685997ef05acf36e45a356a}{number\_teeth\_between\_gaps}})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00986}00986         \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00987}00987             \mbox{\hyperlink{failures_8c_ae22dd0b559e11e340eacb7e5acea6269}{teeth\_counter\_SEG\_ADP\_ER\_LIM}} = 1;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00988}00988         \} }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00989}00989     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00990}00990     }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00991}00991     \textcolor{keywordflow}{if}((\mbox{\hyperlink{failures_8c_aa009bc0b69bbb38154e60d1428ffc33c}{failure\_active}} == \textcolor{keyword}{true}) \&\& (\mbox{\hyperlink{failures_8c_a66d1dc17c3815ec543259ff6cd358896}{CRK\_signal}} == \textcolor{keyword}{false}))}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00992}00992     \{  \textcolor{comment}{// on the falling edge of the CRK start the delay timer}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00993}00993         T7CONbits.TON = 1;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00994}00994         LATGbits.LATG6 = 1; }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00995}00995 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00996}00996     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00997}00997     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}((\mbox{\hyperlink{failures_8c_aa009bc0b69bbb38154e60d1428ffc33c}{failure\_active}} == \textcolor{keyword}{true}) \&\& (\mbox{\hyperlink{failures_8c_a66d1dc17c3815ec543259ff6cd358896}{CRK\_signal}} == \textcolor{keyword}{true}))}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00998}00998     \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l00999}00999         \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_a36381716e95bbb3090a24ba5260bf35d}{failure\_passed}} == \textcolor{keyword}{true})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01000}01000         \{  \textcolor{comment}{// if failure on the falling edge of the CRK is allready set}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01001}01001             LATGbits.LATG6 = 0;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01002}01002             T7CONbits.TON = 1;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01003}01003         \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01004}01004         \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01005}01005         \{  \textcolor{comment}{// if failure on the falling edge of the CRK is still not set, this happens a lot on lower frquency}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01006}01006             \mbox{\hyperlink{failures_8c_ae1abad2ed2b92b6b82254dc4debca57a}{failure\_waiting}} = \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01007}01007         \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01008}01008     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01009}01009     \textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01010}01010         \mbox{\hyperlink{failures_8c_a3484fce8f4223ea262d178cbea751f06}{Output\_CRK\_no\_failure}}();   }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01011}01011     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01012}01012     }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01013}01013     \textcolor{keywordflow}{if} ( \mbox{\hyperlink{failures_8c_ae22dd0b559e11e340eacb7e5acea6269}{teeth\_counter\_SEG\_ADP\_ER\_LIM}} == (( (720 / (\mbox{\hyperlink{failures_8c_a896b3f467a176975dc687f95f1a1367e}{number\_segments\_CRK}} * \mbox{\hyperlink{failures_8c_af3c32be62d5f2307cc01a316c01ba3dc}{revolution\_CRK}}) )  + (\mbox{\hyperlink{failures_8c_a30aee154f6067d411dbf4839fdc3cc93}{first\_seg\_angle}} / \mbox{\hyperlink{failures_8c_af3c32be62d5f2307cc01a316c01ba3dc}{revolution\_CRK}} )+ (\textcolor{keywordtype}{int})(\mbox{\hyperlink{failures_8c_a2522b63ff5828da052d1c8b3ee9c157c}{tdc\_to\_gap}} / \mbox{\hyperlink{failures_8c_af3c32be62d5f2307cc01a316c01ba3dc}{revolution\_CRK}}) + 1)))}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01014}01014     \{ \textcolor{comment}{// if we are one tooth befor the end of the first segment}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01015}01015         \textcolor{keywordtype}{double} delayTimer = \mbox{\hyperlink{failures_8c_aeaf45155613124740bc925868c135034}{crk\_delay\_SEG\_ADP\_ER\_LIM}} * (\mbox{\hyperlink{failures_8c_a8bc6e99e5b5b1814027ef2f4c2524e8f}{T\_TOOTH\_RAW}}/ \mbox{\hyperlink{failures_8c_af3c32be62d5f2307cc01a316c01ba3dc}{revolution\_CRK}});}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01016}01016         \mbox{\hyperlink{p33_f_j256_g_p710_a_8h_a358042ac66961b04c718ccd323d1ccf7}{PR7}} =  delayTimer * 8; }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01017}01017         \textcolor{comment}{// set de delay for the timer, times 8 because the timer 7 has a prescale of 1:8 and T\_TOOTH\_RAW has 1:64}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01018}01018         \mbox{\hyperlink{failures_8c_aa009bc0b69bbb38154e60d1428ffc33c}{failure\_active}} = \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01019}01019     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01020}01020 \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01021}01021 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01022}01022 \textcolor{comment}{//\#\# SEG\_ADP\_ER\_LIM\_reset}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01023}\mbox{\hyperlink{failures_8h_a9b4c0604e27a0e274bb04bf3d34b22d6}{01023}} \textcolor{keywordtype}{void} \mbox{\hyperlink{failures_8c_a9b4c0604e27a0e274bb04bf3d34b22d6}{SEG\_ADP\_ER\_LIM\_reset}}(\textcolor{keywordtype}{void})\{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01024}01024     \mbox{\hyperlink{failures_8c_aa009bc0b69bbb38154e60d1428ffc33c}{failure\_active}} = \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01025}01025     \mbox{\hyperlink{failures_8c_a36381716e95bbb3090a24ba5260bf35d}{failure\_passed}} = \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01026}01026     \mbox{\hyperlink{failures_8c_ae1abad2ed2b92b6b82254dc4debca57a}{failure\_waiting}} = \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01027}01027     \mbox{\hyperlink{timer_8h_ac8159d78a79df090ed27f08dc4b1ade7}{Timer7Init}}();}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01028}01028     \mbox{\hyperlink{timer_8h_a51d0e1103eb944c46ccc15d486804638}{Timer8Init}}();}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01029}01029     \mbox{\hyperlink{failures_8c_aebc1cf24310f46e5fd32d36c9b93edb5}{timer\_Counter\_SEG\_ADP\_ER\_LIM}} = 0;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01030}01030 \}    }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01031}01031 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01032}01032 \textcolor{comment}{//\#\# Output\_CRK\_pulse\_duration}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01033}\mbox{\hyperlink{failures_8h_ad459ce1c26c453348a480e21725663b0}{01033}} \textcolor{keywordtype}{void} \mbox{\hyperlink{failures_8c_ad459ce1c26c453348a480e21725663b0}{Output\_CRK\_pulse\_duration}}(\textcolor{keywordtype}{void})\{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01034}01034     \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_a66d1dc17c3815ec543259ff6cd358896}{CRK\_signal}} == \textcolor{keyword}{false})\{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01035}01035         T7CONbits.TON = 1;  \textcolor{comment}{//start the timer }}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01036}01036         LATGbits.LATG6 = 0;  }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01037}01037     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01038}01038     \textcolor{keywordflow}{else}\{\}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01039}01039 \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01040}01040 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01041}01041 \textcolor{comment}{//\#\# CRK\_PLS\_ORNG\_reset}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01042}\mbox{\hyperlink{failures_8h_ab58329ba2cc19b5be493a8a632f996f9}{01042}} \textcolor{keywordtype}{void} \mbox{\hyperlink{failures_8c_ab58329ba2cc19b5be493a8a632f996f9}{CRK\_pulse\_duration\_reset}}(\textcolor{keywordtype}{void})\{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01043}01043     \mbox{\hyperlink{timer_8h_ac8159d78a79df090ed27f08dc4b1ade7}{Timer7Init}}();}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01044}01044     \mbox{\hyperlink{failures_8c_aa009bc0b69bbb38154e60d1428ffc33c}{failure\_active}} = \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01045}01045 \} }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01046}01046 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01047}01047 \textcolor{comment}{//\#\# Output\_POSN\_ENG\_STST}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01048}\mbox{\hyperlink{failures_8h_ad206b129f04322b488059719a3757196}{01048}} \textcolor{keywordtype}{void} \mbox{\hyperlink{failures_8c_ad206b129f04322b488059719a3757196}{Output\_POSN\_ENG\_STST}}(\textcolor{keywordtype}{void})\{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01049}01049     }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01050}01050     \textcolor{keywordflow}{if}((\mbox{\hyperlink{failures_8c_a66d1dc17c3815ec543259ff6cd358896}{CRK\_signal}} == \textcolor{keyword}{false}) \&\& (\mbox{\hyperlink{failures_8c_aa009bc0b69bbb38154e60d1428ffc33c}{failure\_active}} == \textcolor{keyword}{true}))\{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01051}01051         \mbox{\hyperlink{failures_8c_af4e125ce632016b07d28f6ac94a33643}{counter\_POSN\_ENG\_STST}} ++; \textcolor{comment}{// counte the teeth}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01052}01052         LATGbits.LATG6 = 1; \textcolor{comment}{// skip the tooth}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01053}01053         }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01054}01054         \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_af4e125ce632016b07d28f6ac94a33643}{counter\_POSN\_ENG\_STST}} >= \mbox{\hyperlink{failures_8c_a21b65a4cdebaef539c0958653e7115da}{crk\_teeth\_off\_POSN\_ENG\_STST}})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01055}01055         \{ \textcolor{comment}{// if number of teeth skip is done stop failure }}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01056}01056             \mbox{\hyperlink{failures_8c_aa009bc0b69bbb38154e60d1428ffc33c}{failure\_active}} = \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01057}01057             \mbox{\hyperlink{failures_8c_af4e125ce632016b07d28f6ac94a33643}{counter\_POSN\_ENG\_STST}} = 0;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01058}01058         \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01059}01059     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01060}01060     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (\mbox{\hyperlink{failures_8c_aa009bc0b69bbb38154e60d1428ffc33c}{failure\_active}} == \textcolor{keyword}{false})\{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01061}01061     \mbox{\hyperlink{failures_8c_a3484fce8f4223ea262d178cbea751f06}{Output\_CRK\_no\_failure}}();}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01062}01062     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01063}01063 \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01064}01064 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01065}01065 \textcolor{comment}{//\#\# POSN\_ENG\_STST\_LOSS\_reset}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01066}\mbox{\hyperlink{failures_8h_ac2f8acabc9f03c44dbd82b7a84ca6ea1}{01066}} \textcolor{keywordtype}{void} \mbox{\hyperlink{failures_8c_ac2f8acabc9f03c44dbd82b7a84ca6ea1}{POSN\_ENG\_STST\_reset}}(\textcolor{keywordtype}{void})\{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01067}01067     \mbox{\hyperlink{failures_8c_aa009bc0b69bbb38154e60d1428ffc33c}{failure\_active}} = \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01068}01068 \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01069}01069 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01070}01070     }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01071}01071  \textcolor{comment}{//\#\# Output\_CAM\_PAT\_ERR    }}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01072}01072     }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01073}\mbox{\hyperlink{failures_8h_ace7d5fffa73e97bc37f6432a03b36d51}{01073}} \textcolor{keywordtype}{void} \mbox{\hyperlink{failures_8c_ab67a5788e21fda86360207c9df71f75a}{Output\_CAM\_PAT\_ERR}}(\textcolor{keywordtype}{int} cam\_id)\{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01074}01074     \textcolor{keywordflow}{switch}(\mbox{\hyperlink{failures_8c_a1ab47ef12d9fd5a0a0c37354af662f7d}{active\_CAM\_edges}}[cam\_id])}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01075}01075     \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01076}01076         \textcolor{keywordflow}{case} \textcolor{charliteral}{'b'}:}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01077}01077         \{   }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01078}01078             \mbox{\hyperlink{failures_8c_ad7903904908b0166e54d513591340b4c}{active\_CAM\_edges\_counter}}[cam\_id] ++; }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01079}01079             \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_ad7903904908b0166e54d513591340b4c}{active\_CAM\_edges\_counter}}[cam\_id] >= 7 )}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01080}01080             \{ \textcolor{comment}{// after an abitrary number of CAM edges skip the next falling edge to generate the failure}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01081}01081                 \textcolor{keywordflow}{if} (\mbox{\hyperlink{failures_8c_a4846863c93975e5d88fbd9b4ecc57d20}{CAM\_signal}}[cam\_id] == \textcolor{keyword}{false})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01082}01082                 \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01083}01083                     \textcolor{keywordflow}{if}(cam\_id == 0)\{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01084}01084                         LATGbits.LATG7 = 1;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01085}01085                     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01086}01086                     \textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01087}01087                        LATGbits.LATG8 = 1; }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01088}01088                     \}                 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01089}01089                 \} }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01090}01090                 \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (\mbox{\hyperlink{failures_8c_a4846863c93975e5d88fbd9b4ecc57d20}{CAM\_signal}}[cam\_id] == \textcolor{keyword}{true})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01091}01091                 \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01092}01092                     \textcolor{keywordflow}{if}(cam\_id == 0)\{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01093}01093                         LATGbits.LATG7 = 0;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01094}01094                     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01095}01095                     \textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01096}01096                        LATGbits.LATG8 = 0; }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01097}01097                     \}           }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01098}01098                 \}   }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01099}01099                 \mbox{\hyperlink{failures_8c_ad7903904908b0166e54d513591340b4c}{active\_CAM\_edges\_counter}}[cam\_id] = 0;                }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01100}01100             \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01101}01101             \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01102}01102             \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01103}01103                 \mbox{\hyperlink{failures_8c_a0556928e41411f2cac11ec82fc8d8ccb}{Output\_CAM\_no\_failure}}(cam\_id);}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01104}01104             \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01105}01105             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01106}01106         \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01107}01107         \textcolor{keywordflow}{case} \textcolor{charliteral}{'f'}:}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01108}01108         \{   }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01109}01109             \textcolor{keywordflow}{if} (\mbox{\hyperlink{failures_8c_a4846863c93975e5d88fbd9b4ecc57d20}{CAM\_signal}}[cam\_id] == \textcolor{keyword}{false})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01110}01110             \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01111}01111                 \mbox{\hyperlink{failures_8c_ad7903904908b0166e54d513591340b4c}{active\_CAM\_edges\_counter}}[cam\_id] ++;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01112}01112                 \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_ad7903904908b0166e54d513591340b4c}{active\_CAM\_edges\_counter}}[cam\_id] >= 7)}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01113}01113                 \{ \textcolor{comment}{// after an abitrary number of CAM edges skip this edge in output to generate the failure}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01114}01114                     \mbox{\hyperlink{failures_8c_ad7903904908b0166e54d513591340b4c}{active\_CAM\_edges\_counter}}[cam\_id] =0; }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01115}01115                     \textcolor{keywordflow}{if}(cam\_id == 0)\{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01116}01116                         LATGbits.LATG7 = 1;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01117}01117                     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01118}01118                     \textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01119}01119                        LATGbits.LATG8 = 1; }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01120}01120                     \}   }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01121}01121                 \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01122}01122                 \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01123}01123                 \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01124}01124                     \mbox{\hyperlink{failures_8c_a0556928e41411f2cac11ec82fc8d8ccb}{Output\_CAM\_no\_failure}}(cam\_id);}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01125}01125                 \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01126}01126             \}             }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01127}01127             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01128}01128         \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01129}01129         \textcolor{keywordflow}{case} \textcolor{charliteral}{'r'}:}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01130}01130         \{   }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01131}01131             \textcolor{keywordflow}{if} (\mbox{\hyperlink{failures_8c_a4846863c93975e5d88fbd9b4ecc57d20}{CAM\_signal}}[cam\_id] == \textcolor{keyword}{true})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01132}01132             \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01133}01133                 \mbox{\hyperlink{failures_8c_ad7903904908b0166e54d513591340b4c}{active\_CAM\_edges\_counter}}[cam\_id] ++;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01134}01134                 \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_ad7903904908b0166e54d513591340b4c}{active\_CAM\_edges\_counter}}[cam\_id] >= 7)}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01135}01135                 \{ \textcolor{comment}{// after an abitrary number of CAM edges skip this edge in output to generate the failure}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01136}01136                     \mbox{\hyperlink{failures_8c_ad7903904908b0166e54d513591340b4c}{active\_CAM\_edges\_counter}}[cam\_id] =0; }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01137}01137                     \textcolor{keywordflow}{if}(cam\_id == 0)\{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01138}01138                         LATGbits.LATG7 = 0;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01139}01139                     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01140}01140                     \textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01141}01141                        LATGbits.LATG8 = 0; }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01142}01142                     \} }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01143}01143                 \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01144}01144                 \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01145}01145                 \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01146}01146                     \mbox{\hyperlink{failures_8c_a0556928e41411f2cac11ec82fc8d8ccb}{Output\_CAM\_no\_failure}}(cam\_id);}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01147}01147                 \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01148}01148             \}    }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01149}01149             \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01150}01150         \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01151}01151     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01152}01152 \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01153}01153     }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01154}01154  \textcolor{comment}{//\#\# CAM\_PAT\_ERR\_reset   }}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01155}01155     }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01156}\mbox{\hyperlink{failures_8h_a30f15834dbe25caba85572e172b9bc77}{01156}} \textcolor{keywordtype}{void} \mbox{\hyperlink{failures_8c_a30f15834dbe25caba85572e172b9bc77}{CAM\_PAT\_ERR\_reset}}()\{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01157}01157     \mbox{\hyperlink{failures_8c_ad7903904908b0166e54d513591340b4c}{active\_CAM\_edges\_counter}}[0] = 0; \textcolor{comment}{// reset counter for CAM1}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01158}01158     \mbox{\hyperlink{failures_8c_ad7903904908b0166e54d513591340b4c}{active\_CAM\_edges\_counter}}[1] = 0; \textcolor{comment}{// reset counter for CAM2}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01159}01159     \mbox{\hyperlink{failures_8c_a0556928e41411f2cac11ec82fc8d8ccb}{Output\_CAM\_no\_failure}}(0); \textcolor{comment}{// reset CAM1}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01160}01160     \mbox{\hyperlink{failures_8c_a0556928e41411f2cac11ec82fc8d8ccb}{Output\_CAM\_no\_failure}}(1); \textcolor{comment}{// reset CAM2}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01161}01161 \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01162}01162 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01163}01163 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01164}01164 \textcolor{comment}{//\#\# Output\_SC\_CAM\_CRK}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01165}\mbox{\hyperlink{failures_8h_aa70632cb81cd10d58b42b00becf53367}{01165}} \textcolor{keywordtype}{void} \mbox{\hyperlink{failures_8c_a682f1aff804ad2665cb73cb7aa0bb324}{Output\_SC\_CAM\_CRK}}(\textcolor{keywordtype}{int} cam\_id)\{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01166}01166     }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01167}01167     \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_aa009bc0b69bbb38154e60d1428ffc33c}{failure\_active}} == \textcolor{keyword}{true})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01168}01168     \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01169}01169         \textcolor{keywordflow}{switch}(\mbox{\hyperlink{failures_8c_a4337a7e2ea5f37681e9765a379c42831}{sc\_type\_SC\_CAM\_CRK}})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01170}01170         \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01171}01171             \textcolor{keywordflow}{case}(1): \textcolor{comment}{// CrkScg}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01172}01172             \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01173}01173                 LATGbits.LATG6 = 0;  }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01174}01174                 \mbox{\hyperlink{failures_8c_a0556928e41411f2cac11ec82fc8d8ccb}{Output\_CAM\_no\_failure}}(cam\_id); }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01175}01175                 \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01176}01176             \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01177}01177             \textcolor{keywordflow}{case}(2): \textcolor{comment}{// CrkScb}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01178}01178             \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01179}01179                 LATGbits.LATG6 = 1;  }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01180}01180                 \mbox{\hyperlink{failures_8c_a0556928e41411f2cac11ec82fc8d8ccb}{Output\_CAM\_no\_failure}}(cam\_id);}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01181}01181                 \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01182}01182             \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01183}01183             \textcolor{keywordflow}{case}(3): \textcolor{comment}{// CamScg}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01184}01184             \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01185}01185                 \textcolor{keywordflow}{if}(cam\_id == 0)\{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01186}01186                     LATGbits.LATG7 = 0;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01187}01187                 \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01188}01188                 \textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01189}01189                    LATGbits.LATG8 = 0; }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01190}01190                 \}  }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01191}01191                 \mbox{\hyperlink{failures_8c_a3484fce8f4223ea262d178cbea751f06}{Output\_CRK\_no\_failure}}();}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01192}01192                 \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01193}01193             \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01194}01194             \textcolor{keywordflow}{case}(4): \textcolor{comment}{// CamScb}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01195}01195             \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01196}01196                 \textcolor{keywordflow}{if}(cam\_id == 0)\{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01197}01197                     LATGbits.LATG7 = 1;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01198}01198                 \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01199}01199                 \textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01200}01200                    LATGbits.LATG8 = 1; }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01201}01201                 \} }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01202}01202                 \mbox{\hyperlink{failures_8c_a3484fce8f4223ea262d178cbea751f06}{Output\_CRK\_no\_failure}}();}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01203}01203                 \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01204}01204             \}                                    }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01205}01205         \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01206}01206     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01207}01207     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (\mbox{\hyperlink{failures_8c_aa009bc0b69bbb38154e60d1428ffc33c}{failure\_active}} == \textcolor{keyword}{false})\{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01208}01208     \mbox{\hyperlink{failures_8c_a3484fce8f4223ea262d178cbea751f06}{Output\_CRK\_no\_failure}}();}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01209}01209     \mbox{\hyperlink{failures_8c_a0556928e41411f2cac11ec82fc8d8ccb}{Output\_CAM\_no\_failure}}(cam\_id);}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01210}01210     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01211}01211 \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01212}01212 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01213}01213 \textcolor{comment}{//\#\# POSN\_ENG\_STST\_LOSS\_reset}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01214}\mbox{\hyperlink{failures_8h_af5a37ba4948cbb330017428e9863281e}{01214}} \textcolor{keywordtype}{void} \mbox{\hyperlink{failures_8c_af5a37ba4948cbb330017428e9863281e}{SC\_CAM\_CRK\_reset}}(\textcolor{keywordtype}{void})\{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01215}01215     \mbox{\hyperlink{failures_8c_aa009bc0b69bbb38154e60d1428ffc33c}{failure\_active}} = \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01216}01216     \mbox{\hyperlink{failures_8c_a3484fce8f4223ea262d178cbea751f06}{Output\_CRK\_no\_failure}}();}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01217}01217     \mbox{\hyperlink{failures_8c_a0556928e41411f2cac11ec82fc8d8ccb}{Output\_CAM\_no\_failure}}(0); \textcolor{comment}{// reset CAM1}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01218}01218     \mbox{\hyperlink{failures_8c_a0556928e41411f2cac11ec82fc8d8ccb}{Output\_CAM\_no\_failure}}(1); \textcolor{comment}{// reset CAM2}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01219}01219 \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01220}01220 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01221}01221 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01222}01222 \textcolor{comment}{//\#\#\# Failure Processing \#\#\#}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01223}\mbox{\hyperlink{failures_8h_aeda4f321c053b7b8d9a10a47228988d8}{01223}}     \textcolor{keywordtype}{void} \mbox{\hyperlink{failures_8c_a124dbbcadfb06406cf91d1201bb05c68}{Failure\_processing}}(\textcolor{keywordtype}{char} failure\_ident)}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01224}01224     \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01225}01225         \textcolor{keywordflow}{switch}(failure\_ident)}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01226}01226         \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01227}01227             \textcolor{keywordflow}{case} \textcolor{charliteral}{'1'}:}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01228}01228                 \{   }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01229}01229                     \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01230}01230                 \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01231}01231             \textcolor{keywordflow}{case}\textcolor{charliteral}{'2'}:}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01232}01232                 \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01233}01233                     \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01234}01234                 \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01235}01235             \textcolor{keywordflow}{case}\textcolor{charliteral}{'3'}:}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01236}01236                 \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01237}01237                     \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01238}01238                 \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01239}01239             \textcolor{keywordflow}{case} \textcolor{charliteral}{'4'}:}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01240}01240                 \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01241}01241                     \textcolor{comment}{//CRK\_RUN\_OUT();}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01242}01242                     \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01243}01243                 \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01244}01244             \textcolor{keywordflow}{case} \textcolor{charliteral}{'7'}:}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01245}01245                 \{       }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01246}01246                     \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01247}01247                 \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01248}01248             \textcolor{keywordflow}{case} \textcolor{charliteral}{'8'}:}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01249}01249                 \{   }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01250}01250                     \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01251}01251                 \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01252}01252             \textcolor{keywordflow}{case} \textcolor{charliteral}{'9'}: \textcolor{comment}{// Cam delay}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01253}01253                 \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01254}01254                     \textcolor{keywordflow}{if}(\mbox{\hyperlink{failures_8c_a98358735d6113042210027fe829762de}{active\_cam\_failure}} == 2)\{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01255}01255                         \mbox{\hyperlink{failures_8c_ade42031293947ccd593f610346d343a9}{CAM\_delay}} (0); \textcolor{comment}{// for CAM1}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01256}01256                         \mbox{\hyperlink{failures_8c_ade42031293947ccd593f610346d343a9}{CAM\_delay}} (1); \textcolor{comment}{// for CAM2}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01257}01257                     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01258}01258                     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}( \mbox{\hyperlink{failures_8c_a98358735d6113042210027fe829762de}{active\_cam\_failure}} == 1)\{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01259}01259                         \mbox{\hyperlink{failures_8c_ade42031293947ccd593f610346d343a9}{CAM\_delay}} (1); \textcolor{comment}{// for CAM2                        }}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01260}01260                     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01261}01261                     \textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01262}01262                         \mbox{\hyperlink{failures_8c_ade42031293947ccd593f610346d343a9}{CAM\_delay}} (0); \textcolor{comment}{// for CAM1}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01263}01263                     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01264}01264                     \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01265}01265                 \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01266}01266             \textcolor{keywordflow}{case} \textcolor{charliteral}{'a'}:}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01267}01267                 \{           }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01268}01268                     \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01269}01269                 \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01270}01270 \textcolor{comment}{//            case 'b': //}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01271}01271 \textcolor{comment}{//              \{           }}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01272}01272 \textcolor{comment}{//                  break;}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01273}01273 \textcolor{comment}{//              \}}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01274}01274             \textcolor{keywordflow}{case} \textcolor{charliteral}{'f'}:}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01275}01275                 \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01276}01276                     \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01277}01277                 \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01278}01278             \textcolor{keywordflow}{case} \textcolor{charliteral}{'h'}:}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01279}01279                 \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01280}01280                     \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01281}01281                 \} }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01282}01282             \textcolor{keywordflow}{case} \textcolor{charliteral}{'i'}:}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01283}01283                 \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01284}01284                     \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01285}01285                 \} }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01286}01286             \textcolor{keywordflow}{case} \textcolor{charliteral}{'j'}:}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01287}01287                 \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01288}01288                     \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01289}01289                 \}      }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01290}01290             \textcolor{keywordflow}{case} \textcolor{charliteral}{'k'}:}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01291}01291                 \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01292}01292                     \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01293}01293                 \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01294}01294             \textcolor{keywordflow}{case} \textcolor{charliteral}{'l'}:}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01295}01295                 \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01296}01296                     \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01297}01297                 \} }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01298}01298             \textcolor{keywordflow}{case} \textcolor{charliteral}{'m'}:}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01299}01299                 \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01300}01300                     \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01301}01301                 \} }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01302}01302             \textcolor{keywordflow}{default}:}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01303}01303                 \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01304}01304                     \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01305}01305                 \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01306}01306         \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01307}01307     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01308}01308 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01309}01309 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01310}01310 \textcolor{comment}{//\#\#\# Failure Reset \#\#\#}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01311}\mbox{\hyperlink{failures_8h_a494682d906c6e4e666f46a15c2aed5eb}{01311}}     \textcolor{keywordtype}{void} \mbox{\hyperlink{failures_8c_a494682d906c6e4e666f46a15c2aed5eb}{Failure\_reset}}(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01312}01312     \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01313}01313     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01314}01314 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01315}01315 \textcolor{comment}{//\#\#\# Failure Synchronization Reset \#\#\#}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01316}\mbox{\hyperlink{failures_8h_a6ea522e6a341dc0a0c127e8892f44c11}{01316}}     \textcolor{keywordtype}{void} \mbox{\hyperlink{failures_8c_a155e0b42be698fd658fea6a0dbb8608b}{Failure\_synch\_reset}}(\textcolor{keywordtype}{char} failure\_ident)}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01317}01317     \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01318}01318         \textcolor{keywordflow}{switch}(failure\_ident)}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01319}01319         \{   }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01320}01320             \textcolor{keywordflow}{case} \textcolor{charliteral}{'4'}:}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01321}01321                 \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01322}01322                     \textcolor{comment}{//CRK\_RUN\_OUT}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01323}01323                     \mbox{\hyperlink{failures_8c_aae7f39efa073aa6122e590548bf2539d}{CRK\_RUN\_OUT\_reset}}();}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01324}01324                     \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01325}01325                 \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01326}01326             \textcolor{keywordflow}{case} \textcolor{charliteral}{'6'}:}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01327}01327                 \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01328}01328                     \textcolor{comment}{//CRK\_TOOTH\_PER}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01329}01329                     \mbox{\hyperlink{failures_8c_a0d2b84537acea4ac18ccc2fa5fdf8005}{CRK\_TOOTH\_PER\_reset}}();}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01330}01330                     \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01331}01331                 \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01332}01332             \textcolor{keywordflow}{case} \textcolor{charliteral}{'7'}:}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01333}01333                 \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01334}01334                     \textcolor{comment}{//CAM\_DELAY(CAM\_TOOTH\_OFF)}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01335}01335                     \mbox{\hyperlink{failures_8c_ab03c344f7040d93549b7a6fc4816b61b}{CAM\_delay\_reset}}();}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01336}01336                     \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01337}01337                 \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01338}01338             \textcolor{keywordflow}{default}:}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01339}01339                 \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01340}01340             }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01341}01341         \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01342}01342     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01343}01343 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01344}01344 \textcolor{comment}{//\#\#\# Former teeth time calculation \#\#\#}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01345}\mbox{\hyperlink{failures_8h_a5a07bf22c6553e23b66d7b26f06d286c}{01345}}     \textcolor{keywordtype}{double} \mbox{\hyperlink{failures_8c_a3714f6c2b6cf52e7944ee9352143e105}{Former\_teeth\_time\_calculation}}(\textcolor{keywordtype}{long} t\_tooth, \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} teeth\_count, \textcolor{keywordtype}{int} numb\_miss\_teeth)}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01346}01346     \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01347}01347         \textcolor{keywordtype}{double} form\_teeth\_time;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01348}01348         }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01349}01349         form\_teeth\_time = (double)t\_tooth;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01350}01350 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01351}01351         \textcolor{keywordflow}{if}(teeth\_count == 1)}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01352}01352         \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01353}01353             form\_teeth\_time = form\_teeth\_time/(double)(numb\_miss\_teeth + 1);}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01354}01354         \}       }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01355}01355 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01356}01356         \textcolor{keywordflow}{return}(form\_teeth\_time);}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01357}01357     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01358}01358 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01359}01359 \textcolor{comment}{//\#\#\# Former teeth time calculation output \#\#\#}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01360}\mbox{\hyperlink{failures_8h_aaedcc3fbf68595dee835b43fea8bd48c}{01360}}     \textcolor{keywordtype}{double} \mbox{\hyperlink{failures_8c_acb639aa52e59059a33fa47ad4e7a9dc6}{Former\_teeth\_time\_calculation\_output}}(\textcolor{keywordtype}{long} t\_tooth, \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} teeth\_count, \textcolor{keywordtype}{int} numb\_miss\_teeth)}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01361}01361     \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01362}01362         \textcolor{keywordtype}{double} form\_teeth\_time;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01363}01363         }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01364}01364         form\_teeth\_time = (double)t\_tooth;}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01365}01365 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01366}01366         \textcolor{keywordflow}{if}(teeth\_count == \mbox{\hyperlink{failures_8c_a05e75142d685997ef05acf36e45a356a}{number\_teeth\_between\_gaps}})}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01367}01367         \{}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01368}01368             form\_teeth\_time = form\_teeth\_time/(double)(numb\_miss\_teeth + 1);}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01369}01369         \}       }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01370}01370 }
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01371}01371         \textcolor{keywordflow}{return}(form\_teeth\_time);}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01372}01372     \}}
+\DoxyCodeLine{\Hypertarget{failures_8c_source_l01373}01373 }
+
+\end{DoxyCode}

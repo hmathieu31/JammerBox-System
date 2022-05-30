@@ -1,0 +1,41 @@
+/* Arrowcircleup */
+
+p {
+  margin: 0;
+}
+
+.clip-contents {
+  overflow: hidden;
+}
+
+.flex-col-hstart-vstart {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.topleft {
+  position: fixed;
+  top: 25px;
+  left: 25px;
+}
+
+.arrow-circle-up {
+  background: url(../../public/returnArrow.png) no-repeat;
+  background-size: 100% 100%;
+  cursor: pointer;
+  border: none;
+  width: 50px;
+  height: 50px;
+  transition: all 250ms;
+}
+
+.arrow-circle-up:hover {
+  transform: scale(1.1)
+}
+
+.group {
+  width: 100%;
+  height: 100%;
+}

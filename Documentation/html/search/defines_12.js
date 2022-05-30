@@ -1,0 +1,20 @@
+var searchData=
+[
+  ['u1brg_0',['U1BRG',['../p33_f_j256_g_p710_a_8h.html#af224f63bf94749550dd6ce2c27b94ae9',1,'p33FJ256GP710A.h']]],
+  ['u1mode_1',['U1MODE',['../p33_f_j256_g_p710_a_8h.html#a237ea42cb0f16b71466258d29eace46a',1,'p33FJ256GP710A.h']]],
+  ['u1rxreg_2',['U1RXREG',['../p33_f_j256_g_p710_a_8h.html#a2839865906f595ec3f62b0e4b6de292f',1,'p33FJ256GP710A.h']]],
+  ['u1sta_3',['U1STA',['../p33_f_j256_g_p710_a_8h.html#a4a0654364c50637a955421d4c439506a',1,'p33FJ256GP710A.h']]],
+  ['u1txreg_4',['U1TXREG',['../p33_f_j256_g_p710_a_8h.html#a0267c28d35d51406a083c1aacf20c9ea',1,'p33FJ256GP710A.h']]],
+  ['u2brg_5',['U2BRG',['../p33_f_j256_g_p710_a_8h.html#aabf97200fd30ea1352b6c7f26b71c97e',1,'p33FJ256GP710A.h']]],
+  ['u2mode_6',['U2MODE',['../p33_f_j256_g_p710_a_8h.html#a339605d7b82c822e2dfedda9209e164a',1,'p33FJ256GP710A.h']]],
+  ['u2rxreg_7',['U2RXREG',['../p33_f_j256_g_p710_a_8h.html#a34a9a3d531a2cf29235b80cbab7d6f2d',1,'p33FJ256GP710A.h']]],
+  ['u2sta_8',['U2STA',['../p33_f_j256_g_p710_a_8h.html#a53e1981d4066c8c10ad19b168d9e3fec',1,'p33FJ256GP710A.h']]],
+  ['u2txreg_9',['U2TXREG',['../p33_f_j256_g_p710_a_8h.html#a2916e5927c21bc73ea5553f6e458e8f1',1,'p33FJ256GP710A.h']]],
+  ['uart1_10',['UART1',['../p33_f_j256_g_p710_a_8h.html#a8d69bf04d07af4fbbab5a8bd291f65ff',1,'p33FJ256GP710A.h']]],
+  ['uart2_11',['UART2',['../p33_f_j256_g_p710_a_8h.html#a7f6bd6eb89ae2eeae97af4207ebe3cde',1,'p33FJ256GP710A.h']]],
+  ['uxbrgbits_12',['UxBRGBITS',['../p33_f_j256_g_p710_a_8h.html#aaa987aaa7301e5415f4e464db54b54dc',1,'p33FJ256GP710A.h']]],
+  ['uxmodebits_13',['UxMODEBITS',['../p33_f_j256_g_p710_a_8h.html#a9fd3fcda652004615fd81eaf9a0571ad',1,'p33FJ256GP710A.h']]],
+  ['uxrxregbits_14',['UxRXREGBITS',['../p33_f_j256_g_p710_a_8h.html#a716f6fac9f927b0dcf043ff128e7c3d3',1,'p33FJ256GP710A.h']]],
+  ['uxstabits_15',['UxSTABITS',['../p33_f_j256_g_p710_a_8h.html#ae304338ee901fc5086bf2415660bc976',1,'p33FJ256GP710A.h']]],
+  ['uxtxregbits_16',['UxTXREGBITS',['../p33_f_j256_g_p710_a_8h.html#a715c8195b5058f2076b54894824afd7c',1,'p33FJ256GP710A.h']]]
+];
