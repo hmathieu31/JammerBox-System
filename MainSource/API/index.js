@@ -14,6 +14,14 @@ const allowedOrigins = [
 ];
 const historicPath = "../interface-web/src/historicData.json";
 
+<<<<<<< HEAD:MainSource/API/index.js
+=======
+//Has to be absolute path!
+const historicPath = "./interface-web/src/historicData.json";
+const pythonScripPath = "./USART_Script.py";
+
+//Configuring CORS
+>>>>>>> 7bb86601 (Changing again, only working for this branch):Nouveau PIR/API/index.js
 app.use(
   cors({
     origin: function (origin, callback) {
