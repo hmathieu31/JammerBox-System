@@ -152,7 +152,8 @@ extern bool communication_ready;
 /* Public functions ----------------------------------------------------------*/
 
 /**
- * @brief This function processes the different cases of messages.
+ * @brief This function processes the different cases of failure messages sent by
+ * UART.
  * 
  */
 void USART_ProcessMessage(void)
@@ -915,7 +916,7 @@ void USART_send_failure_configuration_status(char failure_ident,
 }
 
 /**
- * @brief This funciton resets the values in the temp_chars arrays.
+ * @brief This function resets the values in the temp_chars arrays.
  * 
  */
 void Reset_temp_arrays(void)

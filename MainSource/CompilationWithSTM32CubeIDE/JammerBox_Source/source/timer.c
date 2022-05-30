@@ -48,9 +48,9 @@ int TIM_Soft_TicksCounted = 0;
 
 // Returns the computed value, 0 if impossible
 /**
- * @brief This function sets the different parameters to set the period of the systic.
+ * @brief This function sets the different parameters to set the period of the systick.
  * 
- * @param Duration_us Duration of the systic period in microseconds
+ * @param Duration_us Duration of the systick period in microseconds
  */
 void Systick_SetPeriod(float Duration_us)
 {

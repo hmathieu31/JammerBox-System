@@ -263,7 +263,7 @@ void output_CRK(char failure_ident)  // processed at each CRK edge
  * @brief This function processes every CAM case that can happen.
  * 
  * @param failure_ident failure identifier given depending on the fault injected.
- * @param cam_id the id of the camera used between the first and the second camera.
+ * @param cam_id the id of the camshaft used between the first and the second camshaft.
  */
 void output_CAM(char failure_ident, int cam_id) {
     if ((cam_id == active_cam_failure) || active_cam_failure == 2) {
@@ -386,7 +386,7 @@ void output_CRK_no_failure(void) {
 /**
  * @brief This function outputs the CAM signal in its normal state (no failure).
  * 
- * @param cam_id the id of the camera used between the first and the second camera.
+ * @param cam_id the id of the camshaft used between the first and the second camshaft.
  */
 void output_CAM_no_failure(int cam_id) {
     if (CAM_signal[cam_id] == true) {
@@ -456,7 +456,7 @@ void CRK_RUN_OUT_reset(void) {
 /**
  * @brief This function is the process when facing a CAM_PER failure.
  * 
- * @param cam_id the id of the camera used between the first and the second camera.
+ * @param cam_id the id of the camshaft used between the first and the second camshaft.
  */
 void output_CAM_PER(int cam_id) {
     if (active_edges_CAM_PER == 'b') {
@@ -544,7 +544,7 @@ void CRK_TOOTH_PER_reset(void) {
 /**
  * @brief This function processes the output for the CAM_delay function.
  * 
- * @param cam_id the id of the camera used between the first and the second camera.
+ * @param cam_id the id of the camshaft used between the first and the second camshaft.
  */
 void Output_CAM_delay(int cam_id) {
     if (failure_identify == '9') {
@@ -635,7 +635,7 @@ void Output_CAM_delay(int cam_id) {
 /**
  * @brief This function is the process when facing the failures inducing a CAM delay
  * 
- * @param cam_id the id of the camera used between the first and the second camera.
+ * @param cam_id the id of the camshaft used between the first and the second camshaft.
  */
 void CAM_delay(int cam_id) {
     if (TIM_Soft_Counting) {
@@ -743,7 +743,7 @@ void CAM_delay(int cam_id) {
 /**
  * @brief This function counts the number occurences of CAM_delay.
  * 
- * @param cam_id the id of the camera used between the first and the second camera.
+ * @param cam_id the id of the camshaft used between the first and the second camshaft.
  */
 void CAM_delay_counter(int cam_id) {
     if ((failure_identify == '9') && CRK_signal == false) {
@@ -1039,7 +1039,7 @@ void POSN_ENG_STST_reset(void) {
 /**
  * @brief This function is the process when facing a CAM_PAT_ERR failure.
  * 
- * @param cam_id the id of the camera used between the first and the second camera.
+ * @param cam_id the id of the camshaft used between the first and the second camshaft.
  */
 void output_CAM_PAT_ERR(int cam_id) {
     switch (active_CAM_edges[cam_id]) {
@@ -1114,7 +1114,7 @@ void CAM_PAT_ERR_reset() {
 /**
  * @brief This function is the process when facing a SC_CAM_CRK failure.
  * 
- * @param cam_id the id of the camera used between the first and the second camera.
+ * @param cam_id the id of the camshaft used between the first and the second camshaft.
  */
 void output_SC_CAM_CRK(int cam_id) {
     if (failure_active == true) {
