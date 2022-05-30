@@ -1,0 +1,18 @@
+@startuml
+scale 1.5
+left to right direction
+skinparam packageStyle rectangle
+actor "User" as a
+package jbox{
+  package sim{
+    (Répondre aux messages reçus sur le VCOM) as f1
+    (Afficher les messages reçus et envoyés dans le terminal) as f2
+    (Logger les messages reçus et envoyés dans un fichier) as f3
+
+    a -- f1
+    a -- f2
+    a -- f3
+
+  }
+}
+@enduml
