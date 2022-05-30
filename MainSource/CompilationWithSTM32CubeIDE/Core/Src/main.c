@@ -680,7 +680,7 @@ int main(void)
   MX_USART1_Init();
   /* USER CODE BEGIN 2 */
 	// ## User init ##
-	SysTickInit(); //TODO: Check on the systick here
+	SysTickInit();
 
 	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, GPIO_PIN_RESET);
   /* USER CODE END 2 */
