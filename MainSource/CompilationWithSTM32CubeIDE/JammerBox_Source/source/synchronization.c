@@ -118,10 +118,7 @@ extern char failure_identify;
 
 //### Functions ###
 
-/**
- * @brief This function processes the synchronisation of CRK.
- * 
- */
+// ## CRK Synchronisation
 void sync_CRK(void)
 {
     // Set label that indicates engine start
@@ -243,14 +240,14 @@ void sync_CRK(void)
 
                     // Send CRK-sycnhronization status
                     uint8_t msg_CRK_synchronisation_lost = message[4];
-                    HAL_USART_Transmit_IT(&husart1, &msg_CRK_synchronisation_lost, 1);
+                    HAL_UART_Transmit_IT(&huart1, &msg_CRK_synchronisation_lost, 1);
 
                     CRK_CAM_synch[0] = false;
                     CRK_CAM_synch[1] = false;
 
                     // Send CRK_CAM-sycnhronization status
                     uint8_t msg_CAM_CRK_synchronisation_lost = message[6];
-                    HAL_USART_Transmit_IT(&husart1, &msg_CAM_CRK_synchronisation_lost , 1);
+                    HAL_UART_Transmit_IT(&huart1, &msg_CAM_CRK_synchronisation_lost , 1);
 
                     // Reset actual failure scenarios
                     failure_synch_reset(failure_identify);
@@ -297,7 +294,7 @@ void sync_CRK(void)
 
                     // Send CRK-sycnhronization status
                     uint8_t msg_CRK_synchronisation_ready = message[3];
-                    HAL_USART_Transmit_IT(&husart1, &msg_CRK_synchronisation_ready, 1);
+                    HAL_UART_Transmit_IT(&huart1, &msg_CRK_synchronisation_ready, 1);
                 }
                 else
                 {
@@ -324,11 +321,7 @@ void sync_CRK(void)
     } // delay_off == true - END
 }
 
-/**
- * @brief This function processes the synchronisation between the camera and the cranks.
- * 
- * @param camId the id of the camera used between the first and the second camera.
- */
+// ## CAM_CRK Synchronisation
 void sync_CAM_CRK(int camId)
 {
     // increase CAM edges counter
@@ -601,10 +594,7 @@ void sync_CAM_CRK(int camId)
     }     // CRK_synch == true - END
 }
 
-/**
- * @brief This function is used to stall the detection, especially when the synchronisation is lost.
- * 
- */
+// ## Stalling Detection Function
 void Stalling_detection(void)
 {
     SysTick->VAL = (2 ^ 24) - 1;
@@ -656,19 +646,19 @@ void Stalling_detection(void)
     if (CRK_synch == true)
     {
         uint8_t CRK_synchronisation_lost = message[4];
-        HAL_USART_Transmit_IT(&husart1, &CRK_synchronisation_lost, 1);  // CRK synchronization lost
+        HAL_UART_Transmit_IT(&huart1, &CRK_synchronisation_lost, 1);  // CRK synchronization lost
 
     }
 
     if (CRK_CAM_synch[0] == true)
     {
         uint8_t CAM_CRK_synchronisation_lost = message[6];
-         HAL_USART_Transmit_IT(&husart1, &CAM_CRK_synchronisation_lost, 1); // CAM_CRK synchronization lost
+         HAL_UART_Transmit_IT(&huart1, &CAM_CRK_synchronisation_lost, 1); // CAM_CRK synchronization lost
     }
     if (CRK_CAM_synch[1] == true)
     {
         uint8_t CAM_CRK_synchronisation_lost = message[6];
-         HAL_USART_Transmit_IT(&husart1, &CAM_CRK_synchronisation_lost, 1); // CAM_CRK synchronization lost
+         HAL_UART_Transmit_IT(&huart1, &CAM_CRK_synchronisation_lost, 1); // CAM_CRK synchronization lost
     }
 
     CRK_synch = false;
@@ -684,11 +674,7 @@ void Stalling_detection(void)
     engine_start_counter = 0;
 }
 
-
-/**
- * @brief This function is used to stall the detection, especially when the synchronisation with CRK is lost.
- * 
- */
+// ## Stalling Detection Function
 void Stalling_detection_CRK(void)
 {
     SysTick->VAL = (2 ^ 24) - 1;
@@ -717,7 +703,7 @@ void Stalling_detection_CRK(void)
     if (CRK_synch == true)
     {
         uint8_t CRK_synchronisation_lost = message[4];
-         HAL_USART_Transmit_IT(&husart1, &CRK_synchronisation_lost, 1); // CRK synchronization lost
+         HAL_UART_Transmit_IT(&huart1, &CRK_synchronisation_lost, 1); // CRK synchronization lost
     }
 
     CRK_synch = false;
@@ -731,15 +717,11 @@ void Stalling_detection_CRK(void)
     engine_start_counter = 0;
 }
 
-
-/**
- * @brief This function is used to stall the detection, especially when the CAM synchronisation is lost.
- * 
- * @param camId the id of the camera used between the first and the second camera.
- */
+// ## Stalling Detection Function
 void Stalling_detection_CAM(int camId)
 {
     TIM2_Reset();
+    // Timer5Reset(); // TODO: Is this reset warranted?
     // check all IC-buffers for overflow
     IC_overflow_check();
 
@@ -761,7 +743,7 @@ void Stalling_detection_CAM(int camId)
     if (CRK_CAM_synch[camId] == true)
     {
         uint8_t CAM_CRK_synchronisation_lost = message[6];
-         HAL_USART_Transmit_IT(&husart1, &CAM_CRK_synchronisation_lost, 1); // CAM_CRK synchronization lost
+         HAL_UART_Transmit_IT(&huart1, &CAM_CRK_synchronisation_lost, 1); // CAM_CRK synchronization lost
     }
 
     CRK_CAM_synch[camId] = false;
@@ -773,10 +755,7 @@ void Stalling_detection_CAM(int camId)
     engine_start_counter = 0;
 }
 
-/**
- * @brief This function prepares the CRK by testing it.
- * 
- */
+// ## CRK synchronisation preparation
 void sync_CRK_preparation(void)
 {
     // Read Timer value from IC3-buffer
@@ -808,11 +787,7 @@ void sync_CRK_preparation(void)
     timer_overflow_CRK = 0;
 }
 
-
-/**
- * @brief This function prepares the CAM_CRK.
- * 
- */
+// ## CAM_CRK synchronisation preparation
 void sync_CAM_CRK_preparation(void)
 {
     // Calculate segment time if falling edge has occured
@@ -823,11 +798,7 @@ void sync_CAM_CRK_preparation(void)
     TIM2_Reset();
 }
 
-
-/**
- * @brief This funciton processes the value of the gap to the edge.
- * 
- */
+// ## Gap to edge calculation
 void gap_to_edge_calculation(void)
 {
     // calculate angles between reference gap and CAM-edges when synchronization is not yet done PR2: Timer periode value, TMR2 TMR counter at that moment
@@ -836,11 +807,7 @@ void gap_to_edge_calculation(void)
     gap_to_edge_ahead = (((double)teeth_count_CAM_CRK_synch_ahead - 1.0) + (double)(((unsigned long)(__HAL_TIM_GET_COUNTER(&htim2)) + timer_overflow_CRK * __HAL_TIM_GET_AUTORELOAD(&htim2)) / T_TOOTH_RAW)) * revolution_CRK;
 }
 
-/**
- * @brief This function resest the synchronisation between CAM and CRK.
- * 
- * @param camId the id of the camera used between the first and the second camera.
- */
+// ## Reset CAM_CRK_synch
 void CAM_CRK_synch_reset(int camId)
 {
     edge_position_counter_CAM[camId] = 0;
@@ -851,11 +818,7 @@ void CAM_CRK_synch_reset(int camId)
     CAM_CRK_synch_status = true;
 }
 
-/**
- * @brief This function resest the synchronisation between CAM and CRK ahead.
- * 
- * @param camId the id of the camera used between the first and the second camera.
- */
+// ## Reset CAM_CRK_synch_ahead
 void CAM_CRK_synch_ahead_reset(int camId)
 {
     edge_position_counter_CAM_ahead[camId] = 0;
@@ -866,28 +829,20 @@ void CAM_CRK_synch_ahead_reset(int camId)
     CAM_CRK_synch_status_ahead = true;
 }
 
-/**
- * @brief This function sets the synchronisation between CAM and CRK.
- * 
- * @param camId the id of the camera used between the first and the second camera.
- */
+// ## Set CAM_CRK_synch
 void CAM_CRK_synch_set(int camId)
 {
     CRK_CAM_synch[camId] = true;
 
     // Send CRK_CAM-sycnhronization status
     uint8_t CRK_CAM_synchronisation_lost = message[6];
-     HAL_USART_Transmit_IT(&husart1, &CRK_CAM_synchronisation_lost, 1); // CRK_CAM synchronization lost
+     HAL_UART_Transmit_IT(&huart1, &CRK_CAM_synchronisation_lost, 1); // CRK_CAM synchronization lost
     CAM_CRK_synch_status = false;
     CAM_CRK_synch_status_ahead = false;
     shift_counter_CRK = 0;
 }
 
-
-/**
- * @brief This function checks the imput capture overflow bit.
- * 
- */
+// ## IC overflow check
 void IC_overflow_check()
 {
     IC1BUF = 0;

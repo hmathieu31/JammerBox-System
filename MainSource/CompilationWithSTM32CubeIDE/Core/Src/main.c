@@ -29,13 +29,16 @@
 /* USER CODE BEGIN Includes */
 // ### Standard includes ###
 #include <stdbool.h>
+#include <stdint.h>
+//#include "stm32f1xx_hal_gpio.h"
+
 // ### Software includes ###
 
-#include "failures.h"
-#include "synchronization.h"
-#include "system_configuration.h"
-#include "timer.h"
-#include "usart_soft.h"
+#include "../../JammerBox_Source/header/failures.h"
+#include "../../JammerBox_Source/header/synchronization.h"
+#include "../../JammerBox_Source/header/system_configuration.h"
+#include "../../JammerBox_Source/header/timer.h"
+#include "../../JammerBox_Source/header/usart_soft.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -287,14 +290,17 @@ unsigned int active_CAM_edges_counter[2] =
 //** SC_CAM_CRK **
 unsigned int sc_type_SC_CAM_CRK = 0;
 
-//***************** USART ********************
+//**Signal recording of CRK and CAM**
+volatile bool should_record;
+
+//***************** UART ********************
 //** Receive **
 int char_counter = 0;
 int data_counter = 0;
 char in;
 char start_char = '!';
 char end_char = '%';
-char input_chars[250];
+uint8_t input_chars[25];
 char input[250];
 int input_char_counter = 0;
 char temp_chars_1[21];
@@ -350,6 +356,16 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 	{
 		CRK_signal = true; // Set actual signal level
 
+		if (should_record)
+		{
+			bool is_crk_buffer_full = CRK_save(GetTimestamp(), CRK_signal);
+			if (is_crk_buffer_full)
+			{
+				should_record = false;
+				// Should send CRK and CAM signals if not already sending
+			}
+		}
+
 		if (failure_active == false) // Set CRK-output
 		{
 			output_CRK_no_failure();
@@ -373,6 +389,16 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 	if (GPIO_Pin == 9) //## Capture Event falling edge --CRK--
 	{
 		CRK_signal = false; // Set actual signal level
+
+		if (should_record)
+		{
+			bool is_crk_buffer_full = CRK_save(GetTimestamp(), CRK_signal);
+			if (is_crk_buffer_full)
+			{
+				should_record = false;
+				// Should send CRK and CAM signals if not already sending
+			}
+		}
 
 		if (failure_active == false) // Set CRK-output
 		{
@@ -402,6 +428,16 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 
 		CAM_signal[0] = true; // Set actual signal level
 
+		if (should_record)
+		{
+			bool is_cam_buffer_full = CAM_save(GetTimestamp(), CAM_signal[0]);
+			if (is_cam_buffer_full)
+			{
+				should_record = false;
+				// Should send CRK and CAM signals if not already sending
+			}
+		}
+
 		output_CAM(failure_identify, 0); // CAM1 Output
 
 		if (configuration_complete == true)
@@ -414,6 +450,16 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 	if (GPIO_Pin == 11)	//## Capture Event falling edge --CAM1--
 	{
 		CAM_signal[0] = false;	// Set actual signal level
+
+		if (should_record)
+		{
+			bool is_cam_buffer_full = CAM_save(GetTimestamp(), CAM_signal[0]);
+			if (is_cam_buffer_full)
+			{
+				should_record = false;
+				// Should send CRK and CAM signals if not already sending
+			}
+		}
 
 		TIM2_Reset();
 
@@ -643,6 +689,59 @@ void TIM4_PeriodElapsedCallback(void)
 		HAL_TIM_Base_Stop(&htim4);
 	}
 }
+
+// ### USART Receive Callback function ###
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_SET);
+// Likely similar to an interrupt triggering whenever a char is received as all the receptions we will get are of size 1 char
+	if (huart == &huart1)
+	{
+		// UART Receive
+		USART_ProcessMessage();
+
+		//? the receiver buffer and the UxRSR to the empty state
+		USART_ProcessMessage();
+	}
+	else
+	{
+		char_counter++;
+
+		if (com_error == false && receiving == true && in != end_char)
+		{
+			input_chars[char_counter - 2] = in; // write received char in array
+		}
+		else if (com_error == false && in == end_char && receiving == true
+				&& char_counter > 2)
+		{
+			input_chars[char_counter - 2] = '\0'; // set length of array
+
+			char_counter = 0; // reset counter value
+			receiving = false; // reset label that indicates receiving status
+			message_received = true; // set label that indicates succesfully received message
+		}
+		else if (in == start_char && char_counter == 1)
+		{
+
+			char_counter = 0;        // reset counter value
+			receiving = false; // reset label that indicates receiving status
+			message_received = true; // set label that indicates succesfully received message
+		}
+		else if (in == start_char && char_counter == 1)
+		{
+			uint8_t msg13 = message[13];
+			HAL_UART_Transmit_IT(&huart1, &msg13, 1);
+			receiving = true;  // set label that indicates receiving status
+			com_error = false; // reset COM error, due to received start char
+		}
+		else
+		{
+			// send failure message
+		}
+	}
+	USART_ProcessMessage();
+}
+
 /* USER CODE END 0 */
 
 /**
@@ -677,10 +776,10 @@ int main(void)
   MX_TIM2_Init();
   MX_TIM3_Init();
   MX_TIM4_Init();
-  MX_USART1_Init();
+  MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
-	// ## User init ##
-	SysTickInit();
+// ## User init ##
+	SysTickInit(); //TODO: Check on the systick here
 
 	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, GPIO_PIN_RESET);
   /* USER CODE END 2 */
@@ -692,6 +791,7 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+		HAL_UART_Receive_IT(&huart1, input_chars, 3);
 		// failure processing
 		if (configuration_complete)
 		{
@@ -809,6 +909,8 @@ void Error_Handler(void)
 	__disable_irq();
 	while (1)
 	{
+		HAL_UART_Transmit_IT(&huart1, "ERROR", 6);
+		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_SET);
 	}
   /* USER CODE END Error_Handler_Debug */
 }

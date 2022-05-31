@@ -71,11 +71,7 @@ extern char message[];
 
 //### Functions ###
 
-
-/**
- * @brief This function configures the different CRK parameters.
- * 
- */
+// ## CRK Configuration
 void CRK_configuration(void)
 {
 	// Number of teeth between two gaps
@@ -115,13 +111,10 @@ void CRK_configuration(void)
 
 	// Send configuration status
 	uint8_t msg_CRK_configuration_ready = message[1];
-	 HAL_USART_Transmit_IT(&husart1, &msg_CRK_configuration_ready, 1);
+	 HAL_UART_Transmit_IT(&huart1, &msg_CRK_configuration_ready, 1);
 }
 
-/**
- * @brief This function configures the different CAM parameters.
- * 
- */
+// ## CAM Configuration
 void CAM_configuration(void)
 {
 	int camId = 0;
@@ -166,14 +159,10 @@ void CAM_configuration(void)
 
 	// Send configuration status
 	uint8_t msg_CAM_configuration_ready = message[2];
-	 HAL_USART_Transmit_IT(&husart1, &msg_CAM_configuration_ready, 1);
+	 HAL_UART_Transmit_IT(&huart1, &msg_CAM_configuration_ready, 1);
 }
 
-
-/**
- * @brief This function configures the links between CAM and CRK.
- * 
- */
+// ## CAM_CRK Configuration
 void CAM_CRK_configuration(void)
 {
 	int camId = 0;
@@ -203,11 +192,7 @@ void CAM_CRK_configuration(void)
 	configuration_complete = true;
 }
 
-/**
- * @brief This function checks the input signals for CRK or CAM.
- * 
- * @param output_set used to check if we are in input mode or not.
- */
+//### Input Signal Observation ###
 void Input_signal_observe(bool output_set)
 {
 	if (!output_set)
