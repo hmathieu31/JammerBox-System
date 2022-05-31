@@ -1,9 +1,6 @@
 *.DS_Store
 .editorconfig
 .vscode/*
-Ancien PIR/src/firmware/doc/**
-Nouveau PIR/firmware/bin
-Nouveau PIR/.vscode/c_cpp_properties.json
 
 # Created by https://www.toptal.com/developers/gitignore/api/eclipse
 # Edit at https://www.toptal.com/developers/gitignore?templates=eclipse
