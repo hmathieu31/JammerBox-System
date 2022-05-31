@@ -24,4 +24,4 @@ jobs:
           # URL of the project to add issues to
           project-url: https://github.com/users/hmathieu-insat/projects/5/views/1
           # A GitHub personal access token with write access to the project
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.ACTION_PAT }}
