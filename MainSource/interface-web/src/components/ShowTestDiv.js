@@ -7,7 +7,7 @@ import AlertTemplate from "../components/alertTemplate";
 import React from "react";
 
 export default function POPOSSpace(props) {
-  const { id, test_name, date, parametre, value, result } = props;
+  const {test_name, date, parametre, value, result } = props;
 
   const options = {
     position: "bottom center",

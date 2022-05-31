@@ -8,7 +8,7 @@ import { Routes, Route, BrowserRouter } from "react-router-dom";
 import React, { useState } from "react";
 
 export default function App() {
-  const [recordState, setRecordState] = useState(false);
+  const [recordState] = useState(false);
 
   const options = {
     position: "bottom center",

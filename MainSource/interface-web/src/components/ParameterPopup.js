@@ -58,7 +58,7 @@ class ParameterPopup extends React.Component {
               </button>
               <button 
                 onClick={(this.props.valueSelected === null 
-                  || this.props.valueSelected == 0) ?
+                  || this.props.valueSelected === 0) ?
                   this.invalidParameterSel("Invalid Parameter") :
                   this.props.handleRun 
                 } 
