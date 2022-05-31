@@ -61,8 +61,8 @@ all: main-build
 main-build: CompilationWithSTM32CubeIDE.elf secondary-outputs
 
 # Tool invocations
-CompilationWithSTM32CubeIDE.elf CompilationWithSTM32CubeIDE.map: $(OBJS) $(USER_OBJS) C:\Users\hugom\Repos\PIR\MainSource\CompilationWithSTM32CubeIDE\STM32F103RBTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "CompilationWithSTM32CubeIDE.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"C:\Users\hugom\Repos\PIR\MainSource\CompilationWithSTM32CubeIDE\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="CompilationWithSTM32CubeIDE.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+CompilationWithSTM32CubeIDE.elf CompilationWithSTM32CubeIDE.map: $(OBJS) $(USER_OBJS) C:\Users\HMathieu\Repos\PIR\MainSource\CompilationWithSTM32CubeIDE\STM32F103RBTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "CompilationWithSTM32CubeIDE.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"C:\Users\HMathieu\Repos\PIR\MainSource\CompilationWithSTM32CubeIDE\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="CompilationWithSTM32CubeIDE.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
