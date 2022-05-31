@@ -5,6 +5,7 @@
 [![Contributors][contributors-shield]][contributors-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
+[![Checks Workflow][checks-shield]][checks-url]
 
 
 <!-- PROJECT LOGO -->
@@ -224,10 +225,12 @@ Project Link: [https://github.com/hmathieu-insat/PIR](https://github.com/hmathie
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/hmathieu-insat/PIR.svg?style=for-the-badge
+[contributors-shield]: https://img.shields.io/github/contributors/hmathieu-insat/PIR
 [contributors-url]: https://github.com/hmathieu-insat/PIR/graphs/contributors
-[issues-shield]: https://img.shields.io/github/issues/hmathieu-insat/PIR.svg?style=for-the-badge
+[issues-shield]: https://img.shields.io/github/issues/hmathieu-insat/PIR
 [issues-url]: https://github.com/hmathieu-insat/PIR/issues
-[license-shield]: https://img.shields.io/github/license/hmathieu-insat/PIR.svg?style=for-the-badge
+[license-shield]: https://img.shields.io/github/license/hmathieu-insat/PIR
 [license-url]: https://github.com/hmathieu-insat/PIR/blob/master/LICENSE
+[checks-shield]: https://img.shields.io/github/workflow/status/hmathieu-insat/PIR/Node.js%20CI
+[checks-url]: https://github.com/hmathieu-insat/PIR/actions/workflows/auto-link-PRs.yml
 [product-screenshot]: images/screenshot.png
