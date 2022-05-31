@@ -3,7 +3,7 @@ import "../components/ReturnButton.js";
 import ReturnButton from "../components/ReturnButton.js";
 import React, { useState } from "react";
 import { useAlert } from "react-alert";
-import RecordSignal from "../components/RecordSignal.js";
+import RaspiProp from "../RaspiProp.json";
 
 export default function Configuration() {
   const [inputFileS, setInputFile] = useState(null);
@@ -12,7 +12,7 @@ export default function Configuration() {
   let fileReader;
 
   const sendData = (jsonData) => {
-    fetch("http://localhost:8080/config", {
+    fetch("http://" + RaspiProp["IP_ADDRESS"] + ":8080/config", {
       method: "POST",
       mode: "cors",
       headers: { "Content-type": "application/json" },
@@ -29,6 +29,7 @@ export default function Configuration() {
 
   const onButtonClickUpload = () => {
     inputFile.current.click();
+    //alert.show("Configuration uploaded");
   };
 
   const onButtonClickConf = (conf) => {
@@ -59,7 +60,7 @@ export default function Configuration() {
           };
         }
         sendData(jsonData);
-        alert.show("Configuration succesfull!");
+        alert.show("Configuration successfully uploaded!");
       }
     };
   };
@@ -73,7 +74,7 @@ export default function Configuration() {
         jsonData = { Config: "RESETCAM" };
       }
       sendData(jsonData);
-      alert.show("Configuration succesfully reseted!");
+      alert.show("Configuration successfully reset!");
     };
   };
 
@@ -107,34 +108,36 @@ export default function Configuration() {
       <div className="frame-1">
         <p className="txt-271 flex-hcenter">Configuration</p>
         {ReturnButton()}
-        <div className="configuration-list">
+        <div className="upload-button flex-hcenter">
           <button className="group-6 txt-733" onClick={onButtonClickUpload}>
             UPLOAD CONFIGS
           </button>
-          <div>
+        </div>
+        <div className="configuration-list">
+          <div className="flex-center">
             <p className="txt-271">CRK</p>
+            <button
+              className="group-6 txt-733"
+              onClick={onButtonClickConf("CRK")}
+            >
+              CONFIG CRK
+            </button>
+            <button
+              className="group-6 txt-733"
+              onClick={onButtonClickRstConf("RESETCAM")}
+            >
+              RESET CRK CONFIG
+            </button>
+            <input
+              id="myInput"
+              type="file"
+              style={{ display: "none" }}
+              ref={inputFile}
+              onChange={onChangeFile}
+              accept=".json"
+            />
           </div>
-          <button
-            className="group-6 txt-733"
-            onClick={onButtonClickConf("CRK")}
-          >
-            CONFIG CRK
-          </button>
-          <button
-            className="group-6 txt-733"
-            onClick={onButtonClickRstConf("RESETCAM")}
-          >
-            RESET CRK CONFIG
-          </button>
-          <input
-            id="myInput"
-            type="file"
-            style={{ display: "none" }}
-            ref={inputFile}
-            onChange={onChangeFile}
-            accept=".json"
-          />
-          <div>
+          <div className="flex-center">
             <p className="txt-271">CAM</p>
             <button
               className="group-6 txt-733"
@@ -149,7 +152,6 @@ export default function Configuration() {
               RESET CAM CONFIG
             </button>
           </div>
-          <RecordSignal />
         </div>
       </div>
     </>

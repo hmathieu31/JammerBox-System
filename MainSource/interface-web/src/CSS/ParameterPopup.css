@@ -8,7 +8,7 @@ p {
 
 .frame-5 {
     background: url(../../public/BackgroundImage.png), linear-gradient(0deg, rgba(255, 255, 255, 1), rgba(255, 255, 255, 1)) fixed;
-    padding: 20% 10rem;
+    padding: 12% 10rem;
     box-sizing: border-box;
     background-size: 100% 100%;
     width: 100%;
@@ -46,7 +46,6 @@ p {
     border: 0;
     border-radius: 8px;
 }
-
 
 
 .group-917 {
@@ -104,9 +103,6 @@ p {
     min-width: 50%;
     height: auto;
     border-radius: 8px;
-}
-
-.group-786 {
 }
 
 .txt-905 {

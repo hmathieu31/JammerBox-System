@@ -1,18 +1,34 @@
 import React, { useState } from "react";
 import "../CSS/RecordSignal.css";
+import RaspiProp from "../RaspiProp.json";
 
 function RecordSignal() {
-  const [recording, setRecord] = useState(false);
+  const [recording, setRecord] = useState(
+    JSON.parse(localStorage.getItem("recording"))
+  );
 
   const recordToggle = () => {
-    console.log(recording);
     setRecord(!recording);
+    localStorage.setItem("recording", JSON.stringify(!recording));
+    fetch("http://" + RaspiProp["IP_ADDRESS"] + ":8080/record", {
+      method: "PUT",
+      mode: "cors",
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify({}),
+    }).then(
+      (data) => {
+        console.log(data.status);
+      },
+      (error) => {
+        console.log("Did not send data!");
+      }
+    );
   };
 
   return (
     <div className="flex-col-hstart-vstart">
       <button
-        className="arrow-circle-up group-6 txt-733"
+        className="group-6 txt-733"
         type="submit"
         value=""
         onClick={recordToggle}
