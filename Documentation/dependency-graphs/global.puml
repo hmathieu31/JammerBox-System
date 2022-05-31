@@ -1,0 +1,39 @@
+@startuml
+
+object main
+object exti
+object failures
+object interrupt_configuration
+object port_config
+object synchronization
+object system_configuration
+object Tim5
+object timer
+object uart
+
+main --> failures
+main --> exti
+main --> port_config
+main --> synchronization
+main --> system_configuration
+main --> timer
+main --> uart
+main --> Tim5
+
+synchronization --> timer
+synchronization --> uart
+synchronization --> failures
+synchronization --> Tim5
+
+system_configuration --> synchronization
+system_configuration --> uart
+
+Tim5 --> timer
+
+timer --> Tim5
+timer --> interrupt_configuration
+
+uart --> system_configuration
+uart --> failures
+uart --> timer
+@enduml
