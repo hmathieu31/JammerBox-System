@@ -7,10 +7,12 @@
 [![MIT License][license-shield]][license-url]
 [![Checks Workflow][checks-shield]][checks-url]
 
-
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
+  <a href="https://github.com/hmathieu-insat/JammerBox-System">
+    <img src="images/banner.png" alt="Banner" width="" height="100">
+  </a>
   <h1>JammerBox Project</h1>
 </div>
 
@@ -234,3 +236,5 @@ Project Link: [https://github.com/hmathieu-insat/PIR](https://github.com/hmathie
 [checks-shield]: https://img.shields.io/github/workflow/status/hmathieu-insat/PIR/Node.js%20CI
 [checks-url]: https://github.com/hmathieu-insat/PIR/actions/workflows/auto-link-PRs.yml
 [product-screenshot]: images/screenshot.png
+[vitesco-banner]: images/banner.png
+[vitesco-banner-url]: images/banner.png
