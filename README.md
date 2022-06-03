@@ -13,6 +13,7 @@
   <a href="https://github.com/hmathieu-insat/JammerBox-System">
     <img src="images/banner.png" alt="Banner" width="" height="100">
   </a>
+  <br />
   <h1>JammerBox Project</h1>
 </div>
 
@@ -43,7 +44,13 @@
 
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+<br/>
+<div align="center">
+  <a href="https://github.com/hmathieu-insat/JammerBox-System">
+    <img src="images/boards.png" alt="Banner" width="" height="180">
+  </a>
+</div>
+<br/>
 
 Our PIR Project consisted in upgrading the existing Jammer Box System from Vitesco. The previous system used a microchip to jam the CRK and CAM signals, and used a terminal as an interface for the system.
 
