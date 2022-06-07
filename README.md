@@ -52,16 +52,7 @@
 </div>
 <br/>
 
-Our PIR Project consisted in upgrading the existing Jammer Box System from Vitesco. The previous system used a microchip to jam the CRK and CAM signals, and used a terminal as an interface for the system.
-
-Our team decided to use a newer system : the RaspberryPi, combined with a Nucleo STM32. This can allow us to store data more easily and make a better interface for the Jammer box. We could also inject faults without being directly connected to the RaspberryPi.
-
-//TO DELETE Here's why:
-
-- Your time should be focused on creating something amazing. A project that solves a problem and helps others
-- You shouldn't be doing the same tasks over and over like creating a README from scratch
-- You should implement DRY principles to the rest of your life :smile:
-  //
+The JammerBox System consist of a combinaison of a Raspberry Pi 3 and a STM32F303 nucleo board.The system takes as input the Crankshaft and Camshaft signals from the engine's sensors. It provides the user with the possibility to inject various faults into the signals before outputting them.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
