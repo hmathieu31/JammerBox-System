@@ -60,6 +60,26 @@ The system should also be able to generate signals from previously recorded file
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
+# STM32 Hardware programming
+
+## STM32F303 Nucleo Board description
+
+The STM32F030F4 is a 32-bit ARM Cortex-M3 microcontroller with a 32-bit data bus, a 32-bit program counter, and a 32-bit stack pointer. It is a low-cost, low-power, and low-voltage MCU.
+
+It performs the following functions in the JammerBox System:
+- CAM SHAFT and CRANK SHAFT input signals processing
+- Recording of the input signals
+- Jamming of the input signals according to the user-choosen faults
+
+## Built with
+
+- [STM32CubeIDE v1.9.0](https://www.st.com/en/development-tools/stm32cubeide.html#get-software)
+- ST-Link GDB server
+
+The project was successfully built and loaded from a Windows 10 and a Windows 11 PC.
+</br>
+<p align="right">(<a href="#top">back to top</a>)</p>
+
 
 # Web interface
 ## Built With
@@ -119,7 +139,8 @@ chmod u+x Run.sh
 Being connected to the same network as the RaspberryPi, type in this link `http://{IP adress of RaspberryPi}:3000/`.
 
 You will land on the starting page of the web site, and from there, you can use all of the functionnalities displayed.
-</br>
+<p align="right">(<a href="#top">back to top</a>)</p>
+
 </br>
 
 <!-- INTERFACE WEB FUNCTIONALITIES -->
@@ -185,7 +206,7 @@ When pressed, it starts recording and saving in file the signals from the Jammer
 
 <!-- CONTACT -->
 
-## Contact
+# Contact
 
 - Aubut, Guillaume - aubut@insa-toulouse.fr
 - Mancinelli, Alejo - mancinel@insa-toulouse.fr
