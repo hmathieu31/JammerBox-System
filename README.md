@@ -42,7 +42,7 @@
 
 <!-- ABOUT THE PROJECT -->
 
-## About The Project
+# About The Project
 
 <br/>
 <div align="center">
@@ -51,56 +51,31 @@
   </a>
 </div>
 <br/>
+<br/>
 
-The JammerBox System consist of a combinaison of a Raspberry Pi 3 and a STM32F303 nucleo board.The system takes as input the Crankshaft and Camshaft signals from the engine's sensors. It provides the user with the possibility to inject various faults into the signals before outputting them.
+The JammerBox System consist of a combinaison of a Raspberry Pi 3 and a STM32F303 nucleo board. The system takes as input the Crankshaft and Camshaft signals from the engine's sensors. It provides the user with the possibility to inject various faults into the signals before outputting them. It outputs the signals jammed by the user-choosen faults.
+
+The system should offer the user the possibility to record the input (unjammed) signals as CSV files stored on a USB drive to be later replayed.
+The system should also be able to generate signals from previously recorded files.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-### Built With
 
-This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
+# Web interface
+## Built With
 
-- [Next.js](https://nextjs.org/)
 - [React.js](https://reactjs.org/)
-- [Vue.js](https://vuejs.org/)
-- [Angular](https://angular.io/)
-- [Svelte](https://svelte.dev/)
-- [Laravel](https://laravel.com)
 - [Bootstrap](https://getbootstrap.com)
-- [JQuery](https://jquery.com)
+- [Node.js](https://jquery.com)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- GETTING STARTED -->
-
 ## Getting Started
-
-After connecting connecting the RaspberryPi to the STM32, some requirements is needed before running a web server on the RaspberryPi.
-
-### Prerequisites
-
-Some things has to be installed in the RaspberryPi before importing our project code. It is firstly necessary to configure the wi-fi or connect the RaspberryPi to internet through an ethernet cable to be able to install the required modules.
-
-//IL FAUT PARLER DE COMMENT CONFIGURER INTERNET ETC...
-
-For the installation, you can either be connected directly to the device, or connect through ssh with another machine with the command :
-
-```sh
-ssh [IP adress of RaspberryPI]
-```
-
-\_NB : You have to be connected to the same network as the device.
-
-Here is the two modules that are needed to be installed on the RaspberrPi :
-
-- node
-- npm
-
-Those two modules can be installed at the same time following the instructions on this website [https://www.instructables.com/Install-Nodejs-and-Npm-on-Raspberry-Pi/](https://www.instructables.com/Install-Nodejs-and-Npm-on-Raspberry-Pi/)
 
 ### Installation
 
-After installing all of the requirements, you can now install our project on the device through git and then configure it.
+To clone then install the project, you can use the following commands:
 
 1. Clone the repo
    ```sh
@@ -115,21 +90,20 @@ After installing all of the requirements, you can now install our project on the
    chmod u+x Congigure.sh
    ./Configure.sh
    ```
-4. A prompt for installing Powershell will appear, type in what you want to do (yes/no)
+4. A prompt will ask you if you wish to install Powershell (used for some automated tests).
 
-5. Wait until installation is complete (this may take a while)
 
 <br/>
 
-Before running the project, modify the //INSERER NOM DE FICHIER// that is situated in the //DOSSIER // in order to write in the field :
+<!-- Before running the project, modify the //INSERER NOM DE FICHIER// that is situated in the //DOSSIER // in order to write in the field :
 
 ```json
 {
   "IP ADRESS": "IP address of the device"
 }
-```
+``` -->
 
-The web server can finally run properly in the device with the command:
+The web server can finally ran properly in the device with the command:
 
 ```sh
 chmod u+x Run.sh
@@ -142,15 +116,17 @@ chmod u+x Run.sh
 
 ## Usage
 
-Every machine can now visit the web site hosted by the RaspberryPi if they are connected to the same network. In a web browser, type in this link http://[IP adress of RaspberryPi]:3000/.
+Being connected to the same network as the RaspberryPi, type in this link `http://{IP adress of RaspberryPi}:3000/`.
 
 You will land on the starting page of the web site, and from there, you can use all of the functionnalities displayed.
+</br>
+</br>
 
 <!-- INTERFACE WEB FUNCTIONALITIES -->
 
-## Functionalities
+# Functionalities
 
-### Inject fault
+## Inject fault
 
 Allows to inject one of the following faults into the Jammer Box for testing if it detects the fault and reacts accordingly to it.
 
@@ -169,14 +145,14 @@ Allows to inject one of the following faults into the Jammer Box for testing if 
 
 If a parameter is necessary, another small window will open allowing the introduction of this value and then the start of the jamming. When a parameter is not valid, a pop up window will show informing the user of this. If no parameters are needed, the jamming will start immediately after pressing the corresponding fault button. For either case, when the jamming starts, another pop up window will show up informing the user of the success of the order.
 
-### Faults Injection Logs
+## Faults Injection Logs
 
 Allows to inspect the faults historic logs. Each time a new fault is injected, this page will update and show its characteristics as well as if it was correctly executed. This is done by reading a JSON file that the API updates every time a new fault is injected. In addition, there is a delete button that cleans the faults log when pressed.
 
 Each fault has a replay button, replaying the jammering with the same characteristics as before.
 
 
-### Configuration
+## Configuration
 
 When the “Upload config” button is pressed, a window will open for searching in the user computer a JSON file with the Jammer Box configuration. For example:
 
@@ -201,7 +177,7 @@ When the “Upload config” button is pressed, a window will open for searching
 
 Once this file is uploaded, the user can choose to configure the CAM or the CRK separately. With the reset button, either one of these configurations can be erased.
 
-### Start recording
+## Start recording
 
 When pressed, it starts recording and saving in file the signals from the Jammer Box for further analysis.
 
@@ -219,7 +195,7 @@ When pressed, it starts recording and saving in file the signals from the Jammer
 - Pastor, Emmanuel - e_pastor@insa-toulouse.fr
 - Sixt, Romain - sixt@insa-toulouse.fr
 
-Project Link: [https://github.com/hmathieu-insat/PIR](https://github.com/hmathieu-insat/PIR)
+Repository Link: [https://github.com/hmathieu-insat/PIR](https://github.com/hmathieu-insat/PIR)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
